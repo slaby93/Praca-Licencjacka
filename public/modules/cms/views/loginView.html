@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 login-ramka">
+        <div class="login-ramka-z-trescia">
+            <img class="login-logo" data-ng-src="resources/logo.jpg">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr>
+                <form name="formaLogowania" ng-submit="loguj()" novalidate role="form">
+                    <div class="form-group"  ng-class="{'has-error':formaLogowania.login.$invalid && formaLogowania.login.$touched}">
+                        <label for="login">Login:</label>
+                        <input id="test" max-length="10" name="login" type="text" class="form-control" ng-model="user.login" required id="login">
+                        <p class="errorMessage" ng-show="formaLogowania.login.$invalid && formaLogowania.login.$touched">Wprowadzony login jest niepoprawny</p>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':formaLogowania.password.$invalid && formaLogowania.password.$touched}">
+                        <label for="pwd">Hasło:</label>
+                        <input type="password" name="password" ng-model="user.password" class="form-control" required id="pwd">
+                        <p class="errorMessage" ng-show="formaLogowania.password.$invalid && formaLogowania.password.$touched">Wprowadzone hasło jest niepoprawne</p>
+                    </div>
+                    <button type="submit" class="btn btn-default login-przyciskLogowania">Zaloguj</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

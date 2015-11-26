@@ -1,0 +1,32 @@
+{
+  "name": "Bezpieczna Podroz",
+  "description": "Spis paczek dla bowera",
+  "main": "",
+  "authors": [
+    "Daniel Słaby <pufek93@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "node",
+    "bezpieczna",
+    "podroz"
+  ],
+  "moduleType": [],
+  "homepage": "bezpiecznapodroz.org",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-router": "ui-router#~0.2.15",
+    "angular": "~1.4.7",
+    "bcryptjs": "~2.3.0",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  }
+}

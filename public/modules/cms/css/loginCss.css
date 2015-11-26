@@ -1,0 +1,51 @@
+.login-tlo{
+    background-color: salmon;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+.login-ramka{ 
+    float: none;
+    margin: auto;
+    max-width: 350px;
+    min-width: 220px;
+    height: 400px;
+    border-radius: 20px;
+    border-style: solid;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    border-color: #C7C0C0;
+    border-width: 10px;
+    padding:  0 0 0 0 ;
+}
+.login-ramka-z-trescia{
+
+}
+.errorMessage{
+    color:red;
+}
+
+.login-logo{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+}
+.srodek{
+    width: 0.2vw;
+    height: 100vh;
+    background-color: black;
+    position: fixed;
+    top:0%;
+    left:50%;
+    transform: translateX(-50%);
+}
+.login-pojemnik{
+    /*    width: 100vw;
+        height: 100vh;*/
+}
+.login-przyciskLogowania{
+    position: relative;
+    left:50%;
+    transform: translateX(-50%); 
+}

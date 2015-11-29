@@ -13,7 +13,7 @@ exports.connect = function (callback) {
         db = mongojs('admin:CbginbLnch_c@localhost/projekt', ['test']);
     }else{
         console.log("Projekt podlaczony zdalnie");
-        db = mongojs('admin:CbginbLnch_c@127.9.142.2/projekt', ['test']);
+        db = mongojs('admin:CbginbLnch_c@127.8.89.130/projekt', ['test']);
     }
 
     if (callback) {

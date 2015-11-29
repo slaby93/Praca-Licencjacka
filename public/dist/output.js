@@ -43,7 +43,7 @@ function loginCtrl($scope, userService, testService) {
         password: ""
     }, $scope.loguj = function() {
         userService.login($scope.user.login, $scope.user.password), clearLoginForm();
-    }, $scope.createUser = function() {};
+    };
 }
 
 function mainCmsCtrl($scope) {}

@@ -11,13 +11,10 @@ router.post('/', function(req, res, next) {
     console.log(hash);
     res.send("LOGOWANIE");
 });
+/**
+ * @description Rejestracja
+ */
 router.post('/register', function(req, res, next) {
-    res.send("REJESTRACJA");
 });
-// GET http://localhost:3000/user
-router.get('/', function(req, res, next) {
-    res.send("lista uzytkownikow");
-});
-var uzytkownicy = [];
 
 module.exports = router;

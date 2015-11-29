@@ -2,11 +2,16 @@ var express = require('express');
 var router = express.Router();
 var mongo = require('./dbConnect.js');
 
-/* GET home page. */
+/**
+ * @description Zwraca index.html
+ */
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
 });
 // http://localhost:8080/testowo
+/**
+ * @description Testowy rout. Mozecie tutaj wrzucac sobie wszystko.
+ */
 router.all('/testowo', function (req, res, next) {
     mongo.connect(function (db) {
         "use strict";
@@ -16,9 +21,8 @@ router.all('/testowo', function (req, res, next) {
                 res.json("error");
             }
             res.json(data);
+            db.close();
         });
-
-
     });
 
 });

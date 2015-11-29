@@ -1,7 +1,10 @@
 /* global CryptoJS */
 
 angular.module("userModule").service("userService", ["$http", userService]);
-
+/**
+ * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
+ * @param $http
+ */
 function userService($http) {
 
     var bcrypt = dcodeIO.bcrypt;

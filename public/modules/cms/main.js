@@ -15,5 +15,8 @@ angular.module("cmsModule", ["ui.router"])
                         url: "/login",
                         templateUrl: "modules/cms/views/loginView.html",
                         controller: "loginCtrl"
+                    }).state('cms.start', {
+                        url: "/start",
+                        templateUrl: "modules/cms/views/starter.html"
                     });
         });

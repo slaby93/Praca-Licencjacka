@@ -63,6 +63,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
         url: "/login",
         templateUrl: "modules/cms/views/loginView.html",
         controller: "loginCtrl"
+    }).state("cms.start", {
+        url: "/start",
+        templateUrl: "modules/cms/views/starter.html"
     });
 }), angular.module("mainApp").service("testService", [ "$http", testService ]), 
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 

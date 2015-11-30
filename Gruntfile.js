@@ -49,9 +49,7 @@ module.exports = function (grunt) {
                 files: {
                     "public/dist/output.css": [
                         "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                        "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
-                        "node_modules/bootstrap/dist/css/bootstrap-theme.min.css",
-                        "node_modules/bootstrap/dist/css/bootstrap-theme.min.css.map",
+                        "node_modules/bootstrap/dist/css/bootstrap.min.css.map"
                     ]
                 }
             }

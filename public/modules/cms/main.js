@@ -31,7 +31,8 @@ angular.module("cmsModule", ["ui.router"])
                     templateUrl: "modules/cms/views/AdminLte2/content.html"
                 },
                 "sideMenu@cms.start": {
-                    templateUrl: "modules/cms/views/AdminLte2/sideMenu.html"
+                    templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
+                    controller:"sideMenuCtrl as sideMenuCtrl"
                 }
             }
         });

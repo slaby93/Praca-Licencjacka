@@ -48,6 +48,16 @@ function loginCtrl($scope, userService, testService) {
 
 function mainCmsCtrl($scope) {}
 
+function sideMenuCtrl($scope) {
+    this.zakladki = [ {
+        nazwa: "zakladka1",
+        url: "stronka"
+    }, {
+        nazwa: "zakladka2",
+        url: "stronka"
+    } ];
+}
+
 angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/app"), $stateProvider.state("app", {
         url: "/app",
@@ -79,7 +89,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
                 templateUrl: "modules/cms/views/AdminLte2/content.html"
             },
             "sideMenu@cms.start": {
-                templateUrl: "modules/cms/views/AdminLte2/sideMenu.html"
+                templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
+                controller: "sideMenuCtrl as sideMenuCtrl"
             }
         }
     });
@@ -96,4 +107,5 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
-angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]);
+angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
+angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", sideMenuCtrl ]);

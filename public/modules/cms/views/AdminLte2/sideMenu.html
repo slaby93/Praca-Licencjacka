@@ -15,13 +15,13 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-
         <!-- search form (Optional) -->
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
               </span>
             </div>
         </form>
@@ -29,16 +29,8 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
-            <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="#">Link in level 2</a></li>
-                    <li><a href="#">Link in level 2</a></li>
-                </ul>
+            <li data-ng-repeat="zakladka in sideMenuCtrl.zakladki">
+                <a href="#">{{zakladka.nazwa}}</a>
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>
@@ -61,8 +53,10 @@
                 <li>
                     <a href="javascript::;">
                         <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
                         <div class="menu-info">
                             <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
                             <p>Will be 23 on April 24th</p>
                         </div>
                     </a>
@@ -77,6 +71,7 @@
                             Custom Template Design
                             <span class="label label-danger pull-right">70%</span>
                         </h4>
+
                         <div class="progress progress-xxs">
                             <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
                         </div>
@@ -91,11 +86,13 @@
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h3 class="control-sidebar-heading">General Settings</h3>
+
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
                         Report panel usage
                         <input type="checkbox" class="pull-right" checked>
                     </label>
+
                     <p>
                         Some information about this general settings option
                     </p>

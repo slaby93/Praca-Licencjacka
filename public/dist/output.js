@@ -83,6 +83,15 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
             }
         }
     });
+}).directive("a", function() {
+    return {
+        restrict: "E",
+        link: function(scope, elem, attrs) {
+            (attrs.ngClick || "" === attrs.href || "#" === attrs.href) && elem.on("click", function(e) {
+                e.preventDefault();
+            });
+        }
+    };
 }), angular.module("mainApp").service("testService", [ "$http", testService ]), 
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 

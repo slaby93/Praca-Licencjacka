@@ -35,4 +35,19 @@ angular.module("cmsModule", ["ui.router"])
                 }
             }
         });
+    })
+    /**
+     * @description Dyrektywa ta zapobiega przechodziu po kliknieciu na <a href="" / href="#" ></a>
+     */
+    .directive("a", function () {
+        return {
+            restrict: 'E',
+            link: function (scope, elem, attrs) {
+                if (attrs.ngClick || attrs.href === '' || attrs.href === '#') {
+                    elem.on('click', function (e) {
+                        e.preventDefault();
+                    });
+                }
+            }
+        }
     });

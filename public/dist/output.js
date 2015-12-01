@@ -65,7 +65,23 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
         controller: "loginCtrl"
     }).state("cms.start", {
         url: "/start",
-        templateUrl: "modules/cms/views/starter.html"
+        views: {
+            "": {
+                templateUrl: "modules/cms/views/AdminLte2/index.html"
+            },
+            "header@cms.start": {
+                templateUrl: "modules/cms/views/AdminLte2/header.html"
+            },
+            "footer@cms.start": {
+                templateUrl: "modules/cms/views/AdminLte2/footer.html"
+            },
+            "content@cms.start": {
+                templateUrl: "modules/cms/views/AdminLte2/content.html"
+            },
+            "sideMenu@cms.start": {
+                templateUrl: "modules/cms/views/AdminLte2/sideMenu.html"
+            }
+        }
     });
 }), angular.module("mainApp").service("testService", [ "$http", testService ]), 
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 

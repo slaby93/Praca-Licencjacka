@@ -30,7 +30,7 @@ module.exports = function (grunt) {
                 }
             },
             biblioteki: {
-                files: {
+                    files: {
                     "public/dist/libs.js": [
                         "node_modules/angular/angular.min.js",
                         "node_modules/angular-mocks/angular-mocks.js",
@@ -38,7 +38,8 @@ module.exports = function (grunt) {
                         "node_modules/bcryptjs/dist/bcrypt.min.js",
                         "node_modules/bootstrap/dist/bootstrap.min.js",
                         "node_modules/crypto-js/crypto-js.js",
-                        "node_modules/jquery/dist/jquery.min.js"
+                        "node_modules/jquery/dist/jquery.min.js",
+                        "node_modules/bootstrap/dist/js/bootstrap.min.js"
                     ]
                 }
             }

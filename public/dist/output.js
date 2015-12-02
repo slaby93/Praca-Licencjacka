@@ -63,10 +63,16 @@ function sideMenuCtrl($scope, adminTemplateService) {
 }
 
 function adminTemplateService($http) {
-    this.getCmsConfig = function(callback) {
+    function downloadConfigJson(callback) {
         $http.get("/cms").success(function(data) {
-            callback && callback(data);
+            cmsConfig = data, callback && callback();
         });
+    }
+    var cmsConfig = null;
+    this.getCmsConfig = function(callback) {
+        angular.isNull(cmsConfig) ? downloadConfigJson(function() {
+            callback && callback(cmsConfig);
+        }) : callback && callback(cmsConfig);
     };
 }
 

@@ -141,7 +141,7 @@ $(function () {
   "use strict";
 
   //Fix for IE page transitions
-  $("body").removeClass("hold-transition");
+  $(".adminBodyTag").removeClass("hold-transition");
 
   //Extend options if external options exist
   if (typeof AdminLTEOptions !== "undefined") {
@@ -183,7 +183,7 @@ $(function () {
 
   //Activate Bootstrap tooltip
   if (o.enableBSToppltip) {
-    $('body').tooltip({
+    $('.adminBodyTag').tooltip({
       selector: o.BSTooltipSelector
     });
   }
@@ -254,7 +254,7 @@ function _init() {
       var sidebar_height = $(".sidebar").height();
       //Set the min-height of the content and sidebar based on the
       //the height of the document.
-      if ($("body").hasClass("fixed")) {
+      if ($(".adminBodyTag").hasClass("fixed")) {
         $(".content-wrapper, .right-side").css('min-height', window_height - $('.main-footer').outerHeight());
       } else {
         var postSetWidth;
@@ -277,7 +277,7 @@ function _init() {
     },
     fixSidebar: function () {
       //Make sure the body tag has the .fixed class
-      if (!$("body").hasClass("fixed")) {
+      if (!$(".adminBodyTag").hasClass("fixed")) {
         if (typeof $.fn.slimScroll != 'undefined') {
           $(".sidebar").slimScroll({destroy: true}).height("auto");
         }
@@ -319,33 +319,33 @@ function _init() {
 
         //Enable sidebar push menu
         if ($(window).width() > (screenSizes.sm - 1)) {
-          if ($("body").hasClass('sidebar-collapse')) {
-            $("body").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
+          if ($(".adminBodyTag").hasClass('sidebar-collapse')) {
+            $(".adminBodyTag").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
           } else {
-            $("body").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
+            $(".adminBodyTag").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
           }
         }
         //Handle sidebar push menu for small screens
         else {
-          if ($("body").hasClass('sidebar-open')) {
-            $("body").removeClass('sidebar-open').removeClass('sidebar-collapse').trigger('collapsed.pushMenu');
+          if ($(".adminBodyTag").hasClass('sidebar-open')) {
+            $(".adminBodyTag").removeClass('sidebar-open').removeClass('sidebar-collapse').trigger('collapsed.pushMenu');
           } else {
-            $("body").addClass('sidebar-open').trigger('expanded.pushMenu');
+            $(".adminBodyTag").addClass('sidebar-open').trigger('expanded.pushMenu');
           }
         }
       });
 
       $(".content-wrapper").click(function () {
         //Enable hide menu when clicking on the content-wrapper on small screens
-        if ($(window).width() <= (screenSizes.sm - 1) && $("body").hasClass("sidebar-open")) {
-          $("body").removeClass('sidebar-open');
+        if ($(window).width() <= (screenSizes.sm - 1) && $(".adminBodyTag").hasClass("sidebar-open")) {
+          $(".adminBodyTag").removeClass('sidebar-open');
         }
       });
 
       //Enable expand on hover for sidebar mini
       if ($.AdminLTE.options.sidebarExpandOnHover
-              || ($('body').hasClass('fixed')
-                      && $('body').hasClass('sidebar-mini'))) {
+              || ($('.adminBodyTag').hasClass('fixed')
+                      && $('.adminBodyTag').hasClass('sidebar-mini'))) {
         this.expandOnHover();
       }
     },
@@ -354,25 +354,25 @@ function _init() {
       var screenWidth = $.AdminLTE.options.screenSizes.sm - 1;
       //Expand sidebar on hover
       $('.main-sidebar').hover(function () {
-        if ($('body').hasClass('sidebar-mini')
-                && $("body").hasClass('sidebar-collapse')
+        if ($('.adminBodyTag').hasClass('sidebar-mini')
+                && $(".adminBodyTag").hasClass('sidebar-collapse')
                 && $(window).width() > screenWidth) {
           _this.expand();
         }
       }, function () {
-        if ($('body').hasClass('sidebar-mini')
-                && $('body').hasClass('sidebar-expanded-on-hover')
+        if ($('.adminBodyTag').hasClass('sidebar-mini')
+                && $('.adminBodyTag').hasClass('sidebar-expanded-on-hover')
                 && $(window).width() > screenWidth) {
           _this.collapse();
         }
       });
     },
     expand: function () {
-      $("body").removeClass('sidebar-collapse').addClass('sidebar-expanded-on-hover');
+      $(".adminBodyTag").removeClass('sidebar-collapse').addClass('sidebar-expanded-on-hover');
     },
     collapse: function () {
-      if ($('body').hasClass('sidebar-expanded-on-hover')) {
-        $('body').removeClass('sidebar-expanded-on-hover').addClass('sidebar-collapse');
+      if ($('.adminBodyTag').hasClass('sidebar-expanded-on-hover')) {
+        $('.adminBodyTag').removeClass('sidebar-expanded-on-hover').addClass('sidebar-collapse');
       }
     }
   };
@@ -455,7 +455,7 @@ function _init() {
         e.preventDefault();
         //If the sidebar is not open
         if (!sidebar.hasClass('control-sidebar-open')
-                && !$('body').hasClass('control-sidebar-open')) {
+                && !$('.adminBodyTag').hasClass('control-sidebar-open')) {
           //Open the sidebar
           _this.open(sidebar, o.slide);
         } else {
@@ -468,7 +468,7 @@ function _init() {
       _this._fix(bg);
 
       //If the body has a fixed layout, make the control sidebar fixed
-      if ($('body').hasClass('fixed')) {
+      if ($('.adminBodyTag').hasClass('fixed')) {
         _this._fixForFixed(sidebar);
       } else {
         //If the content height is less than the sidebar's height, force max height
@@ -485,7 +485,7 @@ function _init() {
       } else {
         //Push the content by adding the open class to the body instead
         //of the sidebar itself
-        $('body').addClass('control-sidebar-open');
+        $('.adminBodyTag').addClass('control-sidebar-open');
       }
     },
     //Close the control sidebar
@@ -493,12 +493,12 @@ function _init() {
       if (slide) {
         sidebar.removeClass('control-sidebar-open');
       } else {
-        $('body').removeClass('control-sidebar-open');
+        $('.adminBodyTag').removeClass('control-sidebar-open');
       }
     },
     _fix: function (sidebar) {
       var _this = this;
-      if ($("body").hasClass('layout-boxed')) {
+      if ($(".adminBodyTag").hasClass('layout-boxed')) {
         sidebar.css('position', 'absolute');
         sidebar.height($(".wrapper").height());
         $(window).resize(function () {

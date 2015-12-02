@@ -30,7 +30,10 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li data-ng-repeat="zakladka in sideMenuCtrl.zakladki">
-                <a href="#">{{zakladka.nazwa}}</a>
+                <a href="#">
+                    <i class="fa fa-location-arrow"></i>
+                    <span>{{zakladka.nazwa}}</span>
+                </a>
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>

@@ -14,7 +14,7 @@ function adminTemplateService($http) {
      * @param callback
      */
     this.getCmsConfig = function (callback) {
-        if (angular.isNull(cmsConfig)) {
+        if (cmsConfig === null) {
             // pobiera config z bazy danych
             downloadConfigJson(function () {
                 if (callback) {

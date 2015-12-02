@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
-
+var assert = require('assert');
 // POST http://localhost:3000/user/login
 /**
  * @description Logowanie

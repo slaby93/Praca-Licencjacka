@@ -55,7 +55,7 @@ function mainCmsCtrl($scope) {}
 function sideMenuCtrl($scope, adminTemplateService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
-            me.tabs = data[0].tabList;
+            console.log(data), me.tabs = data[0].tabList;
         });
     }
     var me = this;
@@ -70,7 +70,7 @@ function adminTemplateService($http) {
     }
     var cmsConfig = null;
     this.getCmsConfig = function(callback) {
-        angular.isNull(cmsConfig) ? downloadConfigJson(function() {
+        null === cmsConfig ? downloadConfigJson(function() {
             callback && callback(cmsConfig);
         }) : callback && callback(cmsConfig);
     };

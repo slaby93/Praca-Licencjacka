@@ -11,13 +11,16 @@
  */
 var mongojs = require('mongojs');
 var check = require('check-types');
+var assert = require('assert');
+
 var db;
 /**
  * @description Podlaczenie do bazy mongo. Pamietaj aby w callbacku wykonac db.close();!
  * @param callback Funkcja do ktorej wrzucone zostaja obiekty err,db.
  */
-exports.connect = function (dataBase, collectionList, callback) {
 
+
+exports.connect = function (dataBase, collectionList, callback) {
     if (check.not.string(dataBase) || check.not.array(collectionList)) {
         throw new Error("Parametr dataBase nie jest stringiem lub przekazana tablica nie jest tablica!");
     }
@@ -28,13 +31,14 @@ exports.connect = function (dataBase, collectionList, callback) {
     } else {
         db = mongojs('admin:CbginbLnch_c@127.8.89.130/' + dataBase, collectionList);
     }
-
     if (callback) {
         callback(db);
     } else {
         db.close();
     }
 };
+
+
 /**
  * @description Zamyka polaczenie do bazy mongo.
  * @param callback Funkcja wywolywana po zamknieciu polaczenia.
@@ -46,3 +50,14 @@ exports.disconnect = function (callback) {
         callback();
     }
 };
+
+/*********** TESTY JEDNOSTKOWE **************/
+assert.throws(function () {
+    exports.connect(123, ['test']);
+});
+assert.throws(function () {
+    exports.connect("projekt", 'test');
+});
+assert.throws(function () {
+    exports.connect(123, 123);
+});

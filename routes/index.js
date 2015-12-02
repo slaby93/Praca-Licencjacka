@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongo = require('./dbConnect.js');
 var check = require('check-types');
-
+var assert = require('assert');
 /**
  * @description Zwraca index.html
  */
@@ -25,7 +25,6 @@ router.all('/testowo', function (req, res, next) {
     //        db.close();
     //    });
     //});
-
 });
 module.exports = router;
 

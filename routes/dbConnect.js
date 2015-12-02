@@ -31,6 +31,12 @@ exports.connect = function (dataBase, collectionList, callback) {
     } else {
         db = mongojs('admin:CbginbLnch_c@127.8.89.130/' + dataBase, collectionList);
     }
+    db.on('error', function (err) {
+        assert.ifError(err);
+    });
+    db.on('connect', function () {
+        console.log('Database connected');
+    });
     if (callback) {
         callback(db);
     } else {

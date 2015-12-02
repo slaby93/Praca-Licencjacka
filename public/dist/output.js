@@ -55,7 +55,7 @@ function mainCmsCtrl($scope) {}
 function sideMenuCtrl($scope, adminTemplateService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
-            console.log(data), me.tabs = data[0].tabList;
+            me.tabs = data[0].tabList;
         });
     }
     var me = this;

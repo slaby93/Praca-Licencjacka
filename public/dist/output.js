@@ -52,14 +52,22 @@ function loginCtrl($scope, userService, testService) {
 
 function mainCmsCtrl($scope) {}
 
-function sideMenuCtrl($scope) {
-    this.zakladki = [ {
-        nazwa: "zakladka1",
-        url: "stronka"
-    }, {
-        nazwa: "zakladka2",
-        url: "stronka"
-    } ];
+function sideMenuCtrl($scope, adminTemplateService) {
+    function init() {
+        adminTemplateService.getCmsConfig(function(data) {
+            me.tabs = data[0].tabList;
+        });
+    }
+    var me = this;
+    init();
+}
+
+function adminTemplateService($http) {
+    this.getCmsConfig = function(callback) {
+        $http.get("/cms").success(function(data) {
+            callback && callback(data);
+        });
+    };
 }
 
 angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
@@ -114,4 +122,5 @@ angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", test
 angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
-angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", sideMenuCtrl ]);
+angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", sideMenuCtrl ]), 
+angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

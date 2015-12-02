@@ -25,7 +25,8 @@ module.exports = function (grunt) {
                         "public/modules/mainApp/services/*.js",
                         "public/modules/mainApp/controllers/*.js",
                         "public/modules/userControl/services/*.js",
-                        "public/modules/cms/controllers/*.js"
+                        "public/modules/cms/controllers/*.js",
+                        "public/modules/cms/services/*.js"
                     ]
                 }
             },

@@ -1,4 +1,4 @@
-angular.module("cmsModule", ["ui.router"])
+angular.module("cmsModule", ["ui.router","oc.lazyLoad"])
     /**
      * @description Routowanie po CMSie
      * @param {type} $stateProvider
@@ -17,9 +17,11 @@ angular.module("cmsModule", ["ui.router"])
             controller: "loginCtrl"
         }).state('cms.start', {
             url: "/start",
+            // definiuje sobie podstany
             views: {
                 "": {
-                    templateUrl: "modules/cms/views/AdminLte2/index.html"
+                    templateUrl: "modules/cms/views/AdminLte2/index.html",
+                    controller:"indexCmsCtrl"
                 },
                 "header@cms.start": {
                     templateUrl: "modules/cms/views/AdminLte2/header.html"

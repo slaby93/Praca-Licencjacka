@@ -31,6 +31,10 @@ function userService($http) {
     };
 }
 
+function indexCmsCtrl($scope, $ocLazyLoad) {
+    $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js");
+}
+
 function loginCtrl($scope, userService, testService) {
     function clearLoginForm() {
         $scope.user = {
@@ -58,13 +62,13 @@ function sideMenuCtrl($scope) {
     } ];
 }
 
-angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(function($stateProvider, $urlRouterProvider) {
+angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/app"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
-}), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router" ]).config(function($stateProvider, $urlRouterProvider) {
+}), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state("cms", {
         url: "/cms",
         templateUrl: "modules/cms/views/mainCmsView.html",
@@ -77,7 +81,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
         url: "/start",
         views: {
             "": {
-                templateUrl: "modules/cms/views/AdminLte2/index.html"
+                templateUrl: "modules/cms/views/AdminLte2/index.html",
+                controller: "indexCmsCtrl"
             },
             "header@cms.start": {
                 templateUrl: "modules/cms/views/AdminLte2/header.html"
@@ -106,6 +111,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router" ]).config(fun
 }), angular.module("mainApp").service("testService", [ "$http", testService ]), 
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
+angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
+angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", sideMenuCtrl ]);

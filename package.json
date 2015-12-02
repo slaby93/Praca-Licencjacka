@@ -31,6 +31,7 @@
     "jquery": "^2.1.4",
     "mongojs": "^1.4.1",
     "morgan": "^1.6.0",
+    "oclazyload": "^1.0.9",
     "passport": "^0.2.2",
     "serve-favicon": "~2.3.0"
   },

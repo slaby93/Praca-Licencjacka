@@ -32,14 +32,15 @@ module.exports = function (grunt) {
             biblioteki: {
                     files: {
                     "public/dist/libs.js": [
+                        "node_modules/jquery/dist/jquery.js",
                         "node_modules/angular/angular.min.js",
                         "node_modules/angular-mocks/angular-mocks.js",
                         "node_modules/angular-ui-router/release/angular-ui-router.min.js",
                         "node_modules/bcryptjs/dist/bcrypt.min.js",
-                        "node_modules/bootstrap/dist/bootstrap.min.js",
+                        "node_modules/bootstrap/dist/js/bootstrap.min.js",
                         "node_modules/crypto-js/crypto-js.js",
-                        "node_modules/jquery/dist/jquery.min.js",
-                        "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                        "node_modules/oclazyload/dist/ocLazyLoad.min.js",
+
                     ]
                 }
             }

@@ -7,33 +7,41 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad"])
      */
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('cms.login', {
-                url: "/login",
-                templateUrl: "modules/cms/views/loginView.html",
-                controller: "loginCtrl"
-            }).state('cms', {
-            url: "/cms",
-            // definiuje sobie podstany
-            views: {
-                "": {
-                    templateUrl: "modules/cms/views/AdminLte2/index.html",
-                    controller: "indexCmsCtrl"
-                },
-                "header@cms": {
-                    templateUrl: "modules/cms/views/AdminLte2/header.html"
-                },
-                "footer@cms": {
-                    templateUrl: "modules/cms/views/AdminLte2/footer.html"
-                },
-                "content@cms": {
-                    //templateUrl: "modules/cms/views/AdminLte2/content.html"
-                    template: "<ui-view></ui-view>"
-                },
-                "sideMenu@cms": {
-                    templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
-                    controller: "sideMenuCtrl as sideMenuCtrl"
+            .state('cms', {
+                url: "/cms",
+                // definiuje sobie podstany
+                views: {
+                    "": {
+                        templateUrl: "modules/cms/views/AdminLte2/index.html",
+                        controller: "indexCmsCtrl"
+                    },
+                    "header@cms": {
+                        templateUrl: "modules/cms/views/AdminLte2/header.html"
+                    },
+                    "footer@cms": {
+                        templateUrl: "modules/cms/views/AdminLte2/footer.html"
+                    },
+                    "content@cms": {
+                        templateUrl: "modules/cms/views/AdminLte2/content.html"
+                    },
+                    "sideMenu@cms": {
+                        templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
+                        controller: "sideMenuCtrl as sideMenuCtrl"
+                    }
                 }
-            }
+            }).state('cms.login', {
+            url: "/login",
+            templateUrl: "modules/cms/views/loginView.html",
+            controller: "loginCtrl"
+        }).state('cms.main', {
+            url: "/main",
+            templateUrl: "modules/cms/views/mainCmsView.html"
+        }).state('cms.test', {
+            url: "/test",
+            templateUrl: "modules/cms/views/testView.html"
+        }).state('cms.test2', {
+            url: "/test2",
+            template: "<h2>TEST2</h2>"
         });
     })
     /**

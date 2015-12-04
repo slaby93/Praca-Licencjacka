@@ -15,11 +15,11 @@ function adminTemplateService($http) {
                 "urlList": [
                     {
                         "name": "Zakladki",
-                        "url": "tabManage"
+                        "url": "cms.test"
                     },
                     {
                         "name": "Test2",
-                        "url": "test2"
+                        "url": "cms.test2"
                     }
                 ]
             },

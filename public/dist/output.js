@@ -73,10 +73,10 @@ function adminTemplateService($http) {
             name: "Zarzadzanie CMS",
             urlList: [ {
                 name: "Zakladki",
-                url: "tabManage"
+                url: "cms.test"
             }, {
                 name: "Test2",
-                url: "test2"
+                url: "cms.test2"
             } ]
         }, {
             name: "nazwa2",
@@ -94,17 +94,13 @@ function adminTemplateService($http) {
 }
 
 angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/cms"), $stateProvider.state("app", {
+    $urlRouterProvider.otherwise("/cms/main"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
 }), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
-    $stateProvider.state("cms.login", {
-        url: "/login",
-        templateUrl: "modules/cms/views/loginView.html",
-        controller: "loginCtrl"
-    }).state("cms", {
+    $stateProvider.state("cms", {
         url: "/cms",
         views: {
             "": {
@@ -118,13 +114,26 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
                 templateUrl: "modules/cms/views/AdminLte2/footer.html"
             },
             "content@cms": {
-                template: "<ui-view></ui-view>"
+                templateUrl: "modules/cms/views/AdminLte2/content.html"
             },
             "sideMenu@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
                 controller: "sideMenuCtrl as sideMenuCtrl"
             }
         }
+    }).state("cms.login", {
+        url: "/login",
+        templateUrl: "modules/cms/views/loginView.html",
+        controller: "loginCtrl"
+    }).state("cms.main", {
+        url: "/main",
+        templateUrl: "modules/cms/views/mainCmsView.html"
+    }).state("cms.test", {
+        url: "/test",
+        templateUrl: "modules/cms/views/testView.html"
+    }).state("cms.test2", {
+        url: "/test2",
+        template: "<h2>TEST2</h2>"
     });
 }).directive("a", function() {
     return {

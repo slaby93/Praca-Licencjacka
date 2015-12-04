@@ -1,4 +1,4 @@
-angular.module("cmsModule", ["ui.router","oc.lazyLoad"])
+angular.module("cmsModule", ["ui.router", "oc.lazyLoad"])
     /**
      * @description Routowanie po CMSie
      * @param {type} $stateProvider
@@ -7,34 +7,31 @@ angular.module("cmsModule", ["ui.router","oc.lazyLoad"])
      */
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('cms', {
-                url: "/cms",
-                templateUrl: "modules/cms/views/mainCmsView.html",
-                controller: "mainCmsCtrl"
-            }).state('cms.login', {
-            url: "/login",
-            templateUrl: "modules/cms/views/loginView.html",
-            controller: "loginCtrl"
-        }).state('cms.start', {
-            url: "/start",
+            .state('cms.login', {
+                url: "/login",
+                templateUrl: "modules/cms/views/loginView.html",
+                controller: "loginCtrl"
+            }).state('cms', {
+            url: "/cms",
             // definiuje sobie podstany
             views: {
                 "": {
                     templateUrl: "modules/cms/views/AdminLte2/index.html",
-                    controller:"indexCmsCtrl"
+                    controller: "indexCmsCtrl"
                 },
-                "header@cms.start": {
+                "header@cms": {
                     templateUrl: "modules/cms/views/AdminLte2/header.html"
                 },
-                "footer@cms.start": {
+                "footer@cms": {
                     templateUrl: "modules/cms/views/AdminLte2/footer.html"
                 },
-                "content@cms.start": {
-                    templateUrl: "modules/cms/views/AdminLte2/content.html"
+                "content@cms": {
+                    //templateUrl: "modules/cms/views/AdminLte2/content.html"
+                    template: "<ui-view></ui-view>"
                 },
-                "sideMenu@cms.start": {
+                "sideMenu@cms": {
                     templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
-                    controller:"sideMenuCtrl as sideMenuCtrl"
+                    controller: "sideMenuCtrl as sideMenuCtrl"
                 }
             }
         });

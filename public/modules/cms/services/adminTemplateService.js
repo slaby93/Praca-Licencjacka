@@ -8,7 +8,31 @@ function adminTemplateService($http) {
      * @description Pobiera z bazy danych liste zakladek dla side menu templatki Admina
      */
 
-    var cmsConfig = null;
+    var cmsConfig = {
+        "tabList": [
+            {
+                "name": "Zarzadzanie CMS",
+                "urlList": [
+                    {
+                        "name": "Zakladki",
+                        "url": "tabManage"
+                    },
+                    {
+                        "name": "Test2",
+                        "url": "test2"
+                    }
+                ]
+            },
+            {
+                "name": "nazwa2",
+                "url": "url2"
+            },
+            {
+                "name": "nazwa3",
+                "url": "url3"
+            }
+        ]
+    };
     /**
      * @description Zwraca plik konfiguracyjny. Jezeli nie zostal jeszcze pobrany to pobiera go z bazy, w innym przypadku zwraca zapiasny plik.
      * @param callback

@@ -1,7 +1,7 @@
 /**
  * Created by Slaby on 01.12.2015.
  */
-angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService", sideMenuCtrl]);
+angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService",'$state', sideMenuCtrl]);
 
 function sideMenuCtrl($scope, adminTemplateService) {
     "use strict";
@@ -20,7 +20,7 @@ function sideMenuCtrl($scope, adminTemplateService) {
         // pobieramy z bazy liste zakladek do wyswietlenia
         adminTemplateService.getCmsConfig(function (data) {
             // przypisuje liste zakladek do wyswietlenia na templatce
-            me.tabs = data[0].tabList;
+            me.tabs = data.tabList;
         });
     }
 

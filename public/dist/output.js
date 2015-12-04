@@ -55,7 +55,7 @@ function mainCmsCtrl($scope) {}
 function sideMenuCtrl($scope, adminTemplateService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
-            me.tabs = data[0].tabList;
+            me.tabs = data.tabList;
         });
     }
     var me = this;
@@ -68,7 +68,24 @@ function adminTemplateService($http) {
             cmsConfig = data, callback && callback();
         });
     }
-    var cmsConfig = null;
+    var cmsConfig = {
+        tabList: [ {
+            name: "Zarzadzanie CMS",
+            urlList: [ {
+                name: "Zakladki",
+                url: "tabManage"
+            }, {
+                name: "Test2",
+                url: "test2"
+            } ]
+        }, {
+            name: "nazwa2",
+            url: "url2"
+        }, {
+            name: "nazwa3",
+            url: "url3"
+        } ]
+    };
     this.getCmsConfig = function(callback) {
         null === cmsConfig ? downloadConfigJson(function() {
             callback && callback(cmsConfig);
@@ -77,37 +94,33 @@ function adminTemplateService($http) {
 }
 
 angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/app"), $stateProvider.state("app", {
+    $urlRouterProvider.otherwise("/cms"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
 }), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
-    $stateProvider.state("cms", {
-        url: "/cms",
-        templateUrl: "modules/cms/views/mainCmsView.html",
-        controller: "mainCmsCtrl"
-    }).state("cms.login", {
+    $stateProvider.state("cms.login", {
         url: "/login",
         templateUrl: "modules/cms/views/loginView.html",
         controller: "loginCtrl"
-    }).state("cms.start", {
-        url: "/start",
+    }).state("cms", {
+        url: "/cms",
         views: {
             "": {
                 templateUrl: "modules/cms/views/AdminLte2/index.html",
                 controller: "indexCmsCtrl"
             },
-            "header@cms.start": {
+            "header@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/header.html"
             },
-            "footer@cms.start": {
+            "footer@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/footer.html"
             },
-            "content@cms.start": {
-                templateUrl: "modules/cms/views/AdminLte2/content.html"
+            "content@cms": {
+                template: "<ui-view></ui-view>"
             },
-            "sideMenu@cms.start": {
+            "sideMenu@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
                 controller: "sideMenuCtrl as sideMenuCtrl"
             }
@@ -128,5 +141,5 @@ angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", test
 angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
-angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", sideMenuCtrl ]), 
+angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

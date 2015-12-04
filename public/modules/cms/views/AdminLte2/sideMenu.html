@@ -34,6 +34,11 @@
                     <i class="fa fa-location-arrow"></i>
                     <span>{{tab.name}}</span>
                 </a>
+                <!--Jest to lista rozwijana gdy urlList jest zadeklarowane-->
+                <ul ng-if="tab.urlList !== undefined" class="treeview-menu menu-open" style="display: block;">
+                    <li ng-repeat="link in tab.urlList"><a href="#">{{link.name}}</a></li>
+                </ul>
+
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>

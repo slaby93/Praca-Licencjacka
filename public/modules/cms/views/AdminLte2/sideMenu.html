@@ -30,7 +30,11 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li data-ng-repeat="tab in sideMenuCtrl.tabs">
-                <a ui-sref="{{tab.url}}">
+                <a data-ng-if="tab.url === undefined">
+                    <i class="fa fa-location-arrow"></i>
+                    <span>{{tab.name}}</span>
+                </a>
+                <a data-ng-if="tab.url !== undefined" ui-sref="{{tab.url}}">
                     <i class="fa fa-location-arrow"></i>
                     <span>{{tab.name}}</span>
                 </a>

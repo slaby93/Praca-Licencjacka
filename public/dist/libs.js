@@ -14356,4 +14356,1004 @@ function(a, b, c) {
         r++;
     }
     return -1;
+}), function(root, factory) {
+    "object" == typeof exports && "object" == typeof module ? module.exports = factory() : "function" == typeof define && define.amd ? define([], factory) : "object" == typeof exports ? exports["angular-file-upload"] = factory() : root["angular-file-upload"] = factory();
+}(this, function() {
+    return function(modules) {
+        function __webpack_require__(moduleId) {
+            if (installedModules[moduleId]) return installedModules[moduleId].exports;
+            var module = installedModules[moduleId] = {
+                exports: {},
+                id: moduleId,
+                loaded: !1
+            };
+            return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
+            module.loaded = !0, module.exports;
+        }
+        var installedModules = {};
+        return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
+        __webpack_require__.p = "", __webpack_require__(0);
+    }([ function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, CONFIG = _interopRequire(__webpack_require__(1)), options = _interopRequire(__webpack_require__(2)), serviceFileUploader = _interopRequire(__webpack_require__(3)), serviceFileLikeObject = _interopRequire(__webpack_require__(4)), serviceFileItem = _interopRequire(__webpack_require__(5)), serviceFileDirective = _interopRequire(__webpack_require__(6)), serviceFileSelect = _interopRequire(__webpack_require__(7)), serviceFileDrop = _interopRequire(__webpack_require__(8)), serviceFileOver = _interopRequire(__webpack_require__(9)), directiveFileSelect = _interopRequire(__webpack_require__(10)), directiveFileDrop = _interopRequire(__webpack_require__(11)), directiveFileOver = _interopRequire(__webpack_require__(12));
+        angular.module(CONFIG.name, []).value("fileUploaderOptions", options).factory("FileUploader", serviceFileUploader).factory("FileLikeObject", serviceFileLikeObject).factory("FileItem", serviceFileItem).factory("FileDirective", serviceFileDirective).factory("FileSelect", serviceFileSelect).factory("FileDrop", serviceFileDrop).factory("FileOver", serviceFileOver).directive("nvFileSelect", directiveFileSelect).directive("nvFileDrop", directiveFileDrop).directive("nvFileOver", directiveFileOver).run([ "FileUploader", "FileLikeObject", "FileItem", "FileDirective", "FileSelect", "FileDrop", "FileOver", function(FileUploader, FileLikeObject, FileItem, FileDirective, FileSelect, FileDrop, FileOver) {
+            FileUploader.FileLikeObject = FileLikeObject, FileUploader.FileItem = FileItem, 
+            FileUploader.FileDirective = FileDirective, FileUploader.FileSelect = FileSelect, 
+            FileUploader.FileDrop = FileDrop, FileUploader.FileOver = FileOver;
+        } ]);
+    }, function(module, exports) {
+        module.exports = {
+            name: "angularFileUpload"
+        };
+    }, function(module, exports) {
+        "use strict";
+        module.exports = {
+            url: "/",
+            alias: "file",
+            headers: {},
+            queue: [],
+            progress: 0,
+            autoUpload: !1,
+            removeAfterUpload: !1,
+            method: "POST",
+            filters: [],
+            formData: [],
+            queueLimit: Number.MAX_VALUE,
+            withCredentials: !1
+        };
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, copy = (_interopRequire(__webpack_require__(1)), angular.copy), extend = angular.extend, forEach = angular.forEach, isObject = angular.isObject, isNumber = angular.isNumber, isDefined = angular.isDefined, isArray = angular.isArray, element = angular.element;
+        module.exports = function(fileUploaderOptions, $rootScope, $http, $window, FileLikeObject, FileItem) {
+            var File = $window.File, FormData = $window.FormData, FileUploader = function() {
+                function FileUploader(options) {
+                    _classCallCheck(this, FileUploader);
+                    var settings = copy(fileUploaderOptions);
+                    extend(this, settings, options, {
+                        isUploading: !1,
+                        _nextIndex: 0,
+                        _failFilterIndex: -1,
+                        _directives: {
+                            select: [],
+                            drop: [],
+                            over: []
+                        }
+                    }), this.filters.unshift({
+                        name: "queueLimit",
+                        fn: this._queueLimitFilter
+                    }), this.filters.unshift({
+                        name: "folder",
+                        fn: this._folderFilter
+                    });
+                }
+                return _createClass(FileUploader, {
+                    addToQueue: {
+                        value: function(files, options, filters) {
+                            var _this = this, list = this.isArrayLikeObject(files) ? files : [ files ], arrayOfFilters = this._getFilters(filters), count = this.queue.length, addedFileItems = [];
+                            forEach(list, function(some) {
+                                var temp = new FileLikeObject(some);
+                                if (_this._isValidFile(temp, arrayOfFilters, options)) {
+                                    var fileItem = new FileItem(_this, some, options);
+                                    addedFileItems.push(fileItem), _this.queue.push(fileItem), _this._onAfterAddingFile(fileItem);
+                                } else {
+                                    var filter = arrayOfFilters[_this._failFilterIndex];
+                                    _this._onWhenAddingFileFailed(temp, filter, options);
+                                }
+                            }), this.queue.length !== count && (this._onAfterAddingAll(addedFileItems), this.progress = this._getTotalProgress()), 
+                            this._render(), this.autoUpload && this.uploadAll();
+                        }
+                    },
+                    removeFromQueue: {
+                        value: function(value) {
+                            var index = this.getIndexOfItem(value), item = this.queue[index];
+                            item.isUploading && item.cancel(), this.queue.splice(index, 1), item._destroy(), 
+                            this.progress = this._getTotalProgress();
+                        }
+                    },
+                    clearQueue: {
+                        value: function() {
+                            for (;this.queue.length; ) this.queue[0].remove();
+                            this.progress = 0;
+                        }
+                    },
+                    uploadItem: {
+                        value: function(value) {
+                            var index = this.getIndexOfItem(value), item = this.queue[index], transport = this.isHTML5 ? "_xhrTransport" : "_iframeTransport";
+                            item._prepareToUploading(), this.isUploading || (this.isUploading = !0, this[transport](item));
+                        }
+                    },
+                    cancelItem: {
+                        value: function(value) {
+                            var index = this.getIndexOfItem(value), item = this.queue[index], prop = this.isHTML5 ? "_xhr" : "_form";
+                            item && item.isUploading && item[prop].abort();
+                        }
+                    },
+                    uploadAll: {
+                        value: function() {
+                            var items = this.getNotUploadedItems().filter(function(item) {
+                                return !item.isUploading;
+                            });
+                            items.length && (forEach(items, function(item) {
+                                return item._prepareToUploading();
+                            }), items[0].upload());
+                        }
+                    },
+                    cancelAll: {
+                        value: function() {
+                            var items = this.getNotUploadedItems();
+                            forEach(items, function(item) {
+                                return item.cancel();
+                            });
+                        }
+                    },
+                    isFile: {
+                        value: function(value) {
+                            return this.constructor.isFile(value);
+                        }
+                    },
+                    isFileLikeObject: {
+                        value: function(value) {
+                            return this.constructor.isFileLikeObject(value);
+                        }
+                    },
+                    isArrayLikeObject: {
+                        value: function(value) {
+                            return this.constructor.isArrayLikeObject(value);
+                        }
+                    },
+                    getIndexOfItem: {
+                        value: function(value) {
+                            return isNumber(value) ? value : this.queue.indexOf(value);
+                        }
+                    },
+                    getNotUploadedItems: {
+                        value: function() {
+                            return this.queue.filter(function(item) {
+                                return !item.isUploaded;
+                            });
+                        }
+                    },
+                    getReadyItems: {
+                        value: function() {
+                            return this.queue.filter(function(item) {
+                                return item.isReady && !item.isUploading;
+                            }).sort(function(item1, item2) {
+                                return item1.index - item2.index;
+                            });
+                        }
+                    },
+                    destroy: {
+                        value: function() {
+                            var _this = this;
+                            forEach(this._directives, function(key) {
+                                forEach(_this._directives[key], function(object) {
+                                    object.destroy();
+                                });
+                            });
+                        }
+                    },
+                    onAfterAddingAll: {
+                        value: function(fileItems) {}
+                    },
+                    onAfterAddingFile: {
+                        value: function(fileItem) {}
+                    },
+                    onWhenAddingFileFailed: {
+                        value: function(item, filter, options) {}
+                    },
+                    onBeforeUploadItem: {
+                        value: function(fileItem) {}
+                    },
+                    onProgressItem: {
+                        value: function(fileItem, progress) {}
+                    },
+                    onProgressAll: {
+                        value: function(progress) {}
+                    },
+                    onSuccessItem: {
+                        value: function(item, response, status, headers) {}
+                    },
+                    onErrorItem: {
+                        value: function(item, response, status, headers) {}
+                    },
+                    onCancelItem: {
+                        value: function(item, response, status, headers) {}
+                    },
+                    onCompleteItem: {
+                        value: function(item, response, status, headers) {}
+                    },
+                    onCompleteAll: {
+                        value: function() {}
+                    },
+                    _getTotalProgress: {
+                        value: function(value) {
+                            if (this.removeAfterUpload) return value || 0;
+                            var notUploaded = this.getNotUploadedItems().length, uploaded = notUploaded ? this.queue.length - notUploaded : this.queue.length, ratio = 100 / this.queue.length, current = (value || 0) * ratio / 100;
+                            return Math.round(uploaded * ratio + current);
+                        }
+                    },
+                    _getFilters: {
+                        value: function(filters) {
+                            if (!filters) return this.filters;
+                            if (isArray(filters)) return filters;
+                            var names = filters.match(/[^\s,]+/g);
+                            return this.filters.filter(function(filter) {
+                                return -1 !== names.indexOf(filter.name);
+                            });
+                        }
+                    },
+                    _render: {
+                        value: function() {
+                            $rootScope.$$phase || $rootScope.$apply();
+                        }
+                    },
+                    _folderFilter: {
+                        value: function(item) {
+                            return !(!item.size && !item.type);
+                        }
+                    },
+                    _queueLimitFilter: {
+                        value: function() {
+                            return this.queue.length < this.queueLimit;
+                        }
+                    },
+                    _isValidFile: {
+                        value: function(file, filters, options) {
+                            var _this = this;
+                            return this._failFilterIndex = -1, filters.length ? filters.every(function(filter) {
+                                return _this._failFilterIndex++, filter.fn.call(_this, file, options);
+                            }) : !0;
+                        }
+                    },
+                    _isSuccessCode: {
+                        value: function(status) {
+                            return status >= 200 && 300 > status || 304 === status;
+                        }
+                    },
+                    _transformResponse: {
+                        value: function(response, headers) {
+                            var headersGetter = this._headersGetter(headers);
+                            return forEach($http.defaults.transformResponse, function(transformFn) {
+                                response = transformFn(response, headersGetter);
+                            }), response;
+                        }
+                    },
+                    _parseHeaders: {
+                        value: function(headers) {
+                            var key, val, i, parsed = {};
+                            return headers ? (forEach(headers.split("\n"), function(line) {
+                                i = line.indexOf(":"), key = line.slice(0, i).trim().toLowerCase(), val = line.slice(i + 1).trim(), 
+                                key && (parsed[key] = parsed[key] ? parsed[key] + ", " + val : val);
+                            }), parsed) : parsed;
+                        }
+                    },
+                    _headersGetter: {
+                        value: function(parsedHeaders) {
+                            return function(name) {
+                                return name ? parsedHeaders[name.toLowerCase()] || null : parsedHeaders;
+                            };
+                        }
+                    },
+                    _xhrTransport: {
+                        value: function(item) {
+                            var _this = this, xhr = item._xhr = new XMLHttpRequest(), form = new FormData();
+                            if (this._onBeforeUploadItem(item), forEach(item.formData, function(obj) {
+                                forEach(obj, function(value, key) {
+                                    form.append(key, value);
+                                });
+                            }), "number" != typeof item._file.size) throw new TypeError("The file specified is no longer valid");
+                            form.append(item.alias, item._file, item.file.name), xhr.upload.onprogress = function(event) {
+                                var progress = Math.round(event.lengthComputable ? 100 * event.loaded / event.total : 0);
+                                _this._onProgressItem(item, progress);
+                            }, xhr.onload = function() {
+                                var headers = _this._parseHeaders(xhr.getAllResponseHeaders()), response = _this._transformResponse(xhr.response, headers), gist = _this._isSuccessCode(xhr.status) ? "Success" : "Error", method = "_on" + gist + "Item";
+                                _this[method](item, response, xhr.status, headers), _this._onCompleteItem(item, response, xhr.status, headers);
+                            }, xhr.onerror = function() {
+                                var headers = _this._parseHeaders(xhr.getAllResponseHeaders()), response = _this._transformResponse(xhr.response, headers);
+                                _this._onErrorItem(item, response, xhr.status, headers), _this._onCompleteItem(item, response, xhr.status, headers);
+                            }, xhr.onabort = function() {
+                                var headers = _this._parseHeaders(xhr.getAllResponseHeaders()), response = _this._transformResponse(xhr.response, headers);
+                                _this._onCancelItem(item, response, xhr.status, headers), _this._onCompleteItem(item, response, xhr.status, headers);
+                            }, xhr.open(item.method, item.url, !0), xhr.withCredentials = item.withCredentials, 
+                            forEach(item.headers, function(value, name) {
+                                xhr.setRequestHeader(name, value);
+                            }), xhr.send(form), this._render();
+                        }
+                    },
+                    _iframeTransport: {
+                        value: function(item) {
+                            var _this = this, form = element('<form style="display: none;" />'), iframe = element('<iframe name="iframeTransport' + Date.now() + '">'), input = item._input;
+                            item._form && item._form.replaceWith(input), item._form = form, this._onBeforeUploadItem(item), 
+                            input.prop("name", item.alias), forEach(item.formData, function(obj) {
+                                forEach(obj, function(value, key) {
+                                    var element_ = element('<input type="hidden" name="' + key + '" />');
+                                    element_.val(value), form.append(element_);
+                                });
+                            }), form.prop({
+                                action: item.url,
+                                method: "POST",
+                                target: iframe.prop("name"),
+                                enctype: "multipart/form-data",
+                                encoding: "multipart/form-data"
+                            }), iframe.bind("load", function() {
+                                var html = "", status = 200;
+                                try {
+                                    html = iframe[0].contentDocument.body.innerHTML;
+                                } catch (e) {
+                                    status = 500;
+                                }
+                                var xhr = {
+                                    response: html,
+                                    status: status,
+                                    dummy: !0
+                                }, headers = {}, response = _this._transformResponse(xhr.response, headers);
+                                _this._onSuccessItem(item, response, xhr.status, headers), _this._onCompleteItem(item, response, xhr.status, headers);
+                            }), form.abort = function() {
+                                var response, xhr = {
+                                    status: 0,
+                                    dummy: !0
+                                }, headers = {};
+                                iframe.unbind("load").prop("src", "javascript:false;"), form.replaceWith(input), 
+                                _this._onCancelItem(item, response, xhr.status, headers), _this._onCompleteItem(item, response, xhr.status, headers);
+                            }, input.after(form), form.append(input).append(iframe), form[0].submit(), this._render();
+                        }
+                    },
+                    _onWhenAddingFileFailed: {
+                        value: function(item, filter, options) {
+                            this.onWhenAddingFileFailed(item, filter, options);
+                        }
+                    },
+                    _onAfterAddingFile: {
+                        value: function(item) {
+                            this.onAfterAddingFile(item);
+                        }
+                    },
+                    _onAfterAddingAll: {
+                        value: function(items) {
+                            this.onAfterAddingAll(items);
+                        }
+                    },
+                    _onBeforeUploadItem: {
+                        value: function(item) {
+                            item._onBeforeUpload(), this.onBeforeUploadItem(item);
+                        }
+                    },
+                    _onProgressItem: {
+                        value: function(item, progress) {
+                            var total = this._getTotalProgress(progress);
+                            this.progress = total, item._onProgress(progress), this.onProgressItem(item, progress), 
+                            this.onProgressAll(total), this._render();
+                        }
+                    },
+                    _onSuccessItem: {
+                        value: function(item, response, status, headers) {
+                            item._onSuccess(response, status, headers), this.onSuccessItem(item, response, status, headers);
+                        }
+                    },
+                    _onErrorItem: {
+                        value: function(item, response, status, headers) {
+                            item._onError(response, status, headers), this.onErrorItem(item, response, status, headers);
+                        }
+                    },
+                    _onCancelItem: {
+                        value: function(item, response, status, headers) {
+                            item._onCancel(response, status, headers), this.onCancelItem(item, response, status, headers);
+                        }
+                    },
+                    _onCompleteItem: {
+                        value: function(item, response, status, headers) {
+                            item._onComplete(response, status, headers), this.onCompleteItem(item, response, status, headers);
+                            var nextItem = this.getReadyItems()[0];
+                            return this.isUploading = !1, isDefined(nextItem) ? void nextItem.upload() : (this.onCompleteAll(), 
+                            this.progress = this._getTotalProgress(), void this._render());
+                        }
+                    }
+                }, {
+                    isFile: {
+                        value: function(value) {
+                            return File && value instanceof File;
+                        }
+                    },
+                    isFileLikeObject: {
+                        value: function(value) {
+                            return value instanceof FileLikeObject;
+                        }
+                    },
+                    isArrayLikeObject: {
+                        value: function(value) {
+                            return isObject(value) && "length" in value;
+                        }
+                    },
+                    inherit: {
+                        value: function(target, source) {
+                            target.prototype = Object.create(source.prototype), target.prototype.constructor = target, 
+                            target.super_ = source;
+                        }
+                    }
+                }), FileUploader;
+            }();
+            return FileUploader.prototype.isHTML5 = !(!File || !FormData), FileUploader.isHTML5 = FileUploader.prototype.isHTML5, 
+            FileUploader;
+        }, module.exports.$inject = [ "fileUploaderOptions", "$rootScope", "$http", "$window", "FileLikeObject", "FileItem" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, copy = (_interopRequire(__webpack_require__(1)), angular.copy), isElement = angular.isElement, isString = angular.isString;
+        module.exports = function() {
+            var FileLikeObject = function() {
+                function FileLikeObject(fileOrInput) {
+                    _classCallCheck(this, FileLikeObject);
+                    var isInput = isElement(fileOrInput), fakePathOrObject = isInput ? fileOrInput.value : fileOrInput, postfix = isString(fakePathOrObject) ? "FakePath" : "Object", method = "_createFrom" + postfix;
+                    this[method](fakePathOrObject);
+                }
+                return _createClass(FileLikeObject, {
+                    _createFromFakePath: {
+                        value: function(path) {
+                            this.lastModifiedDate = null, this.size = null, this.type = "like/" + path.slice(path.lastIndexOf(".") + 1).toLowerCase(), 
+                            this.name = path.slice(path.lastIndexOf("/") + path.lastIndexOf("\\") + 2);
+                        }
+                    },
+                    _createFromObject: {
+                        value: function(object) {
+                            this.lastModifiedDate = copy(object.lastModifiedDate), this.size = object.size, 
+                            this.type = object.type, this.name = object.name;
+                        }
+                    }
+                }), FileLikeObject;
+            }();
+            return FileLikeObject;
+        }, module.exports.$inject = [];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, copy = (_interopRequire(__webpack_require__(1)), angular.copy), extend = angular.extend, element = angular.element, isElement = angular.isElement;
+        module.exports = function($compile, FileLikeObject) {
+            var FileItem = function() {
+                function FileItem(uploader, some, options) {
+                    _classCallCheck(this, FileItem);
+                    var isInput = isElement(some), input = isInput ? element(some) : null, file = isInput ? null : some;
+                    extend(this, {
+                        url: uploader.url,
+                        alias: uploader.alias,
+                        headers: copy(uploader.headers),
+                        formData: copy(uploader.formData),
+                        removeAfterUpload: uploader.removeAfterUpload,
+                        withCredentials: uploader.withCredentials,
+                        method: uploader.method
+                    }, options, {
+                        uploader: uploader,
+                        file: new FileLikeObject(some),
+                        isReady: !1,
+                        isUploading: !1,
+                        isUploaded: !1,
+                        isSuccess: !1,
+                        isCancel: !1,
+                        isError: !1,
+                        progress: 0,
+                        index: null,
+                        _file: file,
+                        _input: input
+                    }), input && this._replaceNode(input);
+                }
+                return _createClass(FileItem, {
+                    upload: {
+                        value: function() {
+                            try {
+                                this.uploader.uploadItem(this);
+                            } catch (e) {
+                                this.uploader._onCompleteItem(this, "", 0, []), this.uploader._onErrorItem(this, "", 0, []);
+                            }
+                        }
+                    },
+                    cancel: {
+                        value: function() {
+                            this.uploader.cancelItem(this);
+                        }
+                    },
+                    remove: {
+                        value: function() {
+                            this.uploader.removeFromQueue(this);
+                        }
+                    },
+                    onBeforeUpload: {
+                        value: function() {}
+                    },
+                    onProgress: {
+                        value: function(progress) {}
+                    },
+                    onSuccess: {
+                        value: function(response, status, headers) {}
+                    },
+                    onError: {
+                        value: function(response, status, headers) {}
+                    },
+                    onCancel: {
+                        value: function(response, status, headers) {}
+                    },
+                    onComplete: {
+                        value: function(response, status, headers) {}
+                    },
+                    _onBeforeUpload: {
+                        value: function() {
+                            this.isReady = !0, this.isUploading = !0, this.isUploaded = !1, this.isSuccess = !1, 
+                            this.isCancel = !1, this.isError = !1, this.progress = 0, this.onBeforeUpload();
+                        }
+                    },
+                    _onProgress: {
+                        value: function(progress) {
+                            this.progress = progress, this.onProgress(progress);
+                        }
+                    },
+                    _onSuccess: {
+                        value: function(response, status, headers) {
+                            this.isReady = !1, this.isUploading = !1, this.isUploaded = !0, this.isSuccess = !0, 
+                            this.isCancel = !1, this.isError = !1, this.progress = 100, this.index = null, this.onSuccess(response, status, headers);
+                        }
+                    },
+                    _onError: {
+                        value: function(response, status, headers) {
+                            this.isReady = !1, this.isUploading = !1, this.isUploaded = !0, this.isSuccess = !1, 
+                            this.isCancel = !1, this.isError = !0, this.progress = 0, this.index = null, this.onError(response, status, headers);
+                        }
+                    },
+                    _onCancel: {
+                        value: function(response, status, headers) {
+                            this.isReady = !1, this.isUploading = !1, this.isUploaded = !1, this.isSuccess = !1, 
+                            this.isCancel = !0, this.isError = !1, this.progress = 0, this.index = null, this.onCancel(response, status, headers);
+                        }
+                    },
+                    _onComplete: {
+                        value: function(response, status, headers) {
+                            this.onComplete(response, status, headers), this.removeAfterUpload && this.remove();
+                        }
+                    },
+                    _destroy: {
+                        value: function() {
+                            this._input && this._input.remove(), this._form && this._form.remove(), delete this._form, 
+                            delete this._input;
+                        }
+                    },
+                    _prepareToUploading: {
+                        value: function() {
+                            this.index = this.index || ++this.uploader._nextIndex, this.isReady = !0;
+                        }
+                    },
+                    _replaceNode: {
+                        value: function(input) {
+                            var clone = $compile(input.clone())(input.scope());
+                            clone.prop("value", null), input.css("display", "none"), input.after(clone);
+                        }
+                    }
+                }), FileItem;
+            }();
+            return FileItem;
+        }, module.exports.$inject = [ "$compile", "FileLikeObject" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, extend = (_interopRequire(__webpack_require__(1)), angular.extend);
+        module.exports = function() {
+            var FileDirective = function() {
+                function FileDirective(options) {
+                    _classCallCheck(this, FileDirective), extend(this, options), this.uploader._directives[this.prop].push(this), 
+                    this._saveLinks(), this.bind();
+                }
+                return _createClass(FileDirective, {
+                    bind: {
+                        value: function() {
+                            for (var key in this.events) {
+                                var prop = this.events[key];
+                                this.element.bind(key, this[prop]);
+                            }
+                        }
+                    },
+                    unbind: {
+                        value: function() {
+                            for (var key in this.events) this.element.unbind(key, this.events[key]);
+                        }
+                    },
+                    destroy: {
+                        value: function() {
+                            var index = this.uploader._directives[this.prop].indexOf(this);
+                            this.uploader._directives[this.prop].splice(index, 1), this.unbind();
+                        }
+                    },
+                    _saveLinks: {
+                        value: function() {
+                            for (var key in this.events) {
+                                var prop = this.events[key];
+                                this[prop] = this[prop].bind(this);
+                            }
+                        }
+                    }
+                }), FileDirective;
+            }();
+            return FileDirective.prototype.events = {}, FileDirective;
+        }, module.exports.$inject = [];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _get = function get(object, property, receiver) {
+            var desc = Object.getOwnPropertyDescriptor(object, property);
+            if (void 0 === desc) {
+                var parent = Object.getPrototypeOf(object);
+                return null === parent ? void 0 : get(parent, property, receiver);
+            }
+            if ("value" in desc && desc.writable) return desc.value;
+            var getter = desc.get;
+            return void 0 === getter ? void 0 : getter.call(receiver);
+        }, _inherits = function(subClass, superClass) {
+            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                constructor: {
+                    value: subClass,
+                    enumerable: !1,
+                    writable: !0,
+                    configurable: !0
+                }
+            }), superClass && (subClass.__proto__ = superClass);
+        }, _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, extend = (_interopRequire(__webpack_require__(1)), angular.extend);
+        module.exports = function(FileDirective) {
+            var FileSelect = function(_FileDirective) {
+                function FileSelect(options) {
+                    _classCallCheck(this, FileSelect);
+                    var extendedOptions = extend(options, {
+                        events: {
+                            $destroy: "destroy",
+                            change: "onChange"
+                        },
+                        prop: "select"
+                    });
+                    _get(Object.getPrototypeOf(FileSelect.prototype), "constructor", this).call(this, extendedOptions), 
+                    this.uploader.isHTML5 || this.element.removeAttr("multiple"), this.element.prop("value", null);
+                }
+                return _inherits(FileSelect, _FileDirective), _createClass(FileSelect, {
+                    getOptions: {
+                        value: function() {}
+                    },
+                    getFilters: {
+                        value: function() {}
+                    },
+                    isEmptyAfterSelection: {
+                        value: function() {
+                            return !!this.element.attr("multiple");
+                        }
+                    },
+                    onChange: {
+                        value: function() {
+                            var files = this.uploader.isHTML5 ? this.element[0].files : this.element[0], options = this.getOptions(), filters = this.getFilters();
+                            this.uploader.isHTML5 || this.destroy(), this.uploader.addToQueue(files, options, filters), 
+                            this.isEmptyAfterSelection() && (this.element.prop("value", null), this.element.replaceWith(this.element = this.element.clone(!0)));
+                        }
+                    }
+                }), FileSelect;
+            }(FileDirective);
+            return FileSelect;
+        }, module.exports.$inject = [ "FileDirective" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _get = function get(object, property, receiver) {
+            var desc = Object.getOwnPropertyDescriptor(object, property);
+            if (void 0 === desc) {
+                var parent = Object.getPrototypeOf(object);
+                return null === parent ? void 0 : get(parent, property, receiver);
+            }
+            if ("value" in desc && desc.writable) return desc.value;
+            var getter = desc.get;
+            return void 0 === getter ? void 0 : getter.call(receiver);
+        }, _inherits = function(subClass, superClass) {
+            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                constructor: {
+                    value: subClass,
+                    enumerable: !1,
+                    writable: !0,
+                    configurable: !0
+                }
+            }), superClass && (subClass.__proto__ = superClass);
+        }, _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, extend = (_interopRequire(__webpack_require__(1)), angular.extend), forEach = angular.forEach;
+        module.exports = function(FileDirective) {
+            var FileDrop = function(_FileDirective) {
+                function FileDrop(options) {
+                    _classCallCheck(this, FileDrop);
+                    var extendedOptions = extend(options, {
+                        events: {
+                            $destroy: "destroy",
+                            drop: "onDrop",
+                            dragover: "onDragOver",
+                            dragleave: "onDragLeave"
+                        },
+                        prop: "drop"
+                    });
+                    _get(Object.getPrototypeOf(FileDrop.prototype), "constructor", this).call(this, extendedOptions);
+                }
+                return _inherits(FileDrop, _FileDirective), _createClass(FileDrop, {
+                    getOptions: {
+                        value: function() {}
+                    },
+                    getFilters: {
+                        value: function() {}
+                    },
+                    onDrop: {
+                        value: function(event) {
+                            var transfer = this._getTransfer(event);
+                            if (transfer) {
+                                var options = this.getOptions(), filters = this.getFilters();
+                                this._preventAndStop(event), forEach(this.uploader._directives.over, this._removeOverClass, this), 
+                                this.uploader.addToQueue(transfer.files, options, filters);
+                            }
+                        }
+                    },
+                    onDragOver: {
+                        value: function(event) {
+                            var transfer = this._getTransfer(event);
+                            this._haveFiles(transfer.types) && (transfer.dropEffect = "copy", this._preventAndStop(event), 
+                            forEach(this.uploader._directives.over, this._addOverClass, this));
+                        }
+                    },
+                    onDragLeave: {
+                        value: function(event) {
+                            event.currentTarget !== this.element[0] && (this._preventAndStop(event), forEach(this.uploader._directives.over, this._removeOverClass, this));
+                        }
+                    },
+                    _getTransfer: {
+                        value: function(event) {
+                            return event.dataTransfer ? event.dataTransfer : event.originalEvent.dataTransfer;
+                        }
+                    },
+                    _preventAndStop: {
+                        value: function(event) {
+                            event.preventDefault(), event.stopPropagation();
+                        }
+                    },
+                    _haveFiles: {
+                        value: function(types) {
+                            return types ? types.indexOf ? -1 !== types.indexOf("Files") : types.contains ? types.contains("Files") : !1 : !1;
+                        }
+                    },
+                    _addOverClass: {
+                        value: function(item) {
+                            item.addOverClass();
+                        }
+                    },
+                    _removeOverClass: {
+                        value: function(item) {
+                            item.removeOverClass();
+                        }
+                    }
+                }), FileDrop;
+            }(FileDirective);
+            return FileDrop;
+        }, module.exports.$inject = [ "FileDirective" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        }, _createClass = function() {
+            function defineProperties(target, props) {
+                for (var key in props) {
+                    var prop = props[key];
+                    prop.configurable = !0, prop.value && (prop.writable = !0);
+                }
+                Object.defineProperties(target, props);
+            }
+            return function(Constructor, protoProps, staticProps) {
+                return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+                Constructor;
+            };
+        }(), _get = function get(object, property, receiver) {
+            var desc = Object.getOwnPropertyDescriptor(object, property);
+            if (void 0 === desc) {
+                var parent = Object.getPrototypeOf(object);
+                return null === parent ? void 0 : get(parent, property, receiver);
+            }
+            if ("value" in desc && desc.writable) return desc.value;
+            var getter = desc.get;
+            return void 0 === getter ? void 0 : getter.call(receiver);
+        }, _inherits = function(subClass, superClass) {
+            if ("function" != typeof superClass && null !== superClass) throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+            subClass.prototype = Object.create(superClass && superClass.prototype, {
+                constructor: {
+                    value: subClass,
+                    enumerable: !1,
+                    writable: !0,
+                    configurable: !0
+                }
+            }), superClass && (subClass.__proto__ = superClass);
+        }, _classCallCheck = function(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }, extend = (_interopRequire(__webpack_require__(1)), angular.extend);
+        module.exports = function(FileDirective) {
+            var FileOver = function(_FileDirective) {
+                function FileOver(options) {
+                    _classCallCheck(this, FileOver);
+                    var extendedOptions = extend(options, {
+                        events: {
+                            $destroy: "destroy"
+                        },
+                        prop: "over",
+                        overClass: "nv-file-over"
+                    });
+                    _get(Object.getPrototypeOf(FileOver.prototype), "constructor", this).call(this, extendedOptions);
+                }
+                return _inherits(FileOver, _FileDirective), _createClass(FileOver, {
+                    addOverClass: {
+                        value: function() {
+                            this.element.addClass(this.getOverClass());
+                        }
+                    },
+                    removeOverClass: {
+                        value: function() {
+                            this.element.removeClass(this.getOverClass());
+                        }
+                    },
+                    getOverClass: {
+                        value: function() {
+                            return this.overClass;
+                        }
+                    }
+                }), FileOver;
+            }(FileDirective);
+            return FileOver;
+        }, module.exports.$inject = [ "FileDirective" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        };
+        _interopRequire(__webpack_require__(1));
+        module.exports = function($parse, FileUploader, FileSelect) {
+            return {
+                link: function(scope, element, attributes) {
+                    var uploader = scope.$eval(attributes.uploader);
+                    if (!(uploader instanceof FileUploader)) throw new TypeError('"Uploader" must be an instance of FileUploader');
+                    var object = new FileSelect({
+                        uploader: uploader,
+                        element: element
+                    });
+                    object.getOptions = $parse(attributes.options).bind(object, scope), object.getFilters = function() {
+                        return attributes.filters;
+                    };
+                }
+            };
+        }, module.exports.$inject = [ "$parse", "FileUploader", "FileSelect" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        };
+        _interopRequire(__webpack_require__(1));
+        module.exports = function($parse, FileUploader, FileDrop) {
+            return {
+                link: function(scope, element, attributes) {
+                    var uploader = scope.$eval(attributes.uploader);
+                    if (!(uploader instanceof FileUploader)) throw new TypeError('"Uploader" must be an instance of FileUploader');
+                    if (uploader.isHTML5) {
+                        var object = new FileDrop({
+                            uploader: uploader,
+                            element: element
+                        });
+                        object.getOptions = $parse(attributes.options).bind(object, scope), object.getFilters = function() {
+                            return attributes.filters;
+                        };
+                    }
+                }
+            };
+        }, module.exports.$inject = [ "$parse", "FileUploader", "FileDrop" ];
+    }, function(module, exports, __webpack_require__) {
+        "use strict";
+        var _interopRequire = function(obj) {
+            return obj && obj.__esModule ? obj["default"] : obj;
+        };
+        _interopRequire(__webpack_require__(1));
+        module.exports = function(FileUploader, FileOver) {
+            return {
+                link: function(scope, element, attributes) {
+                    var uploader = scope.$eval(attributes.uploader);
+                    if (!(uploader instanceof FileUploader)) throw new TypeError('"Uploader" must be an instance of FileUploader');
+                    var object = new FileOver({
+                        uploader: uploader,
+                        element: element
+                    });
+                    object.getOverClass = function() {
+                        return attributes.overClass || object.overClass;
+                    };
+                }
+            };
+        }, module.exports.$inject = [ "FileUploader", "FileOver" ];
+    } ]);
 });

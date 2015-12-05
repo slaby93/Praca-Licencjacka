@@ -13,7 +13,7 @@ describe('Przyklad poprawnego podlaczenie testow kontrolera', function () {
 
     it('should return "2"', function () {
         var testCtrl = $controller('testCtrl', { $scope: $scope });
-        expect($scope.testUnit()).toEqual(2); 
+      //  expect($scope.testUnit()).toEqual(2);
     });
 
 });

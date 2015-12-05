@@ -18,19 +18,19 @@ function adminTemplateService($http) {
                         "url": "cms.test"
                     },
                     {
-                        "name": "Test2",
-                        "url": "cms.test2"
+                        "name": "Upload Zdjec",
+                        "url": "cms.imageUpload"
                     }
                 ]
-            },
-            {
-                "name": "nazwa2",
-                "url": "url2"
-            },
-            {
-                "name": "nazwa3",
-                "url": "url3"
             }
+            //{
+            //    "name": "nazwa2",
+            //    "url": "url2"
+            //},
+            //{
+            //    "name": "nazwa3",
+            //    "url": "url3"
+            //}
         ]
     };
     /**

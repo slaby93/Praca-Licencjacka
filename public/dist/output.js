@@ -31,6 +31,10 @@ function userService($http) {
     };
 }
 
+function imageUploadCtrl($scope, FileUploader) {
+    $scope.uploader = new FileUploader();
+}
+
 function indexCmsCtrl($scope, $ocLazyLoad) {
     $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js");
 }
@@ -75,15 +79,9 @@ function adminTemplateService($http) {
                 name: "Zakladki",
                 url: "cms.test"
             }, {
-                name: "Test2",
-                url: "cms.test2"
+                name: "Upload Zdjec",
+                url: "cms.imageUpload"
             } ]
-        }, {
-            name: "nazwa2",
-            url: "url2"
-        }, {
-            name: "nazwa3",
-            url: "url3"
         } ]
     };
     this.getCmsConfig = function(callback) {
@@ -99,7 +97,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
-}), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
+}), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state("cms", {
         url: "/cms",
         views: {
@@ -134,6 +132,10 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
     }).state("cms.test2", {
         url: "/test2",
         template: "<h2>TEST2</h2>"
+    }).state("cms.imageUpload", {
+        url: "/imageUpload",
+        controller: "imageUploadCtrl",
+        templateUrl: "modules/cms/views/imageUploadView.html"
     });
 }).directive("a", function() {
     return {
@@ -147,7 +149,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 }), angular.module("mainApp").service("testService", [ "$http", testService ]), 
 angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
+angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]), 
+angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 

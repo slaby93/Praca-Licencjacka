@@ -1,4 +1,4 @@
-angular.module("cmsModule", ["ui.router", "oc.lazyLoad"])
+angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
     /**
      * @description Routowanie po CMSie
      * @param {type} $stateProvider
@@ -42,6 +42,10 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad"])
         }).state('cms.test2', {
             url: "/test2",
             template: "<h2>TEST2</h2>"
+        }).state('cms.imageUpload', {
+            url: "/imageUpload",
+            controller:"imageUploadCtrl",
+            templateUrl: "modules/cms/views/imageUploadView.html"
         });
     })
     /**

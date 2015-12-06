@@ -3,17 +3,22 @@ var router = express.Router();
 var mongo = require('./dbConnect.js');
 var check = require('check-types');
 var assert = require('assert');
-/**
- * @description Zwraca index.html
- */
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
-});
+var formidable = require('formidable');
+var http = require('http');
+var util = require('util');
+var fs = require('fs');
+
+    /**
+     * @description Zwraca index.html
+     */
+    router.get('/', function (req, res, next) {
+        res.render('index', {title: 'Express'});
+    });
 // http://localhost:8080/testowo
-/**
- * @description Testowy rout. Mozecie tutaj wrzucac sobie wszystko.
- */
-router.all('/testowo', function (req, res, next) {
+    /**
+     * @description Testowy rout. Mozecie tutaj wrzucac sobie wszystko.
+     */
+    router.all('/testowo', function (req, res, next) {
     //mongo.connect(function (db) {
     //    "use strict";
     //    db.test.find({}, function (err, data) {
@@ -26,6 +31,27 @@ router.all('/testowo', function (req, res, next) {
     //    });
     //});
 });
+
+
+router.post('/upload', function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    var galleryPath = './public/gallery';
+
+    form.keepExtensions = true;
+    form.uploadDir = galleryPath;
+
+    if (fs.existsSync(galleryPath) === false) {
+        fs.mkdirSync(galleryPath);
+    }
+
+    form.parse(req, function(err, fields, files) {
+        res.writeHead(200, {'content-type': 'text/image'});
+        res.write('Response:\n\n');
+        res.write(util.inspect({fields: fields, files: files}));
+    });
+
+});
+
 module.exports = router;
 
 

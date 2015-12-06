@@ -21,8 +21,4 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.post('/imageUploadRequest', function (req, res, next) {
-    res.send("WGRYWANIE OBRAZKOW");
-});
-
 module.exports = router;

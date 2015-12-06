@@ -1,52 +1,5 @@
-<div nv-file-drop="" uploader="uploader" options="{ url: '/foo' }">
-    <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone">
-        <b>Drag images here.</b>
-        Dopuszczalne są jedynie pliki graficzne o rozszerzeniu jpg, png, jpeg, bmp, gif.<br>
-        Można otworzyć notatnik, zapisać jako test.png, wrzucić i przejdzie.<br>
-        Type MIME nie jest wystarczający. To jest jedynie informacja o tym czego należy się spodziewać, a nie co jest przesyłane.<br>
-        Na stackoverflowu wszędzie podawane są błędne odpowiedzi.
-    </div>
-</div>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th width="50%">Name</th>
-        <th ng-show="uploader.isHTML5">Size</th>
-        <th ng-show="uploader.isHTML5">Progress</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="item in uploader.queue">
-        <td><strong>{{ item.file.name }}</strong></td>
-        <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-        <td ng-show="uploader.isHTML5">
-            <div class="progress" style="margin-bottom: 0;">
-                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-            </div>
-        </td>
-        <td class="text-center">
-            <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-            <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-            <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-        </td>
-        <td nowrap>
-            <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                <span class="glyphicon glyphicon-upload"></span> Upload
-            </button>
-            <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-            </button>
-            <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                <span class="glyphicon glyphicon-trash"></span> Remove
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<form name="imageUploadButton" ng-submit="confirmUpload()" novalidate role="form">
-    <button type="submit" class="btn btn-default">Upload! (tylko wypisuje na konsoli przegladarki odpowiedz)</button>
+<form action="/upload" enctype="multipart/form-data" method="post">
+    <input type="text" name="title"><br>
+    <input type="file" name="upload" accept="image/*" multiple><br>
+    <input type="submit" value="Upload">
 </form>

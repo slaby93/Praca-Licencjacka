@@ -2,11 +2,26 @@
  * Created by pufek on 05.12.2015.
  */
 
-angular.module("cmsModule").controller("imageUploadCtrl", ["$scope","FileUploader", imageUploadCtrl]);
+angular.module("cmsModule").controller("imageUploadCtrl", ["$scope","FileUploader", "imageUploadService", imageUploadCtrl]);
 
-function imageUploadCtrl($scope,FileUploader) {
+function imageUploadCtrl($scope,FileUploader,imageUploadService) {
     // https://github.com/nervgh/angular-file-upload/wiki/Introduction
-    $scope.uploader = new FileUploader();
+    $scope.uploader = new FileUploader({
+        url: '/cms/imageUploadRequest'
+
+        /*
+
+        W przykładach jest jedynie php:
+
+        new FileUploader({
+            url: 'upload.php'
+        });
+
+        https://github.com/nervgh/angular-file-upload/wiki/FAQ
+        W FAQ jest to pytanie 10, na które nie ma odpowiedzi.
+
+         */
+    });
 
     $scope.uploader.filters.push({
         name: 'debug_printInfo',
@@ -30,5 +45,10 @@ function imageUploadCtrl($scope,FileUploader) {
             return (item.size > 0 && item.size <= 3000000);
         }
     });
+
+
+    $scope.confirmUpload = function() {
+        imageUploadService.confirmUpload();
+    };
 
 }

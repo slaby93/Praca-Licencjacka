@@ -41,7 +41,9 @@ module.exports = function (grunt) {
                         "node_modules/bootstrap/dist/js/bootstrap.min.js",
                         "node_modules/crypto-js/crypto-js.js",
                         "node_modules/oclazyload/dist/ocLazyLoad.min.js",
-                        "node_modules/angular-file-upload/dist/angular-file-upload.js"
+                        "node_modules/angular-file-upload/dist/angular-file-upload.js",
+                        "node_modules/socket.io/node_modules/socket.io-client/socket.io.js"
+
 
                     ]
                 }

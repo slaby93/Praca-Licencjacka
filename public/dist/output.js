@@ -1,5 +1,19 @@
 "use strict";
 
+function socketService($http) {
+    function defineListeners() {
+        socket.on("news", function(data) {
+            console.log(data), socket.emit("my other event", {
+                my: "data"
+            });
+        });
+    }
+    var socket = null;
+    this.init = function() {
+        socket = io(), defineListeners();
+    };
+}
+
 function testService($http) {
     this.testRestow = function(callback) {
         $http.get("/testowo").success(function(data) {
@@ -10,7 +24,9 @@ function testService($http) {
     };
 }
 
-function mainAppCtrl($scope) {}
+function mainAppCtrl($scope, socketService) {
+    socketService.init();
+}
 
 function testCtrl($scope, testService) {
     $scope.testUnit = function() {
@@ -32,7 +48,21 @@ function userService($http) {
 }
 
 function imageUploadCtrl($scope, FileUploader) {
-    $scope.uploader = new FileUploader();
+    $scope.uploader = new FileUploader({
+        url: "upload",
+        autoUpload: !0
+    }), $scope.maxFileSize = 10485760, $scope.uploader.filters.push({
+        name: "imageFilter",
+        fn: function(item, options) {
+            var type = "|" + item.type.slice(item.type.lastIndexOf("/") + 1) + "|";
+            return -1 !== "|jpg|png|jpeg|bmp|gif|".indexOf(type);
+        }
+    }), $scope.uploader.filters.push({
+        name: "sizeFilter",
+        fn: function(item, options) {
+            return item.size <= $scope.maxFileSize;
+        }
+    });
 }
 
 function indexCmsCtrl($scope, $ocLazyLoad) {
@@ -146,11 +176,45 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
             });
         }
     };
-}), angular.module("mainApp").service("testService", [ "$http", testService ]), 
-angular.module("mainApp").controller("mainAppCtrl", [ "$scope", mainAppCtrl ]), 
+}), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
+angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]), 
-angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
+angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
+    var helper = {
+        support: !(!$window.FileReader || !$window.CanvasRenderingContext2D),
+        isFile: function(item) {
+            return angular.isObject(item) && item instanceof $window.File;
+        },
+        isImage: function(file) {
+            var type = "|" + file.type.slice(file.type.lastIndexOf("/") + 1) + "|";
+            return -1 !== "|jpg|png|jpeg|bmp|gif|".indexOf(type);
+        }
+    };
+    return {
+        restrict: "A",
+        template: "<canvas/>",
+        link: function(scope, element, attributes) {
+            function onLoadFile(event) {
+                var img = new Image();
+                img.onload = onLoadImage, img.src = event.target.result;
+            }
+            function onLoadImage() {
+                var width = params.width || this.width / this.height * params.height, height = params.height || this.height / this.width * params.width;
+                canvas.attr({
+                    width: width,
+                    height: height
+                }), canvas[0].getContext("2d").drawImage(this, 0, 0, width, height);
+            }
+            if (helper.support) {
+                var params = scope.$eval(attributes.ngThumb);
+                if (helper.isFile(params.file) && helper.isImage(params.file)) {
+                    var canvas = element.find("canvas"), reader = new FileReader();
+                    reader.onload = onLoadFile, reader.readAsDataURL(params.file);
+                }
+            }
+        }
+    };
+} ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 

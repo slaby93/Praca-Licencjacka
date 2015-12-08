@@ -5,10 +5,12 @@
         <div nv-file-drop="" uploader="uploader">
             <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone">
                 <b>Przerzuć pliki tutaj</b><br>
-                Dopuszczalne są pliki o rozszerzeniu jpg, png, jpeg, bmp, gif<br>
+                Dopuszczalne są pliki o rozszerzeniu jpg, png, jpeg, bmp, gif.<br>
                 Maksymalny rozmiar pliku wynosi {{ maxFileSize/1024/1024|number:2 }} MB.
             </div>
         </div>
+        <input type="file" nv-file-select="" uploader="uploader" multiple  />
+
     </div>
 
     <div ng-show="uploader.queue.length > 0" style="margin-bottom: 40px">

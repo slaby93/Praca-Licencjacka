@@ -1,0 +1,13 @@
+<form ng-submit="register()">
+    <h3>Zarejestruj</h3>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Login" ng-model="user.login"></input>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" placeholder="Hasło" ng-model="user.password"></input>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" placeholder="Powtórz hasło" ng-model="user.retypedPassword"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Zarejestruj</button>
+</form>

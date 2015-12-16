@@ -4,8 +4,8 @@ module.exports = function (grunt) {
         // Ma za zadanie obserwowanie plikow i wykrywanie zmian, nastepnie odpala zlecone zadania
         watch: {
             scripts: {
-                files: ["public/**/*.js", "routes/*.js", "public/**/*.html", "public/**/*.css","testowanie/**/*.js"],
-                tasks: ["uglify:cel","karma:continuous"],
+                files: ["public/**/*.js", "routes/*.js", "public/**/*.html", "public/**/*.css", "testowanie/**/*.js"],
+                tasks: ["uglify:cel", "karma:continuous"],
                 options: {
                     livereload: 1337,
                     spawn: false
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
                 }
             },
             biblioteki: {
-                    files: {
+                files: {
                     "public/dist/libs.js": [
                         "node_modules/jquery/dist/jquery.js",
                         "node_modules/angular/angular.min.js",
@@ -42,7 +42,8 @@ module.exports = function (grunt) {
                         "node_modules/crypto-js/crypto-js.js",
                         "node_modules/oclazyload/dist/ocLazyLoad.min.js",
                         "node_modules/angular-file-upload/dist/angular-file-upload.js",
-                        "node_modules/socket.io/node_modules/socket.io-client/socket.io.js"
+                        "node_modules/socket.io/node_modules/socket.io-client/socket.io.js",
+                        "node_modules/sweetalert/dist/sweetalert-dev.js"
 
 
                     ]
@@ -55,7 +56,8 @@ module.exports = function (grunt) {
                 files: {
                     "public/dist/output.css": [
                         "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                        "node_modules/bootstrap/dist/css/bootstrap.min.css.map"
+                        "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
+                        "node_modules/sweetalert/dist/sweetalert.css"
                     ]
                 }
             }
@@ -71,9 +73,9 @@ module.exports = function (grunt) {
         nodemon: {
             dev: {
                 //script: 'bin/www',
-				script: 'server.js',
+                script: 'server.js',
                 options: {
-                    ignore: ['public', 'node_modules', 'bower_components', 'nbproject','testowanie']
+                    ignore: ['public', 'node_modules', 'bower_components', 'nbproject', 'testowanie']
                 }
             }
         },

@@ -29,10 +29,14 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
                         controller: "sideMenuCtrl as sideMenuCtrl"
                     }
                 }
-            }).state('cms.login', {
+            }).state('login', {
             url: "/login",
             templateUrl: "modules/cms/views/loginView.html",
             controller: "loginCtrl"
+        }).state('register', {
+            url: "/register",
+            templateUrl: "modules/cms/views/registerView.html",
+            controller: "registerCtrl"
         }).state('cms.main', {
             url: "/main",
             templateUrl: "modules/cms/views/mainCmsView.html"

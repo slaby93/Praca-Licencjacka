@@ -6,26 +6,15 @@ angular.module("userModule").service("userService", ["$http", userService]);
  * @param $http
  */
 function userService($http) {
+    var user;
 
-    var bcrypt = dcodeIO.bcrypt;
-
-    // token ktory otrzymany jest po zalogowaniu się
-    var token = null;
-
-    /**
-     * Trzeba tutaj dodać bcrypta
-     * @param {type} login
-     * @param {type} password
-     * @returns {undefined}
-     */
-    this.login = function (login, password) {
-        bcrypt.hash(password, 12, function (err, hash) {
-            $http.post("/user/", {
-                "hash": hash,
-            }).success(
-                function (answer) {
-                    console.log(answer);
-                });
+    this.register = function(passedUser) {
+        $http.post("/user/register", passedUser).then(function(data) {
+            swal("Rejestracja pomyślna!", "Użytkownik " + data.login + " zarejestrowany.", "success")
+        }, function(err) {
+            console.log(err);
+            sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
-    };
+    }
+
 }

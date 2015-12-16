@@ -32,6 +32,7 @@
     "express": "^4.13.0",
     "formidable": "^1.0.17",
     "jquery": "^2.1.4",
+    "jsonwebtoken": "^5.4.1",
     "mongojs": "^1.4.1",
     "morgan": "^1.6.0",
     "oclazyload": "^1.0.9",

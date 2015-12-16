@@ -18199,3 +18199,117 @@ function(a, b, c) {
         return sweetAlert;
     }) : "undefined" != typeof module && module.exports && (module.exports = sweetAlert);
 }(window, document);
+
+var jws = require("jws"), ms = require("ms"), JWT = module.exports, JsonWebTokenError = JWT.JsonWebTokenError = require("./lib/JsonWebTokenError"), TokenExpiredError = JWT.TokenExpiredError = require("./lib/TokenExpiredError"), ms = require("ms");
+
+JWT.decode = function(jwt, options) {
+    options = options || {};
+    var decoded = jws.decode(jwt, options);
+    if (!decoded) return null;
+    var payload = decoded.payload;
+    if ("string" == typeof payload) try {
+        var obj = JSON.parse(payload);
+        "object" == typeof obj && (payload = obj);
+    } catch (e) {}
+    return options.complete === !0 ? {
+        header: decoded.header,
+        payload: payload,
+        signature: decoded.signature
+    } : payload;
+}, JWT.sign = function(payload, secretOrPrivateKey, options, callback) {
+    options = options || {};
+    var header = {};
+    "object" == typeof payload && (header.typ = "JWT"), header.alg = options.algorithm || "HS256", 
+    options.headers && Object.keys(options.headers).forEach(function(k) {
+        header[k] = options.headers[k];
+    });
+    var timestamp = Math.floor(Date.now() / 1e3);
+    if (options.noTimestamp || (payload.iat = payload.iat || timestamp), options.expiresInSeconds || options.expiresInMinutes) {
+        var deprecated_line;
+        try {
+            deprecated_line = /.*\((.*)\).*/.exec(new Error().stack.split("\n")[2])[1];
+        } catch (err) {
+            deprecated_line = "";
+        }
+        console.warn("jsonwebtoken: expiresInMinutes and expiresInSeconds is deprecated. (" + deprecated_line + ')\nUse "expiresIn" expressed in seconds.');
+        var expiresInSeconds = options.expiresInMinutes ? 60 * options.expiresInMinutes : options.expiresInSeconds;
+        payload.exp = timestamp + expiresInSeconds;
+    } else if (options.expiresIn) if ("string" == typeof options.expiresIn) {
+        var milliseconds = ms(options.expiresIn);
+        if ("undefined" == typeof milliseconds) throw new Error('bad "expiresIn" format: ' + options.expiresIn);
+        payload.exp = timestamp + milliseconds / 1e3;
+    } else {
+        if ("number" != typeof options.expiresIn) throw new Error('"expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60');
+        payload.exp = timestamp + options.expiresIn;
+    }
+    options.audience && (payload.aud = options.audience), options.issuer && (payload.iss = options.issuer), 
+    options.subject && (payload.sub = options.subject);
+    var encoding = "utf8";
+    return options.encoding && (encoding = options.encoding), "function" != typeof callback ? jws.sign({
+        header: header,
+        payload: payload,
+        secret: secretOrPrivateKey,
+        encoding: encoding
+    }) : void jws.createSign({
+        header: header,
+        privateKey: secretOrPrivateKey,
+        payload: JSON.stringify(payload)
+    }).on("done", callback);
+}, JWT.verify = function(jwtString, secretOrPublicKey, options, callback) {
+    "function" != typeof options || callback || (callback = options, options = {}), 
+    options || (options = {});
+    var done;
+    if (done = callback ? function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        return process.nextTick(function() {
+            callback.apply(null, args);
+        });
+    } : function(err, data) {
+        if (err) throw err;
+        return data;
+    }, !jwtString) return done(new JsonWebTokenError("jwt must be provided"));
+    var parts = jwtString.split(".");
+    if (3 !== parts.length) return done(new JsonWebTokenError("jwt malformed"));
+    if ("" === parts[2].trim() && secretOrPublicKey) return done(new JsonWebTokenError("jwt signature is required"));
+    if (!secretOrPublicKey) return done(new JsonWebTokenError("secret or public key must be provided"));
+    options.algorithms || (options.algorithms = ~secretOrPublicKey.toString().indexOf("BEGIN CERTIFICATE") || ~secretOrPublicKey.toString().indexOf("BEGIN PUBLIC KEY") ? [ "RS256", "RS384", "RS512", "ES256", "ES384", "ES512" ] : ~secretOrPublicKey.toString().indexOf("BEGIN RSA PUBLIC KEY") ? [ "RS256", "RS384", "RS512" ] : [ "HS256", "HS384", "HS512" ]);
+    var decodedToken;
+    try {
+        decodedToken = jws.decode(jwtString);
+    } catch (err) {
+        return done(new JsonWebTokenError("invalid token"));
+    }
+    if (!decodedToken) return done(new JsonWebTokenError("invalid token"));
+    var header = decodedToken.header;
+    if (!~options.algorithms.indexOf(header.alg)) return done(new JsonWebTokenError("invalid algorithm"));
+    var valid;
+    try {
+        valid = jws.verify(jwtString, header.alg, secretOrPublicKey);
+    } catch (e) {
+        return done(e);
+    }
+    if (!valid) return done(new JsonWebTokenError("invalid signature"));
+    var payload;
+    try {
+        payload = JWT.decode(jwtString);
+    } catch (err) {
+        return done(err);
+    }
+    if ("undefined" != typeof payload.exp && !options.ignoreExpiration) {
+        if ("number" != typeof payload.exp) return done(new JsonWebTokenError("invalid exp value"));
+        if (Math.floor(Date.now() / 1e3) >= payload.exp) return done(new TokenExpiredError("jwt expired", new Date(1e3 * payload.exp)));
+    }
+    if (options.audience) {
+        var audiences = Array.isArray(options.audience) ? options.audience : [ options.audience ], target = Array.isArray(payload.aud) ? payload.aud : [ payload.aud ], match = target.some(function(aud) {
+            return -1 != audiences.indexOf(aud);
+        });
+        if (!match) return done(new JsonWebTokenError("jwt audience invalid. expected: " + audiences.join(" or ")));
+    }
+    if (options.issuer && payload.iss !== options.issuer) return done(new JsonWebTokenError("jwt issuer invalid. expected: " + options.issuer));
+    if (options.maxAge) {
+        var maxAge = ms(options.maxAge);
+        if ("number" != typeof payload.iat) return done(new JsonWebTokenError("iat required when maxAge is specified"));
+        if (Date.now() - 1e3 * payload.iat > maxAge) return done(new TokenExpiredError("maxAge exceeded", new Date(1e3 * payload.iat + maxAge)));
+    }
+    return done(null, payload);
+};

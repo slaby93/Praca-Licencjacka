@@ -27,6 +27,5 @@ function registerCtrl($scope, userService, testService) {
     $scope.register = function () {
         userService.register($scope.user);
         clearForm();
-
     };
 }

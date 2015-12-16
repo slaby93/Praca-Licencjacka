@@ -8,9 +8,18 @@ angular.module("cmsModule").controller("loginCtrl", [
 
 function loginCtrl($scope, userService, testService) {
     /**
+     * @description Dane wprowadzone w formatce logowania
+     * @type {{login: string, password: string}}
+     */
+    $scope.user = {
+        "login": "",
+        "password": ""
+    };
+
+    /**
      * @description Czysci formatke logowania oraz zmienne.
      */
-    function clearLoginForm() {
+    function clearForm() {
         $scope.user = {
             "login": "",
             "password": ""
@@ -20,18 +29,10 @@ function loginCtrl($scope, userService, testService) {
     }
 
     /**
-     * @description Dane wprowadzone w formatce logowania
-     * @type {{login: string, password: string}}
-     */
-    $scope.user = {
-        "login": "",
-        "password": ""
-    };
-    /**
      * @description Funkcja wywolywana przy kliknieciu buttona loguj.
      */
     $scope.loguj = function () {
-        userService.login($scope.user.login,$scope.user.password);
-        clearLoginForm();
+        userService.login($scope.user);
+        clearForm();
     };
 }

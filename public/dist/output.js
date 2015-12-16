@@ -35,11 +35,18 @@ function testCtrl($scope, testService) {
 }
 
 function userService($http) {
-    this.register = function(passedUser) {
-        $http.post("/user/register", passedUser).then(function(data) {
-            swal("Rejestracja pomyślna!", "Użytkownik " + data.login + " zarejestrowany.", "success");
+    var user, token;
+    this.login = function(passedUser) {
+        $http.post("/user", passedUser).then(function(received) {
+            user = received.data.user, token = received.data.token;
         }, function(err) {
-            console.log(err), sweetAlert("Rejestracja nieudana!", err.data.message, "error");
+            sweetAlert("Logowanie nieudane!", err.data.message, "error");
+        });
+    }, this.register = function(passedUser) {
+        $http.post("/user/register", passedUser).then(function(received) {
+            swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success");
+        }, function(err) {
+            sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
     };
 }
@@ -67,7 +74,7 @@ function indexCmsCtrl($scope, $ocLazyLoad) {
 }
 
 function loginCtrl($scope, userService, testService) {
-    function clearLoginForm() {
+    function clearForm() {
         $scope.user = {
             login: "",
             password: ""
@@ -77,7 +84,7 @@ function loginCtrl($scope, userService, testService) {
         login: "",
         password: ""
     }, $scope.loguj = function() {
-        userService.login($scope.user.login, $scope.user.password), clearLoginForm();
+        userService.login($scope.user), clearForm();
     };
 }
 

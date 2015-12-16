@@ -5,7 +5,7 @@ angular.module("userModule").service("userService", ["$http","$state", userServi
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
-function userService($http,$state) {
+function userService($http, $state) {
     var user;
     var token;
 
@@ -13,6 +13,7 @@ function userService($http,$state) {
         $http.post("/user", passedUser).then(function (received) {
             user = received.data.user;
             token = received.data.token;
+            //to do: storowanie tokena
             //przekierowanie do cms po pomyslnym zalogowaniu
             $state.go("cms");
         }, function (err) {
@@ -27,7 +28,7 @@ function userService($http,$state) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
     };
-    
+
     this.getUser = function () {
         if (user) {
             return user;

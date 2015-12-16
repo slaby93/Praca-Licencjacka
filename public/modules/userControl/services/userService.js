@@ -13,6 +13,7 @@ function userService($http,$state) {
         $http.post("/user", passedUser).then(function (received) {
             user = received.data.user;
             token = received.data.token;
+            //przekierowanie do cms po pomyslnym zalogowaniu
             $state.go("cms");
         }, function (err) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
@@ -26,6 +27,7 @@ function userService($http,$state) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
     };
+    
     this.getUser = function () {
         if (user) {
             return user;

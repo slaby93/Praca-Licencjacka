@@ -10,27 +10,35 @@ var jwt = require('jsonwebtoken');
  * @description Logowanie
  */
 router.post('/', function (req, res, next) {
+    //niewypelnione pola
     if (!req.body.login || !req.body.password) {
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
             db.close();
         });
     }
+    //polaczenie do bazy
     mongo.connect("projekt", ["user"], function (db) {
+        //zapytanie o uzytkownika
         db.user.find({"login": req.body.login}, function (err, docs) {
+            //niepoprawny login
             if (docs.length == 0) {
                 return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
                     db.close();
                 });
             }
+            //poprawne haslo po weryfikacji biblioteki bcrypt
             if (bcrypt.compareSync(req.body.password, docs[0].password)) {
                 generateJWT(req.body.login, function (token) {
+                    //usuwanie newralgicznych dla bezpieczenstwa informacji
                     delete docs[0]["_id"];
                     delete docs[0]["password"];
+                    //zwrot informacji o uzytkowniku oraz wygenerowanego tokena
                     res.status(200).json({"user": docs[0], "token": token}).end(function () {
                         db.close();
                     });
                 });
             }
+            //niepoprawne hasolo
             else {
                 res.status(400).json({message: 'Podane hasło jest nieprawidłowe!'}).end(function () {
                     db.close();
@@ -43,23 +51,29 @@ router.post('/', function (req, res, next) {
  * @description Rejestracja
  */
 router.post('/register', function (req, res, next) {
+    //niewypelnione pola
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
             db.close();
         });
     }
+    //niepasujace hasla
     if (req.body.password !== req.body.retypedPassword) {
         return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'}).end(function () {
             db.close();
         });
     }
+    //laczenie z baza
     mongo.connect("projekt", ["user"], function (db) {
+        //zapytanie do bazy o uzytkownika
         db.user.find({"login": req.body.login}, function (err, docs) {
+            //jezeli znaleziono uzytkownika
             if (docs.length > 0) {
                 return res.status(400).json({message: 'Użytkownik już istnieje, wybierz inny login!'}).end(function () {
                     db.close();
                 });
             }
+            //dodanie uzytkownika do bazy
             db.user.insert({"login": req.body.login, "password": bcrypt.hashSync(req.body.password, 10)});
             res.status(200).json(req.body).end(function () {
                 db.close();
@@ -68,6 +82,11 @@ router.post('/register', function (req, res, next) {
     });
 });
 
+/**
+ * @description Generowanie tokenow za pomoca biblioteki JWT
+ * @param passedUser
+ * @param callback
+ */
 function generateJWT(passedUser, callback) {
     var today = new Date();
     var expire = new Date(today);

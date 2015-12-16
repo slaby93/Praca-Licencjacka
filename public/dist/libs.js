@@ -18198,118 +18198,183 @@ function(a, b, c) {
     }, {}, [ 1 ]), "function" == typeof define && define.amd ? define(function() {
         return sweetAlert;
     }) : "undefined" != typeof module && module.exports && (module.exports = sweetAlert);
-}(window, document);
-
-var jws = require("jws"), ms = require("ms"), JWT = module.exports, JsonWebTokenError = JWT.JsonWebTokenError = require("./lib/JsonWebTokenError"), TokenExpiredError = JWT.TokenExpiredError = require("./lib/TokenExpiredError"), ms = require("ms");
-
-JWT.decode = function(jwt, options) {
-    options = options || {};
-    var decoded = jws.decode(jwt, options);
-    if (!decoded) return null;
-    var payload = decoded.payload;
-    if ("string" == typeof payload) try {
-        var obj = JSON.parse(payload);
-        "object" == typeof obj && (payload = obj);
-    } catch (e) {}
-    return options.complete === !0 ? {
-        header: decoded.header,
-        payload: payload,
-        signature: decoded.signature
-    } : payload;
-}, JWT.sign = function(payload, secretOrPrivateKey, options, callback) {
-    options = options || {};
-    var header = {};
-    "object" == typeof payload && (header.typ = "JWT"), header.alg = options.algorithm || "HS256", 
-    options.headers && Object.keys(options.headers).forEach(function(k) {
-        header[k] = options.headers[k];
+}(window, document), !function(a, b, c) {
+    "use strict";
+    var d = b.isDefined, e = b.isUndefined, f = b.isNumber, g = b.isObject, h = b.isArray, i = b.extend, j = b.toJson, k = b.module("LocalStorageModule", []);
+    k.provider("localStorageService", function() {
+        this.prefix = "ls", this.storageType = "localStorage", this.cookie = {
+            expiry: 30,
+            path: "/"
+        }, this.notify = {
+            setItem: !0,
+            removeItem: !1
+        }, this.setPrefix = function(a) {
+            return this.prefix = a, this;
+        }, this.setStorageType = function(a) {
+            return this.storageType = a, this;
+        }, this.setStorageCookie = function(a, b) {
+            return this.cookie.expiry = a, this.cookie.path = b, this;
+        }, this.setStorageCookieDomain = function(a) {
+            return this.cookie.domain = a, this;
+        }, this.setNotify = function(a, b) {
+            return this.notify = {
+                setItem: a,
+                removeItem: b
+            }, this;
+        }, this.$get = [ "$rootScope", "$window", "$document", "$parse", function(a, b, c, k) {
+            var l, m = this, n = m.prefix, o = m.cookie, p = m.notify, q = m.storageType;
+            c ? c[0] && (c = c[0]) : c = document, "." !== n.substr(-1) && (n = n ? n + "." : "");
+            var r = function(a) {
+                return n + a;
+            }, s = function() {
+                try {
+                    var c = q in b && null !== b[q], d = r("__" + Math.round(1e7 * Math.random()));
+                    return c && (l = b[q], l.setItem(d, ""), l.removeItem(d)), c;
+                } catch (e) {
+                    return q = "cookie", a.$broadcast("LocalStorageModule.notification.error", e.message), 
+                    !1;
+                }
+            }(), t = function(b, c) {
+                if (c = e(c) ? null : j(c), !s || "cookie" === m.storageType) return s || a.$broadcast("LocalStorageModule.notification.warning", "LOCAL_STORAGE_NOT_SUPPORTED"), 
+                p.setItem && a.$broadcast("LocalStorageModule.notification.setitem", {
+                    key: b,
+                    newvalue: c,
+                    storageType: "cookie"
+                }), z(b, c);
+                try {
+                    l && l.setItem(r(b), c), p.setItem && a.$broadcast("LocalStorageModule.notification.setitem", {
+                        key: b,
+                        newvalue: c,
+                        storageType: m.storageType
+                    });
+                } catch (d) {
+                    return a.$broadcast("LocalStorageModule.notification.error", d.message), z(b, c);
+                }
+                return !0;
+            }, u = function(b) {
+                if (!s || "cookie" === m.storageType) return s || a.$broadcast("LocalStorageModule.notification.warning", "LOCAL_STORAGE_NOT_SUPPORTED"), 
+                A(b);
+                var c = l ? l.getItem(r(b)) : null;
+                if (!c || "null" === c) return null;
+                try {
+                    return JSON.parse(c);
+                } catch (d) {
+                    return c;
+                }
+            }, v = function() {
+                var b, c;
+                for (b = 0; b < arguments.length; b++) if (c = arguments[b], s && "cookie" !== m.storageType) try {
+                    l.removeItem(r(c)), p.removeItem && a.$broadcast("LocalStorageModule.notification.removeitem", {
+                        key: c,
+                        storageType: m.storageType
+                    });
+                } catch (d) {
+                    a.$broadcast("LocalStorageModule.notification.error", d.message), B(c);
+                } else s || a.$broadcast("LocalStorageModule.notification.warning", "LOCAL_STORAGE_NOT_SUPPORTED"), 
+                p.removeItem && a.$broadcast("LocalStorageModule.notification.removeitem", {
+                    key: c,
+                    storageType: "cookie"
+                }), B(c);
+            }, w = function() {
+                if (!s) return a.$broadcast("LocalStorageModule.notification.warning", "LOCAL_STORAGE_NOT_SUPPORTED"), 
+                !1;
+                var b = n.length, c = [];
+                for (var d in l) if (d.substr(0, b) === n) try {
+                    c.push(d.substr(b));
+                } catch (e) {
+                    return a.$broadcast("LocalStorageModule.notification.error", e.Description), [];
+                }
+                return c;
+            }, x = function(b) {
+                var c = n ? new RegExp("^" + n) : new RegExp(), d = b ? new RegExp(b) : new RegExp();
+                if (!s || "cookie" === m.storageType) return s || a.$broadcast("LocalStorageModule.notification.warning", "LOCAL_STORAGE_NOT_SUPPORTED"), 
+                C();
+                var e = n.length;
+                for (var f in l) if (c.test(f) && d.test(f.substr(e))) try {
+                    v(f.substr(e));
+                } catch (g) {
+                    return a.$broadcast("LocalStorageModule.notification.error", g.message), C();
+                }
+                return !0;
+            }, y = function() {
+                try {
+                    return b.navigator.cookieEnabled || "cookie" in c && (c.cookie.length > 0 || (c.cookie = "test").indexOf.call(c.cookie, "test") > -1);
+                } catch (d) {
+                    return a.$broadcast("LocalStorageModule.notification.error", d.message), !1;
+                }
+            }(), z = function(b, d, i) {
+                if (e(d)) return !1;
+                if ((h(d) || g(d)) && (d = j(d)), !y) return a.$broadcast("LocalStorageModule.notification.error", "COOKIES_NOT_SUPPORTED"), 
+                !1;
+                try {
+                    var k = "", l = new Date(), m = "";
+                    if (null === d ? (l.setTime(l.getTime() + -864e5), k = "; expires=" + l.toGMTString(), 
+                    d = "") : f(i) && 0 !== i ? (l.setTime(l.getTime() + 24 * i * 60 * 60 * 1e3), k = "; expires=" + l.toGMTString()) : 0 !== o.expiry && (l.setTime(l.getTime() + 24 * o.expiry * 60 * 60 * 1e3), 
+                    k = "; expires=" + l.toGMTString()), b) {
+                        var n = "; path=" + o.path;
+                        o.domain && (m = "; domain=" + o.domain), c.cookie = r(b) + "=" + encodeURIComponent(d) + k + n + m;
+                    }
+                } catch (p) {
+                    return a.$broadcast("LocalStorageModule.notification.error", p.message), !1;
+                }
+                return !0;
+            }, A = function(b) {
+                if (!y) return a.$broadcast("LocalStorageModule.notification.error", "COOKIES_NOT_SUPPORTED"), 
+                !1;
+                for (var d = c.cookie && c.cookie.split(";") || [], e = 0; e < d.length; e++) {
+                    for (var f = d[e]; " " === f.charAt(0); ) f = f.substring(1, f.length);
+                    if (0 === f.indexOf(r(b) + "=")) {
+                        var g = decodeURIComponent(f.substring(n.length + b.length + 1, f.length));
+                        try {
+                            return JSON.parse(g);
+                        } catch (h) {
+                            return g;
+                        }
+                    }
+                }
+                return null;
+            }, B = function(a) {
+                z(a, null);
+            }, C = function() {
+                for (var a = null, b = n.length, d = c.cookie.split(";"), e = 0; e < d.length; e++) {
+                    for (a = d[e]; " " === a.charAt(0); ) a = a.substring(1, a.length);
+                    var f = a.substring(b, a.indexOf("="));
+                    B(f);
+                }
+            }, D = function() {
+                return q;
+            }, E = function(a, b, c, e) {
+                e = e || b;
+                var f = u(e);
+                return null === f && d(c) ? f = c : g(f) && g(c) && (f = i(c, f)), k(b).assign(a, f), 
+                a.$watch(b, function(a) {
+                    t(e, a);
+                }, g(a[b]));
+            }, F = function() {
+                for (var a = 0, c = b[q], d = 0; d < c.length; d++) 0 === c.key(d).indexOf(n) && a++;
+                return a;
+            };
+            return {
+                isSupported: s,
+                getStorageType: D,
+                set: t,
+                add: t,
+                get: u,
+                keys: w,
+                remove: v,
+                clearAll: x,
+                bind: E,
+                deriveKey: r,
+                length: F,
+                cookie: {
+                    isSupported: y,
+                    set: z,
+                    add: z,
+                    get: A,
+                    remove: B,
+                    clearAll: C
+                }
+            };
+        } ];
     });
-    var timestamp = Math.floor(Date.now() / 1e3);
-    if (options.noTimestamp || (payload.iat = payload.iat || timestamp), options.expiresInSeconds || options.expiresInMinutes) {
-        var deprecated_line;
-        try {
-            deprecated_line = /.*\((.*)\).*/.exec(new Error().stack.split("\n")[2])[1];
-        } catch (err) {
-            deprecated_line = "";
-        }
-        console.warn("jsonwebtoken: expiresInMinutes and expiresInSeconds is deprecated. (" + deprecated_line + ')\nUse "expiresIn" expressed in seconds.');
-        var expiresInSeconds = options.expiresInMinutes ? 60 * options.expiresInMinutes : options.expiresInSeconds;
-        payload.exp = timestamp + expiresInSeconds;
-    } else if (options.expiresIn) if ("string" == typeof options.expiresIn) {
-        var milliseconds = ms(options.expiresIn);
-        if ("undefined" == typeof milliseconds) throw new Error('bad "expiresIn" format: ' + options.expiresIn);
-        payload.exp = timestamp + milliseconds / 1e3;
-    } else {
-        if ("number" != typeof options.expiresIn) throw new Error('"expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60');
-        payload.exp = timestamp + options.expiresIn;
-    }
-    options.audience && (payload.aud = options.audience), options.issuer && (payload.iss = options.issuer), 
-    options.subject && (payload.sub = options.subject);
-    var encoding = "utf8";
-    return options.encoding && (encoding = options.encoding), "function" != typeof callback ? jws.sign({
-        header: header,
-        payload: payload,
-        secret: secretOrPrivateKey,
-        encoding: encoding
-    }) : void jws.createSign({
-        header: header,
-        privateKey: secretOrPrivateKey,
-        payload: JSON.stringify(payload)
-    }).on("done", callback);
-}, JWT.verify = function(jwtString, secretOrPublicKey, options, callback) {
-    "function" != typeof options || callback || (callback = options, options = {}), 
-    options || (options = {});
-    var done;
-    if (done = callback ? function() {
-        var args = Array.prototype.slice.call(arguments, 0);
-        return process.nextTick(function() {
-            callback.apply(null, args);
-        });
-    } : function(err, data) {
-        if (err) throw err;
-        return data;
-    }, !jwtString) return done(new JsonWebTokenError("jwt must be provided"));
-    var parts = jwtString.split(".");
-    if (3 !== parts.length) return done(new JsonWebTokenError("jwt malformed"));
-    if ("" === parts[2].trim() && secretOrPublicKey) return done(new JsonWebTokenError("jwt signature is required"));
-    if (!secretOrPublicKey) return done(new JsonWebTokenError("secret or public key must be provided"));
-    options.algorithms || (options.algorithms = ~secretOrPublicKey.toString().indexOf("BEGIN CERTIFICATE") || ~secretOrPublicKey.toString().indexOf("BEGIN PUBLIC KEY") ? [ "RS256", "RS384", "RS512", "ES256", "ES384", "ES512" ] : ~secretOrPublicKey.toString().indexOf("BEGIN RSA PUBLIC KEY") ? [ "RS256", "RS384", "RS512" ] : [ "HS256", "HS384", "HS512" ]);
-    var decodedToken;
-    try {
-        decodedToken = jws.decode(jwtString);
-    } catch (err) {
-        return done(new JsonWebTokenError("invalid token"));
-    }
-    if (!decodedToken) return done(new JsonWebTokenError("invalid token"));
-    var header = decodedToken.header;
-    if (!~options.algorithms.indexOf(header.alg)) return done(new JsonWebTokenError("invalid algorithm"));
-    var valid;
-    try {
-        valid = jws.verify(jwtString, header.alg, secretOrPublicKey);
-    } catch (e) {
-        return done(e);
-    }
-    if (!valid) return done(new JsonWebTokenError("invalid signature"));
-    var payload;
-    try {
-        payload = JWT.decode(jwtString);
-    } catch (err) {
-        return done(err);
-    }
-    if ("undefined" != typeof payload.exp && !options.ignoreExpiration) {
-        if ("number" != typeof payload.exp) return done(new JsonWebTokenError("invalid exp value"));
-        if (Math.floor(Date.now() / 1e3) >= payload.exp) return done(new TokenExpiredError("jwt expired", new Date(1e3 * payload.exp)));
-    }
-    if (options.audience) {
-        var audiences = Array.isArray(options.audience) ? options.audience : [ options.audience ], target = Array.isArray(payload.aud) ? payload.aud : [ payload.aud ], match = target.some(function(aud) {
-            return -1 != audiences.indexOf(aud);
-        });
-        if (!match) return done(new JsonWebTokenError("jwt audience invalid. expected: " + audiences.join(" or ")));
-    }
-    if (options.issuer && payload.iss !== options.issuer) return done(new JsonWebTokenError("jwt issuer invalid. expected: " + options.issuer));
-    if (options.maxAge) {
-        var maxAge = ms(options.maxAge);
-        if ("number" != typeof payload.iat) return done(new JsonWebTokenError("iat required when maxAge is specified"));
-        if (Date.now() - 1e3 * payload.iat > maxAge) return done(new TokenExpiredError("maxAge exceeded", new Date(1e3 * payload.iat + maxAge)));
-    }
-    return done(null, payload);
-};
+}(window, window.angular);

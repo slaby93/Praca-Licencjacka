@@ -19,6 +19,7 @@
   "dependencies": {
     "angular": "^1.4.8",
     "angular-file-upload": "^2.2.0",
+    "angular-local-storage": "^0.2.2",
     "angular-mocks": "^1.4.8",
     "angular-ui-router": "^0.2.15",
     "bcryptjs": "^2.3.0",

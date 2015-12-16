@@ -34,11 +34,11 @@ function testCtrl($scope, testService) {
     };
 }
 
-function userService($http) {
+function userService($http, $state) {
     var user, token;
     this.login = function(passedUser) {
         $http.post("/user", passedUser).then(function(received) {
-            user = received.data.user, token = received.data.token;
+            user = received.data.user, token = received.data.token, $state.go("cms");
         }, function(err) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
         });
@@ -48,6 +48,8 @@ function userService($http) {
         }, function(err) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
+    }, this.getUser = function() {
+        return user ? user : null;
     };
 }
 
@@ -69,23 +71,28 @@ function imageUploadCtrl($scope, FileUploader) {
     });
 }
 
-function indexCmsCtrl($scope, $ocLazyLoad) {
-    $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js");
+function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
+    $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js"), $rootScope.$on("$stateChangeSuccess", function() {
+        userService.getUser() || $state.go("login");
+    });
 }
 
-function loginCtrl($scope, userService, testService) {
+function loginCtrl($scope, userService, testService, $state) {
     function clearForm() {
         $scope.user = {
             login: "",
             password: ""
         }, $scope.formaLogowania.login.$setUntouched(), $scope.formaLogowania.password.$setUntouched();
     }
-    $scope.user = {
-        login: "",
-        password: ""
-    }, $scope.loguj = function() {
+    function init() {
+        $scope.user = {
+            login: "",
+            password: ""
+        }, userService.getUser() && $state.go("cms");
+    }
+    $scope.loguj = function() {
         userService.login($scope.user), clearForm();
-    };
+    }, init();
 }
 
 function mainCmsCtrl($scope) {}
@@ -148,7 +155,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
-}), angular.module("userModule", []), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
+}), angular.module("userModule", [ "LocalStorageModule" ]), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state("cms", {
         url: "/cms",
         views: {
@@ -204,7 +211,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 }), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", userService ]), angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
+angular.module("userModule").service("userService", [ "$http", "$state", userService ]), 
+angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {
         support: !(!$window.FileReader || !$window.CanvasRenderingContext2D),
         isFile: function(item) {
@@ -239,8 +247,8 @@ angular.module("userModule").service("userService", [ "$http", userService ]), a
             }
         }
     };
-} ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", indexCmsCtrl ]), 
-angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", loginCtrl ]), 
+} ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
+angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", loginCtrl ]), 
 angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 

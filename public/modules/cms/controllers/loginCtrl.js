@@ -4,18 +4,10 @@ angular.module("cmsModule").controller("loginCtrl", [
     "$scope",
     "userService",
     "testService",
+    "$state",
     loginCtrl]);
 
-function loginCtrl($scope, userService, testService) {
-    /**
-     * @description Dane wprowadzone w formatce logowania
-     * @type {{login: string, password: string}}
-     */
-    $scope.user = {
-        "login": "",
-        "password": ""
-    };
-
+function loginCtrl($scope, userService, testService, $state) {
     /**
      * @description Czysci formatke logowania oraz zmienne.
      */
@@ -35,4 +27,19 @@ function loginCtrl($scope, userService, testService) {
         userService.login($scope.user);
         clearForm();
     };
+
+    /**
+     * @description Funkcja inicjalizujaca i ew. przekierowujaca do cms, gdy uzytkownik jest juz zalogowany.
+     */
+    function init() {
+        $scope.user = {
+            "login": "",
+            "password": ""
+        };
+        if(userService.getUser()) {
+            $state.go("cms");
+        }
+    }
+
+    init();
 }

@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                         "node_modules/angular-file-upload/dist/angular-file-upload.js",
                         "node_modules/socket.io/node_modules/socket.io-client/socket.io.js",
                         "node_modules/sweetalert/dist/sweetalert-dev.js",
-                        "node_modules/jsonwebtoken/index.js"
+                        "node_modules/angular-local-storage/dist/angular-local-storage.min.js"
                     ]
                 }
             }

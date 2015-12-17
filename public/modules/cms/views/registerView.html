@@ -1,13 +1,20 @@
 <form ng-submit="register()">
     <h3>Zarejestruj</h3>
+
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Login" ng-model="user.login"></input>
+        <input type="text" class="form-control" placeholder="Imię" ng-model="user.name">
     </div>
     <div class="form-group">
-        <input type="password" class="form-control" placeholder="Hasło" ng-model="user.password"></input>
+        <input type="text" class="form-control" placeholder="Nazwisko" ng-model="user.surename">
     </div>
     <div class="form-group">
-        <input type="password" class="form-control" placeholder="Powtórz hasło" ng-model="user.retypedPassword"></input>
+        <input type="text" class="form-control" placeholder="Login" ng-model="user.login">
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" placeholder="Hasło" ng-model="user.password">
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" placeholder="Powtórz hasło" ng-model="user.retypedPassword">
     </div>
     <button type="submit" class="btn btn-primary">Zarejestruj</button>
 </form>

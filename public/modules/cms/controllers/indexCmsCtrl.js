@@ -6,19 +6,13 @@ angular.module("cmsModule").controller("indexCmsCtrl", ["$scope", "$ocLazyLoad",
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
-    var user;
 
     $rootScope.$on("$stateChangeSuccess", function () {
+        console.log("SPRAWDZAM TOKENA");
         if (!userService.getUser()) {
             $state.go("login");
         } else {
-            console.log("INICJALIZACJA CMSa");
-            setTimeout(function () {
-                initAdminLTE();
-
-            }, 3000);
-            //$rootScope.$evalAsync(function () {
-            //});
+            $scope.user = userService.getUser();
         }
     });
 

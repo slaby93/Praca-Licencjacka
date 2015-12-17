@@ -42,6 +42,7 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
             userService.loginByToken(token).then(
                 // SUCCESS
                 function (message) {
+                    console.log(message);
                     $state.go("cms");
                     // ERROR
                 }, function (message) {

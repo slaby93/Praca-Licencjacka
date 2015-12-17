@@ -23,6 +23,8 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     };
 
     this.register = function (passedUser) {
+        console.log(passedUser);
+
         $http.post("/user/register", passedUser).then(function (received) {
             swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success")
         }, function (err) {
@@ -57,6 +59,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                     odroczenie.resolve(user);
                     // ERROR
                 }, function (err) {
+                    localStorageService.remove("token");
                     odroczenie.resolve(err);
                 });
         });

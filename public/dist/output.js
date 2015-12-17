@@ -44,7 +44,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
         });
     }, this.register = function(passedUser) {
-        $http.post("/user/register", passedUser).then(function(received) {
+        console.log(passedUser), $http.post("/user/register", passedUser).then(function(received) {
             swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success");
         }, function(err) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
@@ -62,7 +62,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                 }).then(function(data) {
                     user = data.data, odroczenie.resolve(user);
                 }, function(err) {
-                    odroczenie.resolve(err);
+                    localStorageService.remove("token"), odroczenie.resolve(err);
                 });
             }), odroczenie.promise;
         }
@@ -72,7 +72,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     function init() {}
     var me = this;
-    me.logout = function() {
+    me.user = userService.getUser(), me.logout = function() {
         userService.logout(), $state.go("login");
     }, init();
 }
@@ -102,9 +102,7 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
         }) : $state.go("login");
     }
     $rootScope.$on("$stateChangeSuccess", function() {
-        userService.getUser() ? (console.log("INICJALIZACJA CMSa"), setTimeout(function() {
-            initAdminLTE();
-        }, 3e3)) : $state.go("login");
+        console.log("SPRAWDZAM TOKENA"), userService.getUser() ? $scope.user = userService.getUser() : $state.go("login");
     }), init();
 }
 
@@ -122,7 +120,7 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
         };
         var token = localStorageService.get("token");
         token ? userService.loginByToken(token).then(function(message) {
-            $state.go("cms");
+            console.log(message), $state.go("cms");
         }, function(message) {
             console.log(message.data), localStorageService.remove("token");
         }, function(message) {
@@ -135,27 +133,28 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
 }
 
 function registerCtrl($scope, userService, testService) {
+    function init() {
+        clearForm();
+    }
     function clearForm() {
         $scope.user = {
             login: "",
             password: "",
+            name: "",
+            surename: "",
             retypedPassword: ""
         };
     }
-    $scope.user = {
-        login: "",
-        password: "",
-        retypedPassword: ""
-    }, $scope.register = function() {
+    $scope.register = function() {
         userService.register($scope.user), clearForm();
-    };
+    }, init();
 }
 
-function sideMenuCtrl($scope, adminTemplateService) {
+function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
             me.tabs = data.tabList;
-        });
+        }), me.user = userService.getUser();
     }
     var me = this;
     init();
@@ -288,5 +287,5 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
 } ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
-angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 
+angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", "userService", sideMenuCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

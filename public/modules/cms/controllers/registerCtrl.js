@@ -7,16 +7,18 @@ angular.module("cmsModule").controller("registerCtrl", [
     registerCtrl]);
 
 function registerCtrl($scope, userService, testService) {
-    $scope.user = {
-        "login": "",
-        "password": "",
-        "retypedPassword": ""
-    };
+
+
+    function init() {
+        clearForm();
+    }
 
     function clearForm() {
         $scope.user = {
             "login": "",
             "password": "",
+            "name": "",
+            "surename": "",
             "retypedPassword": ""
         };
     }
@@ -28,4 +30,6 @@ function registerCtrl($scope, userService, testService) {
         userService.register($scope.user);
         clearForm();
     };
+
+    init();
 }

@@ -51,13 +51,17 @@ router.post('/', function (req, res, next) {
  */
 router.post('/register', function (req, res, next) {
     //niewypelnione pola
+
+    console.log(req.body);
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
+        console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
             db.close();
         });
     }
     //niepasujace hasla
     if (req.body.password !== req.body.retypedPassword) {
+        console.error("REGISTER ERROR : Hasła się nie zgadzają");
         return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'}).end(function () {
             db.close();
         });
@@ -68,13 +72,18 @@ router.post('/register', function (req, res, next) {
         db.user.find({"login": req.body.login}, function (err, docs) {
             //jezeli znaleziono uzytkownika
             if (docs.length > 0) {
+                console.error("REGISTER ERROR : Użytkownik już istnieje");
                 return res.status(400).json({message: 'Użytkownik już istnieje, wybierz inny login!'}).end(function () {
                     db.close();
                 });
             }
+            console.log("Dodawanie Uzytkownika");
             //dodanie uzytkownika do bazy
-            db.user.insert({"login": req.body.login, "password": bcrypt.hashSync(req.body.password, 10)});
-            res.status(200).json(req.body).end(function () {
+
+            var user = req.body;
+            user.password = bcrypt.hashSync(req.body.password, 10);
+            db.user.insert(user);
+            res.status(200).json(user).end(function () {
                 db.close();
             });
         });

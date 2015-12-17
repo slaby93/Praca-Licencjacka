@@ -1,9 +1,9 @@
 /**
  * Created by Slaby on 01.12.2015.
  */
-angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService",'$state', sideMenuCtrl]);
+angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService", '$state',"userService", sideMenuCtrl]);
 
-function sideMenuCtrl($scope, adminTemplateService) {
+function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
     "use strict";
     /************************** DEKLARACJA ZMIENNYCH **************************/
     /**
@@ -22,6 +22,7 @@ function sideMenuCtrl($scope, adminTemplateService) {
             // przypisuje liste zakladek do wyswietlenia na templatce
             me.tabs = data.tabList;
         });
+        me.user = userService.getUser();
     }
 
     /************************** WYWOLANIE FUNKCJI    **************************/

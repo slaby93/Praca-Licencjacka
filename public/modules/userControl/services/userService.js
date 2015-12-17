@@ -1,19 +1,19 @@
 /* global CryptoJS */
 
-angular.module("userModule").service("userService", ["$http","$state", userService]);
+angular.module("userModule").service("userService", ["$http", "$state", userService]);
 /**
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
 function userService($http, $state) {
-    var user;
-    var token;
+    var user = null;
+    var token = null;
 
     this.login = function (passedUser) {
         $http.post("/user", passedUser).then(function (received) {
             user = received.data.user;
             token = received.data.token;
-            //to do: storowanie tokena
+            //TODO: storowanie tokena
             //przekierowanie do cms po pomyslnym zalogowaniu
             $state.go("cms");
         }, function (err) {
@@ -28,7 +28,11 @@ function userService($http, $state) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
     };
-
+    this.logout = function () {
+        user = null;
+        token = null;
+        // TODO: usun token z local storage
+    };
     this.getUser = function () {
         if (user) {
             return user;

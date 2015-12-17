@@ -35,7 +35,7 @@ function testCtrl($scope, testService) {
 }
 
 function userService($http, $state) {
-    var user, token;
+    var user = null, token = null;
     this.login = function(passedUser) {
         $http.post("/user", passedUser).then(function(received) {
             user = received.data.user, token = received.data.token, $state.go("cms");
@@ -48,9 +48,19 @@ function userService($http, $state) {
         }, function(err) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
+    }, this.logout = function() {
+        user = null, token = null;
     }, this.getUser = function() {
         return user ? user : null;
     };
+}
+
+function headerCtrl($scope, adminTemplateService, $state, userService) {
+    function init() {}
+    var me = this;
+    me.logout = function() {
+        userService.logout(), $state.go("login");
+    }, init();
 }
 
 function imageUploadCtrl($scope, FileUploader) {
@@ -73,10 +83,12 @@ function imageUploadCtrl($scope, FileUploader) {
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     function init() {
-        user = userService.getUser(), user || $state.go("login");
+        return (user = userService.getUser()) ? void $scope.$evalAsync(function() {
+            initAdminLTE();
+        }) : void $state.go("login");
     }
     var user;
-    $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js"), $rootScope.$on("$stateChangeSuccess", function() {
+    $rootScope.$on("$stateChangeSuccess", function() {
         userService.getUser() || $state.go("login");
     }), init();
 }
@@ -166,7 +178,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
                 controller: "indexCmsCtrl"
             },
             "header@cms": {
-                templateUrl: "modules/cms/views/AdminLte2/header.html"
+                templateUrl: "modules/cms/views/AdminLte2/header.html",
+                controller: "headerCtrl as headerCtrl"
             },
             "footer@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/footer.html"
@@ -211,6 +224,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", "$state", userService ]), 
+angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
 angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {
         support: !(!$window.FileReader || !$window.CanvasRenderingContext2D),

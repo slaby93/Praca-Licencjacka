@@ -1,4 +1,4 @@
-angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
+angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload"])
     /**
      * @description Routowanie po CMSie
      * @param {type} $stateProvider
@@ -16,7 +16,8 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
                         controller: "indexCmsCtrl"
                     },
                     "header@cms": {
-                        templateUrl: "modules/cms/views/AdminLte2/header.html"
+                        templateUrl: "modules/cms/views/AdminLte2/header.html",
+                        controller: "headerCtrl as headerCtrl"
                     },
                     "footer@cms": {
                         templateUrl: "modules/cms/views/AdminLte2/footer.html"
@@ -45,7 +46,7 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
             template: "<h2>TEST2</h2>"
         }).state('cms.imageUpload', {
             url: "/imageUpload",
-            controller:"imageUploadCtrl",
+            controller: "imageUploadCtrl",
             templateUrl: "modules/cms/views/imageUploadView.html"
         });
     })

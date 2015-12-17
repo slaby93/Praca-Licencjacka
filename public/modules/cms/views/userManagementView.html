@@ -4,12 +4,14 @@
     </div>
 </div>
 <div class="row">
+    <!--<button class="btn btn-default" ng-click="open()">MODAL</button>-->
     <table class="table">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>login</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Login</th>
+            <th>Edycja
         </tr>
         </thead>
         <tbody>
@@ -17,6 +19,9 @@
             <td>{{user.name}}</td>
             <td>{{user.surname}}</td>
             <td>{{user.login}}</td>
+            <td>
+                <button class="btn btn-default" data-ng-click="open(user)">edycja</button>
+            </td>
         </tr>
         </tbody>
     </table>

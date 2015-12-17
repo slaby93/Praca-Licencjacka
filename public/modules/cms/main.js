@@ -1,4 +1,4 @@
-angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload"])
+angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "ui.bootstrap"])
     /**
      * @description Routowanie po CMSie
      * @param {type} $stateProvider

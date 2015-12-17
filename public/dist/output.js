@@ -78,6 +78,14 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     };
 }
 
+function userEditCtrl($scope, $uibModalInstance, user) {
+    console.log(user), $scope.user = user, $scope.ok = function() {
+        $uibModalInstance.close("PSAJDAK");
+    }, $scope.cancel = function() {
+        $uibModalInstance.dismiss("cancel");
+    };
+}
+
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     function init() {}
     var me = this;
@@ -169,7 +177,7 @@ function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     init();
 }
 
-function userManagementCtrl($scope, adminTemplateService, $state, userService) {
+function userManagementCtrl($scope, adminTemplateService, $state, userService, $uibModal) {
     function getAllUsers() {
         userService.fetchAllUsers().then(function(data) {
             $scope.allUsers = data;
@@ -180,7 +188,24 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService) {
     function init() {
         getAllUsers();
     }
-    $scope.users = [], init();
+    $scope.users = [], $scope.open = function(user) {
+        console.log($uibModal);
+        var modalInstance = $uibModal.open({
+            templateUrl: "modules/cms/views/userEditView.html",
+            controller: "userEditCtrl",
+            backdrop: "static",
+            resolve: {
+                user: function() {
+                    return user;
+                }
+            }
+        });
+        modalInstance.result.then(function(selectedItem) {
+            console.log(selectedItem);
+        }, function() {
+            $log.info("Modal dismissed at: " + new Date());
+        });
+    }, init();
 }
 
 function adminTemplateService($http) {
@@ -211,7 +236,7 @@ function adminTemplateService($http) {
     };
 }
 
-angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule" ]).config(function($stateProvider, $urlRouterProvider) {
+angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule", "ui.bootstrap" ]).config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/cms/main"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
@@ -219,7 +244,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
     });
 }), angular.module("userModule", [ "LocalStorageModule" ]).config(function(localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix("myApp").setStorageType("localStorage").setNotify(!0, !0);
-}), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
+}), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload", "ui.bootstrap" ]).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state("cms", {
         url: "/cms",
         views: {
@@ -275,6 +300,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
+angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", userEditCtrl ]), 
 angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
 angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {
@@ -315,5 +341,5 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", "userService", sideMenuCtrl ]), 
-angular.module("cmsModule").controller("userManagementCtrl", [ "$scope", "adminTemplateService", "$state", "userService", userManagementCtrl ]), 
+angular.module("cmsModule").controller("userManagementCtrl", [ "$scope", "adminTemplateService", "$state", "userService", "$uibModal", userManagementCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

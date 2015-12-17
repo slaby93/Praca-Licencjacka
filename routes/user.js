@@ -127,7 +127,7 @@ router.post('/all', function (req, res, next) {
             , function (err, data) {
                 if (err) {
                     console.error(err);
-                    res.status(418).send();
+                    res.status(404).send();
                     return;
                 } else {
                     res.status(200).send(data);

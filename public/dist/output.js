@@ -50,7 +50,7 @@ function userService($http, $state, localStorageService) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");
         });
     }, this.logout = function() {
-        user = null, token = null;
+        user = null, token = null, localStorageService.remove("token");
     }, this.getUser = function() {
         return user ? user : null;
     }, this.init = function(callback) {

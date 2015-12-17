@@ -33,7 +33,7 @@ function userService($http, $state, localStorageService) {
     this.logout = function () {
         user = null;
         token = null;
-        // TODO: usun token z local storage
+        localStorageService.remove("token");
     };
     this.getUser = function () {
         if (user) {

@@ -203,7 +203,7 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
         modalInstance.result.then(function(selectedItem) {
             console.log(selectedItem);
         }, function() {
-            $log.info("Modal dismissed at: " + new Date());
+            console.log("Modal dismissed at: " + new Date());
         });
     }, init();
 }

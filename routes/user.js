@@ -133,6 +133,7 @@ function decodeToken(token) {
         delete decoded["iat"];
         return decoded;
     } catch (err) {
+        console.log(err);
         return null;
     }
 

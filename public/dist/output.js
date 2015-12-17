@@ -34,7 +34,7 @@ function testCtrl($scope, testService) {
     };
 }
 
-function userService($http, $state, localStorageService) {
+function userService($http, $state, localStorageService, $q, $rootScope) {
     var user = null, token = null;
     this.login = function(passedUser) {
         $http.post("/user", passedUser).then(function(received) {
@@ -53,14 +53,19 @@ function userService($http, $state, localStorageService) {
         user = null, token = null, localStorageService.remove("token");
     }, this.getUser = function() {
         return user ? user : null;
-    }, this.init = function(callback) {
-        token = localStorageService.get("token"), token ? $http.post("/user/token", {
-            token: token
-        }).then(function(data) {
-            user = data.data, callback && callback(!0);
-        }, function(err) {
-            console.log(JSON.stringify(err)), callback && callback(!1);
-        }) : (console.log("Brak TOKENA"), callback && callback(!1));
+    }, this.loginByToken = function(token) {
+        if (token) {
+            var odroczenie = $q.defer();
+            return $rootScope.$applyAsync(function() {
+                $http.post("/user/token", {
+                    token: token
+                }).then(function(data) {
+                    user = data.data, odroczenie.resolve(user);
+                }, function(err) {
+                    odroczenie.resolve(err);
+                });
+            }), odroczenie.promise;
+        }
     };
 }
 
@@ -92,18 +97,18 @@ function imageUploadCtrl($scope, FileUploader) {
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     function init() {
-        userService.init(function(status) {
-            return console.log(status), status ? ($state.go("cms"), void $scope.$evalAsync(function() {
-                initAdminLTE();
-            })) : void $state.go("login");
-        });
+        userService.getUser() ? $rootScope.$evalAsync(function() {
+            initAdminLTE();
+        }) : $state.go("login");
     }
     $rootScope.$on("$stateChangeSuccess", function() {
-        userService.getUser() || $state.go("login");
+        userService.getUser() ? (console.log("INICJALIZACJA CMSa"), setTimeout(function() {
+            initAdminLTE();
+        }, 3e3)) : $state.go("login");
     }), init();
 }
 
-function loginCtrl($scope, userService, testService, $state) {
+function loginCtrl($scope, userService, testService, $state, localStorageService) {
     function clearForm() {
         $scope.user = {
             login: "",
@@ -114,9 +119,15 @@ function loginCtrl($scope, userService, testService, $state) {
         $scope.user = {
             login: "",
             password: ""
-        }, userService.init(function(status) {
-            status && $state.go("cms");
-        });
+        };
+        var token = localStorageService.get("token");
+        token ? userService.loginByToken(token).then(function(message) {
+            $state.go("cms");
+        }, function(message) {
+            console.log(message.data), localStorageService.remove("token");
+        }, function(message) {
+            console.log(message);
+        }) : console.log("Token is empty!");
     }
     $scope.loguj = function() {
         userService.login($scope.user), clearForm();
@@ -237,7 +248,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 }), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", userService ]), 
+angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
 angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
 angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {
@@ -275,7 +286,7 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
         }
     };
 } ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
-angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", loginCtrl ]), 
+angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

@@ -8,28 +8,29 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
     var user;
 
-    // laduje inicjalizator calego AdminLte2
-
     $rootScope.$on("$stateChangeSuccess", function () {
         if (!userService.getUser()) {
             $state.go("login");
+        } else {
+            console.log("INICJALIZACJA CMSa");
+            setTimeout(function () {
+                initAdminLTE();
+
+            }, 3000);
+            //$rootScope.$evalAsync(function () {
+            //});
         }
     });
 
     function init() {
-        userService.init(function (status) {
-            console.log(status);
-            // jezeli uzytkownik nie jest zalogowany to wyprowadz go do logowania
-            if (status) {
-                $state.go("cms");
-                $scope.$evalAsync(function () {
-                    initAdminLTE();
-                });
-                return;
-            } else {
-                $state.go("login");
-            }
-        });
+        // jezeli nie ma usera ( bo jeszcze go nie pobrano) to przekieruj na login
+        if (!userService.getUser()) {
+            $state.go("login");
+        } else {
+            $rootScope.$evalAsync(function () {
+                initAdminLTE();
+            });
+        }
     }
 
     init();

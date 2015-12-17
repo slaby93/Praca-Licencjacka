@@ -5,9 +5,10 @@ angular.module("cmsModule").controller("loginCtrl", [
     "userService",
     "testService",
     "$state",
+    "localStorageService",
     loginCtrl]);
 
-function loginCtrl($scope, userService, testService, $state) {
+function loginCtrl($scope, userService, testService, $state, localStorageService) {
     /**
      * @description Czysci formatke logowania oraz zmienne.
      */
@@ -36,11 +37,24 @@ function loginCtrl($scope, userService, testService, $state) {
             "login": "",
             "password": ""
         };
-        userService.init(function (status) {
-            if (status) {
-                $state.go("cms");
-            }
-        });
+        var token = localStorageService.get("token");
+        if (token) {
+            userService.loginByToken(token).then(
+                // SUCCESS
+                function (message) {
+                    $state.go("cms");
+                    // ERROR
+                }, function (message) {
+                    console.log(message.data);
+                    // usuwamy niepoprawny token
+                    localStorageService.remove("token");
+                    // MESSAGE
+                }, function (message) {
+                    console.log(message);
+                });
+        }else{
+            console.log("Token is empty!");
+        }
     }
 
     init();

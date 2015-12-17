@@ -1,11 +1,11 @@
 /* global CryptoJS */
 
-angular.module("userModule").service("userService", ["$http", "$state", "localStorageService", userService]);
+angular.module("userModule").service("userService", ["$http", "$state", "localStorageService", "$q", "$rootScope", userService]);
 /**
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
-function userService($http, $state, localStorageService) {
+function userService($http, $state, localStorageService, $q, $rootScope) {
 
     var user = null;
     var token = null;
@@ -14,7 +14,6 @@ function userService($http, $state, localStorageService) {
         $http.post("/user", passedUser).then(function (received) {
             user = received.data.user;
             token = received.data.token;
-            //TODO: storowanie tokena
             //przekierowanie do cms po pomyslnym zalogowaniu
             localStorageService.set("token", token);
             $state.go("cms");
@@ -42,35 +41,27 @@ function userService($http, $state, localStorageService) {
             return null;
         }
     }
-    /**
-     * @description Inicjalizuje pobranie uzytkownika jezeli jest token
-     * @param callback
-     */
-    this.init = function (callback) {
-        // sprawdzam, czy token znajduje sie w local storage
-        token = localStorageService.get("token");
-        // jezeli tak, to fetchuj uzytkownika z bd.
-        if (token) {
+
+
+    this.loginByToken = function (token) {
+        if (!token) {
+            return;
+        }
+        var odroczenie = $q.defer();
+
+        $rootScope.$applyAsync(function () {
             $http.post('/user/token', {"token": token}).then(
                 // SUCCESS
                 function (data) {
                     user = data.data;
-                    if (callback) {
-                        callback(true);
-                    }
+                    odroczenie.resolve(user);
                     // ERROR
                 }, function (err) {
-                    console.log(JSON.stringify(err));
-                    if (callback) {
-                        callback(false);
-                    }
+                    odroczenie.resolve(err);
                 });
-        } else {
-            console.log("Brak TOKENA");
-            if (callback) {
-                callback(false);
-            }
-        }
-    };
+        });
 
+        return odroczenie.promise;
+
+    }
 }

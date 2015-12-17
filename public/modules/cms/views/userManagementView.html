@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1>Zarządzanie Użytkownikami</h1>
+    </div>
+</div>
+<div class="row">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>login</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="user in allUsers">
+            <td>{{user.name}}</td>
+            <td>{{user.surname}}</td>
+            <td>{{user.login}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

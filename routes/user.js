@@ -117,6 +117,24 @@ router.post('/token', function (req, res, next) {
     });
 });
 
+router.post('/all', function (req, res, next) {
+    mongo.connect("projekt", ["user"], function (db) {
+        db.user.find({}, {
+                "_id": 0
+                , "password": 0
+                , "retypedPassword": 0
+            }
+            , function (err, data) {
+                if (err) {
+                    console.error(err);
+                    res.status(418).send();
+                    return;
+                } else {
+                    res.status(200).send(data);
+                }
+            });
+    });
+});
 /**
  * @description Generowanie tokenow za pomoca biblioteki JWT
  * @param passedUser
@@ -155,6 +173,13 @@ function closeDB(db) {
 function removeSensitiveUserData(User) {
     delete User["_id"];
     delete User["password"];
+    delete User["retypedPassword"];
     return User;
+}
+function removeSensitiveUserDataArray(array) {
+    array.forEach(function (user) {
+        user = removeSensitiveUserData(user);
+    });
+    return array;
 }
 module.exports = router;

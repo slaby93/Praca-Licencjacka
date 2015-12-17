@@ -53,6 +53,15 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         user = null, token = null, localStorageService.remove("token");
     }, this.getUser = function() {
         return user ? user : null;
+    }, this.fetchAllUsers = function() {
+        var odroczenie = $q.defer();
+        return $rootScope.$evalAsync(function() {
+            $http.post("/user/all").then(function(allUsers) {
+                odroczenie.resolve(allUsers.data);
+            }, function(err) {
+                odroczenie.reject(err);
+            });
+        }), odroczenie.promise;
     }, this.loginByToken = function(token) {
         if (token) {
             var odroczenie = $q.defer();
@@ -141,7 +150,7 @@ function registerCtrl($scope, userService, testService) {
             login: "",
             password: "",
             name: "",
-            surename: "",
+            surname: "",
             retypedPassword: ""
         };
     }
@@ -160,6 +169,20 @@ function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     init();
 }
 
+function userManagementCtrl($scope, adminTemplateService, $state, userService) {
+    function getAllUsers() {
+        userService.fetchAllUsers().then(function(data) {
+            $scope.allUsers = data;
+        }, function(msg) {
+            console.error(msg);
+        });
+    }
+    function init() {
+        getAllUsers();
+    }
+    $scope.users = [], init();
+}
+
 function adminTemplateService($http) {
     function downloadConfigJson(callback) {
         $http.get("/cms").success(function(data) {
@@ -176,6 +199,9 @@ function adminTemplateService($http) {
                 name: "Upload Zdjec",
                 url: "cms.imageUpload"
             } ]
+        }, {
+            name: "Zarządzanie użytkownikami",
+            url: "cms.userManagement"
         } ]
     };
     this.getCmsConfig = function(callback) {
@@ -224,9 +250,10 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/register",
         templateUrl: "modules/cms/views/registerView.html",
         controller: "registerCtrl"
-    }).state("cms.test", {
-        url: "/test",
-        templateUrl: "modules/cms/views/testView.html"
+    }).state("cms.userManagement", {
+        url: "/userManagement",
+        templateUrl: "modules/cms/views/userManagementView.html",
+        controller: "userManagementCtrl"
     }).state("cms.test2", {
         url: "/test2",
         template: "<h2>TEST2</h2>"
@@ -288,4 +315,5 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", "userService", sideMenuCtrl ]), 
+angular.module("cmsModule").controller("userManagementCtrl", [ "$scope", "adminTemplateService", "$state", "userService", userManagementCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

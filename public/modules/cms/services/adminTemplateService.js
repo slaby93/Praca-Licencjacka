@@ -9,30 +9,34 @@ function adminTemplateService($http) {
      */
 
     var cmsConfig = {
-        "tabList": [
-            {
-                "name": "Zarzadzanie CMS",
-                "urlList": [
-                    {
-                        "name": "Zakladki",
-                        "url": "cms.test"
-                    },
-                    {
-                        "name": "Upload Zdjec",
-                        "url": "cms.imageUpload"
-                    }
-                ]
-            }
-            //{
-            //    "name": "nazwa2",
-            //    "url": "url2"
-            //},
-            //{
-            //    "name": "nazwa3",
-            //    "url": "url3"
-            //}
-        ]
-    };
+            "tabList": [
+                {
+                    "name": "Zarzadzanie CMS",
+                    "urlList": [
+                        {
+                            "name": "Zakladki",
+                            "url": "cms.test"
+                        },
+                        {
+                            "name": "Upload Zdjec",
+                            "url": "cms.imageUpload"
+                        }
+                    ]
+                },
+                {
+                    "name": "Zarządzanie użytkownikami",
+                    "url": "cms.userManagement"
+                }
+
+
+
+                //{
+                //    "name": "nazwa3",
+                //    "url": "url3"
+                //}
+            ],
+        }
+        ;
     /**
      * @description Zwraca plik konfiguracyjny. Jezeli nie zostal jeszcze pobrany to pobiera go z bazy, w innym przypadku zwraca zapiasny plik.
      * @param callback

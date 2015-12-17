@@ -42,7 +42,19 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         } else {
             return null;
         }
-    }
+    };
+
+    this.fetchAllUsers = function () {
+        var odroczenie = $q.defer();
+        $rootScope.$evalAsync(function () {
+            $http.post("/user/all").then(function (allUsers) {
+                odroczenie.resolve(allUsers.data);
+            }, function (err) {
+                odroczenie.reject(err);
+            });
+        });
+        return odroczenie.promise;
+    };
 
 
     this.loginByToken = function (token) {

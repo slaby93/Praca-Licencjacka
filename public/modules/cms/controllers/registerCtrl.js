@@ -18,7 +18,7 @@ function registerCtrl($scope, userService, testService) {
             "login": "",
             "password": "",
             "name": "",
-            "surename": "",
+            "surname": "",
             "retypedPassword": ""
         };
     }

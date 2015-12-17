@@ -37,9 +37,6 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad","angularFileUpload"])
             url: "/register",
             templateUrl: "modules/cms/views/registerView.html",
             controller: "registerCtrl"
-        }).state('cms.main', {
-            url: "/main",
-            templateUrl: "modules/cms/views/mainCmsView.html"
         }).state('cms.test', {
             url: "/test",
             templateUrl: "modules/cms/views/testView.html"

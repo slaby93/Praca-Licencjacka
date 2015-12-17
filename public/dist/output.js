@@ -72,9 +72,13 @@ function imageUploadCtrl($scope, FileUploader) {
 }
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
+    function init() {
+        user = userService.getUser(), user || $state.go("login");
+    }
+    var user;
     $ocLazyLoad.load("modules/cms/lib/AdminLte2/app.js"), $rootScope.$on("$stateChangeSuccess", function() {
         userService.getUser() || $state.go("login");
-    });
+    }), init();
 }
 
 function loginCtrl($scope, userService, testService, $state) {
@@ -94,8 +98,6 @@ function loginCtrl($scope, userService, testService, $state) {
         userService.login($scope.user), clearForm();
     }, init();
 }
-
-function mainCmsCtrl($scope) {}
 
 function registerCtrl($scope, userService, testService) {
     function clearForm() {
@@ -185,9 +187,6 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/register",
         templateUrl: "modules/cms/views/registerView.html",
         controller: "registerCtrl"
-    }).state("cms.main", {
-        url: "/main",
-        templateUrl: "modules/cms/views/mainCmsView.html"
     }).state("cms.test", {
         url: "/test",
         templateUrl: "modules/cms/views/testView.html"
@@ -249,7 +248,6 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
     };
 } ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", loginCtrl ]), 
-angular.module("cmsModule").controller("mainCmsCtrl", [ "$scope", mainCmsCtrl ]), 
 angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", sideMenuCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

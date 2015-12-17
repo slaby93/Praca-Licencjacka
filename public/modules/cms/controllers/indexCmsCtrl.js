@@ -6,6 +6,8 @@ angular.module("cmsModule").controller("indexCmsCtrl", ["$scope", "$ocLazyLoad",
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
+    var user;
+
     // laduje inicjalizator calego AdminLte2
     $ocLazyLoad.load('modules/cms/lib/AdminLte2/app.js');
 
@@ -14,4 +16,14 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
             $state.go("login");
         }
     });
+
+    function init() {
+        user = userService.getUser();
+            // jezeli uzytkownik nie jest zalogowany to wyprowadz go do logowania
+
+        if (!user) {
+            $state.go("login");
+        }
+    }
+    init();
 }

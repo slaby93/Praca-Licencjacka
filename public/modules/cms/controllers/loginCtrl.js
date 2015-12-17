@@ -36,9 +36,11 @@ function loginCtrl($scope, userService, testService, $state) {
             "login": "",
             "password": ""
         };
-        if(userService.getUser()) {
-            $state.go("cms");
-        }
+        userService.init(function (status) {
+            if (status) {
+                $state.go("cms");
+            }
+        });
     }
 
     init();

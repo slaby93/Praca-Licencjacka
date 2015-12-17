@@ -35,15 +35,6 @@ function testCtrl($scope, testService) {
 }
 
 function userService($http, $state, localStorageService) {
-    function init() {
-        token = localStorageService.get("token"), token && $http.post("/user/token", {
-            token: token
-        }).then(function(data) {
-            console.log(JSON.stringify(data));
-        }, function(err) {
-            console.log(JSON.stringify(err));
-        });
-    }
     var user = null, token = null;
     this.login = function(passedUser) {
         $http.post("/user", passedUser).then(function(received) {
@@ -62,7 +53,15 @@ function userService($http, $state, localStorageService) {
         user = null, token = null;
     }, this.getUser = function() {
         return user ? user : null;
-    }, init();
+    }, this.init = function(callback) {
+        token = localStorageService.get("token"), token ? $http.post("/user/token", {
+            token: token
+        }).then(function(data) {
+            user = data.data, callback && callback(!0);
+        }, function(err) {
+            console.log(JSON.stringify(err)), callback && callback(!1);
+        }) : (console.log("Brak TOKENA"), callback && callback(!1));
+    };
 }
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
@@ -93,11 +92,12 @@ function imageUploadCtrl($scope, FileUploader) {
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     function init() {
-        return (user = userService.getUser()) ? void $scope.$evalAsync(function() {
-            initAdminLTE();
-        }) : void $state.go("login");
+        userService.init(function(status) {
+            return console.log(status), status ? ($state.go("cms"), void $scope.$evalAsync(function() {
+                initAdminLTE();
+            })) : void $state.go("login");
+        });
     }
-    var user;
     $rootScope.$on("$stateChangeSuccess", function() {
         userService.getUser() || $state.go("login");
     }), init();
@@ -114,7 +114,9 @@ function loginCtrl($scope, userService, testService, $state) {
         $scope.user = {
             login: "",
             password: ""
-        }, userService.getUser() && $state.go("cms");
+        }, userService.init(function(status) {
+            status && $state.go("cms");
+        });
     }
     $scope.loguj = function() {
         userService.login($scope.user), clearForm();

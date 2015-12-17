@@ -17,14 +17,18 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     });
 
     function init() {
-        user = userService.getUser();
-        // jezeli uzytkownik nie jest zalogowany to wyprowadz go do logowania
-        if (!user) {
-            $state.go("login");
-            return;
-        }
-        $scope.$evalAsync(function () {
-            initAdminLTE();
+        userService.init(function (status) {
+            console.log(status);
+            // jezeli uzytkownik nie jest zalogowany to wyprowadz go do logowania
+            if (status) {
+                $state.go("cms");
+                $scope.$evalAsync(function () {
+                    initAdminLTE();
+                });
+                return;
+            } else {
+                $state.go("login");
+            }
         });
     }
 

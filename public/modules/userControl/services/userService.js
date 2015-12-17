@@ -42,20 +42,35 @@ function userService($http, $state, localStorageService) {
             return null;
         }
     }
-
-    function init() {
+    /**
+     * @description Inicjalizuje pobranie uzytkownika jezeli jest token
+     * @param callback
+     */
+    this.init = function (callback) {
         // sprawdzam, czy token znajduje sie w local storage
         token = localStorageService.get("token");
         // jezeli tak, to fetchuj uzytkownika z bd.
         if (token) {
-            $http.post('/user/token', {"token": token}).then(function (data) {
-                console.log(JSON.stringify(data));
-            }, function (err) {
-                console.log(JSON.stringify(err));
-            });
+            $http.post('/user/token', {"token": token}).then(
+                // SUCCESS
+                function (data) {
+                    user = data.data;
+                    if (callback) {
+                        callback(true);
+                    }
+                    // ERROR
+                }, function (err) {
+                    console.log(JSON.stringify(err));
+                    if (callback) {
+                        callback(false);
+                    }
+                });
+        } else {
+            console.log("Brak TOKENA");
+            if (callback) {
+                callback(false);
+            }
         }
     };
-
-    init();
 
 }

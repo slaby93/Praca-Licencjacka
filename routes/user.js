@@ -30,8 +30,7 @@ router.post('/', function (req, res, next) {
             if (bcrypt.compareSync(req.body.password, docs[0].password)) {
                 generateJWT(req.body.login, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
-                    delete docs[0]["_id"];
-                    delete docs[0]["password"];
+                    docs[0] = removeSensitiveUserData(docs[0]);
                     //zwrot informacji o uzytkowniku oraz wygenerowanego tokena
                     res.status(200).json({"user": docs[0], "token": token}).end(function () {
                         db.close();
@@ -82,6 +81,33 @@ router.post('/register', function (req, res, next) {
     });
 });
 
+router.post('/token', function (req, res, next) {
+    var token = req.body.token;
+    var decodedToken = decodeToken(token);
+    if (decodedToken === null) {
+        res.status(406).send("Token is invalid");
+
+        return;
+    }
+
+    mongo.connect("projekt", ["user"], function (db) {
+        db.user.find({"login": decodedToken.login}, function (err, data) {
+            if (err) {
+                res.status(500).send("Token is valid, but error when fetching from db");
+                return;
+            }
+            // nie znaleziono uzytkowika z bazie
+            if (!data.length > 0) {
+                res.status(500).send("User not found");
+                return;
+            }
+            var User = removeSensitiveUserData(data[0]);
+            res.status(200).send(User);
+            return;
+        });
+    });
+});
+
 /**
  * @description Generowanie tokenow za pomoca biblioteki JWT
  * @param passedUser
@@ -97,5 +123,28 @@ function generateJWT(passedUser, callback) {
         }
     });
 };
+/**
+ * @description Dekoduje otrzymany token
+ * @param token
+ */
+function decodeToken(token) {
+    try {
+        var decoded = jwt.verify(token, "SECRET");
+        delete decoded["iat"];
+        return decoded;
+    } catch (err) {
+        return null;
+    }
 
+};
+
+function closeDB(db) {
+    db.close();
+}
+
+function removeSensitiveUserData(User) {
+    delete User["_id"];
+    delete User["password"];
+    return User;
+}
 module.exports = router;

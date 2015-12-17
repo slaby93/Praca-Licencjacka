@@ -34,11 +34,21 @@ function testCtrl($scope, testService) {
     };
 }
 
-function userService($http, $state) {
+function userService($http, $state, localStorageService) {
+    function init() {
+        token = localStorageService.get("token"), token && $http.post("/user/token", {
+            token: token
+        }).then(function(data) {
+            console.log(JSON.stringify(data));
+        }, function(err) {
+            console.log(JSON.stringify(err));
+        });
+    }
     var user = null, token = null;
     this.login = function(passedUser) {
         $http.post("/user", passedUser).then(function(received) {
-            user = received.data.user, token = received.data.token, $state.go("cms");
+            user = received.data.user, token = received.data.token, localStorageService.set("token", token), 
+            $state.go("cms");
         }, function(err) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
         });
@@ -52,7 +62,7 @@ function userService($http, $state) {
         user = null, token = null;
     }, this.getUser = function() {
         return user ? user : null;
-    };
+    }, init();
 }
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
@@ -163,13 +173,15 @@ function adminTemplateService($http) {
     };
 }
 
-angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad" ]).config(function($stateProvider, $urlRouterProvider) {
+angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule" ]).config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/cms/main"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
     });
-}), angular.module("userModule", [ "LocalStorageModule" ]), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
+}), angular.module("userModule", [ "LocalStorageModule" ]).config(function(localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix("myApp").setStorageType("localStorage").setNotify(!0, !0);
+}), angular.module("cmsModule", [ "ui.router", "oc.lazyLoad", "angularFileUpload" ]).config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state("cms", {
         url: "/cms",
         views: {
@@ -223,7 +235,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 }), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
-angular.module("userModule").service("userService", [ "$http", "$state", userService ]), 
+angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", userService ]), 
 angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
 angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {

@@ -1,11 +1,12 @@
 /* global CryptoJS */
 
-angular.module("userModule").service("userService", ["$http", "$state", userService]);
+angular.module("userModule").service("userService", ["$http", "$state", "localStorageService", userService]);
 /**
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
-function userService($http, $state) {
+function userService($http, $state, localStorageService) {
+
     var user = null;
     var token = null;
 
@@ -15,6 +16,7 @@ function userService($http, $state) {
             token = received.data.token;
             //TODO: storowanie tokena
             //przekierowanie do cms po pomyslnym zalogowaniu
+            localStorageService.set("token", token);
             $state.go("cms");
         }, function (err) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
@@ -40,5 +42,20 @@ function userService($http, $state) {
             return null;
         }
     }
+
+    function init() {
+        // sprawdzam, czy token znajduje sie w local storage
+        token = localStorageService.get("token");
+        // jezeli tak, to fetchuj uzytkownika z bd.
+        if (token) {
+            $http.post('/user/token', {"token": token}).then(function (data) {
+                console.log(JSON.stringify(data));
+            }, function (err) {
+                console.log(JSON.stringify(err));
+            });
+        }
+    };
+
+    init();
 
 }

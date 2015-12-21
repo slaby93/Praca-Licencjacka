@@ -32,7 +32,7 @@ exports.connect = function (dataBase, collectionList, callback) {
     //    db = mongojs('admin:CbginbLnch_c@127.8.89.130/' + dataBase, collectionList);
     //}
     if (process.env.konfiguracja_baza_mongo === "lokalna") {
-        db = mongojs(dataBase, collectionList);
+        db = mongojs('lokalny:lokalny@localhost/' + dataBase, collectionList);
         console.log("Jestem na Raspberry -> lacze sie lokalnie");
     } else if (process.env.konfiguracja_komputer_lokalny_Daniel === "tak") {
         console.log("Daniel polaczenie z baza");

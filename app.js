@@ -13,7 +13,7 @@ var cms = require('./routes/cms');
 var app = express();
 
 try {
-    var konfiguracja_env = require('environment.js');
+    var konfiguracja_env = require('./environment.js');
     console.log("Plik konfiguracyjny znaleziono");
 } catch (err) {
     console.error("Nie znaleziono pliku konfiguracyjnego");

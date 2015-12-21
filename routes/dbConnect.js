@@ -26,10 +26,16 @@ exports.connect = function (dataBase, collectionList, callback) {
     }
     // sprawdza czy uruchomiony serwer jest lokalny czy juz na openshift.
     // Na lokalnym srodowisku prosze uruchomic: rhc port-forward projekt w cmd aby sforwardowac porty dla serwera i/lub robomongo.
-    if (process.env.OPENSHIFT_NODEJS_IP === undefined) {
-        db = mongojs('admin:CbginbLnch_c@localhost/' + dataBase, collectionList);
+    //if (process.env.OPENSHIFT_NODEJS_IP === undefined) {
+    //    db = mongojs('admin:CbginbLnch_c@localhost/' + dataBase, collectionList);
+    //} else {
+    //    db = mongojs('admin:CbginbLnch_c@127.8.89.130/' + dataBase, collectionList);
+    //}
+    if (process.env.konfiguracja_baza_mongo === "lokalna") {
+        db = mongojs(dataBase, collectionList);
+        console.log("Jestem na Raspberry -> lacze sie lokalnie");
     } else {
-        db = mongojs('admin:CbginbLnch_c@127.8.89.130/' + dataBase, collectionList);
+        db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
     }
     db.on('error', function (err) {
         assert.ifError(err);

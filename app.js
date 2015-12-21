@@ -11,9 +11,21 @@ var users = require('./routes/user');
 var cms = require('./routes/cms');
 
 var app = express();
-
+/**
+ * @description Na malince istnieje plik environment.js w ktorym zadeklarowana jest zmianna po ktorej aplikacja rozpoznaje, ze
+ *              jest uruchomiona na srodowisku raspberry. W ty miejscu kod stara sie okreslic, czy taki plik istnieje
+ */
 try {
     var konfiguracja_env = require('./environment.js');
+    console.log("Plik konfiguracyjny znaleziono");
+} catch (err) {
+    console.error("Nie znaleziono pliku konfiguracyjnego");
+}
+/**
+ * @description Podobnie jak wyzej, z ta roznica, ze ta zmienna nalezy do Daniel Słaby (ponieważ ma on adres sieci wewnetrznej a nie po DNS).
+ */
+try {
+    var nazwaTylkoDoZaladowaniaPliku = require('./env.js');
     console.log("Plik konfiguracyjny znaleziono");
 } catch (err) {
     console.error("Nie znaleziono pliku konfiguracyjnego");

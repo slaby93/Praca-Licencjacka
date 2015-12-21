@@ -34,8 +34,11 @@ exports.connect = function (dataBase, collectionList, callback) {
     if (process.env.konfiguracja_baza_mongo === "lokalna") {
         db = mongojs(dataBase, collectionList);
         console.log("Jestem na Raspberry -> lacze sie lokalnie");
-    } else {
+    } else if (process.env.konfiguracja_komputer_lokalny_Daniel === "tak") {
+        console.log("Daniel polaczenie z baza");
         db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
+    } else {
+        db = mongojs('zdalny:zdalny@letsplaypi.noip.me/' + dataBase, collectionList);
     }
     db.on('error', function (err) {
         assert.ifError(err);

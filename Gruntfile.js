@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                 files: ["public/**/*.js", "routes/*.js", "public/**/*.html", "public/**/*.css", "testowanie/**/*.js"],
                 tasks: ["uglify:cel", "karma:continuous"],
                 options: {
-                    livereload: 1337,
+                    livereload: 1338,
                     spawn: false
                 }
             }

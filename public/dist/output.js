@@ -44,7 +44,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
         });
     }, this.register = function(passedUser) {
-        console.log(passedUser), $http.post("/user/register", passedUser).then(function(received) {
+        $http.post("/user/register", passedUser).then(function(received) {
             swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success");
         }, function(err) {
             sweetAlert("Rejestracja nieudana!", err.data.message, "error");

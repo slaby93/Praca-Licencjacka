@@ -51,8 +51,6 @@ router.post('/', function (req, res, next) {
  */
 router.post('/register', function (req, res, next) {
     //niewypelnione pola
-
-    console.log(req.body);
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
         console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
@@ -66,10 +64,13 @@ router.post('/register', function (req, res, next) {
             db.close();
         });
     }
+    var user = req.body;
+    user.password = bcrypt.hashSync(req.body.password, 10);
+    user = removeSensitiveUserData(user);
     //laczenie z baza
     mongo.connect("projekt", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika
-        db.user.find({"login": req.body.login}, function (err, docs) {
+        db.user.find({"login": user.login}, function (err, docs) {
             //jezeli znaleziono uzytkownika
             if (docs.length > 0) {
                 console.error("REGISTER ERROR : Użytkownik już istnieje");
@@ -79,9 +80,6 @@ router.post('/register', function (req, res, next) {
             }
             console.log("Dodawanie Uzytkownika");
             //dodanie uzytkownika do bazy
-
-            var user = req.body;
-            user.password = bcrypt.hashSync(req.body.password, 10);
             db.user.insert(user);
             res.status(200).json(user).end(function () {
                 db.close();

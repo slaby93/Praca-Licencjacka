@@ -11,7 +11,7 @@
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>Login</th>
-            <th>Edycja
+            <th>Edycja</th>
         </tr>
         </thead>
         <tbody>
@@ -20,7 +20,9 @@
             <td>{{user.surname}}</td>
             <td>{{user.login}}</td>
             <td>
-                <button class="btn btn-default" data-ng-click="open(user)">edycja</button>
+                <span data-ng-click="open(user)" class="glyphicon glyphicon-cog"></span>
+                <span class="glyphicon glyphicon-remove"></span>
+                <!--<button class="btn btn-default" >edycja</button>-->
             </td>
         </tr>
         </tbody>

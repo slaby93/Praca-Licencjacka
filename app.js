@@ -37,6 +37,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './public')));
+// Link do glyphikonek dla bootstrapa
+app.use("/fonts", express.static(path.join(__dirname, './node_modules/bootstrap/fonts')));
 
 app.use('/', routes);
 app.use('/user', users);

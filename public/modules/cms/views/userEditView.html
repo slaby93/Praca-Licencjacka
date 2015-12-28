@@ -2,15 +2,86 @@
     <button type="button" class="close" data-ng-click="cancel()">×</button>
     <h4 class="modal-title">Edytuj użytkownika</h4>
 </div>
-<div class="modal-body">
-    <p>{{user}}</p>
+<style>
+    .poprawnyInput {
+        border-style: solid;
+        border-color: #00a65a;
+        border-width: 3px;
+    }
+
+    .niepoprawnyInput {
+        border-style: solid;
+        border-color: crimson;
+        border-width: 3px;
+    }
+</style>
+<div class="modal-body row">
+    <div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1
+                col-lg-10 col-md-10 col-sm-10 col-xs-10">
+
+
+        <form novalidate class="form-horizontal" role="form" name="userForm">
+            <div
+                    ng-class="{'has-error':userForm.name.$invalid}"
+                    class="form-group">
+                <label for="userName">Imię</label>
+                <input
+                        ng-required="true"
+                        ng-minlength="3"
+                        ng-maxlength="15"
+                        ng-model="copiedUser.name"
+                        ng-trim="true"
+                        name="name"
+                        class="form-control"
+                        id="userName"
+                        type="text">
+            </div>
+            <div
+                    ng-class="{'has-error':userForm.surname.$invalid}"
+                    class="form-group">
+                <label for="userName">Nazwisko</label>
+                <input
+                        ng-required="true"
+                        ng-minlength="3"
+                        ng-maxlength="15"
+                        ng-model="copiedUser.surname"
+                        ng-trim="true"
+                        name="surname"
+                        class="form-control"
+                        id="userSurname"
+                        type="text">
+            </div>
+            <div
+                    ng-class="{'has-error':userForm.login.$invalid}"
+                    class="form-group">
+                <label for="userLogin">Login</label>
+                <input
+                        ng-required="true"
+                        ng-minlength="3"
+                        ng-maxlength="15"
+                        ng-model="copiedUser.login"
+                        ng-trim="true"
+                        name="login"
+                        class="form-control"
+                        id="userLogin"
+                        type="text">
+            </div>
+        </form>
+    </div>
 </div>
 <div class="modal-footer">
     <div class="row">
-        <div class="col-lg-2">
-            <button type="button" class="btn btn-default" data-ng-click="cancel()">Zatwierdź</button>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <button ng-disabled="userForm.$invalid" type="button" class="btn btn-default" data-ng-click="cancel()">
+                Zatwierdź
+            </button>
         </div>
-        <div class="col-lg-offset-8 col-lg-2 ">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <button type="button" class="btn btn-default" data-ng-click="reset()">
+                Resetuj
+            </button>
+        </div>
+        <div class="col-lg-offset-6 col-md-offset-6 col-sm-offset-6 col-xs-offset-6 col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
             <button type="button" class="btn btn-default" data-ng-click="cancel()">Zamknij</button>
         </div>
     </div>

@@ -75,12 +75,42 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                 });
             }), odroczenie.promise;
         }
+    }, this.editUser = function(user, callback) {
+        $http.post("/user/update", {
+            user: user
+        }).then(function(message) {
+            callback();
+        }, function(error) {
+            console.error(error), swal({
+                title: "Błąd",
+                text: "Podczas komunikacji z serwerem wystąpił błąd.",
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Zamknij"
+            }, function() {
+                callback();
+            });
+        });
+    }, this.removeUser = function(user, callback) {
+        $http.post("/user/remove", {
+            user: user
+        }).then(function(message) {
+            callback && callback(message);
+        }, function(error) {
+            console.log(error), callback && callback(error);
+        });
     };
 }
 
-function userEditCtrl($scope, $uibModalInstance, user) {
-    $scope.user = user, $scope.copiedUser = angular.copy(user), $scope.ok = function() {
-        $uibModalInstance.close("PSAJDAK");
+function userEditCtrl($scope, $uibModalInstance, user, userService) {
+    $scope.copiedUser = angular.copy(user), $scope.ok = function() {
+        var changes = {};
+        Object.keys(user).forEach(function(key) {
+            $scope.copiedUser[key] !== user[key] && (changes[key] = $scope.copiedUser[key]);
+        }), changes.login = user.login, delete changes.groups, delete changes.$$hashKey, 
+        userService.editUser(changes, function() {
+            $uibModalInstance.close("PSAJDAK");
+        });
     }, $scope.reset = function() {
         $scope.copiedUser = angular.copy(user);
     }, $scope.cancel = function() {
@@ -182,7 +212,9 @@ function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
 function userManagementCtrl($scope, adminTemplateService, $state, userService, $uibModal) {
     function getAllUsers() {
         userService.fetchAllUsers().then(function(data) {
-            $scope.allUsers = data;
+            $scope.$evalAsync(function() {
+                $scope.allUsers = data;
+            });
         }, function(msg) {
             console.error(msg);
         });
@@ -191,7 +223,6 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
         getAllUsers();
     }
     $scope.users = [], $scope.open = function(user) {
-        console.log($uibModal);
         var modalInstance = $uibModal.open({
             templateUrl: "modules/cms/views/userEditView.html",
             controller: "userEditCtrl",
@@ -202,10 +233,22 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
                 }
             }
         });
-        modalInstance.result.then(function(selectedItem) {
-            console.log(selectedItem);
+        modalInstance.result.then(function(fromModalOnExit) {
+            getAllUsers();
+        }, function() {});
+    }, $scope.remove = function(user) {
+        swal({
+            title: "Usuwanie użytkownika " + user.login,
+            text: "Uwaga, jest to operacja nieodwracalna!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Tak, usuń użytkownika",
+            closeOnConfirm: !1
         }, function() {
-            console.log("Modal dismissed at: " + new Date());
+            userService.removeUser(user, function() {
+                getAllUsers(), swal("", "Usunięto", "success");
+            });
         });
     }, init();
 }
@@ -302,7 +345,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
 angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
-angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", userEditCtrl ]), 
+angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", "userService", userEditCtrl ]), 
 angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
 angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {

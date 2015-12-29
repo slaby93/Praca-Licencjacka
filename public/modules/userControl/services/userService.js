@@ -77,4 +77,42 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         return odroczenie.promise;
 
     }
+
+    this.editUser = function (user, callback) {
+        $http.post("/user/update", {user: user}).then(
+            function (message) {
+                callback();
+                return;
+            },
+            function (error) {
+                console.error(error);
+                swal({
+                    title: "Błąd",
+                    text: "Podczas komunikacji z serwerem wystąpił błąd.",
+                    type: "warning",
+                    //showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Zamknij",
+                }, function () {
+                    callback();
+                });
+
+            }
+        )
+    };
+
+    this.removeUser = function (user, callback) {
+        $http.post("/user/remove", {
+            user: user
+        }).then(function (message) {
+            if (callback) {
+                callback(message);
+            }
+        }, function (error) {
+            console.log(error);
+            if (callback) {
+                callback(error);
+            }
+        });
+    };
 }

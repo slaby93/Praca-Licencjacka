@@ -133,6 +133,53 @@ router.post('/all', function (req, res, next) {
             });
     });
 });
+
+router.post("/update", function (req, res, next) {
+    /**
+     * TODO
+     * Napisać testy
+     * Walidacja przesłanych danych
+     * Przypadki brzegowe
+     */
+    var usr = req.body.user;
+    var login = usr.login;
+
+    delete usr.login;
+
+    mongo.connect("projekt", ["user"], function (db) {
+        db.user.update({
+                login: login
+            },
+            {
+                "$set": usr
+            },
+            function (err, data) {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                res.status(200).send(data);
+            });
+    });
+});
+
+router.post("/remove", function (req, res, next) {
+    /**
+     * TODO
+     * Napisać testy
+     * Co, gdy dane są błędne? itd
+     */
+    var usr = req.body.user;
+    mongo.connect("projekt", ["user"], function (db) {
+        db.user.remove({"login": usr.login},
+            function (err, data) {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send("ok");
+                }
+            });
+    })
+});
 /**
  * @description Generowanie tokenow za pomoca biblioteki JWT
  * @param passedUser

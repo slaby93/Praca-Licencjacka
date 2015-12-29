@@ -11,7 +11,6 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
     $scope.users = [];
 
     $scope.open = function (user) {
-        console.log($uibModal);
         var modalInstance = $uibModal.open(
             {
                 templateUrl: 'modules/cms/views/userEditView.html',
@@ -25,17 +24,37 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
             }
         );
 
-        modalInstance.result.then(function (selectedItem) {
-            console.log(selectedItem);
+        modalInstance.result.then(function (fromModalOnExit) {
+            getAllUsers();
         }, function () {
-            console.log('Modal dismissed at: ' + new Date());
+
         });
     };
 
+    $scope.remove = function (user) {
+        swal({
+                title: "Usuwanie użytkownika " + user.login,
+                text: "Uwaga, jest to operacja nieodwracalna!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Tak, usuń użytkownika",
+                closeOnConfirm: false
+            }, function () {
+                userService.removeUser(user, function () {
+                    getAllUsers();
+                    swal("", "Usunięto", "success")
+
+                });
+            }
+        );
+    };
 
     function getAllUsers() {
         userService.fetchAllUsers().then(function (data) {
-            $scope.allUsers = data;
+            $scope.$evalAsync(function () {
+                $scope.allUsers = data;
+            });
         }, function (msg) {
             console.error(msg);
         });

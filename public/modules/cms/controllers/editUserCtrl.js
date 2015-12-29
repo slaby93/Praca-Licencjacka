@@ -2,14 +2,25 @@
  * Created by Slaby on 17.12.2015.
  */
 
-angular.module("cmsModule").controller("userEditCtrl", ["$scope", "$uibModalInstance", "user", userEditCtrl]);
+angular.module("cmsModule").controller("userEditCtrl", ["$scope", "$uibModalInstance", "user", "userService", userEditCtrl]);
 
-function userEditCtrl($scope, $uibModalInstance, user) {
-    $scope.user = user;
+function userEditCtrl($scope, $uibModalInstance, user, userService) {
+
     $scope.copiedUser = angular.copy(user);
 
     $scope.ok = function () {
-        $uibModalInstance.close("PSAJDAK");
+        var changes = {};
+        Object.keys(user).forEach(function (key) {
+            if ($scope.copiedUser[key] !== user[key]) {
+                changes[key] = $scope.copiedUser[key];
+            }
+        });
+        changes.login = user.login;
+        delete changes.groups;
+        delete changes.$$hashKey;
+        userService.editUser(changes, function () {
+            $uibModalInstance.close("PSAJDAK");
+        });
     };
     $scope.reset = function () {
         $scope.copiedUser = angular.copy(user);

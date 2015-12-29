@@ -1,3 +1,9 @@
 .glyphicon{
    cursor: pointer;
 }
+#searchQueryBlock{
+   float: none;
+}
+#searchQueryBlock input {
+   width: 100%;
+}

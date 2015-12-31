@@ -70,11 +70,14 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             sweetAlert("Logowanie nieudane!", err.data.message, "error");
         });
     }, this.register = function(passedUser) {
-        $http.post("/user/register", passedUser).then(function(received) {
-            swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success");
-        }, function(err) {
-            sweetAlert("Rejestracja nieudana!", err.data.message, "error");
-        });
+        var obietnica = $q.defer();
+        return $rootScope.$evalAsync(function() {
+            $http.post("/user/register", passedUser).then(function(received) {
+                obietnica.resolve(received);
+            }, function(err) {
+                obietnica.reject(err);
+            });
+        }), obietnica.promise;
     }, this.logout = function() {
         user = null, token = null, localStorageService.remove("token");
     }, this.getUser = function() {
@@ -207,7 +210,7 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
     }, init();
 }
 
-function registerCtrl($scope, userService, testService) {
+function registerCtrl($scope, userService, testService, $state) {
     function init() {
         clearForm();
     }
@@ -221,7 +224,26 @@ function registerCtrl($scope, userService, testService) {
         };
     }
     $scope.register = function() {
-        userService.register($scope.user), clearForm();
+        userService.register($scope.user).then(function(message) {
+            swal({
+                title: "Sukces",
+                text: "Pomyślnie zarejestrowano użytkownika.",
+                type: "success",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok"
+            }, function() {
+                $state.go("cms");
+            });
+        }, function(err) {
+            swal({
+                title: "Błąd",
+                text: "Wystąpił błąd podczas procedury rejestracji.",
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok",
+                closeOnConfirm: !0
+            });
+        }, function(update) {}), clearForm();
     }, init();
 }
 
@@ -308,7 +330,7 @@ function adminTemplateService($http) {
 }
 
 angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule", "ui.bootstrap" ]).config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/cms/main"), $stateProvider.state("app", {
+    $urlRouterProvider.otherwise("/app"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
         controller: "mainAppCtrl"
@@ -410,7 +432,7 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
     };
 } ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
 angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
-angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", registerCtrl ]), 
+angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", "$state", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", "userService", sideMenuCtrl ]), 
 angular.module("cmsModule").controller("userManagementCtrl", [ "$scope", "adminTemplateService", "$state", "userService", "$uibModal", userManagementCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

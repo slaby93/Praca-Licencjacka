@@ -5,7 +5,8 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ["public/**/*.js", "routes/*.js", "public/**/*.html", "public/**/*.css", "testowanie/**/*.js"],
-                tasks: ["uglify:cel", "karma:continuous"],
+                //   tasks: ["uglify:cel","cssmin", "karma:continuous"],
+                tasks: ["uglify:cel", "cssmin"],
                 options: {
                     livereload: 1338,
                     spawn: false
@@ -46,7 +47,7 @@ module.exports = function (grunt) {
                         "node_modules/sweetalert/dist/sweetalert-dev.js",
                         "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
                         "node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
-						"public/modules/mainApp/lib/jssor.slider.mini.js"
+                        "public/modules/mainApp/lib/jssor.slider.mini.js"
                     ]
                 }
             }
@@ -60,8 +61,8 @@ module.exports = function (grunt) {
                         "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
                         "node_modules/sweetalert/dist/sweetalert.css",
                         "node_modules/angular-ui-bootstrap/ui-bootstrap-csp.css",
-						"public/modules/cms/css/registerCss.css",
-						"public/modules/mainApp/css/mainViewCss.css"
+                        "public/modules/cms/css/**/*.css",
+                        "public/modules/mainApp/css/**/*.css"
                     ]
                 }
             }

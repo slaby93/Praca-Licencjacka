@@ -9,7 +9,6 @@
             </div>
         </div>
         <div class="col-xs-4">
-
             <div class="login-frame">
                 <form name="formaLogowania" ng-submit="loguj()" novalidate role="form">
                     <h3>Logowanie</h3>
@@ -19,16 +18,23 @@
                         <input id="test" max-length="10" name="login" type="text" class="form-control"
                                ng-model="user.login" required id="login">
                         <p class="errorMessage"
-                           ng-show="formaLogowania.login.$invalid && formaLogowania.login.$touched">Wprowadzony login jest niepoprawny</p>
+                           ng-show="formaLogowania.login.$invalid && formaLogowania.login.$touched">Wprowadzony login
+                            jest niepoprawny</p>
                     </div>
                     <div class="form-group"
                          ng-class="{'has-error':formaLogowania.password.$invalid && formaLogowania.password.$touched}">
                         <label for="pwd">Hasło:</label>
-                        <input type="password" name="password" ng-model="user.password" class="form-control" required id="pwd">
+                        <input type="password" name="password" ng-model="user.password" class="form-control" required
+                               id="pwd">
                         <p class="errorMessage"
-                           ng-show="formaLogowania.password.$invalid && formaLogowania.password.$touched">Wprowadzone hasło jest niepoprawne</p>
+                           ng-show="formaLogowania.password.$invalid && formaLogowania.password.$touched">Wprowadzone
+                            hasło jest niepoprawne</p>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg gradient">Zaloguj</button>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary btn-lg gradient">Zaloguj</button>
+                        <a ui-sref="register" id="noAccountLink"><p>Nie mam konta</p></a>
+                        </a>
+                    </div>
                 </form>
                 <h4>Witamy Ciebie,<br> drogi użytkowniku!</h4><br>
                 Zaloguj się,<br> by znów uczestniczyć<br> w naszej społeczności! :)

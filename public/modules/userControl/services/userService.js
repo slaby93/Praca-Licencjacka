@@ -23,11 +23,17 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     };
 
     this.register = function (passedUser) {
-        $http.post("/user/register", passedUser).then(function (received) {
-            swal("Rejestracja pomyślna!", "Użytkownik " + received.data.login + " zarejestrowany.", "success")
-        }, function (err) {
-            sweetAlert("Rejestracja nieudana!", err.data.message, "error");
+
+        var obietnica = $q.defer();
+        $rootScope.$evalAsync(function () {
+            $http.post("/user/register", passedUser).then(function (received) {
+                obietnica.resolve(received);
+            }, function (err) {
+                obietnica.reject(err);
+            });
         });
+        return obietnica.promise;
+
     };
     this.logout = function () {
         user = null;

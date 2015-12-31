@@ -7,7 +7,7 @@ angular.module("mainApp", ["cmsModule", "userModule", "ui.router", "oc.lazyLoad"
      */
     .config(function ($stateProvider, $urlRouterProvider) {
         //******************** Defaultowy stan aplikacji ***************************\\
-        $urlRouterProvider.otherwise("/cms/main");
+        $urlRouterProvider.otherwise("/app");
         //**************************************************************************\\
 
         $stateProvider.state('app', {

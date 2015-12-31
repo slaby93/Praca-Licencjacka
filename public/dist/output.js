@@ -25,7 +25,33 @@ function testService($http) {
 }
 
 function mainAppCtrl($scope, socketService) {
-    socketService.init();
+    function init() {
+        $scope.jssor_1_slider = new $JssorSlider$("jssor_1", {
+            $AutoPlay: !1,
+            $DragOrientation: 2,
+            $PlayOrientation: 2,
+            $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$
+            }
+        }), $(window).bind("load", ScaleSlider), $(window).bind("resize", ScaleSlider), 
+        $(window).bind("orientationchange", ScaleSlider), document.addEventListener ? (document.addEventListener("mousewheel", MouseWheelHandler(), !1), 
+        document.addEventListener("DOMMouseScroll", MouseWheelHandler(), !1)) : sq.attachEvent("onmousewheel", MouseWheelHandler());
+    }
+    var ScaleSlider = function() {
+        var windowWidth = $(window).width();
+        if (windowWidth) {
+            var windowHeight = $(window).height(), originalWidth = jssor_1_slider.$OriginalWidth(), originalHeight = jssor_1_slider.$OriginalHeight(), scaleWidth = windowWidth;
+            originalWidth / windowWidth > originalHeight / windowHeight && (scaleWidth = Math.ceil(windowHeight / originalHeight * originalWidth)), 
+            jssor_1_slider.$ScaleWidth(scaleWidth);
+        } else window.setTimeout(ScaleSlider, 30);
+    }, MouseWheelHandler = function() {
+        return function(e) {
+            var e = window.event || e, delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
+            return 0 > delta ? $scope.jssor_1_slider.$Next() : $scope.jssor_1_slider.$Prev(), 
+            !1;
+        };
+    };
+    init();
 }
 
 function testCtrl($scope, testService) {

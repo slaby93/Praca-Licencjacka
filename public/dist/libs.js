@@ -8095,7 +8095,7 @@ if (function(global, factory) {
                 }
             };
         } ];
-    }, ie = Nd(), ve = Nd(!0), kg = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/, tg = /^[A-Za-z][A-Za-z\d.+-]*:\/*(?:\w+(?::\w+)?@)?[^\s/]+(?::\d+)?(?:\/[\w#!:.?+=&%@\-/]*)?$/, ug = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i, vg = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))([eE][+-]?\d+)?\s*$/, Od = /^(\d{4})-(\d{2})-(\d{2})$/, Pd = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/, mc = /^(\d{4})-W(\d\d)$/, Qd = /^(\d{4})-(\d\d)$/, Rd = /^(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/, Sd = {
+    }, ie = Nd(), ve = Nd(!0), kg = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/, tg = /^[A-Za-z][A-Za-z\d.+-]*:\/*(?:\w+(?::\w+)?@)?[^\s\/]+(?::\d+)?(?:\/[\w#!:.?+=&%@\-\/]*)?$/, ug = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i, vg = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))([eE][+-]?\d+)?\s*$/, Od = /^(\d{4})-(\d{2})-(\d{2})$/, Pd = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/, mc = /^(\d{4})-W(\d\d)$/, Qd = /^(\d{4})-(\d\d)$/, Rd = /^(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/, Sd = {
         text: function(a, b, d, c, e, f) {
             jb(a, b, d, c, e, f), kc(c);
         },
@@ -9939,7 +9939,7 @@ function(a, b, c) {
                 is: function(a) {
                     return null == a || !H(a) || "string" == typeof a;
                 },
-                pattern: /[^/]*/
+                pattern: /[^\/]*/
             },
             "int": {
                 encode: a,
@@ -9986,7 +9986,7 @@ function(a, b, c) {
                 decode: b.fromJson,
                 is: b.isObject,
                 equals: b.equals,
-                pattern: /[^/]*/
+                pattern: /[^\/]*/
             },
             any: {
                 encode: b.identity,
@@ -15356,2311 +15356,6 @@ function(a, b, c) {
             };
         }, module.exports.$inject = [ "FileUploader", "FileOver" ];
     } ]);
-}), !function(e) {
-    if ("object" == typeof exports && "undefined" != typeof module) module.exports = e(); else if ("function" == typeof define && define.amd) define([], e); else {
-        var f;
-        "undefined" != typeof window ? f = window : "undefined" != typeof global ? f = global : "undefined" != typeof self && (f = self), 
-        f.io = e();
-    }
-}(function() {
-    var define;
-    return function e(t, n, r) {
-        function s(o, u) {
-            if (!n[o]) {
-                if (!t[o]) {
-                    var a = "function" == typeof require && require;
-                    if (!u && a) return a(o, !0);
-                    if (i) return i(o, !0);
-                    throw new Error("Cannot find module '" + o + "'");
-                }
-                var f = n[o] = {
-                    exports: {}
-                };
-                t[o][0].call(f.exports, function(e) {
-                    var n = t[o][1][e];
-                    return s(n ? n : e);
-                }, f, f.exports, e, t, n, r);
-            }
-            return n[o].exports;
-        }
-        for (var i = "function" == typeof require && require, o = 0; o < r.length; o++) s(r[o]);
-        return s;
-    }({
-        1: [ function(_dereq_, module, exports) {
-            module.exports = _dereq_("./lib/");
-        }, {
-            "./lib/": 2
-        } ],
-        2: [ function(_dereq_, module, exports) {
-            function lookup(uri, opts) {
-                "object" == typeof uri && (opts = uri, uri = void 0), opts = opts || {};
-                var io, parsed = url(uri), source = parsed.source, id = parsed.id;
-                return opts.forceNew || opts["force new connection"] || !1 === opts.multiplex ? (debug("ignoring socket cache for %s", source), 
-                io = Manager(source, opts)) : (cache[id] || (debug("new io instance for %s", source), 
-                cache[id] = Manager(source, opts)), io = cache[id]), io.socket(parsed.path);
-            }
-            var url = _dereq_("./url"), parser = _dereq_("socket.io-parser"), Manager = _dereq_("./manager"), debug = _dereq_("debug")("socket.io-client");
-            module.exports = exports = lookup;
-            var cache = exports.managers = {};
-            exports.protocol = parser.protocol, exports.connect = lookup, exports.Manager = _dereq_("./manager"), 
-            exports.Socket = _dereq_("./socket");
-        }, {
-            "./manager": 3,
-            "./socket": 5,
-            "./url": 6,
-            debug: 10,
-            "socket.io-parser": 44
-        } ],
-        3: [ function(_dereq_, module, exports) {
-            function Manager(uri, opts) {
-                return this instanceof Manager ? (uri && "object" == typeof uri && (opts = uri, 
-                uri = void 0), opts = opts || {}, opts.path = opts.path || "/socket.io", this.nsps = {}, 
-                this.subs = [], this.opts = opts, this.reconnection(opts.reconnection !== !1), this.reconnectionAttempts(opts.reconnectionAttempts || 1 / 0), 
-                this.reconnectionDelay(opts.reconnectionDelay || 1e3), this.reconnectionDelayMax(opts.reconnectionDelayMax || 5e3), 
-                this.randomizationFactor(opts.randomizationFactor || .5), this.backoff = new Backoff({
-                    min: this.reconnectionDelay(),
-                    max: this.reconnectionDelayMax(),
-                    jitter: this.randomizationFactor()
-                }), this.timeout(null == opts.timeout ? 2e4 : opts.timeout), this.readyState = "closed", 
-                this.uri = uri, this.connected = [], this.encoding = !1, this.packetBuffer = [], 
-                this.encoder = new parser.Encoder(), this.decoder = new parser.Decoder(), this.autoConnect = opts.autoConnect !== !1, 
-                void (this.autoConnect && this.open())) : new Manager(uri, opts);
-            }
-            var eio = (_dereq_("./url"), _dereq_("engine.io-client")), Socket = _dereq_("./socket"), Emitter = _dereq_("component-emitter"), parser = _dereq_("socket.io-parser"), on = _dereq_("./on"), bind = _dereq_("component-bind"), debug = (_dereq_("object-component"), 
-            _dereq_("debug")("socket.io-client:manager")), indexOf = _dereq_("indexof"), Backoff = _dereq_("backo2");
-            module.exports = Manager, Manager.prototype.emitAll = function() {
-                this.emit.apply(this, arguments);
-                for (var nsp in this.nsps) this.nsps[nsp].emit.apply(this.nsps[nsp], arguments);
-            }, Manager.prototype.updateSocketIds = function() {
-                for (var nsp in this.nsps) this.nsps[nsp].id = this.engine.id;
-            }, Emitter(Manager.prototype), Manager.prototype.reconnection = function(v) {
-                return arguments.length ? (this._reconnection = !!v, this) : this._reconnection;
-            }, Manager.prototype.reconnectionAttempts = function(v) {
-                return arguments.length ? (this._reconnectionAttempts = v, this) : this._reconnectionAttempts;
-            }, Manager.prototype.reconnectionDelay = function(v) {
-                return arguments.length ? (this._reconnectionDelay = v, this.backoff && this.backoff.setMin(v), 
-                this) : this._reconnectionDelay;
-            }, Manager.prototype.randomizationFactor = function(v) {
-                return arguments.length ? (this._randomizationFactor = v, this.backoff && this.backoff.setJitter(v), 
-                this) : this._randomizationFactor;
-            }, Manager.prototype.reconnectionDelayMax = function(v) {
-                return arguments.length ? (this._reconnectionDelayMax = v, this.backoff && this.backoff.setMax(v), 
-                this) : this._reconnectionDelayMax;
-            }, Manager.prototype.timeout = function(v) {
-                return arguments.length ? (this._timeout = v, this) : this._timeout;
-            }, Manager.prototype.maybeReconnectOnOpen = function() {
-                !this.reconnecting && this._reconnection && 0 === this.backoff.attempts && this.reconnect();
-            }, Manager.prototype.open = Manager.prototype.connect = function(fn) {
-                if (debug("readyState %s", this.readyState), ~this.readyState.indexOf("open")) return this;
-                debug("opening %s", this.uri), this.engine = eio(this.uri, this.opts);
-                var socket = this.engine, self = this;
-                this.readyState = "opening", this.skipReconnect = !1;
-                var openSub = on(socket, "open", function() {
-                    self.onopen(), fn && fn();
-                }), errorSub = on(socket, "error", function(data) {
-                    if (debug("connect_error"), self.cleanup(), self.readyState = "closed", self.emitAll("connect_error", data), 
-                    fn) {
-                        var err = new Error("Connection error");
-                        err.data = data, fn(err);
-                    } else self.maybeReconnectOnOpen();
-                });
-                if (!1 !== this._timeout) {
-                    var timeout = this._timeout;
-                    debug("connect attempt will timeout after %d", timeout);
-                    var timer = setTimeout(function() {
-                        debug("connect attempt timed out after %d", timeout), openSub.destroy(), socket.close(), 
-                        socket.emit("error", "timeout"), self.emitAll("connect_timeout", timeout);
-                    }, timeout);
-                    this.subs.push({
-                        destroy: function() {
-                            clearTimeout(timer);
-                        }
-                    });
-                }
-                return this.subs.push(openSub), this.subs.push(errorSub), this;
-            }, Manager.prototype.onopen = function() {
-                debug("open"), this.cleanup(), this.readyState = "open", this.emit("open");
-                var socket = this.engine;
-                this.subs.push(on(socket, "data", bind(this, "ondata"))), this.subs.push(on(this.decoder, "decoded", bind(this, "ondecoded"))), 
-                this.subs.push(on(socket, "error", bind(this, "onerror"))), this.subs.push(on(socket, "close", bind(this, "onclose")));
-            }, Manager.prototype.ondata = function(data) {
-                this.decoder.add(data);
-            }, Manager.prototype.ondecoded = function(packet) {
-                this.emit("packet", packet);
-            }, Manager.prototype.onerror = function(err) {
-                debug("error", err), this.emitAll("error", err);
-            }, Manager.prototype.socket = function(nsp) {
-                var socket = this.nsps[nsp];
-                if (!socket) {
-                    socket = new Socket(this, nsp), this.nsps[nsp] = socket;
-                    var self = this;
-                    socket.on("connect", function() {
-                        socket.id = self.engine.id, ~indexOf(self.connected, socket) || self.connected.push(socket);
-                    });
-                }
-                return socket;
-            }, Manager.prototype.destroy = function(socket) {
-                var index = indexOf(this.connected, socket);
-                ~index && this.connected.splice(index, 1), this.connected.length || this.close();
-            }, Manager.prototype.packet = function(packet) {
-                debug("writing packet %j", packet);
-                var self = this;
-                self.encoding ? self.packetBuffer.push(packet) : (self.encoding = !0, this.encoder.encode(packet, function(encodedPackets) {
-                    for (var i = 0; i < encodedPackets.length; i++) self.engine.write(encodedPackets[i]);
-                    self.encoding = !1, self.processPacketQueue();
-                }));
-            }, Manager.prototype.processPacketQueue = function() {
-                if (this.packetBuffer.length > 0 && !this.encoding) {
-                    var pack = this.packetBuffer.shift();
-                    this.packet(pack);
-                }
-            }, Manager.prototype.cleanup = function() {
-                for (var sub; sub = this.subs.shift(); ) sub.destroy();
-                this.packetBuffer = [], this.encoding = !1, this.decoder.destroy();
-            }, Manager.prototype.close = Manager.prototype.disconnect = function() {
-                this.skipReconnect = !0, this.backoff.reset(), this.readyState = "closed", this.engine && this.engine.close();
-            }, Manager.prototype.onclose = function(reason) {
-                debug("close"), this.cleanup(), this.backoff.reset(), this.readyState = "closed", 
-                this.emit("close", reason), this._reconnection && !this.skipReconnect && this.reconnect();
-            }, Manager.prototype.reconnect = function() {
-                if (this.reconnecting || this.skipReconnect) return this;
-                var self = this;
-                if (this.backoff.attempts >= this._reconnectionAttempts) debug("reconnect failed"), 
-                this.backoff.reset(), this.emitAll("reconnect_failed"), this.reconnecting = !1; else {
-                    var delay = this.backoff.duration();
-                    debug("will wait %dms before reconnect attempt", delay), this.reconnecting = !0;
-                    var timer = setTimeout(function() {
-                        self.skipReconnect || (debug("attempting reconnect"), self.emitAll("reconnect_attempt", self.backoff.attempts), 
-                        self.emitAll("reconnecting", self.backoff.attempts), self.skipReconnect || self.open(function(err) {
-                            err ? (debug("reconnect attempt error"), self.reconnecting = !1, self.reconnect(), 
-                            self.emitAll("reconnect_error", err.data)) : (debug("reconnect success"), self.onreconnect());
-                        }));
-                    }, delay);
-                    this.subs.push({
-                        destroy: function() {
-                            clearTimeout(timer);
-                        }
-                    });
-                }
-            }, Manager.prototype.onreconnect = function() {
-                var attempt = this.backoff.attempts;
-                this.reconnecting = !1, this.backoff.reset(), this.updateSocketIds(), this.emitAll("reconnect", attempt);
-            };
-        }, {
-            "./on": 4,
-            "./socket": 5,
-            "./url": 6,
-            backo2: 7,
-            "component-bind": 8,
-            "component-emitter": 9,
-            debug: 10,
-            "engine.io-client": 11,
-            indexof: 40,
-            "object-component": 41,
-            "socket.io-parser": 44
-        } ],
-        4: [ function(_dereq_, module, exports) {
-            function on(obj, ev, fn) {
-                return obj.on(ev, fn), {
-                    destroy: function() {
-                        obj.removeListener(ev, fn);
-                    }
-                };
-            }
-            module.exports = on;
-        }, {} ],
-        5: [ function(_dereq_, module, exports) {
-            function Socket(io, nsp) {
-                this.io = io, this.nsp = nsp, this.json = this, this.ids = 0, this.acks = {}, this.io.autoConnect && this.open(), 
-                this.receiveBuffer = [], this.sendBuffer = [], this.connected = !1, this.disconnected = !0;
-            }
-            var parser = _dereq_("socket.io-parser"), Emitter = _dereq_("component-emitter"), toArray = _dereq_("to-array"), on = _dereq_("./on"), bind = _dereq_("component-bind"), debug = _dereq_("debug")("socket.io-client:socket"), hasBin = _dereq_("has-binary");
-            module.exports = exports = Socket;
-            var events = {
-                connect: 1,
-                connect_error: 1,
-                connect_timeout: 1,
-                disconnect: 1,
-                error: 1,
-                reconnect: 1,
-                reconnect_attempt: 1,
-                reconnect_failed: 1,
-                reconnect_error: 1,
-                reconnecting: 1
-            }, emit = Emitter.prototype.emit;
-            Emitter(Socket.prototype), Socket.prototype.subEvents = function() {
-                if (!this.subs) {
-                    var io = this.io;
-                    this.subs = [ on(io, "open", bind(this, "onopen")), on(io, "packet", bind(this, "onpacket")), on(io, "close", bind(this, "onclose")) ];
-                }
-            }, Socket.prototype.open = Socket.prototype.connect = function() {
-                return this.connected ? this : (this.subEvents(), this.io.open(), "open" == this.io.readyState && this.onopen(), 
-                this);
-            }, Socket.prototype.send = function() {
-                var args = toArray(arguments);
-                return args.unshift("message"), this.emit.apply(this, args), this;
-            }, Socket.prototype.emit = function(ev) {
-                if (events.hasOwnProperty(ev)) return emit.apply(this, arguments), this;
-                var args = toArray(arguments), parserType = parser.EVENT;
-                hasBin(args) && (parserType = parser.BINARY_EVENT);
-                var packet = {
-                    type: parserType,
-                    data: args
-                };
-                return "function" == typeof args[args.length - 1] && (debug("emitting packet with ack id %d", this.ids), 
-                this.acks[this.ids] = args.pop(), packet.id = this.ids++), this.connected ? this.packet(packet) : this.sendBuffer.push(packet), 
-                this;
-            }, Socket.prototype.packet = function(packet) {
-                packet.nsp = this.nsp, this.io.packet(packet);
-            }, Socket.prototype.onopen = function() {
-                debug("transport is open - connecting"), "/" != this.nsp && this.packet({
-                    type: parser.CONNECT
-                });
-            }, Socket.prototype.onclose = function(reason) {
-                debug("close (%s)", reason), this.connected = !1, this.disconnected = !0, delete this.id, 
-                this.emit("disconnect", reason);
-            }, Socket.prototype.onpacket = function(packet) {
-                if (packet.nsp == this.nsp) switch (packet.type) {
-                  case parser.CONNECT:
-                    this.onconnect();
-                    break;
-
-                  case parser.EVENT:
-                    this.onevent(packet);
-                    break;
-
-                  case parser.BINARY_EVENT:
-                    this.onevent(packet);
-                    break;
-
-                  case parser.ACK:
-                    this.onack(packet);
-                    break;
-
-                  case parser.BINARY_ACK:
-                    this.onack(packet);
-                    break;
-
-                  case parser.DISCONNECT:
-                    this.ondisconnect();
-                    break;
-
-                  case parser.ERROR:
-                    this.emit("error", packet.data);
-                }
-            }, Socket.prototype.onevent = function(packet) {
-                var args = packet.data || [];
-                debug("emitting event %j", args), null != packet.id && (debug("attaching ack callback to event"), 
-                args.push(this.ack(packet.id))), this.connected ? emit.apply(this, args) : this.receiveBuffer.push(args);
-            }, Socket.prototype.ack = function(id) {
-                var self = this, sent = !1;
-                return function() {
-                    if (!sent) {
-                        sent = !0;
-                        var args = toArray(arguments);
-                        debug("sending ack %j", args);
-                        var type = hasBin(args) ? parser.BINARY_ACK : parser.ACK;
-                        self.packet({
-                            type: type,
-                            id: id,
-                            data: args
-                        });
-                    }
-                };
-            }, Socket.prototype.onack = function(packet) {
-                debug("calling ack %s with %j", packet.id, packet.data);
-                var fn = this.acks[packet.id];
-                fn.apply(this, packet.data), delete this.acks[packet.id];
-            }, Socket.prototype.onconnect = function() {
-                this.connected = !0, this.disconnected = !1, this.emit("connect"), this.emitBuffered();
-            }, Socket.prototype.emitBuffered = function() {
-                var i;
-                for (i = 0; i < this.receiveBuffer.length; i++) emit.apply(this, this.receiveBuffer[i]);
-                for (this.receiveBuffer = [], i = 0; i < this.sendBuffer.length; i++) this.packet(this.sendBuffer[i]);
-                this.sendBuffer = [];
-            }, Socket.prototype.ondisconnect = function() {
-                debug("server disconnect (%s)", this.nsp), this.destroy(), this.onclose("io server disconnect");
-            }, Socket.prototype.destroy = function() {
-                if (this.subs) {
-                    for (var i = 0; i < this.subs.length; i++) this.subs[i].destroy();
-                    this.subs = null;
-                }
-                this.io.destroy(this);
-            }, Socket.prototype.close = Socket.prototype.disconnect = function() {
-                return this.connected && (debug("performing disconnect (%s)", this.nsp), this.packet({
-                    type: parser.DISCONNECT
-                })), this.destroy(), this.connected && this.onclose("io client disconnect"), this;
-            };
-        }, {
-            "./on": 4,
-            "component-bind": 8,
-            "component-emitter": 9,
-            debug: 10,
-            "has-binary": 36,
-            "socket.io-parser": 44,
-            "to-array": 48
-        } ],
-        6: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function url(uri, loc) {
-                    var obj = uri, loc = loc || global.location;
-                    return null == uri && (uri = loc.protocol + "//" + loc.host), "string" == typeof uri && ("/" == uri.charAt(0) && (uri = "/" == uri.charAt(1) ? loc.protocol + uri : loc.hostname + uri), 
-                    /^(https?|wss?):\/\//.test(uri) || (debug("protocol-less url %s", uri), uri = "undefined" != typeof loc ? loc.protocol + "//" + uri : "https://" + uri), 
-                    debug("parse %s", uri), obj = parseuri(uri)), obj.port || (/^(http|ws)$/.test(obj.protocol) ? obj.port = "80" : /^(http|ws)s$/.test(obj.protocol) && (obj.port = "443")), 
-                    obj.path = obj.path || "/", obj.id = obj.protocol + "://" + obj.host + ":" + obj.port, 
-                    obj.href = obj.protocol + "://" + obj.host + (loc && loc.port == obj.port ? "" : ":" + obj.port), 
-                    obj;
-                }
-                var parseuri = _dereq_("parseuri"), debug = _dereq_("debug")("socket.io-client:url");
-                module.exports = url;
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            debug: 10,
-            parseuri: 42
-        } ],
-        7: [ function(_dereq_, module, exports) {
-            function Backoff(opts) {
-                opts = opts || {}, this.ms = opts.min || 100, this.max = opts.max || 1e4, this.factor = opts.factor || 2, 
-                this.jitter = opts.jitter > 0 && opts.jitter <= 1 ? opts.jitter : 0, this.attempts = 0;
-            }
-            module.exports = Backoff, Backoff.prototype.duration = function() {
-                var ms = this.ms * Math.pow(this.factor, this.attempts++);
-                if (this.jitter) {
-                    var rand = Math.random(), deviation = Math.floor(rand * this.jitter * ms);
-                    ms = 0 == (1 & Math.floor(10 * rand)) ? ms - deviation : ms + deviation;
-                }
-                return 0 | Math.min(ms, this.max);
-            }, Backoff.prototype.reset = function() {
-                this.attempts = 0;
-            }, Backoff.prototype.setMin = function(min) {
-                this.ms = min;
-            }, Backoff.prototype.setMax = function(max) {
-                this.max = max;
-            }, Backoff.prototype.setJitter = function(jitter) {
-                this.jitter = jitter;
-            };
-        }, {} ],
-        8: [ function(_dereq_, module, exports) {
-            var slice = [].slice;
-            module.exports = function(obj, fn) {
-                if ("string" == typeof fn && (fn = obj[fn]), "function" != typeof fn) throw new Error("bind() requires a function");
-                var args = slice.call(arguments, 2);
-                return function() {
-                    return fn.apply(obj, args.concat(slice.call(arguments)));
-                };
-            };
-        }, {} ],
-        9: [ function(_dereq_, module, exports) {
-            function Emitter(obj) {
-                return obj ? mixin(obj) : void 0;
-            }
-            function mixin(obj) {
-                for (var key in Emitter.prototype) obj[key] = Emitter.prototype[key];
-                return obj;
-            }
-            module.exports = Emitter, Emitter.prototype.on = Emitter.prototype.addEventListener = function(event, fn) {
-                return this._callbacks = this._callbacks || {}, (this._callbacks[event] = this._callbacks[event] || []).push(fn), 
-                this;
-            }, Emitter.prototype.once = function(event, fn) {
-                function on() {
-                    self.off(event, on), fn.apply(this, arguments);
-                }
-                var self = this;
-                return this._callbacks = this._callbacks || {}, on.fn = fn, this.on(event, on), 
-                this;
-            }, Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = Emitter.prototype.removeEventListener = function(event, fn) {
-                if (this._callbacks = this._callbacks || {}, 0 == arguments.length) return this._callbacks = {}, 
-                this;
-                var callbacks = this._callbacks[event];
-                if (!callbacks) return this;
-                if (1 == arguments.length) return delete this._callbacks[event], this;
-                for (var cb, i = 0; i < callbacks.length; i++) if (cb = callbacks[i], cb === fn || cb.fn === fn) {
-                    callbacks.splice(i, 1);
-                    break;
-                }
-                return this;
-            }, Emitter.prototype.emit = function(event) {
-                this._callbacks = this._callbacks || {};
-                var args = [].slice.call(arguments, 1), callbacks = this._callbacks[event];
-                if (callbacks) {
-                    callbacks = callbacks.slice(0);
-                    for (var i = 0, len = callbacks.length; len > i; ++i) callbacks[i].apply(this, args);
-                }
-                return this;
-            }, Emitter.prototype.listeners = function(event) {
-                return this._callbacks = this._callbacks || {}, this._callbacks[event] || [];
-            }, Emitter.prototype.hasListeners = function(event) {
-                return !!this.listeners(event).length;
-            };
-        }, {} ],
-        10: [ function(_dereq_, module, exports) {
-            function debug(name) {
-                return debug.enabled(name) ? function(fmt) {
-                    fmt = coerce(fmt);
-                    var curr = new Date(), ms = curr - (debug[name] || curr);
-                    debug[name] = curr, fmt = name + " " + fmt + " +" + debug.humanize(ms), window.console && console.log && Function.prototype.apply.call(console.log, console, arguments);
-                } : function() {};
-            }
-            function coerce(val) {
-                return val instanceof Error ? val.stack || val.message : val;
-            }
-            module.exports = debug, debug.names = [], debug.skips = [], debug.enable = function(name) {
-                try {
-                    localStorage.debug = name;
-                } catch (e) {}
-                for (var split = (name || "").split(/[\s,]+/), len = split.length, i = 0; len > i; i++) name = split[i].replace("*", ".*?"), 
-                "-" === name[0] ? debug.skips.push(new RegExp("^" + name.substr(1) + "$")) : debug.names.push(new RegExp("^" + name + "$"));
-            }, debug.disable = function() {
-                debug.enable("");
-            }, debug.humanize = function(ms) {
-                var sec = 1e3, min = 6e4, hour = 60 * min;
-                return ms >= hour ? (ms / hour).toFixed(1) + "h" : ms >= min ? (ms / min).toFixed(1) + "m" : ms >= sec ? (ms / sec | 0) + "s" : ms + "ms";
-            }, debug.enabled = function(name) {
-                for (var i = 0, len = debug.skips.length; len > i; i++) if (debug.skips[i].test(name)) return !1;
-                for (var i = 0, len = debug.names.length; len > i; i++) if (debug.names[i].test(name)) return !0;
-                return !1;
-            };
-            try {
-                window.localStorage && debug.enable(localStorage.debug);
-            } catch (e) {}
-        }, {} ],
-        11: [ function(_dereq_, module, exports) {
-            module.exports = _dereq_("./lib/");
-        }, {
-            "./lib/": 12
-        } ],
-        12: [ function(_dereq_, module, exports) {
-            module.exports = _dereq_("./socket"), module.exports.parser = _dereq_("engine.io-parser");
-        }, {
-            "./socket": 13,
-            "engine.io-parser": 25
-        } ],
-        13: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function Socket(uri, opts) {
-                    if (!(this instanceof Socket)) return new Socket(uri, opts);
-                    if (opts = opts || {}, uri && "object" == typeof uri && (opts = uri, uri = null), 
-                    uri && (uri = parseuri(uri), opts.host = uri.host, opts.secure = "https" == uri.protocol || "wss" == uri.protocol, 
-                    opts.port = uri.port, uri.query && (opts.query = uri.query)), this.secure = null != opts.secure ? opts.secure : global.location && "https:" == location.protocol, 
-                    opts.host) {
-                        var pieces = opts.host.split(":");
-                        opts.hostname = pieces.shift(), pieces.length ? opts.port = pieces.pop() : opts.port || (opts.port = this.secure ? "443" : "80");
-                    }
-                    this.agent = opts.agent || !1, this.hostname = opts.hostname || (global.location ? location.hostname : "localhost"), 
-                    this.port = opts.port || (global.location && location.port ? location.port : this.secure ? 443 : 80), 
-                    this.query = opts.query || {}, "string" == typeof this.query && (this.query = parseqs.decode(this.query)), 
-                    this.upgrade = !1 !== opts.upgrade, this.path = (opts.path || "/engine.io").replace(/\/$/, "") + "/", 
-                    this.forceJSONP = !!opts.forceJSONP, this.jsonp = !1 !== opts.jsonp, this.forceBase64 = !!opts.forceBase64, 
-                    this.enablesXDR = !!opts.enablesXDR, this.timestampParam = opts.timestampParam || "t", 
-                    this.timestampRequests = opts.timestampRequests, this.transports = opts.transports || [ "polling", "websocket" ], 
-                    this.readyState = "", this.writeBuffer = [], this.callbackBuffer = [], this.policyPort = opts.policyPort || 843, 
-                    this.rememberUpgrade = opts.rememberUpgrade || !1, this.binaryType = null, this.onlyBinaryUpgrades = opts.onlyBinaryUpgrades, 
-                    this.pfx = opts.pfx || null, this.key = opts.key || null, this.passphrase = opts.passphrase || null, 
-                    this.cert = opts.cert || null, this.ca = opts.ca || null, this.ciphers = opts.ciphers || null, 
-                    this.rejectUnauthorized = opts.rejectUnauthorized || null, this.open();
-                }
-                function clone(obj) {
-                    var o = {};
-                    for (var i in obj) obj.hasOwnProperty(i) && (o[i] = obj[i]);
-                    return o;
-                }
-                var transports = _dereq_("./transports"), Emitter = _dereq_("component-emitter"), debug = _dereq_("debug")("engine.io-client:socket"), index = _dereq_("indexof"), parser = _dereq_("engine.io-parser"), parseuri = _dereq_("parseuri"), parsejson = _dereq_("parsejson"), parseqs = _dereq_("parseqs");
-                module.exports = Socket, Socket.priorWebsocketSuccess = !1, Emitter(Socket.prototype), 
-                Socket.protocol = parser.protocol, Socket.Socket = Socket, Socket.Transport = _dereq_("./transport"), 
-                Socket.transports = _dereq_("./transports"), Socket.parser = _dereq_("engine.io-parser"), 
-                Socket.prototype.createTransport = function(name) {
-                    debug('creating transport "%s"', name);
-                    var query = clone(this.query);
-                    query.EIO = parser.protocol, query.transport = name, this.id && (query.sid = this.id);
-                    var transport = new transports[name]({
-                        agent: this.agent,
-                        hostname: this.hostname,
-                        port: this.port,
-                        secure: this.secure,
-                        path: this.path,
-                        query: query,
-                        forceJSONP: this.forceJSONP,
-                        jsonp: this.jsonp,
-                        forceBase64: this.forceBase64,
-                        enablesXDR: this.enablesXDR,
-                        timestampRequests: this.timestampRequests,
-                        timestampParam: this.timestampParam,
-                        policyPort: this.policyPort,
-                        socket: this,
-                        pfx: this.pfx,
-                        key: this.key,
-                        passphrase: this.passphrase,
-                        cert: this.cert,
-                        ca: this.ca,
-                        ciphers: this.ciphers,
-                        rejectUnauthorized: this.rejectUnauthorized
-                    });
-                    return transport;
-                }, Socket.prototype.open = function() {
-                    var transport;
-                    if (this.rememberUpgrade && Socket.priorWebsocketSuccess && -1 != this.transports.indexOf("websocket")) transport = "websocket"; else {
-                        if (0 == this.transports.length) {
-                            var self = this;
-                            return void setTimeout(function() {
-                                self.emit("error", "No transports available");
-                            }, 0);
-                        }
-                        transport = this.transports[0];
-                    }
-                    this.readyState = "opening";
-                    var transport;
-                    try {
-                        transport = this.createTransport(transport);
-                    } catch (e) {
-                        return this.transports.shift(), void this.open();
-                    }
-                    transport.open(), this.setTransport(transport);
-                }, Socket.prototype.setTransport = function(transport) {
-                    debug("setting transport %s", transport.name);
-                    var self = this;
-                    this.transport && (debug("clearing existing transport %s", this.transport.name), 
-                    this.transport.removeAllListeners()), this.transport = transport, transport.on("drain", function() {
-                        self.onDrain();
-                    }).on("packet", function(packet) {
-                        self.onPacket(packet);
-                    }).on("error", function(e) {
-                        self.onError(e);
-                    }).on("close", function() {
-                        self.onClose("transport close");
-                    });
-                }, Socket.prototype.probe = function(name) {
-                    function onTransportOpen() {
-                        if (self.onlyBinaryUpgrades) {
-                            var upgradeLosesBinary = !this.supportsBinary && self.transport.supportsBinary;
-                            failed = failed || upgradeLosesBinary;
-                        }
-                        failed || (debug('probe transport "%s" opened', name), transport.send([ {
-                            type: "ping",
-                            data: "probe"
-                        } ]), transport.once("packet", function(msg) {
-                            if (!failed) if ("pong" == msg.type && "probe" == msg.data) {
-                                if (debug('probe transport "%s" pong', name), self.upgrading = !0, self.emit("upgrading", transport), 
-                                !transport) return;
-                                Socket.priorWebsocketSuccess = "websocket" == transport.name, debug('pausing current transport "%s"', self.transport.name), 
-                                self.transport.pause(function() {
-                                    failed || "closed" != self.readyState && (debug("changing transport and sending upgrade packet"), 
-                                    cleanup(), self.setTransport(transport), transport.send([ {
-                                        type: "upgrade"
-                                    } ]), self.emit("upgrade", transport), transport = null, self.upgrading = !1, self.flush());
-                                });
-                            } else {
-                                debug('probe transport "%s" failed', name);
-                                var err = new Error("probe error");
-                                err.transport = transport.name, self.emit("upgradeError", err);
-                            }
-                        }));
-                    }
-                    function freezeTransport() {
-                        failed || (failed = !0, cleanup(), transport.close(), transport = null);
-                    }
-                    function onerror(err) {
-                        var error = new Error("probe error: " + err);
-                        error.transport = transport.name, freezeTransport(), debug('probe transport "%s" failed because of error: %s', name, err), 
-                        self.emit("upgradeError", error);
-                    }
-                    function onTransportClose() {
-                        onerror("transport closed");
-                    }
-                    function onclose() {
-                        onerror("socket closed");
-                    }
-                    function onupgrade(to) {
-                        transport && to.name != transport.name && (debug('"%s" works - aborting "%s"', to.name, transport.name), 
-                        freezeTransport());
-                    }
-                    function cleanup() {
-                        transport.removeListener("open", onTransportOpen), transport.removeListener("error", onerror), 
-                        transport.removeListener("close", onTransportClose), self.removeListener("close", onclose), 
-                        self.removeListener("upgrading", onupgrade);
-                    }
-                    debug('probing transport "%s"', name);
-                    var transport = this.createTransport(name, {
-                        probe: 1
-                    }), failed = !1, self = this;
-                    Socket.priorWebsocketSuccess = !1, transport.once("open", onTransportOpen), transport.once("error", onerror), 
-                    transport.once("close", onTransportClose), this.once("close", onclose), this.once("upgrading", onupgrade), 
-                    transport.open();
-                }, Socket.prototype.onOpen = function() {
-                    if (debug("socket open"), this.readyState = "open", Socket.priorWebsocketSuccess = "websocket" == this.transport.name, 
-                    this.emit("open"), this.flush(), "open" == this.readyState && this.upgrade && this.transport.pause) {
-                        debug("starting upgrade probes");
-                        for (var i = 0, l = this.upgrades.length; l > i; i++) this.probe(this.upgrades[i]);
-                    }
-                }, Socket.prototype.onPacket = function(packet) {
-                    if ("opening" == this.readyState || "open" == this.readyState) switch (debug('socket receive: type "%s", data "%s"', packet.type, packet.data), 
-                    this.emit("packet", packet), this.emit("heartbeat"), packet.type) {
-                      case "open":
-                        this.onHandshake(parsejson(packet.data));
-                        break;
-
-                      case "pong":
-                        this.setPing();
-                        break;
-
-                      case "error":
-                        var err = new Error("server error");
-                        err.code = packet.data, this.emit("error", err);
-                        break;
-
-                      case "message":
-                        this.emit("data", packet.data), this.emit("message", packet.data);
-                    } else debug('packet received with socket readyState "%s"', this.readyState);
-                }, Socket.prototype.onHandshake = function(data) {
-                    this.emit("handshake", data), this.id = data.sid, this.transport.query.sid = data.sid, 
-                    this.upgrades = this.filterUpgrades(data.upgrades), this.pingInterval = data.pingInterval, 
-                    this.pingTimeout = data.pingTimeout, this.onOpen(), "closed" != this.readyState && (this.setPing(), 
-                    this.removeListener("heartbeat", this.onHeartbeat), this.on("heartbeat", this.onHeartbeat));
-                }, Socket.prototype.onHeartbeat = function(timeout) {
-                    clearTimeout(this.pingTimeoutTimer);
-                    var self = this;
-                    self.pingTimeoutTimer = setTimeout(function() {
-                        "closed" != self.readyState && self.onClose("ping timeout");
-                    }, timeout || self.pingInterval + self.pingTimeout);
-                }, Socket.prototype.setPing = function() {
-                    var self = this;
-                    clearTimeout(self.pingIntervalTimer), self.pingIntervalTimer = setTimeout(function() {
-                        debug("writing ping packet - expecting pong within %sms", self.pingTimeout), self.ping(), 
-                        self.onHeartbeat(self.pingTimeout);
-                    }, self.pingInterval);
-                }, Socket.prototype.ping = function() {
-                    this.sendPacket("ping");
-                }, Socket.prototype.onDrain = function() {
-                    for (var i = 0; i < this.prevBufferLen; i++) this.callbackBuffer[i] && this.callbackBuffer[i]();
-                    this.writeBuffer.splice(0, this.prevBufferLen), this.callbackBuffer.splice(0, this.prevBufferLen), 
-                    this.prevBufferLen = 0, 0 == this.writeBuffer.length ? this.emit("drain") : this.flush();
-                }, Socket.prototype.flush = function() {
-                    "closed" != this.readyState && this.transport.writable && !this.upgrading && this.writeBuffer.length && (debug("flushing %d packets in socket", this.writeBuffer.length), 
-                    this.transport.send(this.writeBuffer), this.prevBufferLen = this.writeBuffer.length, 
-                    this.emit("flush"));
-                }, Socket.prototype.write = Socket.prototype.send = function(msg, fn) {
-                    return this.sendPacket("message", msg, fn), this;
-                }, Socket.prototype.sendPacket = function(type, data, fn) {
-                    if ("closing" != this.readyState && "closed" != this.readyState) {
-                        var packet = {
-                            type: type,
-                            data: data
-                        };
-                        this.emit("packetCreate", packet), this.writeBuffer.push(packet), this.callbackBuffer.push(fn), 
-                        this.flush();
-                    }
-                }, Socket.prototype.close = function() {
-                    function close() {
-                        self.onClose("forced close"), debug("socket closing - telling transport to close"), 
-                        self.transport.close();
-                    }
-                    function cleanupAndClose() {
-                        self.removeListener("upgrade", cleanupAndClose), self.removeListener("upgradeError", cleanupAndClose), 
-                        close();
-                    }
-                    function waitForUpgrade() {
-                        self.once("upgrade", cleanupAndClose), self.once("upgradeError", cleanupAndClose);
-                    }
-                    if ("opening" == this.readyState || "open" == this.readyState) {
-                        this.readyState = "closing";
-                        var self = this;
-                        this.writeBuffer.length ? this.once("drain", function() {
-                            this.upgrading ? waitForUpgrade() : close();
-                        }) : this.upgrading ? waitForUpgrade() : close();
-                    }
-                    return this;
-                }, Socket.prototype.onError = function(err) {
-                    debug("socket error %j", err), Socket.priorWebsocketSuccess = !1, this.emit("error", err), 
-                    this.onClose("transport error", err);
-                }, Socket.prototype.onClose = function(reason, desc) {
-                    if ("opening" == this.readyState || "open" == this.readyState || "closing" == this.readyState) {
-                        debug('socket close with reason: "%s"', reason);
-                        var self = this;
-                        clearTimeout(this.pingIntervalTimer), clearTimeout(this.pingTimeoutTimer), setTimeout(function() {
-                            self.writeBuffer = [], self.callbackBuffer = [], self.prevBufferLen = 0;
-                        }, 0), this.transport.removeAllListeners("close"), this.transport.close(), this.transport.removeAllListeners(), 
-                        this.readyState = "closed", this.id = null, this.emit("close", reason, desc);
-                    }
-                }, Socket.prototype.filterUpgrades = function(upgrades) {
-                    for (var filteredUpgrades = [], i = 0, j = upgrades.length; j > i; i++) ~index(this.transports, upgrades[i]) && filteredUpgrades.push(upgrades[i]);
-                    return filteredUpgrades;
-                };
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./transport": 14,
-            "./transports": 15,
-            "component-emitter": 9,
-            debug: 22,
-            "engine.io-parser": 25,
-            indexof: 40,
-            parsejson: 32,
-            parseqs: 33,
-            parseuri: 34
-        } ],
-        14: [ function(_dereq_, module, exports) {
-            function Transport(opts) {
-                this.path = opts.path, this.hostname = opts.hostname, this.port = opts.port, this.secure = opts.secure, 
-                this.query = opts.query, this.timestampParam = opts.timestampParam, this.timestampRequests = opts.timestampRequests, 
-                this.readyState = "", this.agent = opts.agent || !1, this.socket = opts.socket, 
-                this.enablesXDR = opts.enablesXDR, this.pfx = opts.pfx, this.key = opts.key, this.passphrase = opts.passphrase, 
-                this.cert = opts.cert, this.ca = opts.ca, this.ciphers = opts.ciphers, this.rejectUnauthorized = opts.rejectUnauthorized;
-            }
-            var parser = _dereq_("engine.io-parser"), Emitter = _dereq_("component-emitter");
-            module.exports = Transport, Emitter(Transport.prototype), Transport.timestamps = 0, 
-            Transport.prototype.onError = function(msg, desc) {
-                var err = new Error(msg);
-                return err.type = "TransportError", err.description = desc, this.emit("error", err), 
-                this;
-            }, Transport.prototype.open = function() {
-                return ("closed" == this.readyState || "" == this.readyState) && (this.readyState = "opening", 
-                this.doOpen()), this;
-            }, Transport.prototype.close = function() {
-                return ("opening" == this.readyState || "open" == this.readyState) && (this.doClose(), 
-                this.onClose()), this;
-            }, Transport.prototype.send = function(packets) {
-                if ("open" != this.readyState) throw new Error("Transport not open");
-                this.write(packets);
-            }, Transport.prototype.onOpen = function() {
-                this.readyState = "open", this.writable = !0, this.emit("open");
-            }, Transport.prototype.onData = function(data) {
-                var packet = parser.decodePacket(data, this.socket.binaryType);
-                this.onPacket(packet);
-            }, Transport.prototype.onPacket = function(packet) {
-                this.emit("packet", packet);
-            }, Transport.prototype.onClose = function() {
-                this.readyState = "closed", this.emit("close");
-            };
-        }, {
-            "component-emitter": 9,
-            "engine.io-parser": 25
-        } ],
-        15: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function polling(opts) {
-                    var xhr, xd = !1, xs = !1, jsonp = !1 !== opts.jsonp;
-                    if (global.location) {
-                        var isSSL = "https:" == location.protocol, port = location.port;
-                        port || (port = isSSL ? 443 : 80), xd = opts.hostname != location.hostname || port != opts.port, 
-                        xs = opts.secure != isSSL;
-                    }
-                    if (opts.xdomain = xd, opts.xscheme = xs, xhr = new XMLHttpRequest(opts), "open" in xhr && !opts.forceJSONP) return new XHR(opts);
-                    if (!jsonp) throw new Error("JSONP disabled");
-                    return new JSONP(opts);
-                }
-                var XMLHttpRequest = _dereq_("xmlhttprequest"), XHR = _dereq_("./polling-xhr"), JSONP = _dereq_("./polling-jsonp"), websocket = _dereq_("./websocket");
-                exports.polling = polling, exports.websocket = websocket;
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./polling-jsonp": 16,
-            "./polling-xhr": 17,
-            "./websocket": 19,
-            xmlhttprequest: 20
-        } ],
-        16: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function empty() {}
-                function JSONPPolling(opts) {
-                    Polling.call(this, opts), this.query = this.query || {}, callbacks || (global.___eio || (global.___eio = []), 
-                    callbacks = global.___eio), this.index = callbacks.length;
-                    var self = this;
-                    callbacks.push(function(msg) {
-                        self.onData(msg);
-                    }), this.query.j = this.index, global.document && global.addEventListener && global.addEventListener("beforeunload", function() {
-                        self.script && (self.script.onerror = empty);
-                    }, !1);
-                }
-                var Polling = _dereq_("./polling"), inherit = _dereq_("component-inherit");
-                module.exports = JSONPPolling;
-                var callbacks, rNewline = /\n/g, rEscapedNewline = /\\n/g;
-                inherit(JSONPPolling, Polling), JSONPPolling.prototype.supportsBinary = !1, JSONPPolling.prototype.doClose = function() {
-                    this.script && (this.script.parentNode.removeChild(this.script), this.script = null), 
-                    this.form && (this.form.parentNode.removeChild(this.form), this.form = null, this.iframe = null), 
-                    Polling.prototype.doClose.call(this);
-                }, JSONPPolling.prototype.doPoll = function() {
-                    var self = this, script = document.createElement("script");
-                    this.script && (this.script.parentNode.removeChild(this.script), this.script = null), 
-                    script.async = !0, script.src = this.uri(), script.onerror = function(e) {
-                        self.onError("jsonp poll error", e);
-                    };
-                    var insertAt = document.getElementsByTagName("script")[0];
-                    insertAt.parentNode.insertBefore(script, insertAt), this.script = script;
-                    var isUAgecko = "undefined" != typeof navigator && /gecko/i.test(navigator.userAgent);
-                    isUAgecko && setTimeout(function() {
-                        var iframe = document.createElement("iframe");
-                        document.body.appendChild(iframe), document.body.removeChild(iframe);
-                    }, 100);
-                }, JSONPPolling.prototype.doWrite = function(data, fn) {
-                    function complete() {
-                        initIframe(), fn();
-                    }
-                    function initIframe() {
-                        if (self.iframe) try {
-                            self.form.removeChild(self.iframe);
-                        } catch (e) {
-                            self.onError("jsonp polling iframe removal error", e);
-                        }
-                        try {
-                            var html = '<iframe src="javascript:0" name="' + self.iframeId + '">';
-                            iframe = document.createElement(html);
-                        } catch (e) {
-                            iframe = document.createElement("iframe"), iframe.name = self.iframeId, iframe.src = "javascript:0";
-                        }
-                        iframe.id = self.iframeId, self.form.appendChild(iframe), self.iframe = iframe;
-                    }
-                    var self = this;
-                    if (!this.form) {
-                        var iframe, form = document.createElement("form"), area = document.createElement("textarea"), id = this.iframeId = "eio_iframe_" + this.index;
-                        form.className = "socketio", form.style.position = "absolute", form.style.top = "-1000px", 
-                        form.style.left = "-1000px", form.target = id, form.method = "POST", form.setAttribute("accept-charset", "utf-8"), 
-                        area.name = "d", form.appendChild(area), document.body.appendChild(form), this.form = form, 
-                        this.area = area;
-                    }
-                    this.form.action = this.uri(), initIframe(), data = data.replace(rEscapedNewline, "\\\n"), 
-                    this.area.value = data.replace(rNewline, "\\n");
-                    try {
-                        this.form.submit();
-                    } catch (e) {}
-                    this.iframe.attachEvent ? this.iframe.onreadystatechange = function() {
-                        "complete" == self.iframe.readyState && complete();
-                    } : this.iframe.onload = complete;
-                };
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./polling": 18,
-            "component-inherit": 21
-        } ],
-        17: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function empty() {}
-                function XHR(opts) {
-                    if (Polling.call(this, opts), global.location) {
-                        var isSSL = "https:" == location.protocol, port = location.port;
-                        port || (port = isSSL ? 443 : 80), this.xd = opts.hostname != global.location.hostname || port != opts.port, 
-                        this.xs = opts.secure != isSSL;
-                    }
-                }
-                function Request(opts) {
-                    this.method = opts.method || "GET", this.uri = opts.uri, this.xd = !!opts.xd, this.xs = !!opts.xs, 
-                    this.async = !1 !== opts.async, this.data = void 0 != opts.data ? opts.data : null, 
-                    this.agent = opts.agent, this.isBinary = opts.isBinary, this.supportsBinary = opts.supportsBinary, 
-                    this.enablesXDR = opts.enablesXDR, this.pfx = opts.pfx, this.key = opts.key, this.passphrase = opts.passphrase, 
-                    this.cert = opts.cert, this.ca = opts.ca, this.ciphers = opts.ciphers, this.rejectUnauthorized = opts.rejectUnauthorized, 
-                    this.create();
-                }
-                function unloadHandler() {
-                    for (var i in Request.requests) Request.requests.hasOwnProperty(i) && Request.requests[i].abort();
-                }
-                var XMLHttpRequest = _dereq_("xmlhttprequest"), Polling = _dereq_("./polling"), Emitter = _dereq_("component-emitter"), inherit = _dereq_("component-inherit"), debug = _dereq_("debug")("engine.io-client:polling-xhr");
-                module.exports = XHR, module.exports.Request = Request, inherit(XHR, Polling), XHR.prototype.supportsBinary = !0, 
-                XHR.prototype.request = function(opts) {
-                    return opts = opts || {}, opts.uri = this.uri(), opts.xd = this.xd, opts.xs = this.xs, 
-                    opts.agent = this.agent || !1, opts.supportsBinary = this.supportsBinary, opts.enablesXDR = this.enablesXDR, 
-                    opts.pfx = this.pfx, opts.key = this.key, opts.passphrase = this.passphrase, opts.cert = this.cert, 
-                    opts.ca = this.ca, opts.ciphers = this.ciphers, opts.rejectUnauthorized = this.rejectUnauthorized, 
-                    new Request(opts);
-                }, XHR.prototype.doWrite = function(data, fn) {
-                    var isBinary = "string" != typeof data && void 0 !== data, req = this.request({
-                        method: "POST",
-                        data: data,
-                        isBinary: isBinary
-                    }), self = this;
-                    req.on("success", fn), req.on("error", function(err) {
-                        self.onError("xhr post error", err);
-                    }), this.sendXhr = req;
-                }, XHR.prototype.doPoll = function() {
-                    debug("xhr poll");
-                    var req = this.request(), self = this;
-                    req.on("data", function(data) {
-                        self.onData(data);
-                    }), req.on("error", function(err) {
-                        self.onError("xhr poll error", err);
-                    }), this.pollXhr = req;
-                }, Emitter(Request.prototype), Request.prototype.create = function() {
-                    var opts = {
-                        agent: this.agent,
-                        xdomain: this.xd,
-                        xscheme: this.xs,
-                        enablesXDR: this.enablesXDR
-                    };
-                    opts.pfx = this.pfx, opts.key = this.key, opts.passphrase = this.passphrase, opts.cert = this.cert, 
-                    opts.ca = this.ca, opts.ciphers = this.ciphers, opts.rejectUnauthorized = this.rejectUnauthorized;
-                    var xhr = this.xhr = new XMLHttpRequest(opts), self = this;
-                    try {
-                        if (debug("xhr open %s: %s", this.method, this.uri), xhr.open(this.method, this.uri, this.async), 
-                        this.supportsBinary && (xhr.responseType = "arraybuffer"), "POST" == this.method) try {
-                            this.isBinary ? xhr.setRequestHeader("Content-type", "application/octet-stream") : xhr.setRequestHeader("Content-type", "text/plain;charset=UTF-8");
-                        } catch (e) {}
-                        "withCredentials" in xhr && (xhr.withCredentials = !0), this.hasXDR() ? (xhr.onload = function() {
-                            self.onLoad();
-                        }, xhr.onerror = function() {
-                            self.onError(xhr.responseText);
-                        }) : xhr.onreadystatechange = function() {
-                            4 == xhr.readyState && (200 == xhr.status || 1223 == xhr.status ? self.onLoad() : setTimeout(function() {
-                                self.onError(xhr.status);
-                            }, 0));
-                        }, debug("xhr data %s", this.data), xhr.send(this.data);
-                    } catch (e) {
-                        return void setTimeout(function() {
-                            self.onError(e);
-                        }, 0);
-                    }
-                    global.document && (this.index = Request.requestsCount++, Request.requests[this.index] = this);
-                }, Request.prototype.onSuccess = function() {
-                    this.emit("success"), this.cleanup();
-                }, Request.prototype.onData = function(data) {
-                    this.emit("data", data), this.onSuccess();
-                }, Request.prototype.onError = function(err) {
-                    this.emit("error", err), this.cleanup(!0);
-                }, Request.prototype.cleanup = function(fromError) {
-                    if ("undefined" != typeof this.xhr && null !== this.xhr) {
-                        if (this.hasXDR() ? this.xhr.onload = this.xhr.onerror = empty : this.xhr.onreadystatechange = empty, 
-                        fromError) try {
-                            this.xhr.abort();
-                        } catch (e) {}
-                        global.document && delete Request.requests[this.index], this.xhr = null;
-                    }
-                }, Request.prototype.onLoad = function() {
-                    var data;
-                    try {
-                        var contentType;
-                        try {
-                            contentType = this.xhr.getResponseHeader("Content-Type").split(";")[0];
-                        } catch (e) {}
-                        data = "application/octet-stream" === contentType ? this.xhr.response : this.supportsBinary ? "ok" : this.xhr.responseText;
-                    } catch (e) {
-                        this.onError(e);
-                    }
-                    null != data && this.onData(data);
-                }, Request.prototype.hasXDR = function() {
-                    return "undefined" != typeof global.XDomainRequest && !this.xs && this.enablesXDR;
-                }, Request.prototype.abort = function() {
-                    this.cleanup();
-                }, global.document && (Request.requestsCount = 0, Request.requests = {}, global.attachEvent ? global.attachEvent("onunload", unloadHandler) : global.addEventListener && global.addEventListener("beforeunload", unloadHandler, !1));
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./polling": 18,
-            "component-emitter": 9,
-            "component-inherit": 21,
-            debug: 22,
-            xmlhttprequest: 20
-        } ],
-        18: [ function(_dereq_, module, exports) {
-            function Polling(opts) {
-                var forceBase64 = opts && opts.forceBase64;
-                (!hasXHR2 || forceBase64) && (this.supportsBinary = !1), Transport.call(this, opts);
-            }
-            var Transport = _dereq_("../transport"), parseqs = _dereq_("parseqs"), parser = _dereq_("engine.io-parser"), inherit = _dereq_("component-inherit"), debug = _dereq_("debug")("engine.io-client:polling");
-            module.exports = Polling;
-            var hasXHR2 = function() {
-                var XMLHttpRequest = _dereq_("xmlhttprequest"), xhr = new XMLHttpRequest({
-                    xdomain: !1
-                });
-                return null != xhr.responseType;
-            }();
-            inherit(Polling, Transport), Polling.prototype.name = "polling", Polling.prototype.doOpen = function() {
-                this.poll();
-            }, Polling.prototype.pause = function(onPause) {
-                function pause() {
-                    debug("paused"), self.readyState = "paused", onPause();
-                }
-                var self = this;
-                if (this.readyState = "pausing", this.polling || !this.writable) {
-                    var total = 0;
-                    this.polling && (debug("we are currently polling - waiting to pause"), total++, 
-                    this.once("pollComplete", function() {
-                        debug("pre-pause polling complete"), --total || pause();
-                    })), this.writable || (debug("we are currently writing - waiting to pause"), total++, 
-                    this.once("drain", function() {
-                        debug("pre-pause writing complete"), --total || pause();
-                    }));
-                } else pause();
-            }, Polling.prototype.poll = function() {
-                debug("polling"), this.polling = !0, this.doPoll(), this.emit("poll");
-            }, Polling.prototype.onData = function(data) {
-                var self = this;
-                debug("polling got data %s", data);
-                var callback = function(packet, index, total) {
-                    return "opening" == self.readyState && self.onOpen(), "close" == packet.type ? (self.onClose(), 
-                    !1) : void self.onPacket(packet);
-                };
-                parser.decodePayload(data, this.socket.binaryType, callback), "closed" != this.readyState && (this.polling = !1, 
-                this.emit("pollComplete"), "open" == this.readyState ? this.poll() : debug('ignoring poll - transport state "%s"', this.readyState));
-            }, Polling.prototype.doClose = function() {
-                function close() {
-                    debug("writing close packet"), self.write([ {
-                        type: "close"
-                    } ]);
-                }
-                var self = this;
-                "open" == this.readyState ? (debug("transport open - closing"), close()) : (debug("transport not open - deferring close"), 
-                this.once("open", close));
-            }, Polling.prototype.write = function(packets) {
-                var self = this;
-                this.writable = !1;
-                var callbackfn = function() {
-                    self.writable = !0, self.emit("drain");
-                }, self = this;
-                parser.encodePayload(packets, this.supportsBinary, function(data) {
-                    self.doWrite(data, callbackfn);
-                });
-            }, Polling.prototype.uri = function() {
-                var query = this.query || {}, schema = this.secure ? "https" : "http", port = "";
-                return !1 !== this.timestampRequests && (query[this.timestampParam] = +new Date() + "-" + Transport.timestamps++), 
-                this.supportsBinary || query.sid || (query.b64 = 1), query = parseqs.encode(query), 
-                this.port && ("https" == schema && 443 != this.port || "http" == schema && 80 != this.port) && (port = ":" + this.port), 
-                query.length && (query = "?" + query), schema + "://" + this.hostname + port + this.path + query;
-            };
-        }, {
-            "../transport": 14,
-            "component-inherit": 21,
-            debug: 22,
-            "engine.io-parser": 25,
-            parseqs: 33,
-            xmlhttprequest: 20
-        } ],
-        19: [ function(_dereq_, module, exports) {
-            function WS(opts) {
-                var forceBase64 = opts && opts.forceBase64;
-                forceBase64 && (this.supportsBinary = !1), Transport.call(this, opts);
-            }
-            var Transport = _dereq_("../transport"), parser = _dereq_("engine.io-parser"), parseqs = _dereq_("parseqs"), inherit = _dereq_("component-inherit"), debug = _dereq_("debug")("engine.io-client:websocket"), WebSocket = _dereq_("ws");
-            module.exports = WS, inherit(WS, Transport), WS.prototype.name = "websocket", WS.prototype.supportsBinary = !0, 
-            WS.prototype.doOpen = function() {
-                if (this.check()) {
-                    var uri = this.uri(), protocols = void 0, opts = {
-                        agent: this.agent
-                    };
-                    opts.pfx = this.pfx, opts.key = this.key, opts.passphrase = this.passphrase, opts.cert = this.cert, 
-                    opts.ca = this.ca, opts.ciphers = this.ciphers, opts.rejectUnauthorized = this.rejectUnauthorized, 
-                    this.ws = new WebSocket(uri, protocols, opts), void 0 === this.ws.binaryType && (this.supportsBinary = !1), 
-                    this.ws.binaryType = "arraybuffer", this.addEventListeners();
-                }
-            }, WS.prototype.addEventListeners = function() {
-                var self = this;
-                this.ws.onopen = function() {
-                    self.onOpen();
-                }, this.ws.onclose = function() {
-                    self.onClose();
-                }, this.ws.onmessage = function(ev) {
-                    self.onData(ev.data);
-                }, this.ws.onerror = function(e) {
-                    self.onError("websocket error", e);
-                };
-            }, "undefined" != typeof navigator && /iPad|iPhone|iPod/i.test(navigator.userAgent) && (WS.prototype.onData = function(data) {
-                var self = this;
-                setTimeout(function() {
-                    Transport.prototype.onData.call(self, data);
-                }, 0);
-            }), WS.prototype.write = function(packets) {
-                function ondrain() {
-                    self.writable = !0, self.emit("drain");
-                }
-                var self = this;
-                this.writable = !1;
-                for (var i = 0, l = packets.length; l > i; i++) parser.encodePacket(packets[i], this.supportsBinary, function(data) {
-                    try {
-                        self.ws.send(data);
-                    } catch (e) {
-                        debug("websocket closed before onclose event");
-                    }
-                });
-                setTimeout(ondrain, 0);
-            }, WS.prototype.onClose = function() {
-                Transport.prototype.onClose.call(this);
-            }, WS.prototype.doClose = function() {
-                "undefined" != typeof this.ws && this.ws.close();
-            }, WS.prototype.uri = function() {
-                var query = this.query || {}, schema = this.secure ? "wss" : "ws", port = "";
-                return this.port && ("wss" == schema && 443 != this.port || "ws" == schema && 80 != this.port) && (port = ":" + this.port), 
-                this.timestampRequests && (query[this.timestampParam] = +new Date()), this.supportsBinary || (query.b64 = 1), 
-                query = parseqs.encode(query), query.length && (query = "?" + query), schema + "://" + this.hostname + port + this.path + query;
-            }, WS.prototype.check = function() {
-                return !(!WebSocket || "__initialize" in WebSocket && this.name === WS.prototype.name);
-            };
-        }, {
-            "../transport": 14,
-            "component-inherit": 21,
-            debug: 22,
-            "engine.io-parser": 25,
-            parseqs: 33,
-            ws: 35
-        } ],
-        20: [ function(_dereq_, module, exports) {
-            var hasCORS = _dereq_("has-cors");
-            module.exports = function(opts) {
-                var xdomain = opts.xdomain, xscheme = opts.xscheme, enablesXDR = opts.enablesXDR;
-                try {
-                    if ("undefined" != typeof XMLHttpRequest && (!xdomain || hasCORS)) return new XMLHttpRequest();
-                } catch (e) {}
-                try {
-                    if ("undefined" != typeof XDomainRequest && !xscheme && enablesXDR) return new XDomainRequest();
-                } catch (e) {}
-                if (!xdomain) try {
-                    return new ActiveXObject("Microsoft.XMLHTTP");
-                } catch (e) {}
-            };
-        }, {
-            "has-cors": 38
-        } ],
-        21: [ function(_dereq_, module, exports) {
-            module.exports = function(a, b) {
-                var fn = function() {};
-                fn.prototype = b.prototype, a.prototype = new fn(), a.prototype.constructor = a;
-            };
-        }, {} ],
-        22: [ function(_dereq_, module, exports) {
-            function useColors() {
-                return "WebkitAppearance" in document.documentElement.style || window.console && (console.firebug || console.exception && console.table) || navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31;
-            }
-            function formatArgs() {
-                var args = arguments, useColors = this.useColors;
-                if (args[0] = (useColors ? "%c" : "") + this.namespace + (useColors ? " %c" : " ") + args[0] + (useColors ? "%c " : " ") + "+" + exports.humanize(this.diff), 
-                !useColors) return args;
-                var c = "color: " + this.color;
-                args = [ args[0], c, "color: inherit" ].concat(Array.prototype.slice.call(args, 1));
-                var index = 0, lastC = 0;
-                return args[0].replace(/%[a-z%]/g, function(match) {
-                    "%%" !== match && (index++, "%c" === match && (lastC = index));
-                }), args.splice(lastC, 0, c), args;
-            }
-            function log() {
-                return "object" == typeof console && "function" == typeof console.log && Function.prototype.apply.call(console.log, console, arguments);
-            }
-            function save(namespaces) {
-                try {
-                    null == namespaces ? localStorage.removeItem("debug") : localStorage.debug = namespaces;
-                } catch (e) {}
-            }
-            function load() {
-                var r;
-                try {
-                    r = localStorage.debug;
-                } catch (e) {}
-                return r;
-            }
-            exports = module.exports = _dereq_("./debug"), exports.log = log, exports.formatArgs = formatArgs, 
-            exports.save = save, exports.load = load, exports.useColors = useColors, exports.colors = [ "lightseagreen", "forestgreen", "goldenrod", "dodgerblue", "darkorchid", "crimson" ], 
-            exports.formatters.j = function(v) {
-                return JSON.stringify(v);
-            }, exports.enable(load());
-        }, {
-            "./debug": 23
-        } ],
-        23: [ function(_dereq_, module, exports) {
-            function selectColor() {
-                return exports.colors[prevColor++ % exports.colors.length];
-            }
-            function debug(namespace) {
-                function disabled() {}
-                function enabled() {
-                    var self = enabled, curr = +new Date(), ms = curr - (prevTime || curr);
-                    self.diff = ms, self.prev = prevTime, self.curr = curr, prevTime = curr, null == self.useColors && (self.useColors = exports.useColors()), 
-                    null == self.color && self.useColors && (self.color = selectColor());
-                    var args = Array.prototype.slice.call(arguments);
-                    args[0] = exports.coerce(args[0]), "string" != typeof args[0] && (args = [ "%o" ].concat(args));
-                    var index = 0;
-                    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
-                        if ("%%" === match) return match;
-                        index++;
-                        var formatter = exports.formatters[format];
-                        if ("function" == typeof formatter) {
-                            var val = args[index];
-                            match = formatter.call(self, val), args.splice(index, 1), index--;
-                        }
-                        return match;
-                    }), "function" == typeof exports.formatArgs && (args = exports.formatArgs.apply(self, args));
-                    var logFn = enabled.log || exports.log || console.log.bind(console);
-                    logFn.apply(self, args);
-                }
-                disabled.enabled = !1, enabled.enabled = !0;
-                var fn = exports.enabled(namespace) ? enabled : disabled;
-                return fn.namespace = namespace, fn;
-            }
-            function enable(namespaces) {
-                exports.save(namespaces);
-                for (var split = (namespaces || "").split(/[\s,]+/), len = split.length, i = 0; len > i; i++) split[i] && (namespaces = split[i].replace(/\*/g, ".*?"), 
-                "-" === namespaces[0] ? exports.skips.push(new RegExp("^" + namespaces.substr(1) + "$")) : exports.names.push(new RegExp("^" + namespaces + "$")));
-            }
-            function disable() {
-                exports.enable("");
-            }
-            function enabled(name) {
-                var i, len;
-                for (i = 0, len = exports.skips.length; len > i; i++) if (exports.skips[i].test(name)) return !1;
-                for (i = 0, len = exports.names.length; len > i; i++) if (exports.names[i].test(name)) return !0;
-                return !1;
-            }
-            function coerce(val) {
-                return val instanceof Error ? val.stack || val.message : val;
-            }
-            exports = module.exports = debug, exports.coerce = coerce, exports.disable = disable, 
-            exports.enable = enable, exports.enabled = enabled, exports.humanize = _dereq_("ms"), 
-            exports.names = [], exports.skips = [], exports.formatters = {};
-            var prevTime, prevColor = 0;
-        }, {
-            ms: 24
-        } ],
-        24: [ function(_dereq_, module, exports) {
-            function parse(str) {
-                var match = /^((?:\d+)?\.?\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);
-                if (match) {
-                    var n = parseFloat(match[1]), type = (match[2] || "ms").toLowerCase();
-                    switch (type) {
-                      case "years":
-                      case "year":
-                      case "y":
-                        return n * y;
-
-                      case "days":
-                      case "day":
-                      case "d":
-                        return n * d;
-
-                      case "hours":
-                      case "hour":
-                      case "h":
-                        return n * h;
-
-                      case "minutes":
-                      case "minute":
-                      case "m":
-                        return n * m;
-
-                      case "seconds":
-                      case "second":
-                      case "s":
-                        return n * s;
-
-                      case "ms":
-                        return n;
-                    }
-                }
-            }
-            function short(ms) {
-                return ms >= d ? Math.round(ms / d) + "d" : ms >= h ? Math.round(ms / h) + "h" : ms >= m ? Math.round(ms / m) + "m" : ms >= s ? Math.round(ms / s) + "s" : ms + "ms";
-            }
-            function long(ms) {
-                return plural(ms, d, "day") || plural(ms, h, "hour") || plural(ms, m, "minute") || plural(ms, s, "second") || ms + " ms";
-            }
-            function plural(ms, n, name) {
-                return n > ms ? void 0 : 1.5 * n > ms ? Math.floor(ms / n) + " " + name : Math.ceil(ms / n) + " " + name + "s";
-            }
-            var s = 1e3, m = 60 * s, h = 60 * m, d = 24 * h, y = 365.25 * d;
-            module.exports = function(val, options) {
-                return options = options || {}, "string" == typeof val ? parse(val) : options["long"] ? long(val) : short(val);
-            };
-        }, {} ],
-        25: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function encodeBase64Object(packet, callback) {
-                    var message = "b" + exports.packets[packet.type] + packet.data.data;
-                    return callback(message);
-                }
-                function encodeArrayBuffer(packet, supportsBinary, callback) {
-                    if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
-                    var data = packet.data, contentArray = new Uint8Array(data), resultBuffer = new Uint8Array(1 + data.byteLength);
-                    resultBuffer[0] = packets[packet.type];
-                    for (var i = 0; i < contentArray.length; i++) resultBuffer[i + 1] = contentArray[i];
-                    return callback(resultBuffer.buffer);
-                }
-                function encodeBlobAsArrayBuffer(packet, supportsBinary, callback) {
-                    if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
-                    var fr = new FileReader();
-                    return fr.onload = function() {
-                        packet.data = fr.result, exports.encodePacket(packet, supportsBinary, !0, callback);
-                    }, fr.readAsArrayBuffer(packet.data);
-                }
-                function encodeBlob(packet, supportsBinary, callback) {
-                    if (!supportsBinary) return exports.encodeBase64Packet(packet, callback);
-                    if (dontSendBlobs) return encodeBlobAsArrayBuffer(packet, supportsBinary, callback);
-                    var length = new Uint8Array(1);
-                    length[0] = packets[packet.type];
-                    var blob = new Blob([ length.buffer, packet.data ]);
-                    return callback(blob);
-                }
-                function map(ary, each, done) {
-                    for (var result = new Array(ary.length), next = after(ary.length, done), eachWithIndex = function(i, el, cb) {
-                        each(el, function(error, msg) {
-                            result[i] = msg, cb(error, result);
-                        });
-                    }, i = 0; i < ary.length; i++) eachWithIndex(i, ary[i], next);
-                }
-                var keys = _dereq_("./keys"), hasBinary = _dereq_("has-binary"), sliceBuffer = _dereq_("arraybuffer.slice"), base64encoder = _dereq_("base64-arraybuffer"), after = _dereq_("after"), utf8 = _dereq_("utf8"), isAndroid = navigator.userAgent.match(/Android/i), isPhantomJS = /PhantomJS/i.test(navigator.userAgent), dontSendBlobs = isAndroid || isPhantomJS;
-                exports.protocol = 3;
-                var packets = exports.packets = {
-                    open: 0,
-                    close: 1,
-                    ping: 2,
-                    pong: 3,
-                    message: 4,
-                    upgrade: 5,
-                    noop: 6
-                }, packetslist = keys(packets), err = {
-                    type: "error",
-                    data: "parser error"
-                }, Blob = _dereq_("blob");
-                exports.encodePacket = function(packet, supportsBinary, utf8encode, callback) {
-                    "function" == typeof supportsBinary && (callback = supportsBinary, supportsBinary = !1), 
-                    "function" == typeof utf8encode && (callback = utf8encode, utf8encode = null);
-                    var data = void 0 === packet.data ? void 0 : packet.data.buffer || packet.data;
-                    if (global.ArrayBuffer && data instanceof ArrayBuffer) return encodeArrayBuffer(packet, supportsBinary, callback);
-                    if (Blob && data instanceof global.Blob) return encodeBlob(packet, supportsBinary, callback);
-                    if (data && data.base64) return encodeBase64Object(packet, callback);
-                    var encoded = packets[packet.type];
-                    return void 0 !== packet.data && (encoded += utf8encode ? utf8.encode(String(packet.data)) : String(packet.data)), 
-                    callback("" + encoded);
-                }, exports.encodeBase64Packet = function(packet, callback) {
-                    var message = "b" + exports.packets[packet.type];
-                    if (Blob && packet.data instanceof Blob) {
-                        var fr = new FileReader();
-                        return fr.onload = function() {
-                            var b64 = fr.result.split(",")[1];
-                            callback(message + b64);
-                        }, fr.readAsDataURL(packet.data);
-                    }
-                    var b64data;
-                    try {
-                        b64data = String.fromCharCode.apply(null, new Uint8Array(packet.data));
-                    } catch (e) {
-                        for (var typed = new Uint8Array(packet.data), basic = new Array(typed.length), i = 0; i < typed.length; i++) basic[i] = typed[i];
-                        b64data = String.fromCharCode.apply(null, basic);
-                    }
-                    return message += global.btoa(b64data), callback(message);
-                }, exports.decodePacket = function(data, binaryType, utf8decode) {
-                    if ("string" == typeof data || void 0 === data) {
-                        if ("b" == data.charAt(0)) return exports.decodeBase64Packet(data.substr(1), binaryType);
-                        if (utf8decode) try {
-                            data = utf8.decode(data);
-                        } catch (e) {
-                            return err;
-                        }
-                        var type = data.charAt(0);
-                        return Number(type) == type && packetslist[type] ? data.length > 1 ? {
-                            type: packetslist[type],
-                            data: data.substring(1)
-                        } : {
-                            type: packetslist[type]
-                        } : err;
-                    }
-                    var asArray = new Uint8Array(data), type = asArray[0], rest = sliceBuffer(data, 1);
-                    return Blob && "blob" === binaryType && (rest = new Blob([ rest ])), {
-                        type: packetslist[type],
-                        data: rest
-                    };
-                }, exports.decodeBase64Packet = function(msg, binaryType) {
-                    var type = packetslist[msg.charAt(0)];
-                    if (!global.ArrayBuffer) return {
-                        type: type,
-                        data: {
-                            base64: !0,
-                            data: msg.substr(1)
-                        }
-                    };
-                    var data = base64encoder.decode(msg.substr(1));
-                    return "blob" === binaryType && Blob && (data = new Blob([ data ])), {
-                        type: type,
-                        data: data
-                    };
-                }, exports.encodePayload = function(packets, supportsBinary, callback) {
-                    function setLengthHeader(message) {
-                        return message.length + ":" + message;
-                    }
-                    function encodeOne(packet, doneCallback) {
-                        exports.encodePacket(packet, isBinary ? supportsBinary : !1, !0, function(message) {
-                            doneCallback(null, setLengthHeader(message));
-                        });
-                    }
-                    "function" == typeof supportsBinary && (callback = supportsBinary, supportsBinary = null);
-                    var isBinary = hasBinary(packets);
-                    return supportsBinary && isBinary ? Blob && !dontSendBlobs ? exports.encodePayloadAsBlob(packets, callback) : exports.encodePayloadAsArrayBuffer(packets, callback) : packets.length ? void map(packets, encodeOne, function(err, results) {
-                        return callback(results.join(""));
-                    }) : callback("0:");
-                }, exports.decodePayload = function(data, binaryType, callback) {
-                    if ("string" != typeof data) return exports.decodePayloadAsBinary(data, binaryType, callback);
-                    "function" == typeof binaryType && (callback = binaryType, binaryType = null);
-                    var packet;
-                    if ("" == data) return callback(err, 0, 1);
-                    for (var n, msg, length = "", i = 0, l = data.length; l > i; i++) {
-                        var chr = data.charAt(i);
-                        if (":" != chr) length += chr; else {
-                            if ("" == length || length != (n = Number(length))) return callback(err, 0, 1);
-                            if (msg = data.substr(i + 1, n), length != msg.length) return callback(err, 0, 1);
-                            if (msg.length) {
-                                if (packet = exports.decodePacket(msg, binaryType, !0), err.type == packet.type && err.data == packet.data) return callback(err, 0, 1);
-                                var ret = callback(packet, i + n, l);
-                                if (!1 === ret) return;
-                            }
-                            i += n, length = "";
-                        }
-                    }
-                    return "" != length ? callback(err, 0, 1) : void 0;
-                }, exports.encodePayloadAsArrayBuffer = function(packets, callback) {
-                    function encodeOne(packet, doneCallback) {
-                        exports.encodePacket(packet, !0, !0, function(data) {
-                            return doneCallback(null, data);
-                        });
-                    }
-                    return packets.length ? void map(packets, encodeOne, function(err, encodedPackets) {
-                        var totalLength = encodedPackets.reduce(function(acc, p) {
-                            var len;
-                            return len = "string" == typeof p ? p.length : p.byteLength, acc + len.toString().length + len + 2;
-                        }, 0), resultArray = new Uint8Array(totalLength), bufferIndex = 0;
-                        return encodedPackets.forEach(function(p) {
-                            var isString = "string" == typeof p, ab = p;
-                            if (isString) {
-                                for (var view = new Uint8Array(p.length), i = 0; i < p.length; i++) view[i] = p.charCodeAt(i);
-                                ab = view.buffer;
-                            }
-                            isString ? resultArray[bufferIndex++] = 0 : resultArray[bufferIndex++] = 1;
-                            for (var lenStr = ab.byteLength.toString(), i = 0; i < lenStr.length; i++) resultArray[bufferIndex++] = parseInt(lenStr[i]);
-                            resultArray[bufferIndex++] = 255;
-                            for (var view = new Uint8Array(ab), i = 0; i < view.length; i++) resultArray[bufferIndex++] = view[i];
-                        }), callback(resultArray.buffer);
-                    }) : callback(new ArrayBuffer(0));
-                }, exports.encodePayloadAsBlob = function(packets, callback) {
-                    function encodeOne(packet, doneCallback) {
-                        exports.encodePacket(packet, !0, !0, function(encoded) {
-                            var binaryIdentifier = new Uint8Array(1);
-                            if (binaryIdentifier[0] = 1, "string" == typeof encoded) {
-                                for (var view = new Uint8Array(encoded.length), i = 0; i < encoded.length; i++) view[i] = encoded.charCodeAt(i);
-                                encoded = view.buffer, binaryIdentifier[0] = 0;
-                            }
-                            for (var len = encoded instanceof ArrayBuffer ? encoded.byteLength : encoded.size, lenStr = len.toString(), lengthAry = new Uint8Array(lenStr.length + 1), i = 0; i < lenStr.length; i++) lengthAry[i] = parseInt(lenStr[i]);
-                            if (lengthAry[lenStr.length] = 255, Blob) {
-                                var blob = new Blob([ binaryIdentifier.buffer, lengthAry.buffer, encoded ]);
-                                doneCallback(null, blob);
-                            }
-                        });
-                    }
-                    map(packets, encodeOne, function(err, results) {
-                        return callback(new Blob(results));
-                    });
-                }, exports.decodePayloadAsBinary = function(data, binaryType, callback) {
-                    "function" == typeof binaryType && (callback = binaryType, binaryType = null);
-                    for (var bufferTail = data, buffers = [], numberTooLong = !1; bufferTail.byteLength > 0; ) {
-                        for (var tailArray = new Uint8Array(bufferTail), isString = 0 === tailArray[0], msgLength = "", i = 1; 255 != tailArray[i]; i++) {
-                            if (msgLength.length > 310) {
-                                numberTooLong = !0;
-                                break;
-                            }
-                            msgLength += tailArray[i];
-                        }
-                        if (numberTooLong) return callback(err, 0, 1);
-                        bufferTail = sliceBuffer(bufferTail, 2 + msgLength.length), msgLength = parseInt(msgLength);
-                        var msg = sliceBuffer(bufferTail, 0, msgLength);
-                        if (isString) try {
-                            msg = String.fromCharCode.apply(null, new Uint8Array(msg));
-                        } catch (e) {
-                            var typed = new Uint8Array(msg);
-                            msg = "";
-                            for (var i = 0; i < typed.length; i++) msg += String.fromCharCode(typed[i]);
-                        }
-                        buffers.push(msg), bufferTail = sliceBuffer(bufferTail, msgLength);
-                    }
-                    var total = buffers.length;
-                    buffers.forEach(function(buffer, i) {
-                        callback(exports.decodePacket(buffer, binaryType, !0), i, total);
-                    });
-                };
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./keys": 26,
-            after: 27,
-            "arraybuffer.slice": 28,
-            "base64-arraybuffer": 29,
-            blob: 30,
-            "has-binary": 36,
-            utf8: 31
-        } ],
-        26: [ function(_dereq_, module, exports) {
-            module.exports = Object.keys || function(obj) {
-                var arr = [], has = Object.prototype.hasOwnProperty;
-                for (var i in obj) has.call(obj, i) && arr.push(i);
-                return arr;
-            };
-        }, {} ],
-        27: [ function(_dereq_, module, exports) {
-            function after(count, callback, err_cb) {
-                function proxy(err, result) {
-                    if (proxy.count <= 0) throw new Error("after called too many times");
-                    --proxy.count, err ? (bail = !0, callback(err), callback = err_cb) : 0 !== proxy.count || bail || callback(null, result);
-                }
-                var bail = !1;
-                return err_cb = err_cb || noop, proxy.count = count, 0 === count ? callback() : proxy;
-            }
-            function noop() {}
-            module.exports = after;
-        }, {} ],
-        28: [ function(_dereq_, module, exports) {
-            module.exports = function(arraybuffer, start, end) {
-                var bytes = arraybuffer.byteLength;
-                if (start = start || 0, end = end || bytes, arraybuffer.slice) return arraybuffer.slice(start, end);
-                if (0 > start && (start += bytes), 0 > end && (end += bytes), end > bytes && (end = bytes), 
-                start >= bytes || start >= end || 0 === bytes) return new ArrayBuffer(0);
-                for (var abv = new Uint8Array(arraybuffer), result = new Uint8Array(end - start), i = start, ii = 0; end > i; i++, 
-                ii++) result[ii] = abv[i];
-                return result.buffer;
-            };
-        }, {} ],
-        29: [ function(_dereq_, module, exports) {
-            !function(chars) {
-                "use strict";
-                exports.encode = function(arraybuffer) {
-                    var i, bytes = new Uint8Array(arraybuffer), len = bytes.length, base64 = "";
-                    for (i = 0; len > i; i += 3) base64 += chars[bytes[i] >> 2], base64 += chars[(3 & bytes[i]) << 4 | bytes[i + 1] >> 4], 
-                    base64 += chars[(15 & bytes[i + 1]) << 2 | bytes[i + 2] >> 6], base64 += chars[63 & bytes[i + 2]];
-                    return len % 3 === 2 ? base64 = base64.substring(0, base64.length - 1) + "=" : len % 3 === 1 && (base64 = base64.substring(0, base64.length - 2) + "=="), 
-                    base64;
-                }, exports.decode = function(base64) {
-                    var i, encoded1, encoded2, encoded3, encoded4, bufferLength = .75 * base64.length, len = base64.length, p = 0;
-                    "=" === base64[base64.length - 1] && (bufferLength--, "=" === base64[base64.length - 2] && bufferLength--);
-                    var arraybuffer = new ArrayBuffer(bufferLength), bytes = new Uint8Array(arraybuffer);
-                    for (i = 0; len > i; i += 4) encoded1 = chars.indexOf(base64[i]), encoded2 = chars.indexOf(base64[i + 1]), 
-                    encoded3 = chars.indexOf(base64[i + 2]), encoded4 = chars.indexOf(base64[i + 3]), 
-                    bytes[p++] = encoded1 << 2 | encoded2 >> 4, bytes[p++] = (15 & encoded2) << 4 | encoded3 >> 2, 
-                    bytes[p++] = (3 & encoded3) << 6 | 63 & encoded4;
-                    return arraybuffer;
-                };
-            }("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-        }, {} ],
-        30: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function mapArrayBufferViews(ary) {
-                    for (var i = 0; i < ary.length; i++) {
-                        var chunk = ary[i];
-                        if (chunk.buffer instanceof ArrayBuffer) {
-                            var buf = chunk.buffer;
-                            if (chunk.byteLength !== buf.byteLength) {
-                                var copy = new Uint8Array(chunk.byteLength);
-                                copy.set(new Uint8Array(buf, chunk.byteOffset, chunk.byteLength)), buf = copy.buffer;
-                            }
-                            ary[i] = buf;
-                        }
-                    }
-                }
-                function BlobBuilderConstructor(ary, options) {
-                    options = options || {};
-                    var bb = new BlobBuilder();
-                    mapArrayBufferViews(ary);
-                    for (var i = 0; i < ary.length; i++) bb.append(ary[i]);
-                    return options.type ? bb.getBlob(options.type) : bb.getBlob();
-                }
-                function BlobConstructor(ary, options) {
-                    return mapArrayBufferViews(ary), new Blob(ary, options || {});
-                }
-                var BlobBuilder = global.BlobBuilder || global.WebKitBlobBuilder || global.MSBlobBuilder || global.MozBlobBuilder, blobSupported = function() {
-                    try {
-                        var a = new Blob([ "hi" ]);
-                        return 2 === a.size;
-                    } catch (e) {
-                        return !1;
-                    }
-                }(), blobSupportsArrayBufferView = blobSupported && function() {
-                    try {
-                        var b = new Blob([ new Uint8Array([ 1, 2 ]) ]);
-                        return 2 === b.size;
-                    } catch (e) {
-                        return !1;
-                    }
-                }(), blobBuilderSupported = BlobBuilder && BlobBuilder.prototype.append && BlobBuilder.prototype.getBlob;
-                module.exports = function() {
-                    return blobSupported ? blobSupportsArrayBufferView ? global.Blob : BlobConstructor : blobBuilderSupported ? BlobBuilderConstructor : void 0;
-                }();
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {} ],
-        31: [ function(_dereq_, module, exports) {
-            (function(global) {
-                !function(root) {
-                    function ucs2decode(string) {
-                        for (var value, extra, output = [], counter = 0, length = string.length; length > counter; ) value = string.charCodeAt(counter++), 
-                        value >= 55296 && 56319 >= value && length > counter ? (extra = string.charCodeAt(counter++), 
-                        56320 == (64512 & extra) ? output.push(((1023 & value) << 10) + (1023 & extra) + 65536) : (output.push(value), 
-                        counter--)) : output.push(value);
-                        return output;
-                    }
-                    function ucs2encode(array) {
-                        for (var value, length = array.length, index = -1, output = ""; ++index < length; ) value = array[index], 
-                        value > 65535 && (value -= 65536, output += stringFromCharCode(value >>> 10 & 1023 | 55296), 
-                        value = 56320 | 1023 & value), output += stringFromCharCode(value);
-                        return output;
-                    }
-                    function checkScalarValue(codePoint) {
-                        if (codePoint >= 55296 && 57343 >= codePoint) throw Error("Lone surrogate U+" + codePoint.toString(16).toUpperCase() + " is not a scalar value");
-                    }
-                    function createByte(codePoint, shift) {
-                        return stringFromCharCode(codePoint >> shift & 63 | 128);
-                    }
-                    function encodeCodePoint(codePoint) {
-                        if (0 == (4294967168 & codePoint)) return stringFromCharCode(codePoint);
-                        var symbol = "";
-                        return 0 == (4294965248 & codePoint) ? symbol = stringFromCharCode(codePoint >> 6 & 31 | 192) : 0 == (4294901760 & codePoint) ? (checkScalarValue(codePoint), 
-                        symbol = stringFromCharCode(codePoint >> 12 & 15 | 224), symbol += createByte(codePoint, 6)) : 0 == (4292870144 & codePoint) && (symbol = stringFromCharCode(codePoint >> 18 & 7 | 240), 
-                        symbol += createByte(codePoint, 12), symbol += createByte(codePoint, 6)), symbol += stringFromCharCode(63 & codePoint | 128);
-                    }
-                    function utf8encode(string) {
-                        for (var codePoint, codePoints = ucs2decode(string), length = codePoints.length, index = -1, byteString = ""; ++index < length; ) codePoint = codePoints[index], 
-                        byteString += encodeCodePoint(codePoint);
-                        return byteString;
-                    }
-                    function readContinuationByte() {
-                        if (byteIndex >= byteCount) throw Error("Invalid byte index");
-                        var continuationByte = 255 & byteArray[byteIndex];
-                        if (byteIndex++, 128 == (192 & continuationByte)) return 63 & continuationByte;
-                        throw Error("Invalid continuation byte");
-                    }
-                    function decodeSymbol() {
-                        var byte1, byte2, byte3, byte4, codePoint;
-                        if (byteIndex > byteCount) throw Error("Invalid byte index");
-                        if (byteIndex == byteCount) return !1;
-                        if (byte1 = 255 & byteArray[byteIndex], byteIndex++, 0 == (128 & byte1)) return byte1;
-                        if (192 == (224 & byte1)) {
-                            var byte2 = readContinuationByte();
-                            if (codePoint = (31 & byte1) << 6 | byte2, codePoint >= 128) return codePoint;
-                            throw Error("Invalid continuation byte");
-                        }
-                        if (224 == (240 & byte1)) {
-                            if (byte2 = readContinuationByte(), byte3 = readContinuationByte(), codePoint = (15 & byte1) << 12 | byte2 << 6 | byte3, 
-                            codePoint >= 2048) return checkScalarValue(codePoint), codePoint;
-                            throw Error("Invalid continuation byte");
-                        }
-                        if (240 == (248 & byte1) && (byte2 = readContinuationByte(), byte3 = readContinuationByte(), 
-                        byte4 = readContinuationByte(), codePoint = (15 & byte1) << 18 | byte2 << 12 | byte3 << 6 | byte4, 
-                        codePoint >= 65536 && 1114111 >= codePoint)) return codePoint;
-                        throw Error("Invalid UTF-8 detected");
-                    }
-                    function utf8decode(byteString) {
-                        byteArray = ucs2decode(byteString), byteCount = byteArray.length, byteIndex = 0;
-                        for (var tmp, codePoints = []; (tmp = decodeSymbol()) !== !1; ) codePoints.push(tmp);
-                        return ucs2encode(codePoints);
-                    }
-                    var freeExports = "object" == typeof exports && exports, freeModule = "object" == typeof module && module && module.exports == freeExports && module, freeGlobal = "object" == typeof global && global;
-                    (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) && (root = freeGlobal);
-                    var byteArray, byteCount, byteIndex, stringFromCharCode = String.fromCharCode, utf8 = {
-                        version: "2.0.0",
-                        encode: utf8encode,
-                        decode: utf8decode
-                    };
-                    if ("function" == typeof define && "object" == typeof define.amd && define.amd) define(function() {
-                        return utf8;
-                    }); else if (freeExports && !freeExports.nodeType) if (freeModule) freeModule.exports = utf8; else {
-                        var object = {}, hasOwnProperty = object.hasOwnProperty;
-                        for (var key in utf8) hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
-                    } else root.utf8 = utf8;
-                }(this);
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {} ],
-        32: [ function(_dereq_, module, exports) {
-            (function(global) {
-                var rvalidchars = /^[\],:{}\s]*$/, rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g, rtrimLeft = /^\s+/, rtrimRight = /\s+$/;
-                module.exports = function(data) {
-                    return "string" == typeof data && data ? (data = data.replace(rtrimLeft, "").replace(rtrimRight, ""), 
-                    global.JSON && JSON.parse ? JSON.parse(data) : rvalidchars.test(data.replace(rvalidescape, "@").replace(rvalidtokens, "]").replace(rvalidbraces, "")) ? new Function("return " + data)() : void 0) : null;
-                };
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {} ],
-        33: [ function(_dereq_, module, exports) {
-            exports.encode = function(obj) {
-                var str = "";
-                for (var i in obj) obj.hasOwnProperty(i) && (str.length && (str += "&"), str += encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
-                return str;
-            }, exports.decode = function(qs) {
-                for (var qry = {}, pairs = qs.split("&"), i = 0, l = pairs.length; l > i; i++) {
-                    var pair = pairs[i].split("=");
-                    qry[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-                }
-                return qry;
-            };
-        }, {} ],
-        34: [ function(_dereq_, module, exports) {
-            var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, parts = [ "source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor" ];
-            module.exports = function(str) {
-                var src = str, b = str.indexOf("["), e = str.indexOf("]");
-                -1 != b && -1 != e && (str = str.substring(0, b) + str.substring(b, e).replace(/:/g, ";") + str.substring(e, str.length));
-                for (var m = re.exec(str || ""), uri = {}, i = 14; i--; ) uri[parts[i]] = m[i] || "";
-                return -1 != b && -1 != e && (uri.source = src, uri.host = uri.host.substring(1, uri.host.length - 1).replace(/;/g, ":"), 
-                uri.authority = uri.authority.replace("[", "").replace("]", "").replace(/;/g, ":"), 
-                uri.ipv6uri = !0), uri;
-            };
-        }, {} ],
-        35: [ function(_dereq_, module, exports) {
-            function ws(uri, protocols, opts) {
-                var instance;
-                return instance = protocols ? new WebSocket(uri, protocols) : new WebSocket(uri);
-            }
-            var global = function() {
-                return this;
-            }(), WebSocket = global.WebSocket || global.MozWebSocket;
-            module.exports = WebSocket ? ws : null, WebSocket && (ws.prototype = WebSocket.prototype);
-        }, {} ],
-        36: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function hasBinary(data) {
-                    function _hasBinary(obj) {
-                        if (!obj) return !1;
-                        if (global.Buffer && global.Buffer.isBuffer(obj) || global.ArrayBuffer && obj instanceof ArrayBuffer || global.Blob && obj instanceof Blob || global.File && obj instanceof File) return !0;
-                        if (isArray(obj)) {
-                            for (var i = 0; i < obj.length; i++) if (_hasBinary(obj[i])) return !0;
-                        } else if (obj && "object" == typeof obj) {
-                            obj.toJSON && (obj = obj.toJSON());
-                            for (var key in obj) if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) return !0;
-                        }
-                        return !1;
-                    }
-                    return _hasBinary(data);
-                }
-                var isArray = _dereq_("isarray");
-                module.exports = hasBinary;
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            isarray: 37
-        } ],
-        37: [ function(_dereq_, module, exports) {
-            module.exports = Array.isArray || function(arr) {
-                return "[object Array]" == Object.prototype.toString.call(arr);
-            };
-        }, {} ],
-        38: [ function(_dereq_, module, exports) {
-            var global = _dereq_("global");
-            try {
-                module.exports = "XMLHttpRequest" in global && "withCredentials" in new global.XMLHttpRequest();
-            } catch (err) {
-                module.exports = !1;
-            }
-        }, {
-            global: 39
-        } ],
-        39: [ function(_dereq_, module, exports) {
-            module.exports = function() {
-                return this;
-            }();
-        }, {} ],
-        40: [ function(_dereq_, module, exports) {
-            var indexOf = [].indexOf;
-            module.exports = function(arr, obj) {
-                if (indexOf) return arr.indexOf(obj);
-                for (var i = 0; i < arr.length; ++i) if (arr[i] === obj) return i;
-                return -1;
-            };
-        }, {} ],
-        41: [ function(_dereq_, module, exports) {
-            var has = Object.prototype.hasOwnProperty;
-            exports.keys = Object.keys || function(obj) {
-                var keys = [];
-                for (var key in obj) has.call(obj, key) && keys.push(key);
-                return keys;
-            }, exports.values = function(obj) {
-                var vals = [];
-                for (var key in obj) has.call(obj, key) && vals.push(obj[key]);
-                return vals;
-            }, exports.merge = function(a, b) {
-                for (var key in b) has.call(b, key) && (a[key] = b[key]);
-                return a;
-            }, exports.length = function(obj) {
-                return exports.keys(obj).length;
-            }, exports.isEmpty = function(obj) {
-                return 0 == exports.length(obj);
-            };
-        }, {} ],
-        42: [ function(_dereq_, module, exports) {
-            var re = /^(?:(?![^:@]+:[^:@\/]*@)(http|https|ws|wss):\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?((?:[a-f0-9]{0,4}:){2,7}[a-f0-9]{0,4}|[^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, parts = [ "source", "protocol", "authority", "userInfo", "user", "password", "host", "port", "relative", "path", "directory", "file", "query", "anchor" ];
-            module.exports = function(str) {
-                for (var m = re.exec(str || ""), uri = {}, i = 14; i--; ) uri[parts[i]] = m[i] || "";
-                return uri;
-            };
-        }, {} ],
-        43: [ function(_dereq_, module, exports) {
-            (function(global) {
-                var isArray = _dereq_("isarray"), isBuf = _dereq_("./is-buffer");
-                exports.deconstructPacket = function(packet) {
-                    function _deconstructPacket(data) {
-                        if (!data) return data;
-                        if (isBuf(data)) {
-                            var placeholder = {
-                                _placeholder: !0,
-                                num: buffers.length
-                            };
-                            return buffers.push(data), placeholder;
-                        }
-                        if (isArray(data)) {
-                            for (var newData = new Array(data.length), i = 0; i < data.length; i++) newData[i] = _deconstructPacket(data[i]);
-                            return newData;
-                        }
-                        if ("object" == typeof data && !(data instanceof Date)) {
-                            var newData = {};
-                            for (var key in data) newData[key] = _deconstructPacket(data[key]);
-                            return newData;
-                        }
-                        return data;
-                    }
-                    var buffers = [], packetData = packet.data, pack = packet;
-                    return pack.data = _deconstructPacket(packetData), pack.attachments = buffers.length, 
-                    {
-                        packet: pack,
-                        buffers: buffers
-                    };
-                }, exports.reconstructPacket = function(packet, buffers) {
-                    function _reconstructPacket(data) {
-                        if (data && data._placeholder) {
-                            var buf = buffers[data.num];
-                            return buf;
-                        }
-                        if (isArray(data)) {
-                            for (var i = 0; i < data.length; i++) data[i] = _reconstructPacket(data[i]);
-                            return data;
-                        }
-                        if (data && "object" == typeof data) {
-                            for (var key in data) data[key] = _reconstructPacket(data[key]);
-                            return data;
-                        }
-                        return data;
-                    }
-                    return packet.data = _reconstructPacket(packet.data), packet.attachments = void 0, 
-                    packet;
-                }, exports.removeBlobs = function(data, callback) {
-                    function _removeBlobs(obj, curKey, containingObject) {
-                        if (!obj) return obj;
-                        if (global.Blob && obj instanceof Blob || global.File && obj instanceof File) {
-                            pendingBlobs++;
-                            var fileReader = new FileReader();
-                            fileReader.onload = function() {
-                                containingObject ? containingObject[curKey] = this.result : bloblessData = this.result, 
-                                --pendingBlobs || callback(bloblessData);
-                            }, fileReader.readAsArrayBuffer(obj);
-                        } else if (isArray(obj)) for (var i = 0; i < obj.length; i++) _removeBlobs(obj[i], i, obj); else if (obj && "object" == typeof obj && !isBuf(obj)) for (var key in obj) _removeBlobs(obj[key], key, obj);
-                    }
-                    var pendingBlobs = 0, bloblessData = data;
-                    _removeBlobs(bloblessData), pendingBlobs || callback(bloblessData);
-                };
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {
-            "./is-buffer": 45,
-            isarray: 46
-        } ],
-        44: [ function(_dereq_, module, exports) {
-            function Encoder() {}
-            function encodeAsString(obj) {
-                var str = "", nsp = !1;
-                return str += obj.type, (exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) && (str += obj.attachments, 
-                str += "-"), obj.nsp && "/" != obj.nsp && (nsp = !0, str += obj.nsp), null != obj.id && (nsp && (str += ",", 
-                nsp = !1), str += obj.id), null != obj.data && (nsp && (str += ","), str += json.stringify(obj.data)), 
-                debug("encoded %j as %s", obj, str), str;
-            }
-            function encodeAsBinary(obj, callback) {
-                function writeEncoding(bloblessData) {
-                    var deconstruction = binary.deconstructPacket(bloblessData), pack = encodeAsString(deconstruction.packet), buffers = deconstruction.buffers;
-                    buffers.unshift(pack), callback(buffers);
-                }
-                binary.removeBlobs(obj, writeEncoding);
-            }
-            function Decoder() {
-                this.reconstructor = null;
-            }
-            function decodeString(str) {
-                var p = {}, i = 0;
-                if (p.type = Number(str.charAt(0)), null == exports.types[p.type]) return error();
-                if (exports.BINARY_EVENT == p.type || exports.BINARY_ACK == p.type) {
-                    for (var buf = ""; "-" != str.charAt(++i) && (buf += str.charAt(i), i != str.length); ) ;
-                    if (buf != Number(buf) || "-" != str.charAt(i)) throw new Error("Illegal attachments");
-                    p.attachments = Number(buf);
-                }
-                if ("/" == str.charAt(i + 1)) for (p.nsp = ""; ++i; ) {
-                    var c = str.charAt(i);
-                    if ("," == c) break;
-                    if (p.nsp += c, i == str.length) break;
-                } else p.nsp = "/";
-                var next = str.charAt(i + 1);
-                if ("" !== next && Number(next) == next) {
-                    for (p.id = ""; ++i; ) {
-                        var c = str.charAt(i);
-                        if (null == c || Number(c) != c) {
-                            --i;
-                            break;
-                        }
-                        if (p.id += str.charAt(i), i == str.length) break;
-                    }
-                    p.id = Number(p.id);
-                }
-                if (str.charAt(++i)) try {
-                    p.data = json.parse(str.substr(i));
-                } catch (e) {
-                    return error();
-                }
-                return debug("decoded %s as %j", str, p), p;
-            }
-            function BinaryReconstructor(packet) {
-                this.reconPack = packet, this.buffers = [];
-            }
-            function error(data) {
-                return {
-                    type: exports.ERROR,
-                    data: "parser error"
-                };
-            }
-            var debug = _dereq_("debug")("socket.io-parser"), json = _dereq_("json3"), Emitter = (_dereq_("isarray"), 
-            _dereq_("component-emitter")), binary = _dereq_("./binary"), isBuf = _dereq_("./is-buffer");
-            exports.protocol = 4, exports.types = [ "CONNECT", "DISCONNECT", "EVENT", "BINARY_EVENT", "ACK", "BINARY_ACK", "ERROR" ], 
-            exports.CONNECT = 0, exports.DISCONNECT = 1, exports.EVENT = 2, exports.ACK = 3, 
-            exports.ERROR = 4, exports.BINARY_EVENT = 5, exports.BINARY_ACK = 6, exports.Encoder = Encoder, 
-            exports.Decoder = Decoder, Encoder.prototype.encode = function(obj, callback) {
-                if (debug("encoding packet %j", obj), exports.BINARY_EVENT == obj.type || exports.BINARY_ACK == obj.type) encodeAsBinary(obj, callback); else {
-                    var encoding = encodeAsString(obj);
-                    callback([ encoding ]);
-                }
-            }, Emitter(Decoder.prototype), Decoder.prototype.add = function(obj) {
-                var packet;
-                if ("string" == typeof obj) packet = decodeString(obj), exports.BINARY_EVENT == packet.type || exports.BINARY_ACK == packet.type ? (this.reconstructor = new BinaryReconstructor(packet), 
-                0 === this.reconstructor.reconPack.attachments && this.emit("decoded", packet)) : this.emit("decoded", packet); else {
-                    if (!isBuf(obj) && !obj.base64) throw new Error("Unknown type: " + obj);
-                    if (!this.reconstructor) throw new Error("got binary data when not reconstructing a packet");
-                    packet = this.reconstructor.takeBinaryData(obj), packet && (this.reconstructor = null, 
-                    this.emit("decoded", packet));
-                }
-            }, Decoder.prototype.destroy = function() {
-                this.reconstructor && this.reconstructor.finishedReconstruction();
-            }, BinaryReconstructor.prototype.takeBinaryData = function(binData) {
-                if (this.buffers.push(binData), this.buffers.length == this.reconPack.attachments) {
-                    var packet = binary.reconstructPacket(this.reconPack, this.buffers);
-                    return this.finishedReconstruction(), packet;
-                }
-                return null;
-            }, BinaryReconstructor.prototype.finishedReconstruction = function() {
-                this.reconPack = null, this.buffers = [];
-            };
-        }, {
-            "./binary": 43,
-            "./is-buffer": 45,
-            "component-emitter": 9,
-            debug: 10,
-            isarray: 46,
-            json3: 47
-        } ],
-        45: [ function(_dereq_, module, exports) {
-            (function(global) {
-                function isBuf(obj) {
-                    return global.Buffer && global.Buffer.isBuffer(obj) || global.ArrayBuffer && obj instanceof ArrayBuffer;
-                }
-                module.exports = isBuf;
-            }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
-        }, {} ],
-        46: [ function(_dereq_, module, exports) {
-            module.exports = _dereq_(37);
-        }, {} ],
-        47: [ function(_dereq_, module, exports) {
-            !function(window) {
-                function has(name) {
-                    if (has[name] !== undef) return has[name];
-                    var isSupported;
-                    if ("bug-string-char-index" == name) isSupported = "a" != "a"[0]; else if ("json" == name) isSupported = has("json-stringify") && has("json-parse"); else {
-                        var value, serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
-                        if ("json-stringify" == name) {
-                            var stringify = JSON3.stringify, stringifySupported = "function" == typeof stringify && isExtended;
-                            if (stringifySupported) {
-                                (value = function() {
-                                    return 1;
-                                }).toJSON = value;
-                                try {
-                                    stringifySupported = "0" === stringify(0) && "0" === stringify(new Number()) && '""' == stringify(new String()) && stringify(getClass) === undef && stringify(undef) === undef && stringify() === undef && "1" === stringify(value) && "[1]" == stringify([ value ]) && "[null]" == stringify([ undef ]) && "null" == stringify(null) && "[null,null,null]" == stringify([ undef, getClass, null ]) && stringify({
-                                        a: [ value, !0, !1, null, "\x00\b\n\f\r	" ]
-                                    }) == serialized && "1" === stringify(null, value) && "[\n 1,\n 2\n]" == stringify([ 1, 2 ], null, 1) && '"-271821-04-20T00:00:00.000Z"' == stringify(new Date(-864e13)) && '"+275760-09-13T00:00:00.000Z"' == stringify(new Date(864e13)) && '"-000001-01-01T00:00:00.000Z"' == stringify(new Date(-621987552e5)) && '"1969-12-31T23:59:59.999Z"' == stringify(new Date(-1));
-                                } catch (exception) {
-                                    stringifySupported = !1;
-                                }
-                            }
-                            isSupported = stringifySupported;
-                        }
-                        if ("json-parse" == name) {
-                            var parse = JSON3.parse;
-                            if ("function" == typeof parse) try {
-                                if (0 === parse("0") && !parse(!1)) {
-                                    value = parse(serialized);
-                                    var parseSupported = 5 == value.a.length && 1 === value.a[0];
-                                    if (parseSupported) {
-                                        try {
-                                            parseSupported = !parse('"	"');
-                                        } catch (exception) {}
-                                        if (parseSupported) try {
-                                            parseSupported = 1 !== parse("01");
-                                        } catch (exception) {}
-                                        if (parseSupported) try {
-                                            parseSupported = 1 !== parse("1.");
-                                        } catch (exception) {}
-                                    }
-                                }
-                            } catch (exception) {
-                                parseSupported = !1;
-                            }
-                            isSupported = parseSupported;
-                        }
-                    }
-                    return has[name] = !!isSupported;
-                }
-                var isProperty, forEach, undef, getClass = {}.toString, isLoader = "function" == typeof define && define.amd, nativeJSON = "object" == typeof JSON && JSON, JSON3 = "object" == typeof exports && exports && !exports.nodeType && exports;
-                JSON3 && nativeJSON ? (JSON3.stringify = nativeJSON.stringify, JSON3.parse = nativeJSON.parse) : JSON3 = window.JSON = nativeJSON || {};
-                var isExtended = new Date(-0xc782b5b800cec);
-                try {
-                    isExtended = -109252 == isExtended.getUTCFullYear() && 0 === isExtended.getUTCMonth() && 1 === isExtended.getUTCDate() && 10 == isExtended.getUTCHours() && 37 == isExtended.getUTCMinutes() && 6 == isExtended.getUTCSeconds() && 708 == isExtended.getUTCMilliseconds();
-                } catch (exception) {}
-                if (!has("json")) {
-                    var functionClass = "[object Function]", dateClass = "[object Date]", numberClass = "[object Number]", stringClass = "[object String]", arrayClass = "[object Array]", booleanClass = "[object Boolean]", charIndexBuggy = has("bug-string-char-index");
-                    if (!isExtended) var floor = Math.floor, Months = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ], getDay = function(year, month) {
-                        return Months[month] + 365 * (year - 1970) + floor((year - 1969 + (month = +(month > 1))) / 4) - floor((year - 1901 + month) / 100) + floor((year - 1601 + month) / 400);
-                    };
-                    (isProperty = {}.hasOwnProperty) || (isProperty = function(property) {
-                        var constructor, members = {};
-                        return (members.__proto__ = null, members.__proto__ = {
-                            toString: 1
-                        }, members).toString != getClass ? isProperty = function(property) {
-                            var original = this.__proto__, result = property in (this.__proto__ = null, this);
-                            return this.__proto__ = original, result;
-                        } : (constructor = members.constructor, isProperty = function(property) {
-                            var parent = (this.constructor || constructor).prototype;
-                            return property in this && !(property in parent && this[property] === parent[property]);
-                        }), members = null, isProperty.call(this, property);
-                    });
-                    var PrimitiveTypes = {
-                        "boolean": 1,
-                        number: 1,
-                        string: 1,
-                        undefined: 1
-                    }, isHostType = function(object, property) {
-                        var type = typeof object[property];
-                        return "object" == type ? !!object[property] : !PrimitiveTypes[type];
-                    };
-                    if (forEach = function(object, callback) {
-                        var Properties, members, property, size = 0;
-                        (Properties = function() {
-                            this.valueOf = 0;
-                        }).prototype.valueOf = 0, members = new Properties();
-                        for (property in members) isProperty.call(members, property) && size++;
-                        return Properties = members = null, size ? forEach = 2 == size ? function(object, callback) {
-                            var property, members = {}, isFunction = getClass.call(object) == functionClass;
-                            for (property in object) isFunction && "prototype" == property || isProperty.call(members, property) || !(members[property] = 1) || !isProperty.call(object, property) || callback(property);
-                        } : function(object, callback) {
-                            var property, isConstructor, isFunction = getClass.call(object) == functionClass;
-                            for (property in object) isFunction && "prototype" == property || !isProperty.call(object, property) || (isConstructor = "constructor" === property) || callback(property);
-                            (isConstructor || isProperty.call(object, property = "constructor")) && callback(property);
-                        } : (members = [ "valueOf", "toString", "toLocaleString", "propertyIsEnumerable", "isPrototypeOf", "hasOwnProperty", "constructor" ], 
-                        forEach = function(object, callback) {
-                            var property, length, isFunction = getClass.call(object) == functionClass, hasProperty = !isFunction && "function" != typeof object.constructor && isHostType(object, "hasOwnProperty") ? object.hasOwnProperty : isProperty;
-                            for (property in object) isFunction && "prototype" == property || !hasProperty.call(object, property) || callback(property);
-                            for (length = members.length; property = members[--length]; hasProperty.call(object, property) && callback(property)) ;
-                        }), forEach(object, callback);
-                    }, !has("json-stringify")) {
-                        var Escapes = {
-                            92: "\\\\",
-                            34: '\\"',
-                            8: "\\b",
-                            12: "\\f",
-                            10: "\\n",
-                            13: "\\r",
-                            9: "\\t"
-                        }, leadingZeroes = "000000", toPaddedString = function(width, value) {
-                            return (leadingZeroes + (value || 0)).slice(-width);
-                        }, unicodePrefix = "\\u00", quote = function(value) {
-                            var symbols, result = '"', index = 0, length = value.length, isLarge = length > 10 && charIndexBuggy;
-                            for (isLarge && (symbols = value.split("")); length > index; index++) {
-                                var charCode = value.charCodeAt(index);
-                                switch (charCode) {
-                                  case 8:
-                                  case 9:
-                                  case 10:
-                                  case 12:
-                                  case 13:
-                                  case 34:
-                                  case 92:
-                                    result += Escapes[charCode];
-                                    break;
-
-                                  default:
-                                    if (32 > charCode) {
-                                        result += unicodePrefix + toPaddedString(2, charCode.toString(16));
-                                        break;
-                                    }
-                                    result += isLarge ? symbols[index] : charIndexBuggy ? value.charAt(index) : value[index];
-                                }
-                            }
-                            return result + '"';
-                        }, serialize = function(property, object, callback, properties, whitespace, indentation, stack) {
-                            var value, className, year, month, date, time, hours, minutes, seconds, milliseconds, results, element, index, length, prefix, result;
-                            try {
-                                value = object[property];
-                            } catch (exception) {}
-                            if ("object" == typeof value && value) if (className = getClass.call(value), className != dateClass || isProperty.call(value, "toJSON")) "function" == typeof value.toJSON && (className != numberClass && className != stringClass && className != arrayClass || isProperty.call(value, "toJSON")) && (value = value.toJSON(property)); else if (value > -1 / 0 && 1 / 0 > value) {
-                                if (getDay) {
-                                    for (date = floor(value / 864e5), year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++) ;
-                                    for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++) ;
-                                    date = 1 + date - getDay(year, month), time = (value % 864e5 + 864e5) % 864e5, hours = floor(time / 36e5) % 24, 
-                                    minutes = floor(time / 6e4) % 60, seconds = floor(time / 1e3) % 60, milliseconds = time % 1e3;
-                                } else year = value.getUTCFullYear(), month = value.getUTCMonth(), date = value.getUTCDate(), 
-                                hours = value.getUTCHours(), minutes = value.getUTCMinutes(), seconds = value.getUTCSeconds(), 
-                                milliseconds = value.getUTCMilliseconds();
-                                value = (0 >= year || year >= 1e4 ? (0 > year ? "-" : "+") + toPaddedString(6, 0 > year ? -year : year) : toPaddedString(4, year)) + "-" + toPaddedString(2, month + 1) + "-" + toPaddedString(2, date) + "T" + toPaddedString(2, hours) + ":" + toPaddedString(2, minutes) + ":" + toPaddedString(2, seconds) + "." + toPaddedString(3, milliseconds) + "Z";
-                            } else value = null;
-                            if (callback && (value = callback.call(object, property, value)), null === value) return "null";
-                            if (className = getClass.call(value), className == booleanClass) return "" + value;
-                            if (className == numberClass) return value > -1 / 0 && 1 / 0 > value ? "" + value : "null";
-                            if (className == stringClass) return quote("" + value);
-                            if ("object" == typeof value) {
-                                for (length = stack.length; length--; ) if (stack[length] === value) throw TypeError();
-                                if (stack.push(value), results = [], prefix = indentation, indentation += whitespace, 
-                                className == arrayClass) {
-                                    for (index = 0, length = value.length; length > index; index++) element = serialize(index, value, callback, properties, whitespace, indentation, stack), 
-                                    results.push(element === undef ? "null" : element);
-                                    result = results.length ? whitespace ? "[\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "]" : "[" + results.join(",") + "]" : "[]";
-                                } else forEach(properties || value, function(property) {
-                                    var element = serialize(property, value, callback, properties, whitespace, indentation, stack);
-                                    element !== undef && results.push(quote(property) + ":" + (whitespace ? " " : "") + element);
-                                }), result = results.length ? whitespace ? "{\n" + indentation + results.join(",\n" + indentation) + "\n" + prefix + "}" : "{" + results.join(",") + "}" : "{}";
-                                return stack.pop(), result;
-                            }
-                        };
-                        JSON3.stringify = function(source, filter, width) {
-                            var whitespace, callback, properties, className;
-                            if ("function" == typeof filter || "object" == typeof filter && filter) if ((className = getClass.call(filter)) == functionClass) callback = filter; else if (className == arrayClass) {
-                                properties = {};
-                                for (var value, index = 0, length = filter.length; length > index; value = filter[index++], 
-                                className = getClass.call(value), (className == stringClass || className == numberClass) && (properties[value] = 1)) ;
-                            }
-                            if (width) if ((className = getClass.call(width)) == numberClass) {
-                                if ((width -= width % 1) > 0) for (whitespace = "", width > 10 && (width = 10); whitespace.length < width; whitespace += " ") ;
-                            } else className == stringClass && (whitespace = width.length <= 10 ? width : width.slice(0, 10));
-                            return serialize("", (value = {}, value[""] = source, value), callback, properties, whitespace, "", []);
-                        };
-                    }
-                    if (!has("json-parse")) {
-                        var Index, Source, fromCharCode = String.fromCharCode, Unescapes = {
-                            92: "\\",
-                            34: '"',
-                            47: "/",
-                            98: "\b",
-                            116: "	",
-                            110: "\n",
-                            102: "\f",
-                            114: "\r"
-                        }, abort = function() {
-                            throw Index = Source = null, SyntaxError();
-                        }, lex = function() {
-                            for (var value, begin, position, isSigned, charCode, source = Source, length = source.length; length > Index; ) switch (charCode = source.charCodeAt(Index)) {
-                              case 9:
-                              case 10:
-                              case 13:
-                              case 32:
-                                Index++;
-                                break;
-
-                              case 123:
-                              case 125:
-                              case 91:
-                              case 93:
-                              case 58:
-                              case 44:
-                                return value = charIndexBuggy ? source.charAt(Index) : source[Index], Index++, value;
-
-                              case 34:
-                                for (value = "@", Index++; length > Index; ) if (charCode = source.charCodeAt(Index), 
-                                32 > charCode) abort(); else if (92 == charCode) switch (charCode = source.charCodeAt(++Index)) {
-                                  case 92:
-                                  case 34:
-                                  case 47:
-                                  case 98:
-                                  case 116:
-                                  case 110:
-                                  case 102:
-                                  case 114:
-                                    value += Unescapes[charCode], Index++;
-                                    break;
-
-                                  case 117:
-                                    for (begin = ++Index, position = Index + 4; position > Index; Index++) charCode = source.charCodeAt(Index), 
-                                    charCode >= 48 && 57 >= charCode || charCode >= 97 && 102 >= charCode || charCode >= 65 && 70 >= charCode || abort();
-                                    value += fromCharCode("0x" + source.slice(begin, Index));
-                                    break;
-
-                                  default:
-                                    abort();
-                                } else {
-                                    if (34 == charCode) break;
-                                    for (charCode = source.charCodeAt(Index), begin = Index; charCode >= 32 && 92 != charCode && 34 != charCode; ) charCode = source.charCodeAt(++Index);
-                                    value += source.slice(begin, Index);
-                                }
-                                if (34 == source.charCodeAt(Index)) return Index++, value;
-                                abort();
-
-                              default:
-                                if (begin = Index, 45 == charCode && (isSigned = !0, charCode = source.charCodeAt(++Index)), 
-                                charCode >= 48 && 57 >= charCode) {
-                                    for (48 == charCode && (charCode = source.charCodeAt(Index + 1), charCode >= 48 && 57 >= charCode) && abort(), 
-                                    isSigned = !1; length > Index && (charCode = source.charCodeAt(Index), charCode >= 48 && 57 >= charCode); Index++) ;
-                                    if (46 == source.charCodeAt(Index)) {
-                                        for (position = ++Index; length > position && (charCode = source.charCodeAt(position), 
-                                        charCode >= 48 && 57 >= charCode); position++) ;
-                                        position == Index && abort(), Index = position;
-                                    }
-                                    if (charCode = source.charCodeAt(Index), 101 == charCode || 69 == charCode) {
-                                        for (charCode = source.charCodeAt(++Index), (43 == charCode || 45 == charCode) && Index++, 
-                                        position = Index; length > position && (charCode = source.charCodeAt(position), 
-                                        charCode >= 48 && 57 >= charCode); position++) ;
-                                        position == Index && abort(), Index = position;
-                                    }
-                                    return +source.slice(begin, Index);
-                                }
-                                if (isSigned && abort(), "true" == source.slice(Index, Index + 4)) return Index += 4, 
-                                !0;
-                                if ("false" == source.slice(Index, Index + 5)) return Index += 5, !1;
-                                if ("null" == source.slice(Index, Index + 4)) return Index += 4, null;
-                                abort();
-                            }
-                            return "$";
-                        }, get = function(value) {
-                            var results, hasMembers;
-                            if ("$" == value && abort(), "string" == typeof value) {
-                                if ("@" == (charIndexBuggy ? value.charAt(0) : value[0])) return value.slice(1);
-                                if ("[" == value) {
-                                    for (results = []; value = lex(), "]" != value; hasMembers || (hasMembers = !0)) hasMembers && ("," == value ? (value = lex(), 
-                                    "]" == value && abort()) : abort()), "," == value && abort(), results.push(get(value));
-                                    return results;
-                                }
-                                if ("{" == value) {
-                                    for (results = {}; value = lex(), "}" != value; hasMembers || (hasMembers = !0)) hasMembers && ("," == value ? (value = lex(), 
-                                    "}" == value && abort()) : abort()), ("," == value || "string" != typeof value || "@" != (charIndexBuggy ? value.charAt(0) : value[0]) || ":" != lex()) && abort(), 
-                                    results[value.slice(1)] = get(lex());
-                                    return results;
-                                }
-                                abort();
-                            }
-                            return value;
-                        }, update = function(source, property, callback) {
-                            var element = walk(source, property, callback);
-                            element === undef ? delete source[property] : source[property] = element;
-                        }, walk = function(source, property, callback) {
-                            var length, value = source[property];
-                            if ("object" == typeof value && value) if (getClass.call(value) == arrayClass) for (length = value.length; length--; ) update(value, length, callback); else forEach(value, function(property) {
-                                update(value, property, callback);
-                            });
-                            return callback.call(source, property, value);
-                        };
-                        JSON3.parse = function(source, callback) {
-                            var result, value;
-                            return Index = 0, Source = "" + source, result = get(lex()), "$" != lex() && abort(), 
-                            Index = Source = null, callback && getClass.call(callback) == functionClass ? walk((value = {}, 
-                            value[""] = result, value), "", callback) : result;
-                        };
-                    }
-                }
-                isLoader && define(function() {
-                    return JSON3;
-                });
-            }(this);
-        }, {} ],
-        48: [ function(_dereq_, module, exports) {
-            function toArray(list, index) {
-                var array = [];
-                index = index || 0;
-                for (var i = index || 0; i < list.length; i++) array[i - index] = list[i];
-                return array;
-            }
-            module.exports = toArray;
-        }, {} ]
-    }, {}, [ 1 ])(1);
 }), function(window, document, undefined) {
     "use strict";
     !function e(t, n, r) {
@@ -22285,4 +19980,2175 @@ angular.module("ui.bootstrap.collapse", []).directive("uibCollapse", [ "$animate
     a.put("template/typeahead/typeahead-match.html", '<a href tabindex="-1" ng-bind-html="match.label | uibTypeaheadHighlight:query"></a>\n');
 } ]), angular.module("template/typeahead/typeahead-popup.html", []).run([ "$templateCache", function(a) {
     a.put("template/typeahead/typeahead-popup.html", '<ul class="dropdown-menu" ng-show="isOpen() && !moveInProgress" ng-style="{top: position().top+\'px\', left: position().left+\'px\'}" style="display: block;" role="listbox" aria-hidden="{{!isOpen()}}">\n    <li ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">\n        <div uib-typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></div>\n    </li>\n</ul>\n');
-} ]), !angular.$$csp() && angular.element(document).find("head").prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');
+} ]), !angular.$$csp() && angular.element(document).find("head").prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'), 
+function(g, e, b, j, c, i, k) {
+    function m() {
+        function i(a, b) {
+            d.push({
+                vc: a,
+                Ec: b
+            });
+        }
+        function h(b, c) {
+            a.c(d, function(a, e) {
+                a.vc == b && a.Ec === c && d.splice(e, 1);
+            });
+        }
+        var b = this, d = [];
+        b.$On = b.addEventListener = i, b.$Off = b.removeEventListener = h, b.n = function(b) {
+            var c = [].slice.call(arguments, 1);
+            a.c(d, function(a) {
+                a.vc == b && a.Ec.apply(g, c);
+            });
+        };
+    }
+    function p(e, d, c) {
+        var b = this;
+        l.call(b, 0, c), b.jb = a.kd, b.dc = 0, b.Yb = c;
+    }
+    !new function() {}();
+    var d = g.$JssorEasing$ = {
+        $EaseSwing: function(a) {
+            return -b.cos(a * b.PI) / 2 + .5;
+        },
+        $EaseLinear: function(a) {
+            return a;
+        },
+        $EaseInQuad: function(a) {
+            return a * a;
+        },
+        $EaseOutQuad: function(a) {
+            return -a * (a - 2);
+        },
+        $EaseInOutQuad: function(a) {
+            return (a *= 2) < 1 ? .5 * a * a : -0.5 * (--a * (a - 2) - 1);
+        },
+        $EaseInCubic: function(a) {
+            return a * a * a;
+        },
+        $EaseOutCubic: function(a) {
+            return (a -= 1) * a * a + 1;
+        },
+        $EaseInOutCubic: function(a) {
+            return (a *= 2) < 1 ? .5 * a * a * a : .5 * ((a -= 2) * a * a + 2);
+        },
+        $EaseInQuart: function(a) {
+            return a * a * a * a;
+        },
+        $EaseOutQuart: function(a) {
+            return -((a -= 1) * a * a * a - 1);
+        },
+        $EaseInOutQuart: function(a) {
+            return (a *= 2) < 1 ? .5 * a * a * a * a : -0.5 * ((a -= 2) * a * a * a - 2);
+        },
+        $EaseInQuint: function(a) {
+            return a * a * a * a * a;
+        },
+        $EaseOutQuint: function(a) {
+            return (a -= 1) * a * a * a * a + 1;
+        },
+        $EaseInOutQuint: function(a) {
+            return (a *= 2) < 1 ? .5 * a * a * a * a * a : .5 * ((a -= 2) * a * a * a * a + 2);
+        },
+        $EaseInSine: function(a) {
+            return 1 - b.cos(a * b.PI / 2);
+        },
+        $EaseOutSine: function(a) {
+            return b.sin(a * b.PI / 2);
+        },
+        $EaseInOutSine: function(a) {
+            return -0.5 * (b.cos(b.PI * a) - 1);
+        },
+        $EaseInExpo: function(a) {
+            return 0 == a ? 0 : b.pow(2, 10 * (a - 1));
+        },
+        $EaseOutExpo: function(a) {
+            return 1 == a ? 1 : -b.pow(2, -10 * a) + 1;
+        },
+        $EaseInOutExpo: function(a) {
+            return 0 == a || 1 == a ? a : (a *= 2) < 1 ? .5 * b.pow(2, 10 * (a - 1)) : .5 * (-b.pow(2, -10 * --a) + 2);
+        },
+        $EaseInCirc: function(a) {
+            return -(b.sqrt(1 - a * a) - 1);
+        },
+        $EaseOutCirc: function(a) {
+            return b.sqrt(1 - (a -= 1) * a);
+        },
+        $EaseInOutCirc: function(a) {
+            return (a *= 2) < 1 ? -0.5 * (b.sqrt(1 - a * a) - 1) : .5 * (b.sqrt(1 - (a -= 2) * a) + 1);
+        },
+        $EaseInElastic: function(a) {
+            if (!a || 1 == a) return a;
+            var c = .3, d = .075;
+            return -(b.pow(2, 10 * (a -= 1)) * b.sin(2 * (a - d) * b.PI / c));
+        },
+        $EaseOutElastic: function(a) {
+            if (!a || 1 == a) return a;
+            var c = .3, d = .075;
+            return b.pow(2, -10 * a) * b.sin(2 * (a - d) * b.PI / c) + 1;
+        },
+        $EaseInOutElastic: function(a) {
+            if (!a || 1 == a) return a;
+            var c = .45, d = .1125;
+            return (a *= 2) < 1 ? -.5 * b.pow(2, 10 * (a -= 1)) * b.sin(2 * (a - d) * b.PI / c) : b.pow(2, -10 * (a -= 1)) * b.sin(2 * (a - d) * b.PI / c) * .5 + 1;
+        },
+        $EaseInBack: function(a) {
+            var b = 1.70158;
+            return a * a * ((b + 1) * a - b);
+        },
+        $EaseOutBack: function(a) {
+            var b = 1.70158;
+            return (a -= 1) * a * ((b + 1) * a + b) + 1;
+        },
+        $EaseInOutBack: function(a) {
+            var b = 1.70158;
+            return (a *= 2) < 1 ? .5 * a * a * (((b *= 1.525) + 1) * a - b) : .5 * ((a -= 2) * a * (((b *= 1.525) + 1) * a + b) + 2);
+        },
+        $EaseInBounce: function(a) {
+            return 1 - d.$EaseOutBounce(1 - a);
+        },
+        $EaseOutBounce: function(a) {
+            return 1 / 2.75 > a ? 7.5625 * a * a : 2 / 2.75 > a ? 7.5625 * (a -= 1.5 / 2.75) * a + .75 : 2.5 / 2.75 > a ? 7.5625 * (a -= 2.25 / 2.75) * a + .9375 : 7.5625 * (a -= 2.625 / 2.75) * a + .984375;
+        },
+        $EaseInOutBounce: function(a) {
+            return .5 > a ? .5 * d.$EaseInBounce(2 * a) : .5 * d.$EaseOutBounce(2 * a - 1) + .5;
+        },
+        $EaseGoBack: function(a) {
+            return 1 - b.abs(1);
+        },
+        $EaseInWave: function(a) {
+            return 1 - b.cos(a * b.PI * 2);
+        },
+        $EaseOutWave: function(a) {
+            return b.sin(a * b.PI * 2);
+        },
+        $EaseOutJump: function(a) {
+            return 1 - ((a *= 2) < 1 ? (a = 1 - a) * a * a : (a -= 1) * a * a);
+        },
+        $EaseInJump: function(a) {
+            return (a *= 2) < 1 ? a * a * a : (a = 2 - a) * a * a;
+        }
+    }, f = g.$Jease$ = {
+        $Swing: d.$EaseSwing,
+        $Linear: d.$EaseLinear,
+        $InQuad: d.$EaseInQuad,
+        $OutQuad: d.$EaseOutQuad,
+        $InOutQuad: d.$EaseInOutQuad,
+        $InCubic: d.$EaseInCubic,
+        $OutCubic: d.$EaseOutCubic,
+        $InOutCubic: d.$EaseInOutCubic,
+        $InQuart: d.$EaseInQuart,
+        $OutQuart: d.$EaseOutQuart,
+        $InOutQuart: d.$EaseInOutQuart,
+        $InQuint: d.$EaseInQuint,
+        $OutQuint: d.$EaseOutQuint,
+        $InOutQuint: d.$EaseInOutQuint,
+        $InSine: d.$EaseInSine,
+        $OutSine: d.$EaseOutSine,
+        $InOutSine: d.$EaseInOutSine,
+        $InExpo: d.$EaseInExpo,
+        $OutExpo: d.$EaseOutExpo,
+        $InOutExpo: d.$EaseInOutExpo,
+        $InCirc: d.$EaseInCirc,
+        $OutCirc: d.$EaseOutCirc,
+        $InOutCirc: d.$EaseInOutCirc,
+        $InElastic: d.$EaseInElastic,
+        $OutElastic: d.$EaseOutElastic,
+        $InOutElastic: d.$EaseInOutElastic,
+        $InBack: d.$EaseInBack,
+        $OutBack: d.$EaseOutBack,
+        $InOutBack: d.$EaseInOutBack,
+        $InBounce: d.$EaseInBounce,
+        $OutBounce: d.$EaseOutBounce,
+        $InOutBounce: d.$EaseInOutBounce,
+        $GoBack: d.$EaseGoBack,
+        $InWave: d.$EaseInWave,
+        $OutWave: d.$EaseOutWave,
+        $OutJump: d.$EaseOutJump,
+        $InJump: d.$EaseInJump
+    }, a = new function() {
+        function Ib() {
+            if (!I) {
+                I = {
+                    Rg: "ontouchstart" in g || "createTouch" in e
+                };
+                var a;
+                (y.pointerEnabled || (a = y.msPointerEnabled)) && (I.Bd = a ? "msTouchAction" : "touchAction");
+            }
+            return I;
+        }
+        function t(i) {
+            if (!s) if (s = -1, "Microsoft Internet Explorer" == sb && g.attachEvent && g.ActiveXObject) {
+                var f = n.indexOf("MSIE");
+                s = S, q = o(n.substring(f + 5, n.indexOf(";", f))), l = e.documentMode || q;
+            } else if ("Netscape" == sb && g.addEventListener) {
+                var d = n.indexOf("Firefox"), b = n.indexOf("Safari"), h = n.indexOf("Chrome"), c = n.indexOf("AppleWebKit");
+                if (d >= 0) s = fb, l = o(n.substring(d + 8)); else if (b >= 0) {
+                    var j = n.substring(0, b).lastIndexOf("/");
+                    s = h >= 0 ? ib : jb, l = o(n.substring(j + 1, b));
+                } else {
+                    var a = /Trident\/.*rv:([0-9]{1,}[\.0-9]{0,})/i.exec(n);
+                    a && (s = S, l = q = o(a[1]));
+                }
+                c >= 0 && (C = o(n.substring(c + 12)));
+            } else {
+                var a = /(opera)(?:.*version|)[ \/]([\w.]+)/i.exec(n);
+                a && (s = nb, l = o(a[2]));
+            }
+            return i == s;
+        }
+        function p() {
+            return t(S);
+        }
+        function N() {
+            return p() && (6 > l || "BackCompat" == e.compatMode);
+        }
+        function hb() {
+            return t(jb);
+        }
+        function mb() {
+            return t(nb);
+        }
+        function ab() {
+            return hb() && C > 534 && 535 > C;
+        }
+        function L() {
+            return p() && 9 > l;
+        }
+        function cb(a) {
+            var b;
+            return function(d) {
+                if (!b) {
+                    b = a;
+                    var c = a.substr(0, 1).toUpperCase() + a.substr(1);
+                    m([ a ].concat([ "WebKit", "ms", "Moz", "O", "webkit" ]), function(g, f) {
+                        var e = a;
+                        return f && (e = g + c), d.style[e] != k ? b = e : void 0;
+                    });
+                }
+                return b;
+            };
+        }
+        function rb(a) {
+            return {}.toString.call(a);
+        }
+        function Fb() {
+            return H || (H = {}, m([ "Boolean", "Number", "String", "Function", "Array", "Date", "RegExp", "Object" ], function(a) {
+                H["[object " + a + "]"] = a.toLowerCase();
+            })), H;
+        }
+        function m(a, d) {
+            if ("[object Array]" == rb(a)) {
+                for (var b = 0; b < a.length; b++) if (d(a[b], b, a)) return c;
+            } else for (var e in a) if (d(a[e], e, a)) return c;
+        }
+        function A(a) {
+            return a == j ? String(a) : Fb()[rb(a)] || "object";
+        }
+        function pb(a) {
+            for (var b in a) return c;
+        }
+        function x(a) {
+            try {
+                return "object" == A(a) && !a.nodeType && a != a.window && (!a.constructor || {}.hasOwnProperty.call(a.constructor.prototype, "isPrototypeOf"));
+            } catch (b) {}
+        }
+        function w(a, b) {
+            return {
+                x: a,
+                y: b
+            };
+        }
+        function vb(b, a) {
+            setTimeout(b, a || 0);
+        }
+        function F(b, d, c) {
+            var a = b && "inherit" != b ? b : "";
+            return m(d, function(c) {
+                var b = c.exec(a);
+                if (b) {
+                    var d = a.substr(0, b.index), e = a.substr(b.lastIndex + 1, a.length - (b.lastIndex + 1));
+                    a = d + e;
+                }
+            }), a = c + (0 != a.indexOf(" ") ? " " : "") + a;
+        }
+        function eb(b, a) {
+            9 > l && (b.style.filter = a);
+        }
+        function Bb(g, a, i) {
+            if (!J || 9 > J) {
+                var d = a.$ScaleX, e = a.$ScaleY, j = (a.$Rotate || 0) % 360, h = "";
+                if (j || d != k || e != k) {
+                    d == k && (d = 1), e == k && (e = 1);
+                    var c = f.Tg(j / 180 * b.PI, d || 1, e || 1), i = f.Og(c, a.$OriginalWidth, a.$OriginalHeight);
+                    f.Dd(g, i.y), f.Id(g, i.x), h = "progid:DXImageTransform.Microsoft.Matrix(M11=" + c[0][0] + ", M12=" + c[0][1] + ", M21=" + c[1][0] + ", M22=" + c[1][1] + ", SizingMethod='auto expand')";
+                }
+                var m = g.style.filter, n = new RegExp(/[\s]*progid:DXImageTransform\.Microsoft\.Matrix\([^\)]*\)/g), l = F(m, [ n ], h);
+                eb(g, l);
+            }
+        }
+        function V(a) {
+            a.constructor === V.caller && a.xd && a.xd.apply(a, V.caller.arguments);
+        }
+        function r(a) {
+            return a || g.event;
+        }
+        function B(c, d, a) {
+            if (a === k) {
+                var b = c.currentStyle || c.style;
+                return a = b[d], "" == a && g.getComputedStyle && (b = c.ownerDocument.defaultView.getComputedStyle(c, j), 
+                b && (a = b.getPropertyValue(d) || b[d])), a;
+            }
+            c.style[d] = a == k ? "" : a;
+        }
+        function X(b, c, a, d) {
+            return a === k ? o(B(b, c)) : (a == j ? a = "" : d && (a += "px"), void B(b, c, a));
+        }
+        function h(c, a) {
+            var b, d = a ? X : B;
+            return 4 & a && (b = cb(c)), function(e, f) {
+                return d(e, b ? b(e) : c, f, 2 & a);
+            };
+        }
+        function Cb(b) {
+            if (p() && 9 > q) {
+                var a = /opacity=([^)]*)/.exec(b.style.filter || "");
+                return a ? o(a[1]) / 100 : 1;
+            }
+            return o(b.style.opacity || "1");
+        }
+        function Eb(c, a, f) {
+            if (p() && 9 > q) {
+                var h = c.style.filter || "", i = new RegExp(/[\s]*alpha\([^\)]*\)/g), e = b.round(100 * a), d = "";
+                (100 > e || f) && (d = "alpha(opacity=" + e + ") ");
+                var g = F(h, [ i ], d);
+                eb(c, g);
+            } else c.style.opacity = 1 == a ? "" : b.round(100 * a) / 100;
+        }
+        function Z(e, c) {
+            p() && l && 10 > l && (delete c.$RotateX, delete c.$RotateY);
+            var d = bb(e);
+            if (d) {
+                var b = "";
+                a.c(c, function(e, c) {
+                    var a = xb[c];
+                    if (a) {
+                        var d = a[1] || 0;
+                        b += (b ? " " : "") + a[0] + "(" + e + [ "deg", "px", "" ][d] + ")";
+                    }
+                }), e.style[d] = b;
+            }
+        }
+        function qb(a, c, e, b) {
+            for (b = b || "u", a = a ? a.firstChild : j; a; a = a.nextSibling) if (1 == a.nodeType) {
+                if (R(a, b) == c) return a;
+                if (!e) {
+                    var d = qb(a, c, e, b);
+                    if (d) return d;
+                }
+            }
+        }
+        function P(a, d, f, b) {
+            b = b || "u";
+            var c = [];
+            for (a = a ? a.firstChild : j; a; a = a.nextSibling) if (1 == a.nodeType && (R(a, b) == d && c.push(a), 
+            !f)) {
+                var e = P(a, d, f, b);
+                e.length && (c = c.concat(e));
+            }
+            return c;
+        }
+        function kb(a, c, d) {
+            for (a = a ? a.firstChild : j; a; a = a.nextSibling) if (1 == a.nodeType) {
+                if (a.tagName == c) return a;
+                if (!d) {
+                    var b = kb(a, c, d);
+                    if (b) return b;
+                }
+            }
+        }
+        function db(a, c, e) {
+            var b = [];
+            for (a = a ? a.firstChild : j; a; a = a.nextSibling) if (1 == a.nodeType && ((!c || a.tagName == c) && b.push(a), 
+            !e)) {
+                var d = db(a, c, e);
+                d.length && (b = b.concat(d));
+            }
+            return b;
+        }
+        function z() {
+            var d, c, b, a, e = arguments, g = 1 & e[0], f = 1 + g;
+            for (d = e[f - 1] || {}; f < e.length; f++) if (c = e[f]) for (b in c) if (a = c[b], 
+            a !== k) {
+                a = c[b];
+                var h = d[b];
+                d[b] = g && (x(h) || x(a)) ? z(g, {}, h, a) : a;
+            }
+            return d;
+        }
+        function W(f, g) {
+            var c, a, b, d = {};
+            for (c in f) if (a = f[c], b = g[c], a !== b) {
+                var e;
+                x(a) && x(b) && (a = W(a, b), e = !pb(a)), !e && (d[c] = a);
+            }
+            return d;
+        }
+        function O(a) {
+            return e.createElement(a);
+        }
+        function T(b, c, a) {
+            return a == k ? b.getAttribute(c) : void b.setAttribute(c, a);
+        }
+        function R(a, b) {
+            return T(a, b) || T(a, "data-" + b);
+        }
+        function u(b, a) {
+            return a == k ? b.className : void (b.className = a);
+        }
+        function ub(b) {
+            var a = {};
+            return m(b, function(b) {
+                a[b] = b;
+            }), a;
+        }
+        function wb(b, a) {
+            return b.match(a || zb);
+        }
+        function M(b, a) {
+            return ub(wb(b || "", a));
+        }
+        function Y(b, c) {
+            var a = "";
+            return m(c, function(c) {
+                a && (a += b), a += c;
+            }), a;
+        }
+        function E(a, c, b) {
+            u(a, Y(" ", z(W(M(u(a)), M(c)), M(b))));
+        }
+        function U(d, c, b) {
+            var a = d.cloneNode(!c);
+            return !b && f.qg(a, "id"), a;
+        }
+        function Gb(b) {
+            function i() {
+                E(b, q, g[d || j || 2 & h || h]), a.W(b, "pointer-events", d ? "none" : "");
+            }
+            function c() {
+                j = 0, i(), f.R(e, "mouseup", c), f.R(e, "touchend", c), f.R(e, "touchcancel", c);
+            }
+            function o(a) {
+                d ? f.bc(a) : (j = 4, i(), f.e(e, "mouseup", c), f.e(e, "touchend", c), f.e(e, "touchcancel", c));
+            }
+            var q, l = this, p = "", r = [ "av", "pv", "ds", "dn" ], g = [], j = 0, h = 0, d = 0;
+            l.jd = function(a) {
+                return a === k ? h : (h = 2 & a || 1 & a, void i());
+            }, l.$Enable = function(a) {
+                return a === k ? !d : (d = a ? 0 : 3, void i());
+            }, l.$Elmt = b = f.qb(b);
+            var n = a.Bg(u(b));
+            n && (p = n.shift()), m(r, function(a) {
+                g.push(p + a);
+            }), q = Y(" ", g), g.unshift(""), f.e(b, "mousedown", o), f.e(b, "touchstart", o);
+        }
+        function G() {
+            return K || (K = z({
+                Mh: f.Dd,
+                Lh: f.Id,
+                $Clip: f.pg,
+                B: f.jg
+            }, Q)), K;
+        }
+        function ob() {
+            var a = {};
+            return a.B = a.B, a.B = a.$Rotate, a.B = a.$RotateX, a.B = a.$RotateY, a.B = a.$SkewX, 
+            a.B = a.$SkewY, a.B = a.$TranslateX, a.B = a.$TranslateY, a.B = a.$TranslateZ, G();
+        }
+        function tb(c, a) {
+            var b = {};
+            return m(c, function(c, d) {
+                var e = c;
+                a[d] != k && (e = f.Zb(c) ? c + a[d] : tb(c, a[d])), b[d] = e;
+            }), b;
+        }
+        var I, H, f = this, zb = /\S+/g, S = 1, fb = 2, jb = 3, ib = 4, nb = 5, s = 0, l = 0, q = 0, J = 0, C = 0, y = navigator, sb = y.appName, n = y.userAgent, bb = cb("transform");
+        f.Pg = Ib, f.Jd = p, f.Ng = hb, f.tc = mb, f.V = L, f.sd = function() {
+            return l;
+        }, f.ng = function() {
+            return t(), C;
+        }, f.$Delay = vb, f.xd = V, f.qb = function(a) {
+            return f.ud(a) && (a = e.getElementById(a)), a;
+        }, f.vd = r, f.yc = function(a) {
+            return a = r(a), a.target || a.srcElement || e;
+        }, f.Qd = function(a) {
+            return a = r(a), {
+                x: a.pageX || a.clientX || 0,
+                y: a.pageY || a.clientY || 0
+            };
+        };
+        var xb = {
+            $Rotate: [ "rotate" ],
+            $RotateX: [ "rotateX" ],
+            $RotateY: [ "rotateY" ],
+            $ScaleX: [ "scaleX", 2 ],
+            $ScaleY: [ "scaleY", 2 ],
+            $TranslateX: [ "translateX", 1 ],
+            $TranslateY: [ "translateY", 1 ],
+            $TranslateZ: [ "translateZ", 1 ],
+            $SkewX: [ "skewX" ],
+            $SkewY: [ "skewY" ]
+        };
+        f.jg = function(b, a) {
+            ab() ? vb(f.K(j, Z, b, a)) : (L() ? Bb : Z)(b, a);
+        }, f.Sc = h("transformOrigin", 4), f.ig = h("backfaceVisibility", 4), f.kg = h("transformStyle", 4), 
+        f.mg = h("perspective", 6), f.lg = h("perspectiveOrigin", 4), f.sg = function(a, c) {
+            if (p() && 9 > q || 10 > q && N()) a.style.zoom = 1 == c ? "" : c; else {
+                var b = bb(a);
+                if (b) {
+                    var f = "scale(" + c + ")", e = a.style[b], g = new RegExp(/[\s]*scale\(.*?\)/g), d = F(e, [ g ], f);
+                    a.style[b] = d;
+                }
+            }
+        }, f.Ib = function(b, a) {
+            return function(c) {
+                c = r(c);
+                var e = c.type, d = c.relatedTarget || ("mouseout" == e ? c.toElement : c.fromElement);
+                (!d || d !== a && !f.zg(a, d)) && b(c);
+            };
+        }, f.e = function(a, c, d, b) {
+            a = f.qb(a), a.addEventListener ? ("mousewheel" == c && a.addEventListener("DOMMouseScroll", d, b), 
+            a.addEventListener(c, d, b)) : a.attachEvent && (a.attachEvent("on" + c, d), b && a.setCapture && a.setCapture());
+        }, f.R = function(a, c, d, b) {
+            a = f.qb(a), a.removeEventListener ? ("mousewheel" == c && a.removeEventListener("DOMMouseScroll", d, b), 
+            a.removeEventListener(c, d, b)) : a.detachEvent && (a.detachEvent("on" + c, d), 
+            b && a.releaseCapture && a.releaseCapture());
+        }, f.bc = function(a) {
+            a = r(a), a.preventDefault && a.preventDefault(), a.cancel = c, a.returnValue = i;
+        }, f.Kg = function(a) {
+            a = r(a), a.stopPropagation && a.stopPropagation(), a.cancelBubble = c;
+        }, f.K = function(d, c) {
+            var a = [].slice.call(arguments, 2), b = function() {
+                var b = a.concat([].slice.call(arguments, 0));
+                return c.apply(d, b);
+            };
+            return b;
+        }, f.ug = function(a, b) {
+            if (b == k) return a.textContent || a.innerText;
+            var c = e.createTextNode(b);
+            f.sc(a), a.appendChild(c);
+        }, f.O = function(d, c) {
+            for (var b = [], a = d.firstChild; a; a = a.nextSibling) (c || 1 == a.nodeType) && b.push(a);
+            return b;
+        }, f.D = qb, f.xg = kb, f.vg = db, f.tg = function(b, a) {
+            return b.getElementsByTagName(a);
+        }, f.p = z, f.fd = function(a) {
+            return "function" == A(a);
+        }, f.uc = function(a) {
+            return "array" == A(a);
+        }, f.ud = function(a) {
+            return "string" == A(a);
+        }, f.Zb = function(a) {
+            return !isNaN(o(a)) && isFinite(a);
+        }, f.c = m, f.yg = x, f.mb = function() {
+            return O("DIV");
+        }, f.Cg = function() {
+            return O("SPAN");
+        }, f.kd = function() {}, f.C = T, f.j = R, f.Zc = u, f.Bg = wb, f.Yc = function(a) {
+            return a.parentNode;
+        }, f.S = function(a) {
+            f.Y(a, "none");
+        }, f.A = function(a, b) {
+            f.Y(a, b ? "none" : "");
+        }, f.qg = function(b, a) {
+            b.removeAttribute(a);
+        }, f.rg = function() {
+            return p() && 10 > l;
+        }, f.pg = function(d, c) {
+            if (c) d.style.clip = "rect(" + b.round(c.$Top) + "px " + b.round(c.$Right) + "px " + b.round(c.$Bottom) + "px " + b.round(c.$Left) + "px)"; else {
+                var g = d.style.cssText, f = [ new RegExp(/[\s]*clip: rect\(.*?\)[;]?/i), new RegExp(/[\s]*cliptop: .*?[;]?/i), new RegExp(/[\s]*clipright: .*?[;]?/i), new RegExp(/[\s]*clipbottom: .*?[;]?/i), new RegExp(/[\s]*clipleft: .*?[;]?/i) ], e = F(g, f, "");
+                a.Nb(d, e);
+            }
+        }, f.T = function() {
+            return +new Date();
+        }, f.H = function(b, a) {
+            b.appendChild(a);
+        }, f.Pb = function(b, a, c) {
+            (c || a.parentNode).insertBefore(b, a);
+        }, f.Hb = function(a, b) {
+            (b || a.parentNode).removeChild(a);
+        }, f.Jg = function(a, b) {
+            m(a, function(a) {
+                f.Hb(a, b);
+            });
+        }, f.sc = function(a) {
+            f.Jg(f.O(a, c), a);
+        }, f.Oe = function(a, b) {
+            var c = f.Yc(a);
+            1 & b && f.E(a, (f.l(c) - f.l(a)) / 2), 2 & b && f.G(a, (f.m(c) - f.m(a)) / 2);
+        }, f.Kb = function(b, a) {
+            return parseInt(b, a || 10);
+        };
+        var o = parseFloat;
+        f.Nc = o, f.zg = function(b, a) {
+            for (var c = e.body; a && b !== a && c !== a; ) try {
+                a = a.parentNode;
+            } catch (d) {
+                return i;
+            }
+            return b === a;
+        }, f.X = U, f.Cb = function(e, g) {
+            function b(e, c) {
+                f.R(a, "load", b), f.R(a, "abort", d), f.R(a, "error", d), g && g(a, c);
+            }
+            function d(a) {
+                b(a, c);
+            }
+            var a = new Image();
+            mb() && 11.6 > l || !e ? b(!e) : (f.e(a, "load", b), f.e(a, "abort", d), f.e(a, "error", d), 
+            a.src = e);
+        }, f.Ud = function(d, a, e) {
+            function b(b) {
+                c--, a && b && b.src == a.src && (a = b), !c && e && e(a);
+            }
+            var c = d.length + 1;
+            m(d, function(a) {
+                f.Cb(a.src, b);
+            }), b();
+        }, f.Xc = function(b, g, i, h) {
+            h && (b = U(b));
+            var c = P(b, g);
+            c.length || (c = a.tg(b, g));
+            for (var f = c.length - 1; f > -1; f--) {
+                var d = c[f], e = U(i);
+                u(e, u(d)), a.Nb(e, d.style.cssText), a.Pb(e, d), a.Hb(d);
+            }
+            return b;
+        }, f.ac = function(a) {
+            return new Gb(a);
+        }, f.W = B, f.ib = h("overflow"), f.G = h("top", 2), f.E = h("left", 2), f.l = h("width", 2), 
+        f.m = h("height", 2), f.Id = h("marginLeft", 2), f.Dd = h("marginTop", 2), f.z = h("position"), 
+        f.Y = h("display"), f.J = h("zIndex", 1), f.Ab = function(b, a, c) {
+            return a == k ? Cb(b) : void Eb(b, a, c);
+        }, f.Nb = function(a, b) {
+            return b == k ? a.style.cssText : void (a.style.cssText = b);
+        };
+        var K, Q = {
+            $Opacity: f.Ab,
+            $Top: f.G,
+            $Left: f.E,
+            N: f.l,
+            P: f.m,
+            Bb: f.z,
+            Kh: f.Y,
+            $ZIndex: f.J
+        };
+        f.ne = G, f.Pc = ob, f.xe = function(c, b) {
+            G();
+            var a = {};
+            return m(b, function(d, b) {
+                Q[b] && (a[b] = Q[b](c));
+            }), a;
+        }, f.bb = function(c, b) {
+            var a = G();
+            m(b, function(d, b) {
+                a[b] && a[b](c, d);
+            });
+        }, f.Wd = function(b, a) {
+            ob(), f.bb(b, a);
+        };
+        var D = new function() {
+            function b(d, g) {
+                for (var j = d[0].length, i = d.length, h = g[0].length, f = [], c = 0; i > c; c++) for (var k = f[c] = [], b = 0; h > b; b++) {
+                    for (var e = 0, a = 0; j > a; a++) e += d[c][a] * g[a][b];
+                    k[b] = e;
+                }
+                return f;
+            }
+            var a = this;
+            a.$ScaleX = function(b, c) {
+                return a.Vc(b, c, 0);
+            }, a.$ScaleY = function(b, c) {
+                return a.Vc(b, 0, c);
+            }, a.Vc = function(a, c, d) {
+                return b(a, [ [ c, 0 ], [ 0, d ] ]);
+            }, a.Ub = function(d, c) {
+                var a = b(d, [ [ c.x ], [ c.y ] ]);
+                return w(a[0][0], a[1][0]);
+            };
+        }();
+        f.Tg = function(d, a, c) {
+            var e = b.cos(d), f = b.sin(d);
+            return [ [ e * a, -f * c ], [ f * a, e * c ] ];
+        }, f.Og = function(d, c, a) {
+            var e = D.Ub(d, w(-c / 2, -a / 2)), f = D.Ub(d, w(c / 2, -a / 2)), g = D.Ub(d, w(c / 2, a / 2)), h = D.Ub(d, w(-c / 2, a / 2));
+            return w(b.min(e.x, f.x, g.x, h.x) + c / 2, b.min(e.y, f.y, g.y, h.y) + a / 2);
+        };
+        var yb = {
+            $Zoom: 1,
+            $ScaleX: 1,
+            $ScaleY: 1,
+            $Rotate: 0,
+            $RotateX: 0,
+            $RotateY: 0,
+            $TranslateX: 0,
+            $TranslateY: 0,
+            $TranslateZ: 0,
+            $SkewX: 0,
+            $SkewY: 0
+        };
+        f.Lc = function(b) {
+            var c = b || {};
+            return b && (a.fd(b) ? c = {
+                kb: c
+            } : a.fd(b.$Clip) && (c.$Clip = {
+                kb: b.$Clip
+            })), c;
+        }, f.Je = tb, f.Kd = function(h, i, w, n, y, z, o) {
+            var c = i;
+            if (h) {
+                c = {};
+                for (var g in i) {
+                    var A = z[g] || 1, v = y[g] || [ 0, 1 ], e = (w - v[0]) / v[1];
+                    e = b.min(b.max(e, 0), 1), e *= A;
+                    var u = b.floor(e);
+                    e != u && (e -= u);
+                    var m, l = n.kb || d.$EaseSwing, B = h[g], q = i[g];
+                    if (a.Zb(q)) {
+                        l = n[g] || l;
+                        var x = l(e);
+                        m = B + q * x;
+                    } else m = a.p({
+                        wb: {}
+                    }, h[g]), a.c(q.wb || q, function(d, a) {
+                        n.$Clip && (l = n.$Clip[a] || n.$Clip.kb || l);
+                        var c = l(e), b = d * c;
+                        m.wb[a] = b, m[a] += b;
+                    });
+                    c[g] = m;
+                }
+                var t, f = {
+                    $OriginalWidth: o.$OriginalWidth,
+                    $OriginalHeight: o.$OriginalHeight
+                };
+                a.c(yb, function(d, a) {
+                    t = t || i[a];
+                    var b = c[a];
+                    b != k ? (b != d && (f[a] = b), delete c[a]) : h[a] != k && h[a] != d && (f[a] = h[a]);
+                }), i.$Zoom && f.$Zoom && (f.$ScaleX = f.$Zoom, f.$ScaleY = f.$Zoom), c.B = f;
+            }
+            if (i.$Clip && o.$Move) {
+                var p = c.$Clip.wb, s = (p.$Top || 0) + (p.$Bottom || 0), r = (p.$Left || 0) + (p.$Right || 0);
+                c.$Left = (c.$Left || 0) + r, c.$Top = (c.$Top || 0) + s, c.$Clip.$Left -= r, c.$Clip.$Right -= r, 
+                c.$Clip.$Top -= s, c.$Clip.$Bottom -= s;
+            }
+            return c.$Clip && a.rg() && !c.$Clip.$Top && !c.$Clip.$Left && c.$Clip.$Right == o.$OriginalWidth && c.$Clip.$Bottom == o.$OriginalHeight && (c.$Clip = j), 
+            c;
+        };
+    }(), l = function(y, C, k, P, N, J) {
+        function O(a) {
+            f += a, e += a, l += a, h += a, m += a, x += a;
+        }
+        function u(n) {
+            var g = n;
+            if (p && (g >= e || f >= g) && (g = ((g - f) % p + p) % p + f), !D || v || h != g) {
+                var i = b.min(g, e);
+                if (i = b.max(i, f), !D || v || i != m) {
+                    if (J) {
+                        var j = (i - l) / (C || 1);
+                        k.$Reverse && (j = 1 - j);
+                        var o = a.Kd(N, J, j, H, G, I, k);
+                        a.c(o, function(b, a) {
+                            A[a] && A[a](P, b);
+                        });
+                    }
+                    d.Ic(m - l, i - l), m = i, a.c(w, function(b, c) {
+                        var a = h > n ? w[w.length - c - 1] : b;
+                        a.v(m - x);
+                    });
+                    var r = h, q = m;
+                    h = g, D = c, d.Qb(r, q);
+                }
+            }
+        }
+        function E(a, c, d) {
+            c && a.$Shift(e), d || (f = b.min(f, a.Fc() + x), e = b.max(e, a.gb() + x)), w.push(a);
+        }
+        function K() {
+            if (q) {
+                var d = a.T(), e = b.min(d - z, k.Uc), c = h + e * o;
+                z = d, c * o >= n * o && (c = n), u(c), !v && c * o >= n * o ? L(B) : r(K);
+            }
+        }
+        function t(g, i, j) {
+            q || (q = c, v = j, B = i, g = b.max(g, f), g = b.min(g, e), n = g, o = h > n ? -1 : 1, 
+            d.Od(), z = a.T(), r(K));
+        }
+        function L(a) {
+            q && (v = q = B = i, d.Ld(), a && a());
+        }
+        y = y || 0;
+        var q, n, o, v, H, I, G, B, D, l, f, e, p, A, d = this, z = 0, x = 0, h = 0, m = 0, w = [], r = g.requestAnimationFrame || g.webkitRequestAnimationFrame || g.mozRequestAnimationFrame || g.msRequestAnimationFrame;
+        a.Ng() && a.sd() < 7 && (r = j), r = r || function(b) {
+            a.$Delay(b, k.$Interval);
+        }, d.$Play = function(a, b, c) {
+            t(a ? h + a : e, b, c);
+        }, d.Cd = t, d.rb = L, d.Ke = function(a) {
+            t(a);
+        }, d.db = function() {
+            return h;
+        }, d.Sd = function() {
+            return n;
+        }, d.yb = function() {
+            return m;
+        }, d.v = u, d.$Move = function(a) {
+            u(h + a);
+        }, d.$IsPlaying = function() {
+            return q;
+        }, d.Ae = function(a) {
+            p = a;
+        }, d.$Shift = O, d.I = function(a, b) {
+            E(a, 0, b);
+        }, d.Oc = function(a) {
+            E(a, 1);
+        }, d.ye = function(a) {
+            e += a;
+        }, d.Fc = function() {
+            return f;
+        }, d.gb = function() {
+            return e;
+        }, d.Qb = d.Od = d.Ld = d.Ic = a.kd, d.rc = a.T(), k = a.p({
+            $Interval: 16,
+            Uc: 50
+        }, k), p = k.Tc, A = a.p({}, a.ne(), k.xc), f = l = y, e = y + C, I = k.$Round || {}, 
+        G = k.$During || {}, H = a.Lc(k.$Easing);
+    }, o = g.$JssorSlideshowFormations$ = new function() {
+        function y(a) {
+            return (a & r) == r;
+        }
+        function z(a) {
+            return (a & t) == t;
+        }
+        function g(b, a, c) {
+            c.push(a), b[a] = b[a] || [], b[a].push(c);
+        }
+        var h = this, d = 0, a = 1, f = 2, e = 3, s = 1, r = 2, t = 4, q = 8, w = 256, x = 512, v = 1024, u = 2048, j = u + s, i = u + r, o = x + s, m = x + r, n = w + t, k = w + q, l = v + t, p = v + q;
+        h.$FormationStraight = function(f) {
+            for (var c, d = f.$Cols, e = f.$Rows, s = f.$Assembly, t = f.hc, r = [], a = 0, b = 0, p = d - 1, q = e - 1, h = t - 1, b = 0; e > b; b++) for (a = 0; d > a; a++) {
+                switch (s) {
+                  case j:
+                    c = h - (a * e + (q - b));
+                    break;
+
+                  case l:
+                    c = h - (b * d + (p - a));
+                    break;
+
+                  case o:
+                    c = h - (a * e + b);
+
+                  case n:
+                    c = h - (b * d + a);
+                    break;
+
+                  case i:
+                    c = a * e + b;
+                    break;
+
+                  case k:
+                    c = b * d + (p - a);
+                    break;
+
+                  case m:
+                    c = a * e + (q - b);
+                    break;
+
+                  default:
+                    c = b * d + a;
+                }
+                g(r, c, [ b, a ]);
+            }
+            return r;
+        }, h.$FormationSwirl = function(q) {
+            var t, p, x = q.$Cols, y = q.$Rows, B = q.$Assembly, w = q.hc, A = [], z = [], u = 0, b = 0, h = 0, r = x - 1, s = y - 1, v = 0;
+            switch (B) {
+              case j:
+                b = r, h = 0, p = [ f, a, e, d ];
+                break;
+
+              case l:
+                b = 0, h = s, p = [ d, e, a, f ];
+                break;
+
+              case o:
+                b = r, h = s, p = [ e, a, f, d ];
+                break;
+
+              case n:
+                b = r, h = s, p = [ a, e, d, f ];
+                break;
+
+              case i:
+                b = 0, h = 0, p = [ f, d, e, a ];
+                break;
+
+              case k:
+                b = r, h = 0, p = [ a, f, d, e ];
+                break;
+
+              case m:
+                b = 0, h = s, p = [ e, d, f, a ];
+                break;
+
+              default:
+                b = 0, h = 0, p = [ d, f, a, e ];
+            }
+            for (u = 0; w > u; ) {
+                if (t = h + "," + b, b >= 0 && x > b && h >= 0 && y > h && !z[t]) z[t] = c, g(A, u++, [ h, b ]); else switch (p[v++ % p.length]) {
+                  case d:
+                    b--;
+                    break;
+
+                  case f:
+                    h--;
+                    break;
+
+                  case a:
+                    b++;
+                    break;
+
+                  case e:
+                    h++;
+                }
+                switch (p[v % p.length]) {
+                  case d:
+                    b++;
+                    break;
+
+                  case f:
+                    h++;
+                    break;
+
+                  case a:
+                    b--;
+                    break;
+
+                  case e:
+                    h--;
+                }
+            }
+            return A;
+        }, h.$FormationZigZag = function(p) {
+            var y, h, w = p.$Cols, x = p.$Rows, z = p.$Assembly, v = p.hc, t = [], u = 0, b = 0, c = 0, q = w - 1, r = x - 1, s = 0;
+            switch (z) {
+              case j:
+                b = q, c = 0, h = [ f, a, e, a ];
+                break;
+
+              case l:
+                b = 0, c = r, h = [ d, e, a, e ];
+                break;
+
+              case o:
+                b = q, c = r, h = [ e, a, f, a ];
+                break;
+
+              case n:
+                b = q, c = r, h = [ a, e, d, e ];
+                break;
+
+              case i:
+                b = 0, c = 0, h = [ f, d, e, d ];
+                break;
+
+              case k:
+                b = q, c = 0, h = [ a, f, d, f ];
+                break;
+
+              case m:
+                b = 0, c = r, h = [ e, d, f, d ];
+                break;
+
+              default:
+                b = 0, c = 0, h = [ d, f, a, f ];
+            }
+            for (u = 0; v > u; ) if (y = c + "," + b, b >= 0 && w > b && c >= 0 && x > c && "undefined" == typeof t[y]) switch (g(t, u++, [ c, b ]), 
+            h[s % h.length]) {
+              case d:
+                b++;
+                break;
+
+              case f:
+                c++;
+                break;
+
+              case a:
+                b--;
+                break;
+
+              case e:
+                c--;
+            } else {
+                switch (h[s++ % h.length]) {
+                  case d:
+                    b--;
+                    break;
+
+                  case f:
+                    c--;
+                    break;
+
+                  case a:
+                    b++;
+                    break;
+
+                  case e:
+                    c++;
+                }
+                switch (h[s++ % h.length]) {
+                  case d:
+                    b++;
+                    break;
+
+                  case f:
+                    c++;
+                    break;
+
+                  case a:
+                    b--;
+                    break;
+
+                  case e:
+                    c--;
+                }
+            }
+            return t;
+        }, h.$FormationStraightStairs = function(q) {
+            var u = q.$Cols, v = q.$Rows, e = q.$Assembly, t = q.hc, r = [], s = 0, c = 0, d = 0, f = u - 1, h = v - 1, x = t - 1;
+            switch (e) {
+              case j:
+              case m:
+              case o:
+              case i:
+                var a = 0, b = 0;
+                break;
+
+              case k:
+              case l:
+              case n:
+              case p:
+                var a = f, b = 0;
+                break;
+
+              default:
+                e = p;
+                var a = f, b = 0;
+            }
+            for (c = a, d = b; t > s; ) {
+                switch (z(e) || y(e) ? g(r, x - s++, [ d, c ]) : g(r, s++, [ d, c ]), e) {
+                  case j:
+                  case m:
+                    c--, d++;
+                    break;
+
+                  case o:
+                  case i:
+                    c++, d--;
+                    break;
+
+                  case k:
+                  case l:
+                    c--, d--;
+                    break;
+
+                  case p:
+                  case n:
+                  default:
+                    c++, d++;
+                }
+                if (0 > c || 0 > d || c > f || d > h) {
+                    switch (e) {
+                      case j:
+                      case m:
+                        a++;
+                        break;
+
+                      case k:
+                      case l:
+                      case o:
+                      case i:
+                        b++;
+                        break;
+
+                      case p:
+                      case n:
+                      default:
+                        a--;
+                    }
+                    if (0 > a || 0 > b || a > f || b > h) {
+                        switch (e) {
+                          case j:
+                          case m:
+                            a = f, b++;
+                            break;
+
+                          case o:
+                          case i:
+                            b = h, a++;
+                            break;
+
+                          case k:
+                          case l:
+                            b = h, a--;
+                            break;
+
+                          case p:
+                          case n:
+                          default:
+                            a = 0, b++;
+                        }
+                        b > h ? b = h : 0 > b ? b = 0 : a > f ? a = f : 0 > a && (a = 0);
+                    }
+                    d = b, c = a;
+                }
+            }
+            return r;
+        }, h.$FormationSquare = function(i) {
+            var d, e, f, h, k, a = i.$Cols || 1, c = i.$Rows || 1, j = [];
+            for (f = c > a ? (c - a) / 2 : 0, h = a > c ? (a - c) / 2 : 0, k = b.round(b.max(a / 2, c / 2)) + 1, 
+            d = 0; a > d; d++) for (e = 0; c > e; e++) g(j, k - b.min(d + 1 + f, e + 1 + h, a - d + f, c - e + h), [ e, d ]);
+            return j;
+        }, h.$FormationRectangle = function(f) {
+            var a, c, i, d = f.$Cols || 1, e = f.$Rows || 1, h = [];
+            for (i = b.round(b.min(d / 2, e / 2)) + 1, a = 0; d > a; a++) for (c = 0; e > c; c++) g(h, i - b.min(a + 1, c + 1, d - a, e - c), [ c, a ]);
+            return h;
+        }, h.$FormationRandom = function(d) {
+            for (var a, e = [], c = 0; c < d.$Rows; c++) for (a = 0; a < d.$Cols; a++) g(e, b.ceil(1e5 * b.random()) % 13, [ c, a ]);
+            return e;
+        }, h.$FormationCircle = function(d) {
+            for (var a, e = d.$Cols || 1, f = d.$Rows || 1, h = [], i = e / 2 - .5, j = f / 2 - .5, c = 0; e > c; c++) for (a = 0; f > a; a++) g(h, b.round(b.sqrt(b.pow(c - i, 2) + b.pow(a - j, 2))), [ a, c ]);
+            return h;
+        }, h.$FormationCross = function(d) {
+            for (var a, e = d.$Cols || 1, f = d.$Rows || 1, h = [], i = e / 2 - .5, j = f / 2 - .5, c = 0; e > c; c++) for (a = 0; f > a; a++) g(h, b.round(b.min(b.abs(c - i), b.abs(a - j))), [ a, c ]);
+            return h;
+        }, h.$FormationRectangleCross = function(f) {
+            for (var a, h = f.$Cols || 1, i = f.$Rows || 1, j = [], d = h / 2 - .5, e = i / 2 - .5, k = b.max(d, e) + 1, c = 0; h > c; c++) for (a = 0; i > a; a++) g(j, b.round(k - b.max(d - b.abs(c - d), e - b.abs(a - e))) - 1, [ a, c ]);
+            return j;
+        };
+    }();
+    g.$JssorSlideshowRunner$ = function(n, s, q, t, y) {
+        function k(g, f) {
+            var e = {
+                $Interval: f,
+                $Duration: 1,
+                $Delay: 0,
+                $Cols: 1,
+                $Rows: 1,
+                $Opacity: 0,
+                $Zoom: 0,
+                $Clip: 0,
+                $Move: i,
+                $SlideOut: i,
+                $Reverse: i,
+                $Formation: o.$FormationRandom,
+                $Assembly: 1032,
+                $ChessMode: {
+                    $Column: 0,
+                    $Row: 0
+                },
+                $Easing: d.$EaseSwing,
+                $Round: {},
+                Ob: [],
+                $During: {}
+            };
+            return a.p(e, g), e.hc = e.$Cols * e.$Rows, e.$Easing = a.Lc(e.$Easing), e.fe = b.ceil(e.$Duration / e.$Interval), 
+            e.ie = function(b, a) {
+                b /= e.$Cols, a /= e.$Rows;
+                var f = b + "x" + a;
+                if (!e.Ob[f]) {
+                    e.Ob[f] = {
+                        N: b,
+                        P: a
+                    };
+                    for (var c = 0; c < e.$Cols; c++) for (var d = 0; d < e.$Rows; d++) e.Ob[f][d + "," + c] = {
+                        $Top: d * a,
+                        $Right: c * b + b,
+                        $Bottom: d * a + a,
+                        $Left: c * b
+                    };
+                }
+                return e.Ob[f];
+            }, e.$Brother && (e.$Brother = k(e.$Brother, f), e.$SlideOut = c), e;
+        }
+        function p(A, h, d, v, n, l) {
+            function B(a) {
+                var b = a.$Formation(a);
+                return a.$Reverse ? b.reverse() : b;
+            }
+            var t, f, e, r, x, y = this, u = {}, j = {}, m = [], p = d.$ChessMode.$Column || 0, q = d.$ChessMode.$Row || 0, g = d.ie(n, l), o = B(d), C = o.length - 1, s = d.$Duration + d.$Delay * C, w = v + s, k = d.$SlideOut;
+            if (w += 50, y.td = w, y.Vb = function(c) {
+                c -= v;
+                var e = s > c;
+                if (e || x) {
+                    x = e, k || (c = s - c);
+                    var f = b.ceil(c / d.$Interval);
+                    a.c(j, function(c, e) {
+                        var d = b.max(f, c.ue);
+                        d = b.min(d, c.length - 1), c.Rc != d && (c.Rc || k ? d == c.me && k && a.S(m[e]) : a.A(m[e]), 
+                        c.Rc = d, a.Wd(m[e], c[d]));
+                    });
+                }
+            }, h = a.X(h), a.V()) {
+                var D = !h["no-image"], z = a.vg(h);
+                a.c(z, function(b) {
+                    (D || b["jssor-slider"]) && a.Ab(b, a.Ab(b), c);
+                });
+            }
+            a.c(o, function(h, m) {
+                a.c(h, function(G) {
+                    var K = G[0], J = G[1], v = K + "," + J, o = i, s = i, x = i;
+                    p && J % 2 && (3 & p && (o = !o), 12 & p && (s = !s), 16 & p && (x = !x)), q && K % 2 && (3 & q && (o = !o), 
+                    12 & q && (s = !s), 16 & q && (x = !x)), d.$Top = d.$Top || 4 & d.$Clip, d.$Bottom = d.$Bottom || 8 & d.$Clip, 
+                    d.$Left = d.$Left || 1 & d.$Clip, d.$Right = d.$Right || 2 & d.$Clip;
+                    var C = s ? d.$Bottom : d.$Top, z = s ? d.$Top : d.$Bottom, B = o ? d.$Right : d.$Left, A = o ? d.$Left : d.$Right;
+                    d.$Clip = C || z || B || A, r = {}, e = {
+                        $Top: 0,
+                        $Left: 0,
+                        $Opacity: 1,
+                        N: n,
+                        P: l
+                    }, f = a.p({}, e), t = a.p({}, g[v]), d.$Opacity && (e.$Opacity = 2 - d.$Opacity), 
+                    d.$ZIndex && (e.$ZIndex = d.$ZIndex, f.$ZIndex = 0);
+                    var I = d.$Cols * d.$Rows > 1 || d.$Clip;
+                    if (d.$Zoom || d.$Rotate) {
+                        var H = c;
+                        if (a.V() && (d.$Cols * d.$Rows > 1 ? H = i : I = i), H) {
+                            e.$Zoom = d.$Zoom ? d.$Zoom - 1 : 1, f.$Zoom = 1, (a.V() || a.tc()) && (e.$Zoom = b.min(e.$Zoom, 2));
+                            var N = d.$Rotate || 0;
+                            e.$Rotate = 360 * N * (x ? -1 : 1), f.$Rotate = 0;
+                        }
+                    }
+                    if (I) {
+                        var h = t.wb = {};
+                        if (d.$Clip) {
+                            var w = d.$ScaleClip || 1;
+                            C && z ? (h.$Top = g.P / 2 * w, h.$Bottom = -h.$Top) : C ? h.$Bottom = -g.P * w : z && (h.$Top = g.P * w), 
+                            B && A ? (h.$Left = g.N / 2 * w, h.$Right = -h.$Left) : B ? h.$Right = -g.N * w : A && (h.$Left = g.N * w);
+                        }
+                        r.$Clip = t, f.$Clip = g[v];
+                    }
+                    var L = o ? 1 : -1, M = s ? 1 : -1;
+                    d.x && (e.$Left += n * d.x * L), d.y && (e.$Top += l * d.y * M), a.c(e, function(b, c) {
+                        a.Zb(b) && b != f[c] && (r[c] = b - f[c]);
+                    }), u[v] = k ? f : e;
+                    var D = d.fe, y = b.round(m * d.$Delay / d.$Interval);
+                    j[v] = new Array(y), j[v].ue = y, j[v].me = y + D - 1;
+                    for (var F = 0; D >= F; F++) {
+                        var E = a.Kd(f, r, F / D, d.$Easing, d.$During, d.$Round, {
+                            $Move: d.$Move,
+                            $OriginalWidth: n,
+                            $OriginalHeight: l
+                        });
+                        E.$ZIndex = E.$ZIndex || 1, j[v].push(E);
+                    }
+                });
+            }), o.reverse(), a.c(o, function(b) {
+                a.c(b, function(c) {
+                    var f = c[0], e = c[1], d = f + "," + e, b = h;
+                    (e || f) && (b = a.X(h)), a.bb(b, u[d]), a.ib(b, "hidden"), a.z(b, "absolute"), 
+                    A.se(b), m[d] = b, a.A(b, !k);
+                });
+            });
+        }
+        function v() {
+            var a = this, b = 0;
+            l.call(a, 0, u), a.Qb = function(c, a) {
+                a - b > h && (b = a, e && e.Vb(a), g && g.Vb(a));
+            }, a.ab = r;
+        }
+        var u, g, e, r, f = this, x = 0, w = t.$TransitionsOrder, h = 8;
+        f.Ie = function() {
+            var a = 0, c = t.$Transitions, d = c.length;
+            return a = w ? x++ % d : b.floor(b.random() * d), c[a] && (c[a].nb = a), c[a];
+        }, f.Ne = function(w, x, j, l, a) {
+            r = a, a = k(a, h);
+            var i = l.Wc, d = j.Wc;
+            i["no-image"] = !l.cc, d["no-image"] = !j.cc;
+            var m = i, o = d, v = a, c = a.$Brother || k({}, h);
+            a.$SlideOut || (m = d, o = i);
+            var t = c.$Shift || 0;
+            g = new p(n, o, c, b.max(t - c.$Interval, 0), s, q), e = new p(n, m, v, b.max(c.$Interval - t, 0), s, q), 
+            g.Vb(0), e.Vb(0), u = b.max(g.td, e.td), f.nb = w;
+        }, f.Db = function() {
+            n.Db(), g = j, e = j;
+        }, f.de = function() {
+            var a = j;
+            return e && (a = new v()), a;
+        }, (a.V() || a.tc() || y && a.ng() < 537) && (h = 16), m.call(f), l.call(f, -1e7, 1e7);
+    };
+    var h = g.$JssorSlider$ = function(q, fc) {
+        function Ec() {
+            var a = this;
+            l.call(a, -1e8, 2e8), a.ge = function() {
+                var c = a.yb(), d = b.floor(c), f = t(d), e = c - b.floor(c);
+                return {
+                    nb: f,
+                    ce: d,
+                    Bb: e
+                };
+            }, a.Qb = function(d, a) {
+                var e = b.floor(a);
+                e != a && a > d && e++, Ub(e, c), o.n(h.$EVT_POSITION_CHANGE, t(a), t(d), a, d);
+            };
+        }
+        function Dc() {
+            var b = this;
+            l.call(b, 0, 0, {
+                Tc: r
+            }), a.c(C, function(a) {
+                1 & D && a.Ae(r), b.Oc(a), a.$Shift(fb / bc);
+            });
+        }
+        function Cc() {
+            var a = this, b = Tb.$Elmt;
+            l.call(a, -1, 2, {
+                $Easing: d.$EaseLinear,
+                xc: {
+                    Bb: Zb
+                },
+                Tc: r
+            }, b, {
+                Bb: 1
+            }, {
+                Bb: -2
+            }), a.Mb = b;
+        }
+        function qc(n, m) {
+            var d, e, g, k, b, a = this;
+            l.call(a, -1e8, 2e8, {
+                Uc: 100
+            }), a.Od = function() {
+                O = c, R = j, o.n(h.$EVT_SWIPE_START, t(w.db()), w.db());
+            }, a.Ld = function() {
+                O = i, k = i;
+                var a = w.ge();
+                o.n(h.$EVT_SWIPE_END, t(w.db()), w.db()), !a.Bb && Gc(a.ce, s);
+            }, a.Qb = function(i, h) {
+                var a;
+                if (k) a = b; else if (a = e, g) {
+                    var c = h / g;
+                    a = f.$SlideEasing(c) * (e - d) + d;
+                }
+                w.v(a);
+            }, a.ic = function(b, f, c, h) {
+                d = b, e = f, g = c, w.v(b), a.v(0), a.Cd(c, h);
+            }, a.je = function(d) {
+                k = c, b = d, a.$Play(d, j, c);
+            }, a.le = function(a) {
+                b = a;
+            }, w = new Ec(), w.I(n), w.I(m);
+        }
+        function rc() {
+            var c = this, b = Xb();
+            a.J(b, 0), a.W(b, "pointerEvents", "none"), c.$Elmt = b, c.se = function(c) {
+                a.H(b, c), a.A(b);
+            }, c.Db = function() {
+                a.S(b), a.sc(b);
+            };
+        }
+        function Bc(k, e) {
+            function E(b) {
+                q && q.jb(), T(k, b, 0), F = c, q = new I.$Class(k, I, a.Nc(a.j(k, "idle")) || pc), 
+                q.v(0);
+            }
+            function Y() {
+                q.rc < I.rc && E();
+            }
+            function N(p, r, m) {
+                if (!G && (G = c, n && m)) {
+                    var g = m.width, b = m.height, l = g, k = b;
+                    if (g && b && f.$FillMode) {
+                        if (3 & f.$FillMode && (!(4 & f.$FillMode) || g > K || b > J)) {
+                            var j = i, q = K / J * b / g;
+                            1 & f.$FillMode ? j = q > 1 : 2 & f.$FillMode && (j = 1 > q), l = j ? g * J / b : K, 
+                            k = j ? J : b * K / g;
+                        }
+                        a.l(n, l), a.m(n, k), a.G(n, (J - k) / 2), a.E(n, (K - l) / 2);
+                    }
+                    a.z(n, "absolute"), o.n(h.$EVT_LOAD_END, e);
+                }
+                a.S(r), p && p(d);
+            }
+            function X(b, c, f, g) {
+                if (g == R && s == e && P && !Fc) {
+                    var a = t(b);
+                    A.Ne(a, e, c, d, f), c.be(), U.$Shift(a - U.Fc() - 1), U.v(a), z.ic(b, b, 0);
+                }
+            }
+            function ab(b) {
+                if (b == R && s == e) {
+                    if (!g) {
+                        var a = j;
+                        A && (A.nb == e ? a = A.de() : A.Db()), Y(), g = new yc(k, e, a, q), g.gd(p);
+                    }
+                    !g.$IsPlaying() && g.wc();
+                }
+            }
+            function S(c, h, l) {
+                if (c == e) {
+                    c != h ? C[h] && C[h].Be() : !l && g && g.Le(), p && p.$Enable();
+                    var m = R = a.T();
+                    d.Cb(a.K(j, ab, m));
+                } else {
+                    var k = b.min(e, c), i = b.max(e, c), o = b.min(i - k, k + r - i), n = u + f.$LazyLoading - 1;
+                    (!Q || n >= o) && d.Cb();
+                }
+            }
+            function bb() {
+                s == e && g && (g.rb(), p && p.$Quit(), p && p.$Disable(), g.nd());
+            }
+            function db() {
+                s == e && g && g.rb();
+            }
+            function Z(a) {
+                !M && o.n(h.$EVT_CLICK, e, a);
+            }
+            function O() {
+                p = v.pInstance, g && g.gd(p);
+            }
+            function T(b, d, e) {
+                if (!a.C(b, "jssor-slider")) {
+                    F || ("IMG" == b.tagName && (y.push(b), a.C(b, "src") || (Q = c, b["display-origin"] = a.Y(b), 
+                    a.S(b))), a.V() && a.J(b, (a.J(b) || 0) + 1));
+                    var f = a.O(b);
+                    a.c(f, function(f) {
+                        var h = f.tagName, j = a.j(f, "u");
+                        if ("player" != j || v || (v = f, v.pInstance ? O() : a.e(v, "dataavailable", O)), 
+                        "caption" == j) {
+                            if (d) a.Sc(f, a.j(f, "to")), a.ig(f, a.j(f, "bf")), a.kg(f, "preserve-3d"); else if (!a.Jd()) {
+                                var g = a.X(f, i, c);
+                                a.Pb(g, f, b), a.Hb(f, b), f = g, d = c;
+                            }
+                        } else F || e || n || ("A" == h ? (n = "image" == a.j(f, "u") ? a.xg(f, "IMG") : a.D(f, "image", c), 
+                        n && (w = f, a.Y(w, "block"), a.bb(w, V), B = a.X(w, c), a.z(w, "relative"), a.Ab(B, 0), 
+                        a.W(B, "backgroundColor", "#000"))) : "IMG" == h && "image" == a.j(f, "u") && (n = f), 
+                        n && (n.border = 0, a.bb(n, V)));
+                        T(f, d, e + 1);
+                    });
+                }
+            }
+            var q, H, x, n, w, B, W, G, Q, F, g, v, p, d = this, y = [];
+            l.call(d, -u, u + 1, {}), d.Cb = function(d, b) {
+                b = b || x, y.length && !G ? (a.A(b), W || (W = c, o.n(h.$EVT_LOAD_START, e), a.c(y, function(b) {
+                    a.C(b, "src") || (b.src = a.j(b, "src2"), a.Y(b, b["display-origin"]));
+                })), a.Ud(y, n, a.K(j, N, d, b))) : N(d, b);
+            }, d.ze = function() {
+                var h = e;
+                f.$AutoPlaySteps < 0 && (h -= r);
+                var c = h + f.$AutoPlaySteps * wc;
+                if (2 & D && (c = t(c)), 1 & D || (c = b.max(0, b.min(c, r - u))), c != e) {
+                    if (A) {
+                        var d = A.Ie(r);
+                        if (d) {
+                            var i = R = a.T(), g = C[t(c)];
+                            return g.Cb(a.K(j, X, c, g, d, i), x);
+                        }
+                    }
+                    nb(c);
+                }
+            }, d.pc = function() {
+                S(e, e, c);
+            }, d.Be = function() {
+                p && p.$Quit(), p && p.$Disable(), d.od(), g && g.he(), g = j, E();
+            }, d.be = function() {
+                a.S(k);
+            }, d.od = function() {
+                a.A(k);
+            }, d.Yd = function() {
+                p && p.$Enable();
+            }, d.Ic = function(c, b) {
+                var a = u - b;
+                Zb(H, a);
+            }, d.nb = e, m.call(d), a.mg(k, a.j(k, "p")), a.lg(k, a.j(k, "po"));
+            var L = a.D(k, "thumb", c);
+            L && (d.Ee = a.X(L), a.S(L)), a.A(k), x = a.X(cb), a.J(x, 1e3), a.e(k, "click", Z), 
+            E(c), d.cc = n, d.Ad = B, d.Wc = k, d.Mb = H = k, a.H(H, x), o.$On(203, S), o.$On(28, db), 
+            o.$On(24, bb);
+        }
+        function yc(y, f, p, q) {
+            function v() {
+                a.sc(N), dc && k && n.Ad && a.H(N, n.Ad), a.A(N, !k && n.cc);
+            }
+            function w() {
+                b.wc();
+            }
+            function x(a) {
+                r = a, b.rb(), b.wc();
+            }
+            var g, j, e, d, k, t, r, b = this, m = 0, u = 0, n = C[f];
+            l.call(b, 0, 0), b.wc = function() {
+                var a = b.yb();
+                if (!B && !O && !r && s == f) {
+                    a || (g && !k && (k = c, b.nd(c), o.n(h.$EVT_SLIDESHOW_START, f, m, u, g, d)), v());
+                    var i, p = h.$EVT_STATE_CHANGE;
+                    a != d && (i = a == e ? d : a == j ? e : a ? b.Sd() : j), o.n(p, f, a, m, j, e, d);
+                    var l = P && (!E || F);
+                    a == d ? (e != d && !(12 & E) || l) && n.ze() : (l || a != e) && b.Cd(i, w);
+                }
+            }, b.Le = function() {
+                e == d && e == b.yb() && b.v(j);
+            }, b.he = function() {
+                A && A.nb == f && A.Db();
+                var a = b.yb();
+                d > a && o.n(h.$EVT_STATE_CHANGE, f, -a - 1, m, j, e, d);
+            }, b.nd = function(b) {
+                p && a.ib(hb, b && p.ab.$Outside ? "" : "hidden");
+            }, b.Ic = function(b, a) {
+                k && a >= g && (k = i, v(), n.od(), A.Db(), o.n(h.$EVT_SLIDESHOW_END, f, m, u, g, d)), 
+                o.n(h.$EVT_PROGRESS_CHANGE, f, a, m, j, e, d);
+            }, b.gd = function(a) {
+                a && !t && (t = a, a.$On($JssorPlayer$.Ce, x));
+            }, p && b.Oc(p), g = b.gb(), b.Oc(q), j = g + q.dc, e = g + q.Yb, d = b.gb();
+        }
+        function Zb(g, f) {
+            var e = x > 0 ? x : gb, c = Bb * f * (1 & e), d = Cb * f * (e >> 1 & 1);
+            c = b.round(c), d = b.round(d), a.E(g, c), a.G(g, d);
+        }
+        function Pb() {
+            pb = O, Kb = z.Sd(), G = w.db();
+        }
+        function gc() {
+            Pb(), (B || !F && 12 & E) && (z.rb(), o.n(h.De));
+        }
+        function ec(e) {
+            if (!B && (F || !(12 & E)) && !z.$IsPlaying()) {
+                var c = w.db(), a = b.ceil(G);
+                e && b.abs(H) >= f.$MinDragOffsetToSlide && (a = b.ceil(c), a += eb), 1 & D || (a = b.min(r - u, b.max(a, 0)));
+                var d = b.abs(a - c);
+                d = 1 - b.pow(1 - d, 5), !M && pb ? z.Ke(Kb) : c == a ? (tb.Yd(), tb.pc()) : z.ic(c, a, d * Vb);
+            }
+        }
+        function Ib(b) {
+            !a.j(a.yc(b), "nodrag") && a.bc(b);
+        }
+        function uc(a) {
+            Yb(a, 1);
+        }
+        function Yb(b, d) {
+            b = a.vd(b);
+            var k = a.yc(b);
+            if (!L && !a.j(k, "nodrag") && vc() && (!d || 1 == b.touches.length)) {
+                if (B = c, Ab = i, R = j, a.e(e, d ? "touchmove" : "mousemove", Db), a.T(), M = 0, 
+                gc(), pb || (x = 0), d) {
+                    var g = b.touches[0];
+                    vb = g.clientX, wb = g.clientY;
+                } else {
+                    var f = a.Qd(b);
+                    vb = f.x, wb = f.y;
+                }
+                H = 0, bb = 0, eb = 0, o.n(h.$EVT_DRAG_START, t(G), G, b);
+            }
+        }
+        function Db(e) {
+            if (B) {
+                e = a.vd(e);
+                var f;
+                if ("mousemove" != e.type) {
+                    var l = e.touches[0];
+                    f = {
+                        x: l.clientX,
+                        y: l.clientY
+                    };
+                } else f = a.Qd(e);
+                if (f) {
+                    var j = f.x - vb, k = f.y - wb;
+                    if (b.floor(G) != G && (x = x || gb & L), !j && !k || x || (x = 3 == L ? b.abs(k) > b.abs(j) ? 2 : 1 : L, 
+                    jb && 1 == x && b.abs(k) - b.abs(j) > 3 && (Ab = c)), x) {
+                        var d = k, i = Cb;
+                        if (1 == x && (d = j, i = Bb), !(1 & D)) {
+                            if (d > 0) {
+                                var g = i * s, h = d - g;
+                                h > 0 && (d = g + 5 * b.sqrt(h));
+                            }
+                            if (0 > d) {
+                                var g = i * (r - u - s), h = -d - g;
+                                h > 0 && (d = -g - 5 * b.sqrt(h));
+                            }
+                        }
+                        -2 > H - bb ? eb = 0 : H - bb > 2 && (eb = -1), bb = H, H = d, sb = G - H / i / (Z || 1), 
+                        H && x && !Ab && (a.bc(e), O ? z.le(sb) : z.je(sb));
+                    }
+                }
+            }
+        }
+        function mb() {
+            if (sc(), B) {
+                B = i, a.T(), a.R(e, "mousemove", Db), a.R(e, "touchmove", Db), M = H, z.rb();
+                var b = w.db();
+                o.n(h.$EVT_DRAG_END, t(b), b, t(G), G), 12 & E && Pb(), ec(c);
+            }
+        }
+        function kc(c) {
+            if (M) {
+                a.Kg(c);
+                for (var b = a.yc(c); b && v !== b; ) {
+                    "A" == b.tagName && a.bc(c);
+                    try {
+                        b = b.parentNode;
+                    } catch (d) {
+                        break;
+                    }
+                }
+            }
+        }
+        function oc(a) {
+            return C[s], s = t(a), tb = C[s], Ub(a), s;
+        }
+        function Gc(a, b) {
+            x = 0, oc(a), o.n(h.$EVT_PARK, t(a), b);
+        }
+        function Ub(b, c) {
+            yb = b, a.c(S, function(a) {
+                a.Mc(t(b), b, c);
+            });
+        }
+        function vc() {
+            var b = h.ed || 0, a = Y;
+            return jb && 1 & a && (a &= 1), h.ed |= a, L = a & ~b;
+        }
+        function sc() {
+            L && (h.ed &= ~Y, L = 0);
+        }
+        function Xb() {
+            var b = a.mb();
+            return a.bb(b, V), a.z(b, "absolute"), b;
+        }
+        function t(a) {
+            return (a % r + r) % r;
+        }
+        function lc(a, c) {
+            c && (D ? 2 & D && (a = t(a + yb), c = i) : (a = b.min(b.max(a + yb, 0), r - u), 
+            c = i)), nb(a, f.$SlideDuration, c);
+        }
+        function zb() {
+            a.c(S, function(a) {
+                a.Jc(a.Jb.$ChanceToShow <= F);
+            });
+        }
+        function ic() {
+            F || (F = 1, zb(), B || (12 & E && ec(), 3 & E && C[s].pc()));
+        }
+        function hc() {
+            F && (F = 0, zb(), B || !(12 & E) || gc());
+        }
+        function jc() {
+            V = {
+                N: K,
+                P: J,
+                $Top: 0,
+                $Left: 0
+            }, a.c(T, function(b) {
+                a.bb(b, V), a.z(b, "absolute"), a.ib(b, "hidden"), a.S(b);
+            }), a.bb(cb, V);
+        }
+        function lb(b, a) {
+            nb(b, a, c);
+        }
+        function nb(g, e, l) {
+            if (Rb && (!B && (F || !(12 & E)) || f.$NaviQuitDrag)) {
+                O = c, B = i, z.rb(), e == k && (e = Vb);
+                var d = Eb.yb(), a = g;
+                l && (a = d + g, a = g > 0 ? b.ceil(a) : b.floor(a)), 2 & D && (a = t(a)), 1 & D || (a = b.max(0, b.min(a, r - u)));
+                var j = (a - d) % r;
+                a = d + j;
+                var h = d == a ? 0 : e * b.abs(j);
+                h = b.min(h, e * u * 1.5), z.ic(d, a, h || 1);
+            }
+        }
+        function X() {
+            return a.l(y || q);
+        }
+        function ib() {
+            return a.m(y || q);
+        }
+        function Gb(c, d) {
+            if (c == k) return a.l(q);
+            if (!y) {
+                var b = a.mb(e);
+                a.Zc(b, a.Zc(q)), a.Nb(b, a.Nb(q)), a.Y(b, "block"), a.z(b, "relative"), a.G(b, 0), 
+                a.E(b, 0), a.ib(b, "visible"), y = a.mb(e), a.z(y, "absolute"), a.G(y, 0), a.E(y, 0), 
+                a.l(y, a.l(q)), a.m(y, a.m(q)), a.Sc(y, "0 0"), a.H(y, b);
+                var h = a.O(q);
+                a.H(q, y), a.W(q, "backgroundImage", ""), a.c(h, function(c) {
+                    a.H(a.j(c, "noscale") ? q : b, c), a.j(c, "autocenter") && Lb.push(c);
+                });
+            }
+            Z = c / (d ? a.m : a.l)(y), a.sg(y, Z);
+            var g = d ? Z * X() : c, f = d ? c : Z * ib();
+            a.l(q, g), a.m(q, f), a.c(Lb, function(b) {
+                var c = a.Kb(a.j(b, "autocenter"));
+                a.Oe(b, c);
+            });
+        }
+        var o = this;
+        o.$PlayTo = nb, o.$GoTo = function(a) {
+            w.v(a);
+        }, o.$Next = function() {
+            lb(1);
+        }, o.$Prev = function() {
+            lb(-1);
+        }, o.$Pause = function() {
+            P = i;
+        }, o.$Play = function() {
+            P || (P = c, C[s] && C[s].pc());
+        }, o.$SetSlideshowTransitions = function(a) {
+            f.$SlideshowOptions.$Transitions = a;
+        }, o.$SetCaptionTransitions = function(b) {
+            I.$Transitions = b, I.rc = a.T();
+        }, o.$SlidesCount = function() {
+            return T.length;
+        }, o.$CurrentIndex = function() {
+            return s;
+        }, o.$IsAutoPlaying = function() {
+            return P;
+        }, o.$IsDragging = function() {
+            return B;
+        }, o.$IsSliding = function() {
+            return O;
+        }, o.$IsMouseOver = function() {
+            return !F;
+        }, o.$LastDragSucceded = function() {
+            return M;
+        }, o.$OriginalWidth = o.$GetOriginalWidth = X, o.$OriginalHeight = o.$GetOriginalHeight = ib, 
+        o.$ScaleHeight = o.$GetScaleHeight = function(b) {
+            return b == k ? a.m(q) : void Gb(b, c);
+        }, o.$ScaleWidth = o.$SetScaleWidth = o.$GetScaleWidth = Gb, o.Ed = function(a) {
+            var d = b.ceil(t(fb / bc)), c = t(a - s + d);
+            return c > u ? a - s > r / 2 ? a -= r : -r / 2 >= a - s && (a += r) : a = s + c - d, 
+            a;
+        }, m.call(o), o.$Elmt = q = a.qb(q);
+        var f = a.p({
+            $FillMode: 0,
+            $LazyLoading: 1,
+            $ArrowKeyNavigation: 1,
+            $StartIndex: 0,
+            $AutoPlay: i,
+            $Loop: 1,
+            $NaviQuitDrag: c,
+            $AutoPlaySteps: 1,
+            $AutoPlayInterval: 3e3,
+            $PauseOnHover: 1,
+            $SlideDuration: 500,
+            $SlideEasing: d.$EaseOutQuad,
+            $MinDragOffsetToSlide: 20,
+            $SlideSpacing: 0,
+            $Cols: 1,
+            $Align: 0,
+            $UISearchMode: 1,
+            $PlayOrientation: 1,
+            $DragOrientation: 1
+        }, fc);
+        f.$Idle != k && (f.$AutoPlayInterval = f.$Idle), f.$DisplayPieces != k && (f.$Cols = f.$DisplayPieces), 
+        f.$ParkingPosition != k && (f.$Align = f.$ParkingPosition);
+        var gb = 3 & f.$PlayOrientation, wc = (4 & f.$PlayOrientation) / -4 || 1, db = f.$SlideshowOptions, I = a.p({
+            $Class: p,
+            $PlayInMode: 1,
+            $PlayOutMode: 1
+        }, f.$CaptionSliderOptions);
+        I.$Transitions = I.$Transitions || I.$CaptionTransitions;
+        var y, V, qb = f.$BulletNavigatorOptions, W = f.$ArrowNavigatorOptions, ab = f.$ThumbnailNavigatorOptions, Q = !f.$UISearchMode, v = a.D(q, "slides", Q), cb = a.D(q, "loading", Q) || a.mb(e), Jb = a.D(q, "navigator", Q), cc = a.D(q, "arrowleft", Q), ac = a.D(q, "arrowright", Q), Hb = a.D(q, "thumbnavigator", Q), nc = a.l(v), mc = a.m(v), T = [], xc = a.O(v);
+        a.c(xc, function(b) {
+            "DIV" != b.tagName || a.j(b, "u") ? a.V() && a.J(b, (a.J(b) || 0) + 1) : T.push(b);
+        });
+        var yb, tb, hb, x, L, Ab, Qb, Sb, Ob, dc, Fc, P, rb, ub, fb, Y, M, O, B, R, H, bb, eb, Eb, w, U, z, Z, s = -1, r = T.length, K = f.$SlideWidth || nc, J = f.$SlideHeight || mc, Wb = f.$SlideSpacing, Bb = K + Wb, Cb = J + Wb, bc = 1 & gb ? Bb : Cb, u = b.min(f.$Cols, r), S = [], E = f.$PauseOnHover, pc = f.$AutoPlayInterval, Vb = f.$SlideDuration, Rb = r > u, D = Rb ? f.$Loop : 0, F = 1, vb = 0, wb = 0, Tb = new rc(), Lb = [];
+        P = f.$AutoPlay, o.Jb = fc, jc(), a.C(q, "jssor-slider", c), a.J(v, a.J(v) || 0), 
+        a.z(v, "absolute"), hb = a.X(v, c), a.Pb(hb, v), db && (dc = db.$ShowLink, rb = db.$Class, 
+        ub = 1 == u && r > 1 && rb && (!a.Jd() || a.sd() >= 8)), fb = ub || u >= r || !(1 & D) ? 0 : f.$Align, 
+        Y = (u > 1 || fb ? gb : -1) & f.$DragOrientation;
+        var A, N, G, pb, Kb, sb, xb = v, C = [], Fb = a.Pg(), jb = Fb.Rg;
+        Fb.Bd && a.W(xb, Fb.Bd, [ j, "pan-y", "pan-x", "none" ][Y] || ""), U = new Cc(), 
+        ub && (A = new rb(Tb, K, J, db, jb)), a.H(hb, U.Mb), a.ib(v, "hidden"), N = Xb(), 
+        a.W(N, "backgroundColor", "#000"), a.Ab(N, 0), a.Pb(N, xb.firstChild, xb);
+        for (var ob = 0; ob < T.length; ob++) {
+            var zc = T[ob], Ac = new Bc(zc, ob);
+            C.push(Ac);
+        }
+        a.S(cb), Eb = new Dc(), z = new qc(Eb, U), Y && (a.e(v, "mousedown", Yb), a.e(v, "touchstart", uc), 
+        a.e(v, "dragstart", Ib), a.e(v, "selectstart", Ib), a.e(e, "mouseup", mb), a.e(e, "touchend", mb), 
+        a.e(e, "touchcancel", mb), a.e(g, "blur", mb)), E &= jb ? 10 : 5, Jb && qb && (Qb = new qb.$Class(Jb, qb, X(), ib()), 
+        S.push(Qb)), W && cc && ac && (W.$Loop = D, W.$Cols = u, Sb = new W.$Class(cc, ac, W, X(), ib()), 
+        S.push(Sb)), Hb && ab && (ab.$StartIndex = f.$StartIndex, Ob = new ab.$Class(Hb, ab), 
+        S.push(Ob)), a.c(S, function(a) {
+            a.Gc(r, C, cb), a.$On(n.fc, lc);
+        }), a.W(q, "visibility", "visible"), Gb(X()), a.e(v, "click", kc), a.e(q, "mouseout", a.Ib(ic, q)), 
+        a.e(q, "mouseover", a.Ib(hc, q)), zb(), f.$ArrowKeyNavigation && a.e(e, "keydown", function(a) {
+            37 == a.keyCode ? lb(-f.$ArrowKeyNavigation) : 39 == a.keyCode && lb(f.$ArrowKeyNavigation);
+        });
+        var kb = f.$StartIndex;
+        1 & D || (kb = b.max(0, b.min(kb, r - u))), z.ic(kb, kb, 0);
+    };
+    h.$EVT_CLICK = 21, h.$EVT_DRAG_START = 22, h.$EVT_DRAG_END = 23, h.$EVT_SWIPE_START = 24, 
+    h.$EVT_SWIPE_END = 25, h.$EVT_LOAD_START = 26, h.$EVT_LOAD_END = 27, h.De = 28, 
+    h.$EVT_POSITION_CHANGE = 202, h.$EVT_PARK = 203, h.$EVT_SLIDESHOW_START = 206, h.$EVT_SLIDESHOW_END = 207, 
+    h.$EVT_PROGRESS_CHANGE = 208, h.$EVT_STATE_CHANGE = 209;
+    var n = {
+        fc: 1
+    };
+    g.$JssorBulletNavigator$ = function(e, C) {
+        function v(a) {
+            -1 != a && y[a].jd(a == l);
+        }
+        function t(a) {
+            f.n(n.fc, a * o);
+        }
+        var f = this;
+        m.call(f), e = a.qb(e);
+        var s, A, z, r, d, o, k, w, x, h, g, q, p, l = 0, B = [], y = [];
+        f.$Elmt = e, f.Mc = function(a) {
+            if (a != r) {
+                var d = l, c = b.floor(a / o);
+                l = c, r = a, v(d), v(c);
+            }
+        }, f.Jc = function(b) {
+            a.A(e, b);
+        };
+        var u;
+        f.Gc = function(E) {
+            if (!u) {
+                s = b.ceil(E / o), l = 0;
+                var n = q + w, r = p + x, m = b.ceil(s / k) - 1;
+                A = q + n * (h ? k - 1 : m), z = p + r * (h ? m : k - 1), a.l(e, A), a.m(e, z);
+                for (var f = 0; s > f; f++) {
+                    var C = a.Cg();
+                    a.ug(C, f + 1);
+                    var i = a.Xc(g, "numbertemplate", C, c);
+                    a.z(i, "absolute");
+                    var v = f % (m + 1);
+                    a.E(i, h ? f % k * n : n * v), a.G(i, h ? r * v : b.floor(f / (m + 1)) * r), a.H(e, i), 
+                    B[f] = i, 1 & d.$ActionMode && a.e(i, "click", a.K(j, t, f)), 2 & d.$ActionMode && a.e(i, "mouseover", a.Ib(a.K(j, t, f), i)), 
+                    y[f] = a.ac(i);
+                }
+                u = c;
+            }
+        }, f.Jb = d = a.p({
+            $SpacingX: 10,
+            $SpacingY: 10,
+            $Orientation: 1,
+            $ActionMode: 1
+        }, C), g = a.D(e, "prototype"), q = a.l(g), p = a.m(g), a.Hb(g, e), o = d.$Steps || 1, 
+        k = d.$Lanes || 1, w = d.$SpacingX, x = d.$SpacingY, h = d.$Orientation - 1, d.$Scale == i && a.C(e, "noscale", c), 
+        d.$AutoCenter && a.C(e, "autocenter", d.$AutoCenter);
+    }, g.$JssorArrowNavigator$ = function(b, g, h) {
+        function l(a) {
+            d.n(n.fc, a, c);
+        }
+        function p(c) {
+            a.A(b, c || !h.$Loop && 0 == e), a.A(g, c || !h.$Loop && e >= q - h.$Cols), r = c;
+        }
+        var d = this;
+        m.call(d);
+        var r, q, e, f, k;
+        a.l(b), a.m(b), d.Mc = function(b, a, c) {
+            c ? e = a : (e = b, p(r));
+        }, d.Jc = p;
+        var o;
+        d.Gc = function(d) {
+            q = d, e = 0, o || (a.e(b, "click", a.K(j, l, -k)), a.e(g, "click", a.K(j, l, k)), 
+            a.ac(b), a.ac(g), o = c);
+        }, d.Jb = f = a.p({
+            $Steps: 1
+        }, h), k = f.$Steps, f.$Scale == i && (a.C(b, "noscale", c), a.C(g, "noscale", c)), 
+        f.$AutoCenter && (a.C(b, "autocenter", f.$AutoCenter), a.C(g, "autocenter", f.$AutoCenter));
+    }, g.$JssorThumbnailNavigator$ = function(g, C) {
+        function B(m, f) {
+            function p() {
+                k.jd(q == f);
+            }
+            function h(d) {
+                if (d || !t.$LastDragSucceded()) {
+                    var a = e - f % e, b = t.Ed((f + a) / e - 1), c = b * e + e - a;
+                    l.n(n.fc, c);
+                }
+            }
+            var b, k, i, g = this;
+            g.nb = f, g.bd = p, i = m.Ee || m.cc || a.mb(), g.Mb = b = a.Xc(o, "thumbnailtemplate", i, c), 
+            k = a.ac(b), 1 & d.$ActionMode && a.e(b, "click", a.K(j, h, 0)), 2 & d.$ActionMode && a.e(b, "mouseover", a.Ib(a.K(j, h, 1), b));
+        }
+        var z, q, d, A, y, e, r, s, v, u, p, t, f, o, l = this, w = [];
+        m.call(l), g = a.qb(g), l.Mc = function(c, d, f) {
+            var a = q;
+            q = c, -1 != a && w[a].bd(), w[c].bd(), !f && t.$PlayTo(t.Ed(b.floor(d / e)));
+        }, l.Jc = function(b) {
+            a.A(g, b);
+        };
+        var x;
+        l.Gc = function(F, C) {
+            if (!x) {
+                z = F, b.ceil(z / e), q = -1, p = b.min(p, C.length);
+                var j = 1 & d.$Orientation, m = v + (v + r) * (e - 1) * (1 - j), l = u + (u + s) * (e - 1) * j, o = m + (m + r) * (p - 1) * j, n = l + (l + s) * (p - 1) * (1 - j);
+                a.z(f, "absolute"), a.ib(f, "hidden"), 1 & d.$AutoCenter && a.E(f, (A - o) / 2), 
+                2 & d.$AutoCenter && a.G(f, (y - n) / 2), a.l(f, o), a.m(f, n);
+                var k = [];
+                a.c(C, function(l, g) {
+                    var h = new B(l, g), d = h.Mb, c = b.floor(g / e), i = g % e;
+                    a.E(d, (v + r) * i * (1 - j)), a.G(d, (u + s) * i * j), k[c] || (k[c] = a.mb(), 
+                    a.H(f, k[c])), a.H(k[c], d), w.push(h);
+                });
+                var E = a.p({
+                    $AutoPlay: i,
+                    $NaviQuitDrag: i,
+                    $SlideWidth: m,
+                    $SlideHeight: l,
+                    $SlideSpacing: r * j + s * (1 - j),
+                    $MinDragOffsetToSlide: 12,
+                    $SlideDuration: 200,
+                    $PauseOnHover: 1,
+                    $PlayOrientation: d.$Orientation,
+                    $DragOrientation: d.$NoDrag || d.$DisableDrag ? 0 : d.$Orientation
+                }, d);
+                t = new h(g, E), x = c;
+            }
+        }, l.Jb = d = a.p({
+            $SpacingX: 0,
+            $SpacingY: 0,
+            $Cols: 1,
+            $Orientation: 1,
+            $AutoCenter: 3,
+            $ActionMode: 1
+        }, C), d.$DisplayPieces != k && (d.$Cols = d.$DisplayPieces), d.$Rows != k && (d.$Lanes = d.$Rows), 
+        A = a.l(g), y = a.m(g), f = a.D(g, "slides", c), o = a.D(f, "prototype"), v = a.l(o), 
+        u = a.m(o), a.Hb(o, f), e = d.$Lanes || 1, r = d.$SpacingX, s = d.$SpacingY, p = d.$Cols, 
+        d.$Scale == i && a.C(g, "noscale", c);
+    }, g.$JssorCaptionSlider$ = function(h, f, i) {
+        function g(p, h, f) {
+            function j(r, m) {
+                function h(c, d) {
+                    var b = {};
+                    return a.c(o, function(g, h) {
+                        var e = a.j(c, g + (d || ""));
+                        if (e) {
+                            var f = {};
+                            "t" == g ? f.sb = e : e.indexOf("%") + 1 ? f.Kf = a.Nc(e) / 100 : f.sb = a.Nc(e), 
+                            b[h] = f;
+                        }
+                    }), b;
+                }
+                function p() {
+                    return e[b.floor(b.random() * e.length)];
+                }
+                function g(f) {
+                    var h;
+                    if ("*" == f) h = p(); else if (f) {
+                        var d = e[a.Kb(f)] || e[f];
+                        a.uc(d) && (f != i ? (i = f, c[f] = 0, k[f] = d[b.floor(b.random() * d.length)]) : c[f]++, 
+                        d = k[f], a.uc(d) && (d = d.length && d[c[f] % d.length], a.uc(d) && (d = d[b.floor(b.random() * d.length)]))), 
+                        h = d, a.ud(h) && (h = g(h));
+                    }
+                    return h;
+                }
+                var i, l = [], k = [], c = [], q = a.O(r);
+                return a.c(q, function(b) {
+                    var c = [];
+                    c.$Elmt = b;
+                    var e = "caption" == a.j(b, "u");
+                    a.c(f ? [ 0, 3 ] : [ 2 ], function(l, o) {
+                        if (e) {
+                            var k, f;
+                            if (2 == l && a.j(b, "t3") || (f = h(b, l), 2 != l || f.ab || (f.$Delay = f.$Delay || {
+                                sb: 0
+                            }, f = a.p(h(b, 0), f))), f && f.ab && (k = g(f.ab.sb))) {
+                                var i = a.p({
+                                    $Delay: 0
+                                }, k);
+                                a.c(f, function(c, a) {
+                                    var b = (d[a] || d.kb).apply(d, [ i[a], f[a] ]);
+                                    isNaN(b) || (i[a] = b);
+                                }), o || (f.Gb ? i.Gb = f.Gb.sb || 0 : 2 & n && (i.Gb = 0));
+                            }
+                            c.push(i);
+                        }
+                        m % 2 && !o && (c.O = j(b, m + 1));
+                    }), l.push(c);
+                }), l;
+            }
+            function m(w, c, z) {
+                var g = {
+                    $Easing: c.$Easing,
+                    $Round: c.$Round,
+                    $During: c.$During,
+                    $Reverse: f && !z
+                }, m = w, r = a.Yc(w), k = a.l(m), j = a.m(m), y = a.l(r), x = a.m(r), h = {}, e = {}, i = c.$ScaleClip || 1;
+                if (c.$Opacity && (e.$Opacity = 1 - c.$Opacity), g.$OriginalWidth = k, g.$OriginalHeight = j, 
+                c.$Zoom || c.$Rotate) {
+                    e.$Zoom = (c.$Zoom || 2) - 2, (a.V() || a.tc()) && (e.$Zoom = b.min(e.$Zoom, 1)), 
+                    h.$Zoom = 1;
+                    var B = c.$Rotate || 0;
+                    e.$Rotate = 360 * B, h.$Rotate = 0;
+                } else if (c.$Clip) {
+                    var s = {
+                        $Top: 0,
+                        $Right: k,
+                        $Bottom: j,
+                        $Left: 0
+                    }, v = a.p({}, s), d = v.wb = {}, u = 4 & c.$Clip, p = 8 & c.$Clip, t = 1 & c.$Clip, q = 2 & c.$Clip;
+                    u && p ? (d.$Top = j / 2 * i, d.$Bottom = -d.$Top) : u ? d.$Bottom = -j * i : p && (d.$Top = j * i), 
+                    t && q ? (d.$Left = k / 2 * i, d.$Right = -d.$Left) : t ? d.$Right = -k * i : q && (d.$Left = k * i), 
+                    g.$Move = c.$Move, e.$Clip = v, h.$Clip = s;
+                }
+                var n = 0, o = 0;
+                c.x && (n -= y * c.x), c.y && (o -= x * c.y), (n || o || g.$Move) && (e.$Left = n, 
+                e.$Top = o);
+                var A = c.$Duration;
+                return h = a.p(h, a.xe(m, e)), g.xc = a.Pc(), new l(c.$Delay, A, g, m, h, e);
+            }
+            function i(b, d) {
+                return a.c(d, function(d) {
+                    var a, h = d.$Elmt, e = d[0], j = d[1];
+                    if (e && (a = m(h, e), e.Gb == k && a.$Shift(b), b = a.gb()), b = i(b, d.O), j) {
+                        var f = m(h, j, 1);
+                        f.$Shift(b), c.I(f), g.I(f);
+                    }
+                    a && c.I(a);
+                }), b;
+            }
+            var g, c = this, n = f ? h.$PlayInMode : h.$PlayOutMode, e = h.$Transitions, o = {
+                ab: "t",
+                $Delay: "d",
+                $Duration: "du",
+                x: "x",
+                y: "y",
+                $Rotate: "r",
+                $Zoom: "z",
+                $Opacity: "f",
+                Gb: "b"
+            }, d = {
+                kb: function(b, a) {
+                    return isNaN(a.sb) ? b *= a.Kf : b = a.sb, b;
+                },
+                $Opacity: function(b, a) {
+                    return this.kb(b - 1, a);
+                }
+            };
+            d.$Zoom = d.$Opacity, l.call(c, 0, 0), c.jb = function() {
+                c.v(c.gb() * (f || 0)), g.v(0);
+            }, g = new l(0, 0), i(0, n ? j(p, 1) : []);
+        }
+        var c = this;
+        l.call(c, 0, 0);
+        var e, d;
+        c.jb = function() {
+            d.jb(), e.jb();
+        }, e = new g(h, f, 1), c.dc = e.gb(), c.Yb = c.dc + i, d = new g(h, f), d.$Shift(c.Yb), 
+        c.I(d), c.I(e);
+    }, g.$JssorCaptionSlideo$ = function(n, g, m) {
+        function j(d, c) {
+            var b = {};
+            return a.c(d, function(d, f) {
+                var e = h[f];
+                e && (a.yg(d) ? d = j(d, c || "e" == f) : c && a.Zb(d) && (d = o[d]), b[e] = d);
+            }), b;
+        }
+        function k(e, c) {
+            var b = [], d = a.O(e);
+            return a.c(d, function(d) {
+                var h = "caption" == a.j(d, "u");
+                if (h) {
+                    var e = a.j(d, "t"), g = i[a.Kb(e)] || i[e], f = {
+                        $Elmt: d,
+                        ab: g
+                    };
+                    b.push(f);
+                }
+                5 > c && (b = b.concat(k(d, c + 1)));
+            }), b;
+        }
+        function r(c, e, b) {
+            return a.c(e, function(f) {
+                var e = j(f), g = {
+                    $Easing: a.Lc(e.$Easing),
+                    xc: a.Pc(),
+                    $OriginalWidth: b.N,
+                    $OriginalHeight: b.P
+                }, h = new l(f.b, f.d, g, c, b, e);
+                d.I(h), b = a.Je(b, e);
+            }), b;
+        }
+        function q(b) {
+            a.c(b, function(e) {
+                var b = e.$Elmt, d = a.l(b), c = a.m(b), f = {
+                    $Left: a.E(b),
+                    $Top: a.G(b),
+                    $Opacity: 1,
+                    $ZIndex: a.J(b) || 0,
+                    $Rotate: 0,
+                    $RotateX: 0,
+                    $RotateY: 0,
+                    $ScaleX: 1,
+                    $ScaleY: 1,
+                    $TranslateX: 0,
+                    $TranslateY: 0,
+                    $TranslateZ: 0,
+                    $SkewX: 0,
+                    $SkewY: 0,
+                    N: d,
+                    P: c,
+                    $Clip: {
+                        $Top: 0,
+                        $Right: d,
+                        $Bottom: c,
+                        $Left: 0
+                    }
+                };
+                r(b, e.ab, f);
+            });
+        }
+        function t(g, f, h) {
+            var e = g.b - f;
+            if (e) {
+                var a = new l(f, e);
+                a.I(d, c), a.$Shift(h), b.I(a);
+            }
+            return b.ye(g.d), e;
+        }
+        function s(f) {
+            var c = d.Fc(), e = 0;
+            a.c(f, function(d, f) {
+                d = a.p({
+                    d: m
+                }, d), t(d, c, e), c = d.b, e += d.d, f && 2 != d.t || (b.dc = c, b.Yb = c + d.d);
+            });
+        }
+        var o, b = this, h = {}, i = g.$Transitions, d = new l(0, 0);
+        l.call(b, 0, 0), b.jb = function() {
+            b.v(-1, c);
+        }, o = [ f.$Swing, f.$Linear, f.$InQuad, f.$OutQuad, f.$InOutQuad, f.$InCubic, f.$OutCubic, f.$InOutCubic, f.$InQuart, f.$OutQuart, f.$InOutQuart, f.$InQuint, f.$OutQuint, f.$InOutQuint, f.$InSine, f.$OutSine, f.$InOutSine, f.$InExpo, f.$OutExpo, f.$InOutExpo, f.$InCirc, f.$OutCirc, f.$InOutCirc, f.$InElastic, f.$OutElastic, f.$InOutElastic, f.$InBack, f.$OutBack, f.$InOutBack, f.$InBounce, f.$OutBounce, f.$InOutBounce, f.$GoBack, f.$InWave, f.$OutWave, f.$OutJump, f.$InJump ];
+        var u = {
+            $Top: "y",
+            $Left: "x",
+            $Bottom: "m",
+            $Right: "t",
+            $Rotate: "r",
+            $RotateX: "rX",
+            $RotateY: "rY",
+            $ScaleX: "sX",
+            $ScaleY: "sY",
+            $TranslateX: "tX",
+            $TranslateY: "tY",
+            $TranslateZ: "tZ",
+            $SkewX: "kX",
+            $SkewY: "kY",
+            $Opacity: "o",
+            $Easing: "e",
+            $ZIndex: "i",
+            $Clip: "c"
+        };
+        a.c(u, function(b, a) {
+            h[b] = a;
+        }), q(k(n, 1)), d.v(-1);
+        var p = g.$Breaks || [], e = [].concat(p[a.Kb(a.j(n, "b"))] || []);
+        e.push({
+            b: d.gb(),
+            d: e.length ? 0 : m
+        }), s(e), b.v(-1);
+    };
+}(window, document, Math, null, !0, !1);

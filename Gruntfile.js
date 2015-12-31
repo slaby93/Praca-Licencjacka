@@ -58,7 +58,8 @@ module.exports = function (grunt) {
                         "node_modules/bootstrap/dist/css/bootstrap.min.css",
                         "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
                         "node_modules/sweetalert/dist/sweetalert.css",
-                        "node_modules/angular-ui-bootstrap/ui-bootstrap-csp.css"
+                        "node_modules/angular-ui-bootstrap/ui-bootstrap-csp.css",
+						"public/modules/cms/css/registerCss.css"
                     ]
                 }
             }

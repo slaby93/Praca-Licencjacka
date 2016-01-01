@@ -2,7 +2,7 @@
  * Created by pufek on 05.12.2015.
  */
 
-angular.module("cmsModule").controller("imageUploadCtrl", ["$scope", 'FileUploader', imageUploadCtrl]).directive('ngThumb', ['$window', function($window) {
+angular.module("cmsModule").controller("imageUploadCtrl", ["$scope", 'FileUploader', 'userService', imageUploadCtrl]).directive('ngThumb', ['$window', function($window) {
     var helper = {
         support: !!($window.FileReader && $window.CanvasRenderingContext2D),
         isFile: function(item) {
@@ -47,14 +47,16 @@ angular.module("cmsModule").controller("imageUploadCtrl", ["$scope", 'FileUpload
     };
 }]);
 
-function imageUploadCtrl($scope, FileUploader) {
-
+function imageUploadCtrl($scope, FileUploader, userService) {
     //https://github.com/nervgh/angular-file-upload/wiki/Module-API
     $scope.uploader = new FileUploader({
         url: 'upload',
         autoUpload: true
     });
-    $scope.maxFileSize = 10 * 1024 * 1024;
+    $scope.maxFileSize = 2 * 1024 * 1024;
+    $scope.uploader.formData = [{
+        token: userService.getToken()
+    }];
 
     $scope.uploader.filters.push({
         name: 'imageFilter',

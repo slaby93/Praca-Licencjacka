@@ -32,7 +32,6 @@ router.all('/testowo', function (req, res, next) {
     //    });
     //});
 });
-
 /**
  * @description pobiera plik od użytkownika i wgrywa do /public/gallery
  */
@@ -47,11 +46,48 @@ router.post('/upload', function (req, res, next) {
         fs.mkdirSync(galleryPath);
     }
 
+    /*
+        Kolejność wykonywania:
+        on field
+        on fileBegin
+        parse
+        on end
+     */
+
+    /*
+        Zawsze musi być, nawet gdy puste.
+     */
     form.parse(req, function (err, fields, files) {
+    });
+
+    /*
+        req.body przy wgrywaniu zdjęć jest puste {}
+        Potrzebne dane należy wyłapać za pomocą tej funkcji,
+        obecnie zapisuję jedynie token i sztucznie dodaję do req.body
+     */
+    form.on('field', function(name, value) {
+        if(name === 'token') {
+            req.body.token = value;
+        }
+    });
+
+    form.on('fileBegin', function(name, file) {
+        /*
+         Mamy możliwość zmiany folderu docelowego i nazwy pliku file.path
+         Folder musi istnieć!
+         TODO Potrzebny jest USERID, stworzyć folder jak nie istnieje, wgrać jako avatar.png
+         */
+
+        //Docelowo ma być coś w stylu:
+        //file.path = './public/gallery/USERID/avatar.png';
+
+        //Przykład, każdy plik będzie jako avatar.png
+        //file.path = './public/gallery/avatar.png';
+
+    });
+
+    form.on('end', function() {
         res.send({answer: 'File transfer completed'});
-        //res.writeHead(200, {'content-type': 'text/image'});
-        //res.write({answer : 'File transfer completed'});
-        //res.write(util.inspect({fields: fields, files: files}));
     });
 
 });

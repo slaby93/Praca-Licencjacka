@@ -61,17 +61,18 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     };
 
 
-    this.loginByToken = function (token) {
-        if (!token) {
+    this.loginByToken = function (tken) {
+        if (!tken) {
             return;
         }
         var odroczenie = $q.defer();
 
         $rootScope.$applyAsync(function () {
-            $http.post('/user/token', {"token": token}).then(
+            $http.post('/user/token', {"token": tken}).then(
                 // SUCCESS
                 function (data) {
                     user = data.data;
+                    token = tken;
                     odroczenie.resolve(user);
                     // ERROR
                 }, function (err) {
@@ -120,5 +121,9 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                 callback(error);
             }
         });
+    };
+
+    this.getToken = function () {
+        return token;
     };
 }

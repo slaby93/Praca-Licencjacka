@@ -91,14 +91,14 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                 odroczenie.reject(err);
             });
         }), odroczenie.promise;
-    }, this.loginByToken = function(token) {
-        if (token) {
+    }, this.loginByToken = function(tken) {
+        if (tken) {
             var odroczenie = $q.defer();
             return $rootScope.$applyAsync(function() {
                 $http.post("/user/token", {
-                    token: token
+                    token: tken
                 }).then(function(data) {
-                    user = data.data, odroczenie.resolve(user);
+                    user = data.data, token = tken, odroczenie.resolve(user);
                 }, function(err) {
                     localStorageService.remove("token"), odroczenie.resolve(err);
                 });
@@ -128,6 +128,8 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         }, function(error) {
             console.log(error), callback && callback(error);
         });
+    }, this.getToken = function() {
+        return token;
     };
 }
 
@@ -155,21 +157,14 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
     }, init();
 }
 
-function imageUploadCtrl($scope, FileUploader) {
-    $scope.uploader = new FileUploader({
+function imageUploadCtrl($scope, FileUploader, userService) {
+    console.log(userService.getToken()), $scope.uploader = new FileUploader({
         url: "upload",
-        autoUpload: !0
-    }), $scope.maxFileSize = 10485760, $scope.uploader.filters.push({
-        name: "imageFilter",
-        fn: function(item, options) {
-            var type = "|" + item.type.slice(item.type.lastIndexOf("/") + 1) + "|";
-            return -1 !== "|jpg|png|jpeg|bmp|gif|".indexOf(type);
-        }
-    }), $scope.uploader.filters.push({
-        name: "sizeFilter",
-        fn: function(item, options) {
-            return item.size <= $scope.maxFileSize;
-        }
+        formData: [ {
+            token: "123qwe123"
+        } ]
+    }), $scope.uploader.onAfterAddingFile(function(item) {
+        console.log("MYSZKA"), console.log(item);
     });
 }
 
@@ -395,7 +390,7 @@ angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", test
 angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
 angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", "userService", userEditCtrl ]), 
 angular.module("cmsModule").controller("headerCtrl", [ "$scope", "adminTemplateService", "$state", "userService", headerCtrl ]), 
-angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
+angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploader", "userService", imageUploadCtrl ]).directive("ngThumb", [ "$window", function($window) {
     var helper = {
         support: !(!$window.FileReader || !$window.CanvasRenderingContext2D),
         isFile: function(item) {

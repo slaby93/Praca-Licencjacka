@@ -3,8 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var assert = require('assert');
 var mongo = require('./dbConnect.js');
-var jwt = require('jsonwebtoken');
-
+var tokenHandler = require("./tokenHandler");
 // POST http://localhost:3000/user/login
 /**
  * @description Logowanie
@@ -28,7 +27,7 @@ router.post('/', function (req, res, next) {
             }
             //poprawne haslo po weryfikacji biblioteki bcrypt
             if (bcrypt.compareSync(req.body.password, docs[0].password)) {
-                generateJWT(req.body.login, function (token) {
+                tokenHandler.generateJWT(req.body.login, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
                     docs[0] = removeSensitiveUserData(docs[0]);
                     //zwrot informacji o uzytkowniku oraz wygenerowanego tokena
@@ -91,7 +90,7 @@ router.post('/register', function (req, res, next) {
 
 router.post('/token', function (req, res, next) {
     var token = req.body.token;
-    var decodedToken = decodeToken(token);
+    var decodedToken = tokenHandler.decodeToken(token);
     if (decodedToken === null) {
         res.status(406).send("Token is invalid");
 
@@ -181,43 +180,13 @@ router.post("/remove", function (req, res, next) {
             });
     })
 });
-/**
- * @description Generowanie tokenow za pomoca biblioteki JWT
- * @param passedUser
- * @param callback
- */
-function generateJWT(passedUser, callback) {
-    var today = new Date();
-    var expire = new Date(today);
-    expire.setDate(today.getDate() + 1);
-    jwt.sign({"login": passedUser}, "SECRET", {"algorithm": "HS256"}, function (token) {
-        if (callback) {
-            callback(token);
-        }
-    });
-};
-/**
- * @description Dekoduje otrzymany token
- * @param token
- */
-function decodeToken(token) {
-    try {
-        var decoded = jwt.verify(token, "SECRET");
-        delete decoded["iat"];
-        return decoded;
-    } catch (err) {
-        console.log(err);
-        return null;
-    }
 
-};
 
 function closeDB(db) {
     db.close();
 }
 
 function removeSensitiveUserData(User) {
-    delete User["_id"];
     delete User["password"];
     delete User["retypedPassword"];
     return User;

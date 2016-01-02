@@ -158,13 +158,22 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
 }
 
 function imageUploadCtrl($scope, FileUploader, userService) {
-    console.log(userService.getToken()), $scope.uploader = new FileUploader({
+    $scope.uploader = new FileUploader({
         url: "upload",
-        formData: [ {
-            token: "123qwe123"
-        } ]
-    }), $scope.uploader.onAfterAddingFile(function(item) {
-        console.log("MYSZKA"), console.log(item);
+        autoUpload: !0
+    }), $scope.maxFileSize = 2097152, $scope.uploader.formData = [ {
+        token: userService.getToken()
+    } ], $scope.uploader.filters.push({
+        name: "imageFilter",
+        fn: function(item, options) {
+            var type = "|" + item.type.slice(item.type.lastIndexOf("/") + 1) + "|";
+            return -1 !== "|jpg|png|jpeg|bmp|gif|".indexOf(type);
+        }
+    }), $scope.uploader.filters.push({
+        name: "sizeFilter",
+        fn: function(item, options) {
+            return item.size <= $scope.maxFileSize;
+        }
     });
 }
 

@@ -15,7 +15,8 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
                 changes[key] = $scope.copiedUser[key];
             }
         });
-        changes.login = user.login;
+        console.log(user);
+        changes._id = user._id;
         delete changes.groups;
         delete changes.$$hashKey;
         userService.editUser(changes, function () {

@@ -8,10 +8,10 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
 
     $rootScope.$on("$stateChangeSuccess", function () {
-        console.log("SPRAWDZAM TOKENA");
         if (!userService.getUser()) {
             $state.go("login");
         } else {
+            //noinspection JSUnresolvedFunction
             $scope.user = userService.getUser();
         }
     });

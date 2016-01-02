@@ -18,20 +18,21 @@ router.post('/', function (req, res, next) {
     //polaczenie do bazy
     mongo.connect("projekt", ["user"], function (db) {
         //zapytanie o uzytkownika
-        db.user.find({"login": req.body.login}, function (err, docs) {
+        db.user.findOne({"login": req.body.login}, function (err, foundedUser) {
             //niepoprawny login
-            if (docs.length == 0) {
+            if (foundedUser === undefined || foundedUser === null) {
                 return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
                     db.close();
                 });
             }
             //poprawne haslo po weryfikacji biblioteki bcrypt
-            if (bcrypt.compareSync(req.body.password, docs[0].password)) {
-                tokenHandler.generateJWT(req.body.login, function (token) {
+            if (bcrypt.compareSync(req.body.password, foundedUser.password)) {
+                // generowanie tokena
+                tokenHandler.generateJWT(foundedUser._id, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
-                    docs[0] = removeSensitiveUserData(docs[0]);
+                    foundedUser = removeSensitiveUserData(foundedUser);
                     //zwrot informacji o uzytkowniku oraz wygenerowanego tokena
-                    res.status(200).json({"user": docs[0], "token": token}).end(function () {
+                    res.status(200).json({"user": foundedUser, "token": token}).end(function () {
                         db.close();
                     });
                 });
@@ -91,6 +92,8 @@ router.post('/register', function (req, res, next) {
 router.post('/token', function (req, res, next) {
     var token = req.body.token;
     var decodedToken = tokenHandler.decodeToken(token);
+
+
     if (decodedToken === null) {
         res.status(406).send("Token is invalid");
 
@@ -98,19 +101,18 @@ router.post('/token', function (req, res, next) {
     }
 
     mongo.connect("projekt", ["user"], function (db) {
-        db.user.find({"login": decodedToken.login}, function (err, data) {
+        db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
                 res.status(500).send("Token is valid, but error when fetching from db");
                 return;
             }
             // nie znaleziono uzytkowika z bazie
-            if (!data.length > 0) {
+            if (foundedUser === undefined || foundedUser === null) {
                 res.status(500).send("User not found");
                 return;
             }
-            var User = removeSensitiveUserData(data[0]);
-            res.status(200).send(User);
-            return;
+            foundedUser = removeSensitiveUserData(foundedUser);
+            res.status(200).send(foundedUser);
         });
     });
 });
@@ -118,8 +120,7 @@ router.post('/token', function (req, res, next) {
 router.post('/all', function (req, res, next) {
     mongo.connect("projekt", ["user"], function (db) {
         db.user.find({}, {
-                "_id": 0
-                , "password": 0
+                "password": 0
                 , "retypedPassword": 0
             }
             , function (err, data) {
@@ -142,13 +143,14 @@ router.post("/update", function (req, res, next) {
      * Przypadki brzegowe
      */
     var usr = req.body.user;
-    var login = usr.login;
+    var id = usr._id;
+    console.log(usr);
+    delete usr._id;
 
-    delete usr.login;
-
+    console.log(id);
     mongo.connect("projekt", ["user"], function (db) {
         db.user.update({
-                login: login
+                _id: mongo.ObjectId(id)
             },
             {
                 "$set": usr

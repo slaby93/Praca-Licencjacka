@@ -126,7 +126,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         }).then(function(message) {
             callback && callback(message);
         }, function(error) {
-            console.log(error), callback && callback(error);
+            console.error(error), callback && callback(error);
         });
     }, this.getToken = function() {
         return token;
@@ -138,7 +138,7 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
         var changes = {};
         Object.keys(user).forEach(function(key) {
             $scope.copiedUser[key] !== user[key] && (changes[key] = $scope.copiedUser[key]);
-        }), changes.login = user.login, delete changes.groups, delete changes.$$hashKey, 
+        }), console.log(user), changes._id = user._id, delete changes.groups, delete changes.$$hashKey, 
         userService.editUser(changes, function() {
             $uibModalInstance.close("PSAJDAK");
         });
@@ -184,7 +184,7 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
         }) : $state.go("login");
     }
     $rootScope.$on("$stateChangeSuccess", function() {
-        console.log("SPRAWDZAM TOKENA"), userService.getUser() ? $scope.user = userService.getUser() : $state.go("login");
+        userService.getUser() ? $scope.user = userService.getUser() : $state.go("login");
     }), init();
 }
 
@@ -202,7 +202,7 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
         };
         var token = localStorageService.get("token");
         token ? userService.loginByToken(token).then(function(message) {
-            console.log(message), $state.go("cms");
+            $state.go("cms");
         }, function(message) {
             console.log(message.data), localStorageService.remove("token");
         }, function(message) {
@@ -313,17 +313,11 @@ function adminTemplateService($http) {
     }
     var cmsConfig = {
         tabList: [ {
-            name: "Zarzadzanie CMS",
-            urlList: [ {
-                name: "Zakladki",
-                url: "cms.test"
-            }, {
-                name: "Upload Zdjec",
-                url: "cms.imageUpload"
-            } ]
-        }, {
             name: "Zarządzanie użytkownikami",
             url: "cms.userManagement"
+        }, {
+            name: "Wgrywanie Zdjęć",
+            url: "cms.imageUpload"
         } ]
     };
     this.getCmsConfig = function(callback) {

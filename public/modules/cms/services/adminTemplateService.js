@@ -10,24 +10,23 @@ function adminTemplateService($http) {
 
     var cmsConfig = {
             "tabList": [
-                {
-                    "name": "Zarzadzanie CMS",
-                    "urlList": [
-                        {
-                            "name": "Zakladki",
-                            "url": "cms.test"
-                        },
-                        {
-                            "name": "Upload Zdjec",
-                            "url": "cms.imageUpload"
-                        }
-                    ]
-                },
+                //{
+                //    "name": "Zarzadzanie CMS",
+                //    "urlList": [
+                //        {
+                //            "name": "Upload Zdjec",
+                //            "url": "cms.imageUpload"
+                //        }
+                //    ]
+                //},
                 {
                     "name": "Zarządzanie użytkownikami",
                     "url": "cms.userManagement"
+                },
+                {
+                    "name": "Wgrywanie Zdjęć",
+                    "url": "cms.imageUpload"
                 }
-
 
 
                 //{

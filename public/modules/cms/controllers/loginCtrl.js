@@ -42,7 +42,6 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
             userService.loginByToken(token).then(
                 // SUCCESS
                 function (message) {
-                    console.log(message);
                     $state.go("cms");
                     // ERROR
                 }, function (message) {
@@ -53,7 +52,7 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
                 }, function (message) {
                     console.log(message);
                 });
-        }else{
+        } else {
             console.log("Token is empty!");
         }
     }

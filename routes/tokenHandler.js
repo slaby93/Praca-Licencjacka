@@ -8,11 +8,13 @@ var jwt = require('jsonwebtoken');
  * @param passedUser
  * @param callback
  */
-exports.generateJWT = function (passedUser, callback) {
+exports.generateJWT = function (ID, callback) {
     var today = new Date();
     var expire = new Date(today);
+    // jak dlugo token ma byc uznawany za poprawny
     expire.setDate(today.getDate() + 1);
-    jwt.sign({"login": passedUser}, "SECRET", {"algorithm": "HS256"}, function (token) {
+    // generowanie tokena, 1 argumentem są zakodowane dane
+    jwt.sign({"_id": ID}, "SECRET", {"algorithm": "HS256"}, function (token) {
         if (callback) {
             callback(token);
         }

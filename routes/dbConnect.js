@@ -18,7 +18,7 @@ var db;
  * @description Podlaczenie do bazy mongo. Pamietaj aby w callbacku wykonac db.close();!
  * @param callback Funkcja do ktorej wrzucone zostaja obiekty err,db.
  */
-
+exports.ObjectId = mongojs.ObjectId;
 
 exports.connect = function (dataBase, collectionList, callback) {
     if (check.not.string(dataBase) || check.not.array(collectionList)) {

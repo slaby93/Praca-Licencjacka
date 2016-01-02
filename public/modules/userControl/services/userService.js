@@ -116,7 +116,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
                 callback(message);
             }
         }, function (error) {
-            console.log(error);
+            console.error(error);
             if (callback) {
                 callback(error);
             }

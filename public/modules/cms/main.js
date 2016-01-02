@@ -29,6 +29,17 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                         templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
                         controller: "sideMenuCtrl as sideMenuCtrl"
                     }
+                },
+                // sprawdza przy probie otworzenia /cms czy uzytkownik jest juz zalogowany
+                onEnter: function (userService, $state) {
+                    try {
+                        var user = userService.getUser();
+                        if (user === undefined || user === null) {
+                            $state.go("login");
+                        }
+                    } catch (e) {
+                        console.log("ERROR");
+                    }
                 }
             }).state('login', {
             url: "/login",

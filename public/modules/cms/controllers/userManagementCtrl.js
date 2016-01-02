@@ -8,8 +8,6 @@ angular.module("cmsModule").controller("userManagementCtrl", ["$scope", "adminTe
 
 function userManagementCtrl($scope, adminTemplateService, $state, userService, $uibModal) {
 
-    $scope.users = [];
-
     $scope.open = function (user) {
         var modalInstance = $uibModal.open(
             {
@@ -52,6 +50,15 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
 
     function getAllUsers() {
         userService.fetchAllUsers().then(function (data) {
+
+            // usuwam siebie (zalogowanego uzytkownika)
+            for (var i = 0; i < data.length; i++) {
+                if (data[i]._id === $scope.user._id) {
+                    data.splice(i, 1);
+                    break;
+                }
+            }
+
             $scope.$evalAsync(function () {
                 $scope.allUsers = data;
             });

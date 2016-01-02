@@ -7,23 +7,16 @@ angular.module("cmsModule").controller("indexCmsCtrl", ["$scope", "$ocLazyLoad",
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
 
-    $rootScope.$on("$stateChangeSuccess", function () {
-        if (!userService.getUser()) {
-            $state.go("login");
-        } else {
-            //noinspection JSUnresolvedFunction
-            $scope.user = userService.getUser();
-        }
-    });
 
     function init() {
-        // jezeli nie ma usera ( bo jeszcze go nie pobrano) to przekieruj na login
-        if (!userService.getUser()) {
-            $state.go("login");
-        } else {
+        try {
+            $scope.user = userService.getUser();
             $rootScope.$evalAsync(function () {
                 initAdminLTE();
             });
+        } catch (e) {
+            console.log("Error in indexCmsCtrl");
+            console.error(e);
         }
     }
 

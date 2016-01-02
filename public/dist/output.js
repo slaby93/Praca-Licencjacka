@@ -179,13 +179,15 @@ function imageUploadCtrl($scope, FileUploader, userService) {
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     function init() {
-        userService.getUser() ? $rootScope.$evalAsync(function() {
-            initAdminLTE();
-        }) : $state.go("login");
+        try {
+            $scope.user = userService.getUser(), $rootScope.$evalAsync(function() {
+                initAdminLTE();
+            });
+        } catch (e) {
+            console.log("Error in indexCmsCtrl"), console.error(e);
+        }
     }
-    $rootScope.$on("$stateChangeSuccess", function() {
-        userService.getUser() ? $scope.user = userService.getUser() : $state.go("login");
-    }), init();
+    init();
 }
 
 function loginCtrl($scope, userService, testService, $state, localStorageService) {
@@ -264,6 +266,10 @@ function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
 function userManagementCtrl($scope, adminTemplateService, $state, userService, $uibModal) {
     function getAllUsers() {
         userService.fetchAllUsers().then(function(data) {
+            for (var i = 0; i < data.length; i++) if (data[i]._id === $scope.user._id) {
+                data.splice(i, 1);
+                break;
+            }
             $scope.$evalAsync(function() {
                 $scope.allUsers = data;
             });
@@ -274,7 +280,7 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
     function init() {
         getAllUsers();
     }
-    $scope.users = [], $scope.open = function(user) {
+    $scope.open = function(user) {
         var modalInstance = $uibModal.open({
             templateUrl: "modules/cms/views/userEditView.html",
             controller: "userEditCtrl",
@@ -356,6 +362,14 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
             "sideMenu@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
                 controller: "sideMenuCtrl as sideMenuCtrl"
+            }
+        },
+        onEnter: function(userService, $state) {
+            try {
+                var user = userService.getUser();
+                (void 0 === user || null === user) && $state.go("login");
+            } catch (e) {
+                console.log("ERROR");
             }
         }
     }).state("login", {

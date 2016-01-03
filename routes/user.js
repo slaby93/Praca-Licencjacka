@@ -25,8 +25,14 @@ router.post('/', function (req, res, next) {
                     db.close();
                 });
             }
+
             //poprawne haslo po weryfikacji biblioteki bcrypt
             if (bcrypt.compareSync(req.body.password, foundedUser.password)) {
+                // sprawdzam, czy uzytkownik ma uprawnienia do zalogowania się do CMSa
+                if (foundedUser.groups.indexOf("admin") < 0) {
+                    res.status(403).send("Dostęp Zabroniony");
+                    return;
+                }
                 // generowanie tokena
                 tokenHandler.generateJWT(foundedUser._id, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
@@ -39,7 +45,7 @@ router.post('/', function (req, res, next) {
             }
             //niepoprawne hasolo
             else {
-                res.status(400).json({message: 'Podane hasło jest nieprawidłowe!'}).end(function () {
+                res.status(400).json('Podane hasło jest nieprawidłowe!').end(function () {
                     db.close();
                 });
             }
@@ -68,6 +74,7 @@ router.post('/register', function (req, res, next) {
     var password = bcrypt.hashSync(req.body.password, 10);
     user = removeSensitiveUserData(user);
     user.password = password;
+    user.groups = [];
     //laczenie z baza
     mongo.connect("projekt", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika

@@ -67,7 +67,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             user = received.data.user, token = received.data.token, localStorageService.set("token", token), 
             $state.go("cms");
         }, function(err) {
-            sweetAlert("Logowanie nieudane!", err.data.message, "error");
+            console.log(err), sweetAlert("Logowanie nieudane!", err.data, "error");
         });
     }, this.register = function(passedUser) {
         var obietnica = $q.defer();
@@ -367,9 +367,10 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         onEnter: function(userService, $state) {
             try {
                 var user = userService.getUser();
-                (void 0 === user || null === user) && $state.go("login");
+                if (void 0 === user || null === user) return void $state.go("login");
+                user.groups.indexOf("admin") < 0 && $state.go("contentForbiden");
             } catch (e) {
-                console.log("ERROR");
+                console.log("ERROR"), console.log(e);
             }
         }
     }).state("login", {
@@ -391,6 +392,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/imageUpload",
         controller: "imageUploadCtrl",
         templateUrl: "modules/cms/views/imageUploadView.html"
+    }).state("contentForbiden", {
+        url: "/403",
+        templateUrl: "modules/cms/views/403-Content-Forbiden.html"
     });
 }).directive("a", function() {
     return {

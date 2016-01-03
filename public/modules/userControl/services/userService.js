@@ -18,7 +18,8 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             localStorageService.set("token", token);
             $state.go("cms");
         }, function (err) {
-            sweetAlert("Logowanie nieudane!", err.data.message, "error");
+            console.log(err);
+            sweetAlert("Logowanie nieudane!", err.data, "error");
         });
     };
 

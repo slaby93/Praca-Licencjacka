@@ -36,9 +36,18 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                         var user = userService.getUser();
                         if (user === undefined || user === null) {
                             $state.go("login");
+                            return;
                         }
+                        // sprawdzam uprawnienia uzytkownika
+                        if (user.groups.indexOf("admin") < 0) {
+                            // uzytkownik nie ma uprawnien do wejscia do CMSa. Nalezy go przekierowac do strony bledu.
+                            $state.go("contentForbiden");
+                        }
+
+
                     } catch (e) {
                         console.log("ERROR");
+                        console.log(e);
                     }
                 }
             }).state('login', {
@@ -60,6 +69,9 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
             url: "/imageUpload",
             controller: "imageUploadCtrl",
             templateUrl: "modules/cms/views/imageUploadView.html"
+        }).state('contentForbiden', {
+            url: "/403",
+            templateUrl: "modules/cms/views/403-Content-Forbiden.html"
         });
     })
     /**

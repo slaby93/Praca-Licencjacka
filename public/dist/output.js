@@ -203,8 +203,9 @@ function loginCtrl($scope, userService, testService, $state, localStorageService
             password: ""
         };
         var token = localStorageService.get("token");
-        token ? userService.loginByToken(token).then(function(message) {
-            $state.go("cms");
+        token ? userService.loginByToken(token).then(function(user) {
+            user && (user.groups.indexOf("admin") >= 0 ? $state.go("cms") : (console.log("Brak Uprawnień"), 
+            localStorageService.remove("token")));
         }, function(message) {
             console.log(message.data), localStorageService.remove("token");
         }, function(message) {

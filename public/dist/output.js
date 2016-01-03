@@ -151,8 +151,7 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     function init() {}
-    var me = this;
-    me.user = userService.getUser(), me.logout = function() {
+    $scope.logout = function() {
         userService.logout(), $state.go("login");
     }, init();
 }

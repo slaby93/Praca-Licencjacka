@@ -6,10 +6,6 @@ angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplate
 function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
     "use strict";
     /************************** DEKLARACJA ZMIENNYCH **************************/
-    /**
-     * @description Zmienna przypisuje ten kontroler do nazwy. Pozwala odwolywac sie w zwyklych funkcjach do zmiennych kontrolera
-     * @type {sideMenuCtrl}
-     */
 
     /************************** DEKLARACJA FUNKCJI   **************************/
     /**

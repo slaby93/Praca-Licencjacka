@@ -11,7 +11,7 @@ var tokenHandler = require("./tokenHandler");
 router.post('/', function (req, res, next) {
     //niewypelnione pola
     if (!req.body.login || !req.body.password) {
-        return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
+        return res.status(400).send('Proszę wypełnić wszystkie pola!').end(function () {
             db.close();
         });
     }
@@ -21,7 +21,8 @@ router.post('/', function (req, res, next) {
         db.user.findOne({"login": req.body.login}, function (err, foundedUser) {
             //niepoprawny login
             if (foundedUser === undefined || foundedUser === null) {
-                return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
+                console.error("User not found. Incorrect login");
+                return res.status(666).send('Użytkownik nie istnieje, wpisz poprawny login!').end(function () {
                     db.close();
                 });
             }
@@ -45,7 +46,8 @@ router.post('/', function (req, res, next) {
             }
             //niepoprawne hasolo
             else {
-                res.status(400).json('Podane hasło jest nieprawidłowe!').end(function () {
+                console.error("Incorrect password");
+                res.status(666).send('Podane hasło jest nieprawidłowe!').end(function () {
                     db.close();
                 });
             }
@@ -59,14 +61,14 @@ router.post('/register', function (req, res, next) {
     //niewypelnione pola
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
         console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");
-        return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
+        return res.status(400).send('Proszę wypełnić wszystkie pola!').end(function () {
             db.close();
         });
     }
     //niepasujace hasla
     if (req.body.password !== req.body.retypedPassword) {
         console.error("REGISTER ERROR : Hasła się nie zgadzają");
-        return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'}).end(function () {
+        return res.status(400).send('Proszę wpisać pasujące hasła!').end(function () {
             db.close();
         });
     }
@@ -82,7 +84,7 @@ router.post('/register', function (req, res, next) {
             //jezeli znaleziono uzytkownika
             if (docs.length > 0) {
                 console.error("REGISTER ERROR : Użytkownik już istnieje");
-                return res.status(400).json({message: 'Użytkownik już istnieje, wybierz inny login!'}).end(function () {
+                return res.status(400).send('Użytkownik już istnieje, wybierz inny login!').end(function () {
                     db.close();
                 });
             }
@@ -110,12 +112,14 @@ router.post('/token', function (req, res, next) {
     mongo.connect("projekt", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
-                res.status(500).send("Token is valid, but error when fetching from db");
+                console.error(err);
+                res.status(666).send("Token is valid, but error when fetching from db");
                 return;
             }
             // nie znaleziono uzytkowika z bazie
             if (foundedUser === undefined || foundedUser === null) {
-                res.status(500).send("User not found");
+                console.error("User not found");
+                res.status(666).send("User not found");
                 return;
             }
             foundedUser = removeSensitiveUserData(foundedUser);
@@ -164,7 +168,8 @@ router.post("/update", function (req, res, next) {
             },
             function (err, data) {
                 if (err) {
-                    res.status(500).send(err);
+                    console.error(err);
+                    res.status(666).send(err);
                 }
                 res.status(200).send(data);
             });
@@ -182,7 +187,8 @@ router.post("/remove", function (req, res, next) {
         db.user.remove({"login": usr.login},
             function (err, data) {
                 if (err) {
-                    res.status(500).send(err);
+                    console.error(err);
+                    res.status(666).send(err);
                 } else {
                     res.status(200).send("ok");
                 }

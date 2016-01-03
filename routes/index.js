@@ -7,7 +7,7 @@ var formidable = require('formidable');
 var http = require('http');
 var util = require('util');
 var fs = require('fs');
-
+var tokenHandler = require("./tokenHandler");
 
 /**
  * @description Zwraca index.html
@@ -68,22 +68,15 @@ router.post('/upload', function (req, res, next) {
     form.on('field', function(name, value) {
         if(name === 'token') {
             req.body.token = value;
+            req.body.decodedToken = tokenHandler.decodeToken(req.body.token);
         }
     });
 
     form.on('fileBegin', function(name, file) {
-        /*
-         Mamy możliwość zmiany folderu docelowego i nazwy pliku file.path
-         Folder musi istnieć!
-         TODO Potrzebny jest USERID, stworzyć folder jak nie istnieje, wgrać jako avatar.png
-         */
+        file.path = galleryPath + '/' + req.body.decodedToken._id + '/avatar.png';
+    });
 
-        //Docelowo ma być coś w stylu:
-        //file.path = './public/gallery/USERID/avatar.png';
-
-        //Przykład, każdy plik będzie jako avatar.png
-        //file.path = './public/gallery/avatar.png';
-
+    form.on('file', function(name, file) {
     });
 
     form.on('end', function() {

@@ -17,7 +17,7 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                     },
                     "header@cms": {
                         templateUrl: "modules/cms/views/AdminLte2/header.html",
-                        controller: "headerCtrl as headerCtrl"
+                        controller: "headerCtrl"
                     },
                     "footer@cms": {
                         templateUrl: "modules/cms/views/AdminLte2/footer.html"
@@ -27,7 +27,7 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                     },
                     "sideMenu@cms": {
                         templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
-                        controller: "sideMenuCtrl as sideMenuCtrl"
+                        controller: "sideMenuCtrl"
                     }
                 },
                 // sprawdza przy probie otworzenia /cms czy uzytkownik jest juz zalogowany

@@ -10,9 +10,8 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
      * @description Zmienna przypisuje ten kontroler do nazwy. Pozwala odwolywac sie w zwyklych funkcjach do zmiennych kontrolera
      * @type {sideMenuCtrl}
      */
-    var me = this;
-    me.user = userService.getUser();
-    me.logout = function () {
+
+    $scope.logout = function () {
         // usuwamy zapisanego uzytkownika
         userService.logout();
         // przekieruj do strony logowania

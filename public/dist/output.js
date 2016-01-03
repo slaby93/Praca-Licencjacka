@@ -151,8 +151,7 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     function init() {}
-    var me = this;
-    me.user = userService.getUser(), me.logout = function() {
+    $scope.logout = function() {
         userService.logout(), $state.go("login");
     }, init();
 }
@@ -257,10 +256,9 @@ function registerCtrl($scope, userService, testService, $state) {
 function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
-            me.tabs = data.tabList;
-        }), me.user = userService.getUser();
+            $scope.tabs = data.tabList;
+        });
     }
-    var me = this;
     init();
 }
 
@@ -352,7 +350,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
             },
             "header@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/header.html",
-                controller: "headerCtrl as headerCtrl"
+                controller: "headerCtrl"
             },
             "footer@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/footer.html"
@@ -362,7 +360,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
             },
             "sideMenu@cms": {
                 templateUrl: "modules/cms/views/AdminLte2/sideMenu.html",
-                controller: "sideMenuCtrl as sideMenuCtrl"
+                controller: "sideMenuCtrl"
             }
         },
         onEnter: function(userService, $state) {

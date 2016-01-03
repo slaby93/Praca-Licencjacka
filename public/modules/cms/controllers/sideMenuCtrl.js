@@ -10,7 +10,6 @@ function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
      * @description Zmienna przypisuje ten kontroler do nazwy. Pozwala odwolywac sie w zwyklych funkcjach do zmiennych kontrolera
      * @type {sideMenuCtrl}
      */
-    var me = this;
 
     /************************** DEKLARACJA FUNKCJI   **************************/
     /**
@@ -20,9 +19,9 @@ function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
         // pobieramy z bazy liste zakladek do wyswietlenia
         adminTemplateService.getCmsConfig(function (data) {
             // przypisuje liste zakladek do wyswietlenia na templatce
-            me.tabs = data.tabList;
+            $scope.tabs = data.tabList;
         });
-        me.user = userService.getUser();
+        $scope.user = userService.getUser();
     }
 
     /************************** WYWOLANIE FUNKCJI    **************************/

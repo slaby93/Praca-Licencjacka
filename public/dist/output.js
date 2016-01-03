@@ -256,10 +256,9 @@ function registerCtrl($scope, userService, testService, $state) {
 function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
-            me.tabs = data.tabList;
-        }), me.user = userService.getUser();
+            $scope.tabs = data.tabList;
+        }), $scope.user = userService.getUser();
     }
-    var me = this;
     init();
 }
 

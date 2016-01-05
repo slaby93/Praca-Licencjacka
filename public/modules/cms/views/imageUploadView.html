@@ -59,27 +59,6 @@
             </tbody>
         </table>
 
-        <div>
-            <div>
-                Queue progress:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()"
-                    ng-disabled="!uploader.getNotUploadedItems().length">
-                Upload all
-            </button>
-            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()"
-                    ng-disabled="!uploader.isUploading">
-                Cancel all
-            </button>
-            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()"
-                    ng-disabled="!uploader.queue.length">
-                Remove all
-            </button>
-        </div>
-
     </div>
 </div>
 

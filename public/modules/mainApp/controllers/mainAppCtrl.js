@@ -1,10 +1,10 @@
-angular.module("mainApp").controller("mainAppCtrl", ["$scope","socketService", mainAppCtrl]);
+angular.module("mainApp").controller("mainAppCtrl", ["$scope","socketService", "userService", mainAppCtrl]);
 /**
  * @description Glowny, najbardziej zewnetrzny kontroler. Kod z tego pliku wykona sie na kazdej podstronie.
  * @param {type} $scope
  * @returns {undefined}
  */
-function mainAppCtrl($scope, socketService) {
+function mainAppCtrl($scope, socketService, userService) {
 
     //socketService.init();
 	
@@ -78,5 +78,9 @@ function mainAppCtrl($scope, socketService) {
 	init();
 	
 	/********************</Obsluga slidera>********************/
+
+	$scope.logout = function() {
+        userService.logout();
+	}
 
 }

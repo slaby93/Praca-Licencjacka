@@ -179,7 +179,8 @@ function imageUploadCtrl($scope, FileUploader, userService) {
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     function init() {
         try {
-            $scope.user = userService.getUser(), $rootScope.$evalAsync(function() {
+            $scope.user = userService.getUser(), $scope.userImage = "gallery/" + $scope.user._id + "/avatar", 
+            $scope.fallbackImage = "gallery/default.gif", $rootScope.$evalAsync(function() {
                 initAdminLTE();
             });
         } catch (e) {

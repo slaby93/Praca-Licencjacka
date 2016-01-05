@@ -37,51 +37,68 @@ router.all('/testowo', function (req, res, next) {
  */
 router.post('/upload', function (req, res, next) {
     var form = new formidable.IncomingForm();
-    var galleryPath = './public/gallery';
-
-    form.keepExtensions = true;
-    form.uploadDir = galleryPath;
-
-    if (fs.existsSync(galleryPath) === false) {
-        fs.mkdirSync(galleryPath);
-    }
 
     /*
-        Kolejność wykonywania:
-        on field
-        on fileBegin
-        parse
-        on end
+     Kolejność wykonywania:
+     on field
+     on fileBegin
+     parse
+     on end
      */
 
     /*
-        Zawsze musi być, nawet gdy puste.
+     Zawsze musi być, nawet gdy puste.
      */
     form.parse(req, function (err, fields, files) {
-    });
-
-    /*
-        req.body przy wgrywaniu zdjęć jest puste {}
-        Potrzebne dane należy wyłapać za pomocą tej funkcji,
-        obecnie zapisuję jedynie token i sztucznie dodaję do req.body
-     */
-    form.on('field', function(name, value) {
-        if(name === 'token') {
-            req.body.token = value;
-            req.body.decodedToken = tokenHandler.decodeToken(req.body.token);
+        var token = fields.token;
+        var userID = tokenHandler.decodeToken(token)._id;
+        var userPath = "./public/gallery/" + userID + "/";
+        var userFile = files.file;
+        console.log(userFile);
+        if (fs.existsSync(userPath) === false) {
+            fs.mkdir(userPath, function () {
+                fs.createReadStream(userFile.path)
+                    .pipe(fs.createWriteStream(userPath + "avatar"));
+            });
         }
-    });
+        else {
+            fs.createReadStream(userFile.path)
+                .pipe(fs.createWriteStream(userPath + "avatar"));
+        }
+        //var galleryPath = './public/gallery';
+        //
+        //form.keepExtensions = true;
+        //form.uploadDir = galleryPath;
+        //
+        //if (fs.existsSync(galleryPath) === false) {
+        //    fs.mkdirSync(galleryPath);
+        //}
 
-    form.on('fileBegin', function(name, file) {
-        file.path = galleryPath + '/' + req.body.decodedToken._id + '/avatar.png';
-    });
 
-    form.on('file', function(name, file) {
     });
-
-    form.on('end', function() {
-        res.send({answer: 'File transfer completed'});
-    });
+    //
+    ///*
+    //    req.body przy wgrywaniu zdjęć jest puste {}
+    //    Potrzebne dane należy wyłapać za pomocą tej funkcji,
+    //    obecnie zapisuję jedynie token i sztucznie dodaję do req.body
+    // */
+    //form.on('field', function(name, value) {
+    //    if(name === 'token') {
+    //        req.body.token = value;
+    //        req.body.decodedToken = tokenHandler.decodeToken(req.body.token);
+    //    }
+    //});
+    //
+    //form.on('fileBegin', function(name, file) {
+    //    file.path = galleryPath + '/' + req.body.decodedToken._id + '/avatar.png';
+    //});
+    //
+    //form.on('file', function(name, file) {
+    //});
+    //
+    //form.on('end', function() {
+    //    res.send({answer: 'File transfer completed'});
+    //});
 
 });
 

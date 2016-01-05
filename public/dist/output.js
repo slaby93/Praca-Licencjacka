@@ -384,7 +384,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         onEnter: function(userService, $state) {
             try {
                 var user = userService.getUser();
-                (void 0 === user || null === user) && $state.go("login");
+                (void 0 === user || null === user) && $state.go("login"), user.groups.indexOf("admin") < 0 && $state.go("contentForbiden");
             } catch (e) {
                 console.log("ERROR");
             }
@@ -408,6 +408,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/imageUpload",
         controller: "imageUploadCtrl",
         templateUrl: "modules/cms/views/imageUploadView.html"
+    }).state("contentForbiden", {
+        url: "/403",
+        templateUrl: "modules/cms/views/forbidenView.html"
     });
 }).directive("a", function() {
     return {

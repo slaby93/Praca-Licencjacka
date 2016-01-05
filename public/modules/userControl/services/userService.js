@@ -36,6 +36,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 
     };
     this.logout = function () {
+        console.log("logout");
         user = null;
         token = null;
         localStorageService.remove("token");

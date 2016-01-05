@@ -24,7 +24,7 @@ function testService($http) {
     };
 }
 
-function mainAppCtrl($scope, socketService) {
+function mainAppCtrl($scope, socketService, userService, $state) {
     function init() {
         $scope.jssor_1_slider = new $JssorSlider$("jssor_1", {
             $AutoPlay: !1,
@@ -37,6 +37,9 @@ function mainAppCtrl($scope, socketService) {
         $(window).bind("orientationchange", ScaleSlider), document.addEventListener ? (document.addEventListener("mousewheel", MouseWheelHandler(), !1), 
         document.addEventListener("DOMMouseScroll", MouseWheelHandler(), !1)) : sq.attachEvent("onmousewheel", MouseWheelHandler());
     }
+    $scope.x = 10, $scope.testowyLogout = function() {
+        console.log("TEST");
+    };
     var ScaleSlider = function() {
         var windowWidth = $(window).width();
         if (windowWidth) {
@@ -79,7 +82,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
             });
         }), obietnica.promise;
     }, this.logout = function() {
-        user = null, token = null, localStorageService.remove("token");
+        console.log("logout"), user = null, token = null, localStorageService.remove("token");
     }, this.getUser = function() {
         return user ? user : null;
     }, this.fetchAllUsers = function() {
@@ -422,7 +425,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         }
     };
 }), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
-angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", mainAppCtrl ]), 
+angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", "userService", "$state", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
 angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", "userService", userEditCtrl ]), 

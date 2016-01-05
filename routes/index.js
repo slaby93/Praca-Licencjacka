@@ -54,16 +54,17 @@ router.post('/upload', function (req, res, next) {
         var userID = tokenHandler.decodeToken(token)._id;
         var userPath = "./public/gallery/" + userID + "/";
         var userFile = files.file;
-        console.log(userFile);
         if (fs.existsSync(userPath) === false) {
             fs.mkdir(userPath, function () {
                 fs.createReadStream(userFile.path)
                     .pipe(fs.createWriteStream(userPath + "avatar"));
+                res.status(200).send("ok");
             });
         }
         else {
             fs.createReadStream(userFile.path)
                 .pipe(fs.createWriteStream(userPath + "avatar"));
+            res.status(200).send("ok");
         }
         //var galleryPath = './public/gallery';
         //

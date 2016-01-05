@@ -159,10 +159,11 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
 function imageUploadCtrl($scope, FileUploader, userService) {
     $scope.uploader = new FileUploader({
         url: "upload",
-        autoUpload: !0
-    }), $scope.maxFileSize = 2097152, $scope.uploader.formData = [ {
-        token: userService.getToken()
-    } ], $scope.uploader.filters.push({
+        removeAfterUpload: !0,
+        formData: [ {
+            token: userService.getToken()
+        } ]
+    }), $scope.maxFileSize = 2097152, $scope.uploader.filters.push({
         name: "imageFilter",
         fn: function(item, options) {
             var type = "|" + item.type.slice(item.type.lastIndexOf("/") + 1) + "|";
@@ -173,7 +174,9 @@ function imageUploadCtrl($scope, FileUploader, userService) {
         fn: function(item, options) {
             return item.size <= $scope.maxFileSize;
         }
-    });
+    }), $scope.uploader.onCompleteAll = function() {
+        $scope.$emit("UserImageChaned");
+    };
 }
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
@@ -187,7 +190,9 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
             console.log("Error in indexCmsCtrl"), console.error(e);
         }
     }
-    init();
+    $scope.$on("UserImageChaned", function() {
+        $scope.userImage = "gallery/" + $scope.user._id + "/avatar?" + new Date().getTime();
+    }), init();
 }
 
 function loginCtrl($scope, userService, testService, $state, localStorageService) {

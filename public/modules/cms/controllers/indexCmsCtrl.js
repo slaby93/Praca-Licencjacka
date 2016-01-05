@@ -7,7 +7,9 @@ angular.module("cmsModule").controller("indexCmsCtrl", ["$scope", "$ocLazyLoad",
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
 
-
+    $scope.$on("UserImageChaned",function(){
+        $scope.userImage = "gallery/"+$scope.user._id+"/avatar?" + new Date().getTime();
+    });
     function init() {
         try {
             $scope.user = userService.getUser();

@@ -53,6 +53,7 @@ function imageUploadCtrl($scope, FileUploader, userService) {
         url: 'upload',
         removeAfterUpload: true,
         formData: [{
+            queueLimit: 1,
             token: userService.getToken()
         }]
     })

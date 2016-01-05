@@ -1,0 +1,16 @@
+
+.bigError {
+     font-size: 15vw;
+     max-font-size: 200px;
+ }
+
+.errorDescription {
+     font-size: x-large;
+ }
+
+.Error-403 {
+     font-family: 'Poiret One', cursive;
+ }
+.iAmLink{
+     cursor: pointer;
+ }

@@ -134,12 +134,25 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 }
 
 function userEditCtrl($scope, $uibModalInstance, user, userService) {
-    $scope.copiedUser = angular.copy(user), $scope.ok = function() {
+    function convertGruops(groups) {
+        var temp = {};
+        return groups.forEach(function(key) {
+            temp[key] = !0;
+        }), console.log(temp), temp;
+    }
+    function converToArray(map) {
+        var temp = [];
+        return Object.keys(map).forEach(function(key) {
+            map[key] === !0 && temp.push(key);
+        }), temp;
+    }
+    $scope.copiedUser = angular.copy(user), $scope.copiedUser.groups = convertGruops(user.groups), 
+    $scope.ok = function() {
         var changes = {};
         Object.keys(user).forEach(function(key) {
             $scope.copiedUser[key] !== user[key] && (changes[key] = $scope.copiedUser[key]);
-        }), console.log(user), changes._id = user._id, delete changes.groups, delete changes.$$hashKey, 
-        userService.editUser(changes, function() {
+        }), changes._id = user._id, changes.groups = converToArray(changes.groups), delete changes.$$hashKey, 
+        console.log(changes), userService.editUser(changes, function() {
             $uibModalInstance.close("PSAJDAK");
         });
     }, $scope.reset = function() {
@@ -371,7 +384,7 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         onEnter: function(userService, $state) {
             try {
                 var user = userService.getUser();
-                (void 0 === user || null === user) && $state.go("login");
+                (void 0 === user || null === user) && $state.go("login"), user.groups.indexOf("admin") < 0 && $state.go("contentForbiden");
             } catch (e) {
                 console.log("ERROR");
             }
@@ -395,6 +408,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/imageUpload",
         controller: "imageUploadCtrl",
         templateUrl: "modules/cms/views/imageUploadView.html"
+    }).state("contentForbiden", {
+        url: "/403",
+        templateUrl: "modules/cms/views/forbidenView.html"
     });
 }).directive("a", function() {
     return {

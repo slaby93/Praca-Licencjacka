@@ -134,12 +134,25 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 }
 
 function userEditCtrl($scope, $uibModalInstance, user, userService) {
-    $scope.copiedUser = angular.copy(user), $scope.ok = function() {
+    function convertGruops(groups) {
+        var temp = {};
+        return groups.forEach(function(key) {
+            temp[key] = !0;
+        }), console.log(temp), temp;
+    }
+    function converToArray(map) {
+        var temp = [];
+        return Object.keys(map).forEach(function(key) {
+            map[key] === !0 && temp.push(key);
+        }), temp;
+    }
+    $scope.copiedUser = angular.copy(user), $scope.copiedUser.groups = convertGruops(user.groups), 
+    $scope.ok = function() {
         var changes = {};
         Object.keys(user).forEach(function(key) {
             $scope.copiedUser[key] !== user[key] && (changes[key] = $scope.copiedUser[key]);
-        }), console.log(user), changes._id = user._id, delete changes.groups, delete changes.$$hashKey, 
-        userService.editUser(changes, function() {
+        }), changes._id = user._id, changes.groups = converToArray(changes.groups), delete changes.$$hashKey, 
+        console.log(changes), userService.editUser(changes, function() {
             $uibModalInstance.close("PSAJDAK");
         });
     }, $scope.reset = function() {

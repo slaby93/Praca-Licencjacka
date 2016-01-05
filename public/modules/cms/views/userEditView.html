@@ -65,6 +65,15 @@
                         class="form-control"
                         id="userLogin"
                         type="text">
+                <p>{{copiedUser}}</p>
+                <div class="checkbox">
+                    <label>
+                        <input
+                            ng-model="copiedUser.groups.admin"
+                            type="checkbox"
+                            value="">Admin
+                    </label>
+                </div>
             </div>
         </form>
     </div>

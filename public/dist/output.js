@@ -331,7 +331,7 @@ function adminTemplateService($http) {
     };
 }
 
-angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule", "ui.bootstrap" ]).config(function($stateProvider, $urlRouterProvider) {
+angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule", "ui.bootstrap", "dcbImgFallback" ]).config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/app"), $stateProvider.state("app", {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",

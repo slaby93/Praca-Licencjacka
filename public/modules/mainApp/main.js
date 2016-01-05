@@ -1,4 +1,4 @@
-angular.module("mainApp", ["cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule","ui.bootstrap"])
+angular.module("mainApp", ["cmsModule", "userModule", "ui.router", "oc.lazyLoad", "LocalStorageModule","ui.bootstrap","dcbImgFallback"])
     /**
      * @description Konfiguracja routera dla korzenia routera.
      * @param {type} $stateProvider

@@ -1,0 +1,46 @@
+<div class="modal-header nopadding">
+    <div class="modal-body row nopadding modal-body-header">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 modal-choice modal-choice-left-unselected"
+         ng-class="{'modal-choice-left-selected': !is_register_shown}">
+            <a href ng-click="showLogin()"><span class="link-span"></span>Zaloguj się</a>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 modal-choice modal-choice-right-unselected"
+         ng-class="{'modal-choice-right-selected': is_register_shown}">
+            <a href ng-click="showRegister()"><span class="link-span"></span>Zarejestruj się</a>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="modal-container" ng-show=!is_register_shown>
+        <p class="modal-welcome-text">Witamy! Zaloguj się na swoje konto</p>
+        <form name="formaLogowania" ng-submit="loguj()" novalidate role="form">
+            <p><input id="test" placeholder="Login" max-length="10" name="login" type="text" class="form-control inputs" ng-model="userLogin.login" required id="login"></p>
+            <p><input type="password" name="password" placeholder="Hasło" ng-model="userLogin.password" class="form-control inputs" required id="pwd"></p>
+            <p><button type="submit" class="btn btn-primary btn-lg normal">Zaloguj</button></p>
+        </form>
+    </div>
+    <div class="modal-container" ng-show=is_register_shown>
+        <form ng-submit="register()">
+            <p class="modal-welcome-text">Zarejestruj się, nowy użytkowniku</p>
+            <p><input type="text" class="form-control inputs" placeholder="Imię" ng-model="user.name"></p>
+            <p><input type="text" class="form-control inputs" placeholder="Nazwisko" ng-model="user.surname"></p>
+            <p><input type="text" class="form-control inputs" placeholder="Login" ng-model="user.login"></p>
+            <p><input type="password" class="form-control inputs" placeholder="Hasło" ng-model="user.password"></p>
+            <p><input type="password" class="form-control inputs" placeholder="Powtórz hasło" ng-model="user.retypedPassword"></p>
+            <p><button type="submit" class="btn btn-primary btn-lg normal">Zarejestruj</button></p>
+        </form>
+    </div>
+    <div class="modal-feedback">
+        {{feedback}}
+    </div>
+</div>
+
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-offset-6 col-md-offset-6 col-sm-offset-6 col-xs-offset-6 col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
+            <button type="button" class="btn btn-default" data-ng-click="cancel()">Zamknij</button>
+        </div>
+    </div>
+</div>

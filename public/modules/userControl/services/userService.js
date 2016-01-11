@@ -11,15 +11,18 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     var token = null;
 
     this.login = function (passedUser) {
+        var obietnica = $q.defer();
         $http.post("/user", passedUser).then(function (received) {
+            obietnica.resolve(received);
             user = received.data.user;
             token = received.data.token;
-            //przekierowanie do cms po pomyslnym zalogowaniu
             localStorageService.set("token", token);
-            $state.go("cms");
+            console.log(3);
         }, function (err) {
-            sweetAlert("Logowanie nieudane!", err.data.message, "error");
+            obietnica.reject(err);
+            /*sweetAlert("Logowanie nieudane!", err.data.message, "error");*/
         });
+        return obietnica.promise;
     };
 
     this.register = function (passedUser) {

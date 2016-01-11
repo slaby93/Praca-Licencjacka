@@ -1,5 +1,3 @@
-"use strict";
-
 function socketService($http) {
     function defineListeners() {
         socket.on("news", function(data) {
@@ -20,45 +18,93 @@ function testService($http) {
             callback && callback(data);
         });
     }, this.test = function() {
+        "use strict";
         return 2;
     };
 }
 
-function mainAppCtrl($scope, socketService, userService, $state) {
-    function init() {
-        $scope.jssor_1_slider = new $JssorSlider$("jssor_1", {
-            $AutoPlay: !1,
-            $DragOrientation: 2,
-            $PlayOrientation: 2,
-            $ArrowNavigatorOptions: {
-                $Class: $JssorArrowNavigator$
-            }
-        }), $(window).bind("load", ScaleSlider), $(window).bind("resize", ScaleSlider), 
-        $(window).bind("orientationchange", ScaleSlider), document.addEventListener ? (document.addEventListener("mousewheel", MouseWheelHandler(), !1), 
-        document.addEventListener("DOMMouseScroll", MouseWheelHandler(), !1)) : sq.attachEvent("onmousewheel", MouseWheelHandler());
+function login_registerCtrl($scope, $uibModalInstance, $state, userService, localStorageService, isLogged) {
+    function clearFormLogin() {
+        $scope.userLogin = {
+            login: "",
+            password: ""
+        };
+    }
+    function initRegister() {
+        clearFormRegister();
+    }
+    function clearFormRegister() {
+        $scope.user = {
+            login: "",
+            password: "",
+            name: "",
+            surname: "",
+            retypedPassword: ""
+        };
+    }
+    $scope.is_register_shown = !1, $scope.feedback = "", $scope.showRegister = function() {
+        $scope.is_register_shown = !0, $scope.feedback = "";
+    }, $scope.showLogin = function() {
+        $scope.is_register_shown = !1, $scope.feedback = "";
+    }, $scope.cancel = function() {
+        $uibModalInstance.dismiss("cancel");
+    }, $scope.loguj = function() {
+        $scope.feedback = "", console.log($scope.userLogin), userService.login($scope.userLogin).then(function(message) {
+            null != userService.getUser($scope.userLogin) ? (clearFormLogin(), console.log(1), 
+            isLogged = !0, $uibModalInstance.close(!0)) : (console.log(2), clearFormLogin(), 
+            $scope.feedback = "Niepoprawne dane logowania!");
+        }, function(err) {}, function(update) {});
+    }, $scope.register = function() {
+        $scope.feedback = "", userService.register($scope.user).then(function(message) {
+            $scope.feedback = "Pomyślnie zarejestrowano użytkownika!", $scope.userLogin = {
+                login: $scope.user.login,
+                password: $scope.user.password
+            }, $scope.loguj(), clearFormRegister();
+        }, function(err) {
+            $scope.feedback = "Wystąpił błąd podczas rejestracji!", clearFormRegister();
+        }, function(update) {});
+    }, initRegister();
+}
+
+function mainAppCtrl($scope, socketService, userService, $state, $uibModal, localStorageService) {
+    function initLogin() {
+        $scope.userLogin = {
+            login: "",
+            password: ""
+        };
+        var token = localStorageService.get("token");
+        token ? userService.loginByToken(token).then(function(message) {
+            $scope.isLogged = !0;
+        }, function(message) {
+            console.log(message.data), $scope.isLogged = !1, localStorageService.remove("token");
+        }, function(message) {
+            $scope.isLogged = !1, console.log(message);
+        }) : ($scope.isLogged = !1, console.log("Token is empty!"));
     }
     $scope.x = 10, $scope.testowyLogout = function() {
         console.log("TEST");
-    };
-    var ScaleSlider = function() {
-        var windowWidth = $(window).width();
-        if (windowWidth) {
-            var windowHeight = $(window).height(), originalWidth = jssor_1_slider.$OriginalWidth(), originalHeight = jssor_1_slider.$OriginalHeight(), scaleWidth = windowWidth;
-            originalWidth / windowWidth > originalHeight / windowHeight && (scaleWidth = Math.ceil(windowHeight / originalHeight * originalWidth)), 
-            jssor_1_slider.$ScaleWidth(scaleWidth);
-        } else window.setTimeout(ScaleSlider, 30);
-    }, MouseWheelHandler = function() {
-        return function(e) {
-            var e = window.event || e, delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-            return 0 > delta ? $scope.jssor_1_slider.$Next() : $scope.jssor_1_slider.$Prev(), 
-            !1;
-        };
-    };
-    init();
+    }, $scope.logout = function() {
+        userService.logout(), $scope.isLogged = !1;
+    }, $scope.openLoginRegister = function() {
+        var modalInstance = $uibModal.open({
+            templateUrl: "modules/mainApp/views/login_registerView.html",
+            controller: "login_registerCtrl",
+            backdrop: "static",
+            resolve: {
+                isLogged: function() {
+                    return $scope.isLogged;
+                }
+            }
+        });
+        modalInstance.result.then(function(is) {
+            $scope.isLogged = is;
+        }, function() {});
+    }, initLogin();
 }
 
 function testCtrl($scope, testService) {
     $scope.testUnit = function() {
+        "use strict";
         return 2;
     };
 }
@@ -66,12 +112,13 @@ function testCtrl($scope, testService) {
 function userService($http, $state, localStorageService, $q, $rootScope) {
     var user = null, token = null;
     this.login = function(passedUser) {
-        $http.post("/user", passedUser).then(function(received) {
-            user = received.data.user, token = received.data.token, localStorageService.set("token", token), 
-            $state.go("cms");
+        var obietnica = $q.defer();
+        return $http.post("/user", passedUser).then(function(received) {
+            obietnica.resolve(received), user = received.data.user, token = received.data.token, 
+            localStorageService.set("token", token), console.log(3);
         }, function(err) {
-            sweetAlert("Logowanie nieudane!", err.data.message, "error");
-        });
+            obietnica.reject(err);
+        }), obietnica.promise;
     }, this.register = function(passedUser) {
         var obietnica = $q.defer();
         return $rootScope.$evalAsync(function() {
@@ -166,9 +213,10 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
 }
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
+    "use strict";
     function init() {}
     $scope.logout = function() {
-        userService.logout(), $state.go("login");
+        userService.logout(), $state.go("app");
     }, init();
 }
 
@@ -196,6 +244,7 @@ function imageUploadCtrl($scope, FileUploader, userService) {
 }
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
+    "use strict";
     function init() {
         try {
             $scope.user = userService.getUser(), $scope.userImage = "gallery/" + $scope.user._id + "/avatar", 
@@ -211,74 +260,12 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     }), init();
 }
 
-function loginCtrl($scope, userService, testService, $state, localStorageService) {
-    function clearForm() {
-        $scope.user = {
-            login: "",
-            password: ""
-        }, $scope.formaLogowania.login.$setUntouched(), $scope.formaLogowania.password.$setUntouched();
-    }
-    function init() {
-        $scope.user = {
-            login: "",
-            password: ""
-        };
-        var token = localStorageService.get("token");
-        token ? userService.loginByToken(token).then(function(message) {
-            $state.go("cms");
-        }, function(message) {
-            console.log(message.data), localStorageService.remove("token");
-        }, function(message) {
-            console.log(message);
-        }) : console.log("Token is empty!");
-    }
-    $scope.loguj = function() {
-        userService.login($scope.user), clearForm();
-    }, init();
-}
-
-function registerCtrl($scope, userService, testService, $state) {
-    function init() {
-        clearForm();
-    }
-    function clearForm() {
-        $scope.user = {
-            login: "",
-            password: "",
-            name: "",
-            surname: "",
-            retypedPassword: ""
-        };
-    }
-    $scope.register = function() {
-        userService.register($scope.user).then(function(message) {
-            swal({
-                title: "Sukces",
-                text: "Pomyślnie zarejestrowano użytkownika.",
-                type: "success",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Ok"
-            }, function() {
-                $state.go("cms");
-            });
-        }, function(err) {
-            swal({
-                title: "Błąd",
-                text: "Wystąpił błąd podczas procedury rejestracji.",
-                type: "warning",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Ok",
-                closeOnConfirm: !0
-            });
-        }, function(update) {}), clearForm();
-    }, init();
-}
-
 function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
+    "use strict";
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
             $scope.tabs = data.tabList;
-        }), $scope.user = userService.getUser();
+        }), $scope.user = userService.getUser(), null == $scope.user && $state.go("app");
     }
     init();
 }
@@ -392,14 +379,6 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
                 console.log("ERROR");
             }
         }
-    }).state("login", {
-        url: "/login",
-        templateUrl: "modules/cms/views/loginView.html",
-        controller: "loginCtrl"
-    }).state("register", {
-        url: "/register",
-        templateUrl: "modules/cms/views/registerView.html",
-        controller: "registerCtrl"
     }).state("cms.userManagement", {
         url: "/userManagement",
         templateUrl: "modules/cms/views/userManagementView.html",
@@ -425,7 +404,8 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         }
     };
 }), angular.module("mainApp").service("socketService", [ "$http", socketService ]), 
-angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", "userService", "$state", mainAppCtrl ]), 
+angular.module("mainApp").service("testService", [ "$http", testService ]), angular.module("mainApp").controller("login_registerCtrl", [ "$scope", "$uibModalInstance", "$state", "userService", "localStorageService", "isLogged", login_registerCtrl ]), 
+angular.module("mainApp").controller("mainAppCtrl", [ "$scope", "socketService", "userService", "$state", "$uibModal", "localStorageService", mainAppCtrl ]), 
 angular.module("mainApp").controller("testCtrl", [ "$scope", "testService", testCtrl ]), 
 angular.module("userModule").service("userService", [ "$http", "$state", "localStorageService", "$q", "$rootScope", userService ]), 
 angular.module("cmsModule").controller("userEditCtrl", [ "$scope", "$uibModalInstance", "user", "userService", userEditCtrl ]), 
@@ -466,8 +446,6 @@ angular.module("cmsModule").controller("imageUploadCtrl", [ "$scope", "FileUploa
         }
     };
 } ]), angular.module("cmsModule").controller("indexCmsCtrl", [ "$scope", "$ocLazyLoad", "$rootScope", "userService", "$state", indexCmsCtrl ]), 
-angular.module("cmsModule").controller("loginCtrl", [ "$scope", "userService", "testService", "$state", "localStorageService", loginCtrl ]), 
-angular.module("cmsModule").controller("registerCtrl", [ "$scope", "userService", "testService", "$state", registerCtrl ]), 
 angular.module("cmsModule").controller("sideMenuCtrl", [ "$scope", "adminTemplateService", "$state", "userService", sideMenuCtrl ]), 
 angular.module("cmsModule").controller("userManagementCtrl", [ "$scope", "adminTemplateService", "$state", "userService", "$uibModal", userManagementCtrl ]), 
 angular.module("cmsModule").service("adminTemplateService", [ "$http", adminTemplateService ]);

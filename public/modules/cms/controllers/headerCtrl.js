@@ -11,7 +11,7 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
         // usuwamy zapisanego uzytkownika
         userService.logout();
         // przekieruj do strony logowania
-        $state.go("login");
+        $state.go("app");
     };
     /************************** DEKLARACJA FUNKCJI   **************************/
     /**

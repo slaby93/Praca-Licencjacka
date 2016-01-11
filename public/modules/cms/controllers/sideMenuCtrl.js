@@ -18,6 +18,9 @@ function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
             $scope.tabs = data.tabList;
         });
         $scope.user = userService.getUser();
+
+        /*DODALEM TO ZEBY NIEZALOGOWANI NIE MOGLI WEJSC DO CMSA!!!*/
+        if($scope.user == null)  $state.go("app");
     }
 
     /************************** WYWOLANIE FUNKCJI    **************************/

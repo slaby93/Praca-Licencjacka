@@ -45,15 +45,7 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                         console.log("ERROR");
                     }
                 }
-            }).state('login', {
-            url: "/login",
-            templateUrl: "modules/cms/views/loginView.html",
-            controller: "loginCtrl"
-        }).state('register', {
-            url: "/register",
-            templateUrl: "modules/cms/views/registerView.html",
-            controller: "registerCtrl"
-        }).state('cms.userManagement', {
+            }).state('cms.userManagement', {
             url: "/userManagement",
             templateUrl: "modules/cms/views/userManagementView.html",
             controller: "userManagementCtrl"

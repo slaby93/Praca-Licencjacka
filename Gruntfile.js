@@ -47,8 +47,7 @@ module.exports = function (grunt) {
                         "node_modules/socket.io/node_modules/socket.io-client/socket.io.js",
                         "node_modules/sweetalert/dist/sweetalert-dev.js",
                         "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
-                        "node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
-                        "public/modules/mainApp/lib/jssor.slider.mini.js"
+                        "node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js"
                     ]
                 }
             }

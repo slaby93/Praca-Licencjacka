@@ -42,27 +42,35 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
             retypedPassword: ""
         };
     }
-    $scope.is_register_shown = !1, $scope.feedback = "", $scope.showRegister = function() {
+    $scope.is_register_shown = !1, $scope.is_login_clicked = !1, $scope.is_register_clicked = !1, 
+    $scope.feedback = "", $scope.showRegister = function() {
         $scope.is_register_shown = !0, $scope.feedback = "";
     }, $scope.showLogin = function() {
         $scope.is_register_shown = !1, $scope.feedback = "";
     }, $scope.cancel = function() {
         $uibModalInstance.dismiss("cancel");
+    }, $scope.hasWhiteSpace = function(s) {
+        return !1;
     }, $scope.loguj = function() {
-        $scope.feedback = "", console.log($scope.userLogin), userService.login($scope.userLogin).then(function(message) {
-            null != userService.getUser($scope.userLogin) ? (clearFormLogin(), console.log(1), 
-            isLogged = !0, $uibModalInstance.close(!0)) : (console.log(2), clearFormLogin(), 
-            $scope.feedback = "Niepoprawne dane logowania!");
-        }, function(err) {}, function(update) {});
+        $scope.is_login_clicked = !0, $scope.feedback = "", userService.login($scope.userLogin).then(function(message) {
+            null != userService.getUser($scope.userLogin) && (clearFormLogin(), isLogged = !0, 
+            $uibModalInstance.close(!0));
+        }, function(err) {
+            $scope.feedback = "Błąd podczas logowania!", $scope.is_login_clicked = !1;
+        }, function(update) {
+            $scope.is_login_clicked = !1;
+        });
     }, $scope.register = function() {
-        $scope.feedback = "", userService.register($scope.user).then(function(message) {
+        $scope.is_register_clicked = !0, $scope.feedback = "", userService.register($scope.user).then(function(message) {
             $scope.feedback = "Pomyślnie zarejestrowano użytkownika!", $scope.userLogin = {
                 login: $scope.user.login,
                 password: $scope.user.password
             }, $scope.loguj(), clearFormRegister();
         }, function(err) {
-            $scope.feedback = "Wystąpił błąd podczas rejestracji!", clearFormRegister();
-        }, function(update) {});
+            $scope.feedback = "Wystąpił błąd podczas rejestracji!", clearFormRegister(), $scope.is_register_clicked = !1;
+        }, function(update) {
+            $scope.is_register_clicked = !1;
+        });
     }, initRegister();
 }
 

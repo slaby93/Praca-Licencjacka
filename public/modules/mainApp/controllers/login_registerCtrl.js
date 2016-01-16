@@ -13,6 +13,9 @@ angular.module("mainApp").controller("login_registerCtrl",
 
 function login_registerCtrl($scope, $uibModalInstance, $state, userService, localStorageService, isLogged) {
     $scope.is_register_shown = false;
+    $scope.is_login_clicked = false;
+    $scope.is_register_clicked = false;
+
     $scope.feedback = "";
 
     $scope.showRegister = function()  {$scope.is_register_shown = true;  $scope.feedback = "";};
@@ -20,7 +23,10 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
     $scope.cancel = function()  {$uibModalInstance.dismiss('cancel');};
 
 
-
+    ////TODO!!! NOW IT'S TEMPORARY
+    $scope.hasWhiteSpace = function(s) {
+        return false;
+    };
 
 
     /********       LOGGING        ********/
@@ -32,28 +38,26 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
         };
     }
 
+
     /**
      * @description Funkcja wywolywana przy kliknieciu buttona loguj.
      */
     $scope.loguj = function () {
+        $scope.is_login_clicked = true;
         $scope.feedback = "";
-        console.log($scope.userLogin);
+
+
         userService.login($scope.userLogin).then(function(message) {
             if(userService.getUser($scope.userLogin) != null){
                 clearFormLogin();
-                console.log(1);
                 isLogged = true;
                 $uibModalInstance.close(true);
             }
-            else{
-                console.log(2);
-                clearFormLogin();
-                $scope.feedback = "Niepoprawne dane logowania!";
-            }
         }, function (err) {
-
+            $scope.feedback = "Błąd podczas logowania!"
+            $scope.is_login_clicked = false;
         }, function (update) {
-
+            $scope.is_login_clicked = false;
         });
     };
 
@@ -84,7 +88,12 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
         //userService.register($scope.user,function(){
         //
         //});
+        $scope.is_register_clicked = true;
         $scope.feedback = "";
+
+
+
+
         userService.register($scope.user).then(function (message) {
             $scope.feedback = "Pomyślnie zarejestrowano użytkownika!";
 
@@ -100,8 +109,9 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
                 $scope.feedback = "Użytkownik o takiej nazwie istnieje!"
             }else*/  $scope.feedback = "Wystąpił błąd podczas rejestracji!"
             clearFormRegister();
+            $scope.is_register_clicked = false;
         }, function (update) {
-
+            $scope.is_register_clicked = false;
         });
     };
 

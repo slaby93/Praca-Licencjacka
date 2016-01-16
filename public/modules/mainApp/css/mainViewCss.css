@@ -193,9 +193,16 @@ body{
 }
 
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
 
-
-
+.loading {
+    width: inherit;
+    height: inherit;
+    max-width: 70px;
+    max-height: 70px;
+}
 
 
 

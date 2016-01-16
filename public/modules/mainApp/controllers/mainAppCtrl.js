@@ -6,6 +6,8 @@ angular.module("mainApp").controller("mainAppCtrl", ["$scope", "socketService", 
  */
 function mainAppCtrl($scope, socketService, userService, $state, $uibModal, localStorageService) {
 
+
+
     //socketService.init();
     $scope.x= 10;
     $scope.testowyLogout = function () {
@@ -78,4 +80,3 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
     
 
 }
-

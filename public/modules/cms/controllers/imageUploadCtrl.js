@@ -74,7 +74,11 @@ function imageUploadCtrl($scope, FileUploader, userService) {
     });
 
     $scope.uploader.onCompleteAll = function () {
-        $scope.$emit("UserImageChaned");
+        setTimeout(function () {
+            $scope.$evalAsync(function () {
+                $scope.$emit("UserImageChanged");
+            });
+        }, 300);
     };
 
 }

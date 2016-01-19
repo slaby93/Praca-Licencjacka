@@ -2,25 +2,14 @@
     <button type="button" class="close" data-ng-click="cancel()">×</button>
     <h4 class="modal-title">Edytuj użytkownika</h4>
 </div>
-<style>
-    .poprawnyInput {
-        border-style: solid;
-        border-color: #00a65a;
-        border-width: 3px;
-    }
 
-    .niepoprawnyInput {
-        border-style: solid;
-        border-color: crimson;
-        border-width: 3px;
-    }
-</style>
 <div class="modal-body row">
     <div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1
                 col-lg-10 col-md-10 col-sm-10 col-xs-10">
 
 
         <form novalidate class="form-horizontal" role="form" name="userForm">
+            <!--USER NAME-->
             <div
                     ng-class="{'has-error':userForm.name.$invalid}"
                     class="form-group">
@@ -35,7 +24,14 @@
                         class="form-control"
                         id="userName"
                         type="text">
+                <span data-ng-show="userForm.name.$error['maxlength']"
+                      class="cms-incorrectInput">Imię jest za długie.</span>
+                <span data-ng-show="userForm.name.$error['minlength']"
+                      class="cms-incorrectInput">Imię jest za krótkie.</span>
+                <span data-ng-show="userForm.name.$error['required']"
+                      class="cms-incorrectInput">Imie jest wymagane</span>
             </div>
+            <!--USER SURENAME-->
             <div
                     ng-class="{'has-error':userForm.surname.$invalid}"
                     class="form-group">
@@ -50,7 +46,14 @@
                         class="form-control"
                         id="userSurname"
                         type="text">
+                    <span data-ng-show="userForm.surname.$error['maxlength']"
+                          class="cms-incorrectInput">Nazwisko jest za długie.</span>
+                <span data-ng-show="userForm.surname.$error['minlength']"
+                      class="cms-incorrectInput">Nazwisko jest za krótkie.</span>
+                <span data-ng-show="userForm.surname.$error['required']"
+                      class="cms-incorrectInput">Nazwisko jest wymagane</span>
             </div>
+            <!--USER LOGIN -->
             <div
                     ng-class="{'has-error':userForm.login.$invalid}"
                     class="form-group">
@@ -65,31 +68,33 @@
                         class="form-control"
                         id="userLogin"
                         type="text">
+                         <span data-ng-show="userForm.login.$error['maxlength']"
+                               class="cms-incorrectInput">Login jest za długi.</span>
+                <span data-ng-show="userForm.login.$error['minlength']"
+                      class="cms-incorrectInput">Login jest za krótki.</span>
+                <span data-ng-show="userForm.login.$error['required']"
+                      class="cms-incorrectInput">Login jest wymagany</span>
                 <p>{{copiedUser}}</p>
-                <div class="checkbox">
-                    <label>
-                        <input
-                            ng-model="copiedUser.groups.admin"
-                            type="checkbox"
-                            value="">Admin
-                    </label>
-                </div>
             </div>
         </form>
     </div>
 </div>
+<!--FOOTER-->
 <div class="modal-footer">
     <div class="row">
+        <!--OK BUTTON-->
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <button ng-disabled="userForm.$invalid" type="button" class="btn btn-default" data-ng-click="ok()">
                 Zatwierdź
             </button>
         </div>
+        <!--RESET BUTTON-->
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <button type="button" class="btn btn-default" data-ng-click="reset()">
                 Resetuj
             </button>
         </div>
+        <!--CANCEL BUTTON-->
         <div class="col-lg-offset-6 col-md-offset-6 col-sm-offset-6 col-xs-offset-6 col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
             <button type="button" class="btn btn-default" data-ng-click="cancel()">Zamknij</button>
         </div>

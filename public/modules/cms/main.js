@@ -34,15 +34,18 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                 onEnter: function (userService, $state) {
                     try {
                         var user = userService.getUser();
-                        if (user === undefined || user === null) {
-                            $state.go("login");
+                        if (user === null || user === undefined ) {
+                            $state.go("app");
+                            return;
                         }      // sprawdzam uprawnienia uzytkownika
-                        if (user.groups.indexOf("admin") < 0) {
+                        if (user.groups["admin"] !== 1) {
                             // uzytkownik nie ma uprawnien do wejscia do CMSa. Nalezy go przekierowac do strony bledu.
                             $state.go("contentForbiden");
+                            return;
                         }
                     } catch (e) {
                         console.log("ERROR");
+                        console.log(e);
                     }
                 }
             }).state('cms.userManagement', {

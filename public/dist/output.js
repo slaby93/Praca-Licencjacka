@@ -192,26 +192,12 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 }
 
 function userEditCtrl($scope, $uibModalInstance, user, userService) {
-    function convertGruops(groups) {
-        var temp = {};
-        return groups.forEach(function(key) {
-            temp[key] = !0;
-        }), console.log(temp), temp;
-    }
-    function converToArray(map) {
-        var temp = [];
-        return Object.keys(map).forEach(function(key) {
-            map[key] === !0 && temp.push(key);
-        }), temp;
-    }
-    $scope.copiedUser = angular.copy(user), $scope.copiedUser.groups = convertGruops(user.groups), 
-    $scope.ok = function() {
+    $scope.copiedUser = angular.copy(user), $scope.ok = function() {
         var changes = {};
         Object.keys(user).forEach(function(key) {
             $scope.copiedUser[key] !== user[key] && (changes[key] = $scope.copiedUser[key]);
-        }), changes._id = user._id, changes.groups = converToArray(changes.groups), delete changes.$$hashKey, 
-        console.log(changes), userService.editUser(changes, function() {
-            $uibModalInstance.close("PSAJDAK");
+        }), changes._id = user._id, delete changes.$$hashKey, console.log(changes), userService.editUser(changes, function() {
+            $uibModalInstance.close("...");
         });
     }, $scope.reset = function() {
         $scope.copiedUser = angular.copy(user);
@@ -247,7 +233,11 @@ function imageUploadCtrl($scope, FileUploader, userService) {
             return item.size <= $scope.maxFileSize;
         }
     }), $scope.uploader.onCompleteAll = function() {
-        $scope.$emit("UserImageChaned");
+        setTimeout(function() {
+            $scope.$evalAsync(function() {
+                $scope.$emit("UserImageChanged");
+            });
+        }, 300);
     };
 }
 
@@ -263,7 +253,7 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
             console.log("Error in indexCmsCtrl"), console.error(e);
         }
     }
-    $scope.$on("UserImageChaned", function() {
+    $scope.$on("UserImageChanged", function() {
         $scope.userImage = "gallery/" + $scope.user._id + "/avatar?" + new Date().getTime();
     }), init();
 }
@@ -382,9 +372,10 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         onEnter: function(userService, $state) {
             try {
                 var user = userService.getUser();
-                (void 0 === user || null === user) && $state.go("login"), user.groups.indexOf("admin") < 0 && $state.go("contentForbiden");
+                if (null === user || void 0 === user) return void $state.go("app");
+                if (1 !== user.groups.admin) return void $state.go("contentForbiden");
             } catch (e) {
-                console.log("ERROR");
+                console.log("ERROR"), console.log(e);
             }
         }
     }).state("cms.userManagement", {

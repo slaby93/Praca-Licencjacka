@@ -15,7 +15,7 @@ body {
     color: red;
 }
 
-.main-header {
+.app-main-header {
     width: 100vw;
     height: 8vh;
     max-height: 80px;

@@ -8,6 +8,10 @@ angular.module("cmsModule").controller("userManagementCtrl", ["$scope", "adminTe
 
 function userManagementCtrl($scope, adminTemplateService, $state, userService, $uibModal) {
 
+    /**
+     * @description Funkcja otwiera modal i edytuje przekazany obiekt
+     * @param user Obiekt usera ktorego edytujemy
+     */
     $scope.open = function (user) {
         var modalInstance = $uibModal.open(
             {
@@ -21,14 +25,17 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
                 }
             }
         );
-
         modalInstance.result.then(function (fromModalOnExit) {
+            // odswiezamy uzytkownika
             getAllUsers();
         }, function () {
 
         });
     };
-
+    /**
+     * @description Funkcja wywolywana gdy chcemy usunac uzytkownika
+     * @param user Usuwany uzytkownik
+     */
     $scope.remove = function (user) {
         swal({
                 title: "Usuwanie użytkownika " + user.login,
@@ -47,7 +54,9 @@ function userManagementCtrl($scope, adminTemplateService, $state, userService, $
             }
         );
     };
-
+    /**
+     * @description Pobiera wszystkich uzytkownikow z bazy danych.
+     */
     function getAllUsers() {
         userService.fetchAllUsers().then(function (data) {
 

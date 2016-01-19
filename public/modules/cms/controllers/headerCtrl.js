@@ -5,7 +5,6 @@ angular.module("cmsModule").controller("headerCtrl", ["$scope", "adminTemplateSe
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     "use strict";
-    /************************** DEKLARACJA ZMIENNYCH **************************/
 
     $scope.logout = function () {
         // usuwamy zapisanego uzytkownika
@@ -13,16 +12,5 @@ function headerCtrl($scope, adminTemplateService, $state, userService) {
         // przekieruj do strony logowania
         $state.go("app");
     };
-    /************************** DEKLARACJA FUNKCJI   **************************/
-    /**
-     * @description Funkcja inicjalizujaca kontroler.
-     */
-    function init() {
-
-    }
-
-    /************************** WYWOLANIE FUNKCJI    **************************/
-    init();
-
 
 }

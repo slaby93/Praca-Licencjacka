@@ -6,14 +6,23 @@ angular.module("cmsModule").controller("indexCmsCtrl", ["$scope", "$ocLazyLoad",
 
 function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
     "use strict";
+    /**
+     * @description Po zmianie avatara uzytkownika odswiezamy go
+     */
+    $scope.$on("UserImageChanged", function () {
+        // dajemy czas raspberry na zapisanie zdjecia na dysku
+        setTimeout(function () {
+            $scope.$evalAsync(function () {
+                $scope.userImage = "gallery/" + $scope.user._id + "/avatar?" + new Date().getTime();
+            });
+        }, 300);
 
-    $scope.$on("UserImageChanged",function(){
-        $scope.userImage = "gallery/"+$scope.user._id+"/avatar?" + new Date().getTime();
     });
+
     function init() {
         try {
             $scope.user = userService.getUser();
-            $scope.userImage = "gallery/"+$scope.user._id+"/avatar";
+            $scope.userImage = "gallery/" + $scope.user._id + "/avatar";
             $scope.fallbackImage = "gallery/default.gif";
             $rootScope.$evalAsync(function () {
                 initAdminLTE();

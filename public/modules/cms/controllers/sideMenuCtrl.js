@@ -1,13 +1,11 @@
 /**
  * Created by Slaby on 01.12.2015.
  */
-angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService", '$state',"userService", sideMenuCtrl]);
+angular.module("cmsModule").controller("sideMenuCtrl", ["$scope", "adminTemplateService", '$state', "userService", sideMenuCtrl]);
 
-function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
+function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     "use strict";
-    /************************** DEKLARACJA ZMIENNYCH **************************/
 
-    /************************** DEKLARACJA FUNKCJI   **************************/
     /**
      * @description Funkcja inicjalizujaca kontroler.
      */
@@ -18,12 +16,8 @@ function sideMenuCtrl($scope, adminTemplateService,$state,userService) {
             $scope.tabs = data.tabList;
         });
         $scope.user = userService.getUser();
-
-        /*DODALEM TO ZEBY NIEZALOGOWANI NIE MOGLI WEJSC DO CMSA!!!*/
-        if($scope.user == null)  $state.go("app");
     }
 
-    /************************** WYWOLANIE FUNKCJI    **************************/
     init();
 
 

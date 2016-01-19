@@ -12,6 +12,7 @@ angular.module("mainApp").controller("login_registerCtrl",
 );
 
 function login_registerCtrl($scope, $uibModalInstance, $state, userService, localStorageService, isLogged) {
+
     $scope.is_register_shown = false;
     $scope.is_login_clicked = false;
     $scope.is_register_clicked = false;

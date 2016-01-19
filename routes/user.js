@@ -144,10 +144,7 @@ router.post("/update", function (req, res, next) {
      */
     var usr = req.body.user;
     var id = usr._id;
-    console.log(usr);
     delete usr._id;
-
-    console.log(id);
     mongo.connect("projekt", ["user"], function (db) {
         db.user.update({
                 _id: mongo.ObjectId(id)

@@ -208,10 +208,9 @@ function userEditCtrl($scope, $uibModalInstance, user, userService) {
 
 function headerCtrl($scope, adminTemplateService, $state, userService) {
     "use strict";
-    function init() {}
     $scope.logout = function() {
         userService.logout(), $state.go("app");
-    }, init();
+    };
 }
 
 function imageUploadCtrl($scope, FileUploader, userService) {
@@ -233,11 +232,7 @@ function imageUploadCtrl($scope, FileUploader, userService) {
             return item.size <= $scope.maxFileSize;
         }
     }), $scope.uploader.onCompleteAll = function() {
-        setTimeout(function() {
-            $scope.$evalAsync(function() {
-                $scope.$emit("UserImageChanged");
-            });
-        }, 300);
+        $scope.$emit("UserImageChanged");
     };
 }
 
@@ -254,7 +249,11 @@ function indexCmsCtrl($scope, $ocLazyLoad, $rootScope, userService, $state) {
         }
     }
     $scope.$on("UserImageChanged", function() {
-        $scope.userImage = "gallery/" + $scope.user._id + "/avatar?" + new Date().getTime();
+        setTimeout(function() {
+            $scope.$evalAsync(function() {
+                $scope.userImage = "gallery/" + $scope.user._id + "/avatar?" + new Date().getTime();
+            });
+        }, 300);
     }), init();
 }
 
@@ -263,7 +262,7 @@ function sideMenuCtrl($scope, adminTemplateService, $state, userService) {
     function init() {
         adminTemplateService.getCmsConfig(function(data) {
             $scope.tabs = data.tabList;
-        }), $scope.user = userService.getUser(), null == $scope.user && $state.go("app");
+        }), $scope.user = userService.getUser();
     }
     init();
 }

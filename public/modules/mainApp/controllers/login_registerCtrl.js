@@ -85,10 +85,7 @@ function login_registerCtrl($scope, $uibModalInstance, $state, userService, loca
 
 
     $scope.register = function () {
-        //userService.register($scope.user,function(){
-        //
-        //});
-        $scope.is_register_clicked = true;
+         $scope.is_register_clicked = true;
         $scope.feedback = "";
 
 

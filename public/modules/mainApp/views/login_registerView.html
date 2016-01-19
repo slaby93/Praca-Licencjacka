@@ -1,11 +1,11 @@
 <div class="modal-header nopadding">
     <div class="modal-body row nopadding modal-body-header">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 modal-choice modal-choice-left-unselected"
-         ng-class="{'modal-choice-left-selected': !is_register_shown}">
+             ng-class="{'modal-choice-left-selected': !is_register_shown}">
             <a href ng-click="showLogin()"><span class="link-span"></span>Zaloguj się</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 modal-choice modal-choice-right-unselected"
-         ng-class="{'modal-choice-right-selected': is_register_shown}">
+             ng-class="{'modal-choice-right-selected': is_register_shown}">
             <a href ng-click="showRegister()"><span class="link-span"></span>Zarejestruj się</a>
         </div>
     </div>
@@ -15,12 +15,16 @@
         <p class="modal-welcome-text">Witamy! Zaloguj się na swoje konto</p>
         <div class="row">
             <form name="formaLogowania" class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-submit="loguj()" novalidate>
-                <p><input type="text" name="login" id="login" class="form-control inputs" placeholder="Login" ng-model="userLogin.login" ng-required="true"></p>
-                <p><input type="password" name="password" id="pwd" class="form-control inputs"  placeholder="Hasło" ng-model="userLogin.password" ng-required="true"></p>
-                <p><button type="submit" class="btn btn-primary btn-lg normal"
-                        ng-disabled="formaLogowania.login.$error.required ||
+                <p><input type="text" name="login" id="login" class="form-control inputs" placeholder="Login"
+                          ng-model="userLogin.login" ng-required="true"></p>
+                <p><input type="password" name="password" id="pwd" class="form-control inputs" placeholder="Hasło"
+                          ng-model="userLogin.password" ng-required="true"></p>
+                <p>
+                    <button type="submit" class="btn btn-primary btn-lg normal"
+                            ng-disabled="formaLogowania.login.$error.required ||
                         formaLogowania.password.$error.required"
-                   >Zaloguj</button>
+                    >Zaloguj
+                    </button>
                 </p>
             </form>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-show=is_login_clicked>
@@ -31,13 +35,47 @@
     <div ng-show=is_register_shown>
         <p class="modal-welcome-text">Zarejestruj się, nowy użytkowniku</p>
         <div class="row">
-            <form name="formaRejestracji" ng-submit="register()" class="col-lg-6 col-md-6 col-sm-6 col-xs-6" novalidate>
-                <p><input type="text" name="name" class="form-control inputs" placeholder="Imię" ng-model="user.name" ng-required="true"></p>
-                <p><input type="text" name="surname" class="form-control inputs" placeholder="Nazwisko" ng-model="user.surname" ng-required="true"></p>
-                <p><input type="text" name="login" class="form-control inputs" placeholder="Login" ng-model="user.login" ng-required="true" ng-minlength="6"></p>
-                <p><input type="password" name="password" class="form-control inputs" placeholder="Hasło" ng-model="user.password" ng-required="true" ng-minlength="6"></p>
-                <p><input type="password" name="retypedPassword" class="form-control inputs" placeholder="Powtórz hasło" ng-model="user.retypedPassword" ng-required="true" ng-minlength="6"></p>
-                <p><button type="submit"  class="btn btn-primary btn-lg normal"
+            <form name="formaRejestracji" ng-submit="register()"
+                  class="col-lg-6 col-md-6 col-sm-6 col-xs-6 form-horizontal" role="form" novalidate>
+                <div
+                        class="form-group"
+                        data-ng-class="{'has-error':formaRejestracji.name.$invalid && formaRejestracji.name.$dirty}">
+                    <input type="text" name="name" class="form-control inputs" placeholder="Imię" ng-model="user.name"
+                           ng-required="true">
+                    <span class="app-form-error-text"
+                          ng-show="formaRejestracji.name.$invalid && formaRejestracji.name.$dirty">Imię jest niepoprawne</span>
+                </div>
+                <div class="form-group"
+                     data-ng-class="{'has-error':formaRejestracji.surname.$invalid && formaRejestracji.surname.$dirty}">
+                    <input type="text" name="surname" class="form-control inputs" placeholder="Nazwisko"
+                           ng-model="user.surname" ng-minlength="3" ng-required="true">
+                    <span class="app-form-error-text"
+                          ng-show="!formaRejestracji.surname.$valid && formaRejestracji.surname.$dirty">Nazwisko jest niepoprawne</span>
+                </div>
+                <div class="form-group"
+                     data-ng-class="{'has-error':formaRejestracji.login.$invalid && formaRejestracji.login.$dirty}">
+                    <input type="text" name="login" class="form-control inputs" placeholder="Login"
+                           ng-model="user.login"
+                           ng-required="true" ng-minlength="3">
+                    <span class="app-form-error-text"
+                          ng-show="!formaRejestracji.login.$valid && formaRejestracji.login.$dirty">Login jest niepoprawny</span>
+                </div>
+                <div class="form-group"
+                     data-ng-class="{'has-error':formaRejestracji.password.$invalid && formaRejestracji.password.$dirty}">
+                    <input type="password" name="password" class="form-control inputs" placeholder="Hasło"
+                           ng-model="user.password" ng-required="true" ng-minlength="6">
+                    <span class="app-form-error-text"
+                          ng-show="!formaRejestracji.password.$valid && formaRejestracji.password.$dirty">Hasło jest niepoprawne</span>
+                </div>
+                <div class="form-group"
+                     data-ng-class="{'has-error':formaRejestracji.retypedPassword.$invalid && formaRejestracji.retypedPassword.$dirty}">
+                    <input type="password" name="retypedPassword" class="form-control inputs"
+                           placeholder="Powtórz hasło"
+                           ng-model="user.retypedPassword" ng-required="true" ng-minlength="6">
+                    <span class="app-form-error-text"
+                          ng-show="!formaRejestracji.retypedPassword.$valid && formaRejestracji.retypedPassword.$dirty">Powtórzone hasło jest niepoprawne</span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg normal"
                         ng-disabled="formaRejestracji.login.$error.required ||
                         formaRejestracji.password.$error.required ||
                         formaRejestracji.retypedPassword.$error.required ||
@@ -49,8 +87,9 @@
                         hasWhiteSpace(formaRejestracji.login) ||
                         hasWhiteSpace(formaRejestracji.password) ||
                         hasWhiteSpace(formaRejestracji.retypedPassword)"
-                   >Zarejestruj</button>
-                </p>
+                >Zarejestruj
+                </button>
+
             </form>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-show=is_register_clicked>
                 <img ng-src="resources/loading.gif" class="loading">

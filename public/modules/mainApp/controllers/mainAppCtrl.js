@@ -1,4 +1,4 @@
-angular.module("mainApp").controller("mainAppCtrl", ["$scope", "socketService", "userService", "$state", "$uibModal","localStorageService", mainAppCtrl]);
+angular.module("mainApp").controller("mainAppCtrl", ["$scope", "socketService", "userService", "$state", "$uibModal", "localStorageService", mainAppCtrl]);
 /**
  * @description Glowny, najbardziej zewnetrzny kontroler. Kod z tego pliku wykona sie na kazdej podstronie.
  * @param {type} $scope
@@ -9,7 +9,7 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
 
 
     //socketService.init();
-    $scope.x= 10;
+    $scope.x = 12;
     $scope.testowyLogout = function () {
         console.log("TEST");
         //userService.logout();
@@ -17,20 +17,21 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
     };
 
 
-    $scope.logout = function(){
+    $scope.logout = function () {
         userService.logout();
+        $scope.user = null;
         $scope.isLogged = false;
     }
 
 
-    $scope.openLoginRegister = function(){
+    $scope.openLoginRegister = function () {
         var modalInstance = $uibModal.open(
             {
                 templateUrl: 'modules/mainApp/views/login_registerView.html',
                 controller: 'login_registerCtrl',
                 backdrop: "static",
                 resolve: {
-                    isLogged : function() {
+                    isLogged: function () {
                         return $scope.isLogged;
                     }
                 }
@@ -57,7 +58,10 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
             userService.loginByToken(token).then(
                 // SUCCESS
                 function (message) {
-                    $scope.isLogged = true;
+                    $scope.$evalAsync(function () {
+                        $scope.isLogged = true;
+                        $scope.user = userService.getUser();
+                    });
                     /*$state.go("cms");*/
                     // ERROR
                 }, function (message) {
@@ -77,6 +81,6 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
     }
 
     initLogin();
-    
+
 
 }

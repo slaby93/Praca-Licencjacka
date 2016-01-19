@@ -34,18 +34,18 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
                 onEnter: function (userService, $state) {
                     try {
                         var user = userService.getUser();
-                        if (user === null || user === undefined ) {
+                        if (user === null || user === undefined) {
                             $state.go("app");
                             return;
                         }      // sprawdzam uprawnienia uzytkownika
-                        if (user.groups["admin"] !== 1) {
+                        if (!user.groups["admin"]) {
                             // uzytkownik nie ma uprawnien do wejscia do CMSa. Nalezy go przekierowac do strony bledu.
-                            $state.go("contentForbiden");
-                            return;
+                            $state.go("contentForbidden");
                         }
                     } catch (e) {
                         console.log("ERROR");
                         console.log(e);
+                        $state.go("app");
                     }
                 }
             }).state('cms.userManagement', {
@@ -59,9 +59,9 @@ angular.module("cmsModule", ["ui.router", "oc.lazyLoad", "angularFileUpload", "u
             url: "/imageUpload",
             controller: "imageUploadCtrl",
             templateUrl: "modules/cms/views/imageUploadView.html"
-        }).state('contentForbiden', {
+        }).state('contentForbidden', {
             url: "/403",
-            templateUrl: "modules/cms/views/forbidenView.html"
+            templateUrl: "modules/cms/views/forbiddenView.html"
         });
     })
     /**

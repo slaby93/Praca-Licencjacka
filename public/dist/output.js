@@ -82,17 +82,19 @@ function mainAppCtrl($scope, socketService, userService, $state, $uibModal, loca
         };
         var token = localStorageService.get("token");
         token ? userService.loginByToken(token).then(function(message) {
-            $scope.isLogged = !0;
+            $scope.$evalAsync(function() {
+                $scope.isLogged = !0, $scope.user = userService.getUser();
+            });
         }, function(message) {
             console.log(message.data), $scope.isLogged = !1, localStorageService.remove("token");
         }, function(message) {
             $scope.isLogged = !1, console.log(message);
         }) : ($scope.isLogged = !1, console.log("Token is empty!"));
     }
-    $scope.x = 10, $scope.testowyLogout = function() {
+    $scope.x = 12, $scope.testowyLogout = function() {
         console.log("TEST");
     }, $scope.logout = function() {
-        userService.logout(), $scope.isLogged = !1;
+        userService.logout(), $scope.user = null, $scope.isLogged = !1;
     }, $scope.openLoginRegister = function() {
         var modalInstance = $uibModal.open({
             templateUrl: "modules/mainApp/views/login_registerView.html",
@@ -372,9 +374,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
             try {
                 var user = userService.getUser();
                 if (null === user || void 0 === user) return void $state.go("app");
-                if (1 !== user.groups.admin) return void $state.go("contentForbiden");
+                user.groups.admin || $state.go("contentForbidden");
             } catch (e) {
-                console.log("ERROR"), console.log(e);
+                console.log("ERROR"), console.log(e), $state.go("app");
             }
         }
     }).state("cms.userManagement", {
@@ -388,9 +390,9 @@ angular.module("mainApp", [ "cmsModule", "userModule", "ui.router", "oc.lazyLoad
         url: "/imageUpload",
         controller: "imageUploadCtrl",
         templateUrl: "modules/cms/views/imageUploadView.html"
-    }).state("contentForbiden", {
+    }).state("contentForbidden", {
         url: "/403",
-        templateUrl: "modules/cms/views/forbidenView.html"
+        templateUrl: "modules/cms/views/forbiddenView.html"
     });
 }).directive("a", function() {
     return {

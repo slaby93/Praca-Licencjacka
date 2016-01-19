@@ -68,6 +68,7 @@ router.post('/register', function (req, res, next) {
     var password = bcrypt.hashSync(req.body.password, 10);
     user = removeSensitiveUserData(user);
     user.password = password;
+    user.groups = {};
     //laczenie z baza
     mongo.connect("projekt", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika

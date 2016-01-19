@@ -1,36 +1,34 @@
-
-
-
-
 <div class="main">
-	<div class="row app-main-header">
-		<div class="col-xs-4 col-sm-6 col-md-6 col-lg-6 header-introduction-part">
-			<div class="header-content">
-				Wyszukiwator sportowy
-			</div>
-		</div>
-		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 header-empty-part">
+    <div class="row app-main-header">
+        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6 header-introduction-part">
+            <div class="header-content">
+                Wyszukiwator sportowy
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 header-empty-part">
 
-		</div>
-		<div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 header-form-part">
-			<div class="header-content">
-				<a id="link-1" ng-show=!isLogged href ng-click="openLoginRegister()">Login/rejestracja</a>
-				<a ng-show=isLogged href ng-click="logout()">Wyloguj</a>
-			</div>
-		</div>
-		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 header-navigation-part nopadding">
-			<div class="header-navigation-content">
-				<button class="dropbtn">Nawigacja</button>
-				<div class="dropdown-content">
-					<a ui-sref="cms">CMS LINK</a>
-					<a href="#">Dodaj wydarzenie</a>
-					<a href="#">Link 2</a>
-					<a href="#">Link 3</a>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 header-form-part">
+            <div class="header-content">
+                <a id="link-1" ng-show=!isLogged href ng-click="openLoginRegister()">Login/rejestracja</a>
+                <a ng-show=isLogged href ng-click="logout()">Wyloguj</a>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 header-navigation-part nopadding">
+            <div class="header-navigation-content">
+                <button class="dropbtn">Nawigacja</button>
 
-	<p>{{x}}</p>
-	isLogged: {{isLogged}}
+                <div class="dropdown-content">
+
+                    <a ng-show="user.groups['admin']" ui-sref="cms">CMS LINK</a>
+                    <a href="#">Dodaj wydarzenie</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p>{{x}}</p>
+    isLogged: {{isLogged}}
 </div>

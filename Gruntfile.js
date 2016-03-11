@@ -133,7 +133,7 @@ module.exports = function (grunt) {
     // czysci dista
     grunt.registerTask('clear', ['clean']);
     grunt.registerTask('install', ['exec:npm_install','exec:bower_install']);
-
     grunt.registerTask('compile', ['clear','install', 'uglify:biblioteki', 'uglify:cel', 'sass:dist']);
+    grunt.registerTask('prepare', ['clear','install', 'uglify:biblioteki', 'uglify:cel', 'sass:dist']);
 
 };

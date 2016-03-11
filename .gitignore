@@ -3,5 +3,7 @@
 /node_modules/
 env.js
 /.project
-/.idea/workspace.xml
 /public/gallery
+/public/dist
+.idea
+.sass-cache

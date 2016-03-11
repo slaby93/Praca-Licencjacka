@@ -3,16 +3,34 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Ma za zadanie obserwowanie plikow i wykrywanie zmian, nastepnie odpala zlecone zadania
         watch: {
-            scripts: {
-                files: ["public/**/*.js", "routes/*.js", "public/**/*.html", "public/**/*.css", "testowanie/**/*.js"],
-                //   tasks: ["uglify:cel","cssmin", "karma:continuous"],
-                tasks: ["uglify:cel", "cssmin"],
+            options: {
+                livereload: 1338,
+                spawn:true
+            },
+            javascript: {
+                files: ["public/**/*.js", "routes/*.js", "testowanie/**/*.js"],
+                tasks: ["uglify:cel"]
+            },
+            html: {
+                files: ["public/**/*.html"]
+            },
+            scss: {
+                files: ["public/**/*.scss"],
+                tasks: ["sass:dist"],
                 options: {
-                    livereload: 1338,
-                    spawn: false
+                    livereload: false
                 }
+            },
+            css: {
+                files: ["public/dist/*.css"],
+                tasks:[]
             }
-        }, uglify: {
+        },
+        exec:{
+            npm_install:'npm install',
+            bower_install:'bower install'
+        },
+        uglify: {
             options: {
                 mangle: false,
                 beautify: true // na koncu zmienic na false aby zaoszczedzic miejsce
@@ -67,6 +85,11 @@ module.exports = function (grunt) {
                 }
             }
         },
+        clean: {
+            dist: {
+                src: ["public/dist"]
+            }
+        },
         concurrent: {
             target1: {
                 tasks: ["nodemon", 'watch'],
@@ -90,10 +113,27 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             }
+        },
+        sass: {                              // Task
+            dist: {                            // Target
+                options: {                       // Target options
+                    style: 'expanded',
+                    quiet: true
+                },
+                files: {                         // Dictionary of files
+                    'public/dist/output.css': 'public/modules/mainApp/css/test.scss',       // 'destination': 'source'
+                }
+            }
         }
+
     });
-    grunt.registerTask('default', ['concurrent:target1']);
+    grunt.registerTask('default', ['compile', 'concurrent:target1']);
     // kompiluje biblioteki
     grunt.registerTask('libs', ['uglify:biblioteki']);
+    // czysci dista
+    grunt.registerTask('clear', ['clean']);
+    grunt.registerTask('install', ['exec:npm_install','exec:bower_install']);
+
+    grunt.registerTask('compile', ['clear','install', 'uglify:biblioteki', 'uglify:cel', 'sass:dist']);
 
 };

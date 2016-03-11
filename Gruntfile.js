@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         watch: {
             options: {
                 livereload: 1338,
-                spawn:true
+                spawn: true
             },
             javascript: {
                 files: ["public/**/*.js", "routes/*.js", "testowanie/**/*.js"],
@@ -23,12 +23,12 @@ module.exports = function (grunt) {
             },
             css: {
                 files: ["public/dist/*.css"],
-                tasks:[]
+                tasks: []
             }
         },
-        exec:{
-            npm_install:'npm install',
-            bower_install:'bower install'
+        exec: {
+            npm_install: 'npm install',
+            bower_install: 'bower install'
         },
         uglify: {
             options: {
@@ -56,6 +56,10 @@ module.exports = function (grunt) {
                         "node_modules/angular/angular.min.js",
                         "node_modules/angular-mocks/angular-mocks.js",
                         "node_modules/angular-ui-router/release/angular-ui-router.min.js",
+                        "bower_components/angular-material/angular-material.js",
+                        "bower_components/angular-aria/angular-aria.js",
+                        "bower_components/angular-animate/angular-animate.js",
+                        "bower_components/angular-messages/angular-messages.js",
                         "node_modules/bcryptjs/dist/bcrypt.min.js",
                         "node_modules/bootstrap/dist/js/bootstrap.min.js",
                         "node_modules/crypto-js/crypto-js.js",
@@ -72,16 +76,21 @@ module.exports = function (grunt) {
         },
         cssmin: {
             options: {},
-            target: {
+            libs: {
                 files: {
-                    "public/dist/output.css": [
+                    "public/dist/libs.css": [
                         "node_modules/bootstrap/dist/css/bootstrap.min.css",
                         "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
                         "node_modules/sweetalert/dist/sweetalert.css",
                         "node_modules/angular-ui-bootstrap/ui-bootstrap-csp.css",
-                        "public/modules/cms/css/**/*.css",
-                        "public/modules/mainApp/css/**/*.css"
+                        "bower_components/angular-material/angular-material.min.css",
+                        "bower_components/angular-material/angular-material.layouts.min.css",
                     ]
+                }
+            },
+            project: {
+                files: {
+                    "public/dist/output.css": ["public/dist/tmp/**/*.css"]
                 }
             }
         },
@@ -118,22 +127,32 @@ module.exports = function (grunt) {
             dist: {                            // Target
                 options: {                       // Target options
                     style: 'expanded',
-                    quiet: true
+                    quiet: true,
+                    lineNumbers: true
                 },
-                files: {                         // Dictionary of files
-                    'public/dist/output.css': 'public/modules/mainApp/css/test.scss',       // 'destination': 'source'
-                }
+                //files: {                         // Dictionary of files
+                //    'public/dist/output.css': 'public/modules/mainApp/css/test.scss',       // 'destination': 'source'
+                //}
+                files: [{
+                    expand: true,
+                    src: ['public/**/*.scss','!*.css'],
+                    dest: 'public/dist/tmp',
+                    ext: '.css'
+                }]
             }
         }
 
-    });
+    })
+    ;
     grunt.registerTask('default', ['compile', 'concurrent:target1']);
     // kompiluje biblioteki
     grunt.registerTask('libs', ['uglify:biblioteki']);
     // czysci dista
     grunt.registerTask('clear', ['clean']);
-    grunt.registerTask('install', ['exec:npm_install','exec:bower_install']);
-    grunt.registerTask('compile', ['clear','install', 'uglify:biblioteki', 'uglify:cel', 'sass:dist']);
-    grunt.registerTask('prepare', ['clear','install', 'uglify:biblioteki', 'uglify:cel', 'sass:dist']); 
+    grunt.registerTask('install', ['exec:npm_install', 'exec:bower_install']);
+    grunt.registerTask('compile', ['clear', 'install', 'uglify', "cssmin", 'compileSass']);
+    grunt.registerTask('prepare', ['compile']);
+    grunt.registerTask('compileSass', ['sass:dist', "cssmin:project"]);
+
 
 };

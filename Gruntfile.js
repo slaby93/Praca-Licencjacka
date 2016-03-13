@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 spawn: true
             },
             javascript: {
-                files: ["public/**/*.js", "routes/*.js", "testowanie/**/*.js"],
+                files: ["public/modules/**/*.js", "routes/*.js", "testowanie/**/*.js"],
                 tasks: ["uglify:cel"]
             },
             html: {
@@ -45,9 +45,12 @@ module.exports = function (grunt) {
                         "public/modules/cms/main.js",
                         "public/modules/mainApp/services/*.js",
                         "public/modules/mainApp/controllers/*.js",
-                        "public/modules/userControl/services/*.js",
+                        "public/modules/userControl/**/*.js",
                         "public/modules/cms/controllers/*.js",
-                        "public/modules/cms/services/*.js"
+                        "public/modules/cms/services/*.js",
+                        "public/modules/directives/**/*.js"
+
+
                     ]
                 }
             },

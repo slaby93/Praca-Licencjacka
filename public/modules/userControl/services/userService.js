@@ -1,16 +1,17 @@
 /* global CryptoJS */
 
-angular.module("userModule").service("userService", ["$http", "$state", "localStorageService", "$q", "$rootScope", userService]);
+angular.module("userModule").service("userService", ["$http", "$state",'$log',"localStorageService", "$q", "$rootScope", '$uibModal', userService]);
 /**
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
-function userService($http, $state, localStorageService, $q, $rootScope) {
-
+function userService($http, $state,$log, localStorageService, $q, $rootScope, $uibModal) {
+    var self = this;
+    self.$l= $log;
     var user = null;
     var token = null;
 
-    this.login = function (passedUser) {
+    self.login = function (passedUser) {
         var obietnica = $q.defer();
         $http.post("/user", passedUser).then(function (received) {
             obietnica.resolve(received);
@@ -25,7 +26,23 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         return obietnica.promise;
     };
 
-    this.register = function (passedUser) {
+    self.openLoginRegister = function () {
+        //self.$l.debug("TEST");
+        var modalInstance = $uibModal.open(
+            {
+                templateUrl: 'modules/userControl/views/login_registerView.html',
+                controller: 'login_registerCtrl',
+                backdrop: "static"
+            }
+        );
+
+        modalInstance.result.then(function (is) {
+            $scope.isLogged = is;
+        }, function () {
+        });
+    };
+
+    self.register = function (passedUser) {
 
         var obietnica = $q.defer();
         $rootScope.$evalAsync(function () {
@@ -38,13 +55,13 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         return obietnica.promise;
 
     };
-    this.logout = function () {
+    self.logout = function () {
         console.log("logout");
         user = null;
         token = null;
         localStorageService.remove("token");
     };
-    this.getUser = function () {
+    self.getUser = function () {
         if (user) {
             return user;
         } else {
@@ -52,7 +69,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         }
     };
 
-    this.fetchAllUsers = function () {
+    self.fetchAllUsers = function () {
         var odroczenie = $q.defer();
         $rootScope.$evalAsync(function () {
             $http.post("/user/all").then(function (allUsers) {
@@ -65,7 +82,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
     };
 
 
-    this.loginByToken = function (tken) {
+    self.loginByToken = function (tken) {
         if (!tken) {
             return;
         }
@@ -89,7 +106,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
 
     }
 
-    this.editUser = function (user, callback) {
+    self.editUser = function (user, callback) {
         $http.post("/user/update", {user: user}).then(
             function (message) {
                 callback();
@@ -112,7 +129,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         )
     };
 
-    this.removeUser = function (user, callback) {
+    self.removeUser = function (user, callback) {
         $http.post("/user/remove", {
             user: user
         }).then(function (message) {
@@ -127,7 +144,7 @@ function userService($http, $state, localStorageService, $q, $rootScope) {
         });
     };
 
-    this.getToken = function () {
+    self.getToken = function () {
         return token;
     };
 }

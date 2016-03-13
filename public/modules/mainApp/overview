@@ -1,4 +1,0 @@
-OPIS MODULU
-
-Jest to glowny modul odpowiedzialny za sklejenie wszystkich pod modulow oraz dostarczenie
-mozliwosci operowania na systemie na najbardziej zewnetrznej warstwie (nie zaleznej od innych modulow).

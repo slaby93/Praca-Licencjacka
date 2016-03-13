@@ -1,4 +1,6 @@
 module.exports = function (grunt) {
+
+
     require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
     grunt.initConfig({
         // Ma za zadanie obserwowanie plikow i wykrywanie zmian, nastepnie odpala zlecone zadania
@@ -16,7 +18,7 @@ module.exports = function (grunt) {
             },
             scss: {
                 files: ["public/**/*.scss"],
-                tasks: ["sass:dist"],
+                tasks: ["compile_scss"],
                 options: {
                     livereload: false
                 }
@@ -97,6 +99,9 @@ module.exports = function (grunt) {
         clean: {
             dist: {
                 src: ["public/dist"]
+            },
+            clear_scss: {
+                src: ["public/dist/concated.scss"]
             }
         },
         concurrent: {
@@ -130,29 +135,32 @@ module.exports = function (grunt) {
                     quiet: true,
                     lineNumbers: true
                 },
-                //files: {                         // Dictionary of files
-                //    'public/dist/output.css': 'public/modules/mainApp/css/test.scss',       // 'destination': 'source'
-                //}
-                files: [{
-                    expand: true,
-                    src: ['public/**/*.scss','!*.css'],
-                    dest: 'public/dist/tmp',
-                    ext: '.css'
-                }]
+                files: {                         // Dictionary of files
+                    'public/dist/output.css': 'public/dist/output.scss',       // 'destination': 'source'
+                }
             }
+        },
+        concat: {
+            scss: {
+                src: 'public/**/*.scss',
+                dest: 'public/dist/output.scss'
+            },
         }
 
-    })
-    ;
+    });
     grunt.registerTask('default', ['compile', 'concurrent:target1']);
-    // kompiluje biblioteki
+    // compile lbis
     grunt.registerTask('libs', ['uglify:biblioteki']);
-    // czysci dista
+    // clears dist folder
     grunt.registerTask('clear', ['clean']);
+    // install all required libs
     grunt.registerTask('install', ['exec:npm_install', 'exec:bower_install']);
-    grunt.registerTask('compile', ['clear', 'install', 'uglify', "cssmin", 'compileSass']);
+    // clear dist, install libs, compile all files into three fiels included by browser
+    grunt.registerTask('compile', ['clear', 'install', 'uglify', "cssmin", 'compile_scss']);
+
     grunt.registerTask('prepare', ['compile']);
-    grunt.registerTask('compileSass', ['sass:dist', "cssmin:project"]);
+    // remove recent file, concatenates all scss files into 1, then compile this concatenated file into css.
+    grunt.registerTask('compile_scss', ['clean:clear_scss', 'concat:scss', 'sass:dist']);
 
 
 };

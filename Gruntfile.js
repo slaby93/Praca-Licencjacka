@@ -10,27 +10,25 @@ module.exports = function (grunt) {
                 spawn: true
             },
             javascript: {
-                files: ["public/modules/**/*.js", "routes/*.js", "testowanie/**/*.js"],
-                tasks: ["uglify:cel"]
+                files: ["public/modules/**/*.js", "routes/*.js", "testowanie/**/*.js"]
             },
             html: {
                 files: ["public/**/*.html"]
             },
             scss: {
-                files: ["public/**/*.scss"],
+                files: ["public/modules/**/*.scss"],
                 tasks: ["compile_scss"],
                 options: {
-                    livereload: false
+                    livereload: false,
                 }
             },
             css: {
-                files: ["public/dist/*.css"],
-                tasks: []
+                files: ["public/dist/*.css"]
             }
         },
         exec: {
             npm_install: 'npm install',
-            bower_install: 'bower install'
+            bower_install: 'jspm install'
         },
         uglify: {
             options: {
@@ -79,26 +77,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        cssmin: {
-            options: {},
-            libs: {
-                files: {
-                    "public/dist/libs.css": [
-                        "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                        "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
-                        "node_modules/sweetalert/dist/sweetalert.css",
-                        "node_modules/angular-ui-bootstrap/ui-bootstrap-csp.css",
-                        "bower_components/angular-material/angular-material.min.css",
-                        "bower_components/angular-material/angular-material.layouts.min.css",
-                    ]
-                }
-            },
-            project: {
-                files: {
-                    "public/dist/output.css": ["public/dist/tmp/**/*.css"]
-                }
-            }
-        },
         clean: {
             dist: {
                 src: ["public/dist"]
@@ -134,33 +112,26 @@ module.exports = function (grunt) {
         sass: {                              // Task
             dist: {                            // Target
                 options: {                       // Target options
-                    style: 'expanded',
-                    quiet: true,
-                    lineNumbers: true
+                    sourceMap: true
                 },
                 files: {                         // Dictionary of files
                     'public/dist/output.css': 'public/dist/output.scss',       // 'destination': 'source'
                 }
             }
+
         },
         concat: {
             scss: {
-                src: 'public/**/*.scss',
+                src: 'public/modules/**/*.scss',
                 dest: 'public/dist/output.scss'
             },
         }
 
     });
-    grunt.registerTask('default', ['compile', 'concurrent:target1']);
-    // compile lbis
-    grunt.registerTask('libs', ['uglify:biblioteki']);
+    grunt.registerTask('default', ['compile_scss', 'concurrent:target1']);
     // clears dist folder
     grunt.registerTask('clear', ['clean']);
-    // install all required libs
-    grunt.registerTask('install', ['exec:npm_install', 'exec:bower_install']);
-    // clear dist, install libs, compile all files into three fiels included by browser
-    grunt.registerTask('compile', ['clear', 'install', 'uglify', "cssmin", 'compile_scss']);
-
+    // task for git
     grunt.registerTask('prepare', ['compile']);
     // remove recent file, concatenates all scss files into 1, then compile this concatenated file into css.
     grunt.registerTask('compile_scss', ['clean:clear_scss', 'concat:scss', 'sass:dist']);

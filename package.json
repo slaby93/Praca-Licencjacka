@@ -7,28 +7,18 @@
     "name": "Daniel Słaby",
     "email": "pufek93@gmail.com"
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://www.letsplaypi.noip.me/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "git@letsplaypi.noip.me"
   },
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
   "dependencies": {
-    "angular": "^1.4.8",
-    "angular-file-upload": "^2.2.0",
-    "angular-local-storage": "^0.2.2",
-    "angular-mocks": "^1.4.8",
-    "angular-ui-bootstrap": "^0.14.3",
-    "angular-ui-router": "^0.2.15",
-    "bcryptjs": "^2.3.0",
     "body-parser": "~1.13.2",
-    "bootstrap": "^3.3.6",
-    "check-types": "^5.0.0",
     "cookie-parser": "^1.3.5",
-    "crypto-js": "^3.1.5",
     "debug": "^2.2.0",
     "ejs": "~2.3.3",
     "express": "^4.13.0",
@@ -37,12 +27,8 @@
     "jsonwebtoken": "^5.4.1",
     "mongojs": "^1.4.1",
     "morgan": "^1.6.0",
-    "oclazyload": "^1.0.9",
     "passport": "^0.2.2",
-    "serve-favicon": "~2.3.0",
-    "socket.io": "^1.3.7",
-    "sweetalert": "^1.1.3",
-    "angular-img-fallback": "~0.1.3"
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -50,12 +36,13 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "~1.0.0",
     "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-exec": "^0.4.6",
+    "grunt-jspm": "^0.1.1",
     "grunt-karma": "^0.12.1",
     "grunt-nodemon": "^0.4.0",
+    "grunt-sass": "^1.1.0",
     "jasmine-core": "^2.3.4",
     "jspm": "^0.16.31",
     "karma": "^0.13.15",
@@ -74,11 +61,14 @@
       "angular-local-storage": "npm:angular-local-storage@^0.2.6",
       "angular-material": "github:angular/bower-material@^1.0.6",
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.18",
+      "check-types": "npm:check-types@^6.0.0",
+      "crypto-js": "npm:crypto-js@^3.1.6",
       "ui-router": "npm:ui-router@^1.0.0-alpha0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "clean-css": "npm:clean-css@^3.4.10",
       "core-js": "npm:core-js@^1.1.4"
     },
     "buildConfig": {

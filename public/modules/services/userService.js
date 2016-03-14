@@ -152,7 +152,9 @@ class UserService {
         let parentElement = angular.element(document.body);
         self.$mdDialog.show({
             parent: parentElement,
-            templateUrl: 'modules/mainApp/views/loginModal.html'
+            templateUrl: 'modules/mainApp/views/loginModal.html',
+            controller:'LoginModalController',
+            controllerAs:'loginModalCtrl'
         });
     }
 

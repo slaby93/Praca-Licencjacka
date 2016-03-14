@@ -1,5 +1,30 @@
-<md-dialog>
+<md-dialog id="login-modal" flex="40">
     <md-dialog-content>
-        <h1>Testowanie ssie</h1>
+        <!--TABS-->
+        <!--LOGIN  TAB-->
+        <md-tabs class="" md-stretch-tabs="always" md-dynamic-height layout-margin md-border-bottom md-swipe-content>
+            <md-tab label="Logowanie">
+                <form novalidate layout="column">
+                    <md-input-container>
+                        <input type="text" autocomplete="off" placeholder="Login" ng-model="loginModalCtrl.user.login">
+                    </md-input-container>
+                    <md-input-container layout-fill>
+                        <input type="password" placeholder="Hasło" ng-model="loginModalCtrl.user.password">
+                    </md-input-container>
+                </form>
+            </md-tab>
+            <!--REGISTER TAB-->
+            <md-tab label="Rejestracja">
+
+            </md-tab>
+        </md-tabs>
     </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-raised">
+            Zaloguj
+        </md-button>
+        <md-button class="md-raised" ng-click="loginModalCtrl.closeModal()">
+            Zamknij
+        </md-button>
+    </md-dialog-actions>
 </md-dialog>

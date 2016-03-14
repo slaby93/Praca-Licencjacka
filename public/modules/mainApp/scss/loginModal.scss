@@ -1,0 +1,17 @@
+/**
+ * Created by danielslaby on 14/03/16.
+ */
+
+#login-modal {
+  min-width: 300px;
+  md-tabs {
+    md-tab-content {
+      height:100%;
+      form {
+        md-input-container:last-child {
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}

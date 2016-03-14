@@ -15,9 +15,11 @@ import MainController from './controllers/mainAppCtrl';
 import UserService from '../services/userService';
 // -----------------------------------------------------   Directives imports    ------------------------------------------------------------------------------------------
 import TopNavbarDirective from '../directives/topNavBar/topNavBar.directive';
+import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial'])
     .controller("MainController", MainController)
     .service("UserService", UserService)
     .directive("topNavBar", TopNavbarDirective)
+	.directive("latestEventsTable", LatestEventsTableDirective)
     .config(routing);

@@ -1,0 +1,31 @@
+<md-content layout-align="center center" layout="column" layout-padding>
+	<md-list class="md-dense" flex>
+			<md-list-item ng-repeat="item in latestEventsTableCtrl.events">
+			  <div class="md-list-item-text no-margin-top-bottom" layout="row">
+				<div layout="row">
+					<div flex="10">
+						<img ng-src="{{item.avatar}}" class="md-avatar no-margin-top-bottom" alt="gallery/default.jpg" />
+					</div>
+					<div flex="10">
+						<p>{{ item.name }}</p>
+					</div>
+					<div flex="15">
+						<p>{{ item.city }}</p>
+					</div>
+					<div flex="15">
+						<p>{{ item.region }}</p>
+					</div>
+					<div flex="20">
+						<p>{{ item.category }}</p>
+					</div>
+					<div flex="10">
+						<p>{{ item.date }}</p>
+					</div>
+					<div flex="20">
+						<p>{{ item.description }}</p>
+					</div>
+				</div>
+			  </div>
+			</md-list-item>
+	</md-list>
+</md-content>

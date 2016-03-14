@@ -6,17 +6,10 @@
 
 class MainAppCtrl {
 
-    constructor($scope, UserService, $state, localStorageService) {
+    constructor() {
         let self = this;
 
     }
-
-    //console.log($state);
-
-
-    
-
-
 }
 
 export default MainAppCtrl;

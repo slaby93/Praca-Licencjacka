@@ -3,13 +3,45 @@
  */
 
 #login-modal {
-  min-width: 300px;
+
+  $selectedTabUnderscoreColor: gray;
+  $selectedTabTextColor: black;
+
+  min-width: 320px;
+
   md-tabs {
+    md-tab-item {
+      span {
+        // header text color
+        //color: inherit;
+      }
+      &.md-active {
+        color: $selectedTabTextColor !important;
+      }
+
+    }
+    // Underscore of selected tab
+    md-ink-bar {
+      background-color: $selectedTabUnderscoreColor;
+    }
+
     md-tab-content {
-      height:100%;
+      height: 100%;
       form {
         md-input-container:last-child {
           margin-bottom: 0px;
+        }
+      }
+      .loginButtonsMargins {
+        margin-top: 0px;
+        button {
+          width: 100% !important;
+          padding: 3px;
+        }
+        @media(max-width: $md) {
+          button:first-child {
+            margin-bottom: 12px;
+          }
         }
       }
     }

@@ -1,23 +1,21 @@
-
-
 <div layout="column" layout-fill>
     <md-toolbar>
-        <div class="md-toolbar-tools" style="padding-right: 0px;">   <!--/////styl do przeniesienia!\\\\\-->
+        <div class="md-toolbar-tools no-padding-right">
             <span>My App's Title</span>
             <!-- fill up the space between left and right area -->
             <span flex></span>
-            <md-button ng-click="topNavBarCtrl.openLoginRegister()" style="text-transform: none; font-weight: bold;">         <!--/////styl do przeniesienia!\\\\\-->
+            <md-button ng-click="topNavBarCtrl.openLoginRegister()" class="login-register-button">
                 Logowanie/Rejestracja
             </md-button>
-            <md-menu md-position-mode="target-right target" md-offset="0 55" style="height: 100%;  width: 10%; background-color: #262626;">   <!--/////styl do przeniesienia!\\\\\-->
-                <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)" style="width: 100%; height: 100%; padding-left: 0px; margin-left: 0px;">   <!--/////styl do przeniesienia!\\\\\-->
+            <md-menu md-position-mode="target-right target" md-offset="0 55" class="navigation-menu">
+                <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                     <md-icon md-svg-src="resources/stack.svg"></md-icon>
                 </md-button>
 
-                <md-menu-content width="4" style="background-color: #262626; margin-top: 0px; margin-bottom: 0px; padding-bottom: 0px; padding-top:0px;">
-                    <md-menu-item ng-repeat="item in topNavBarCtrl.options" style=" border-bottom: 1px groove #0d0d0d;">
+                <md-menu-content width="4">
+                    <md-menu-item ng-repeat="item in topNavBarCtrl.options">
                         <md-button ng-click="item.click()">
-                            <div layout="row" layout-align="center center" style="color: #f2f2f2; font-weight: 400;">
+                            <div layout="row" layout-align="center center" class="menu-list-item">
                                 {{item.placeholder}}
                                 <!--<md-icon md-menu-align-target md-svg-icon="call:portable-wifi-off" style="margin: auto 3px auto 0;"></md-icon>-->
                             </div>

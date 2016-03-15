@@ -19,7 +19,7 @@ class LatestEventsTableController {
 		self.events = [
 			{
 				avatar: "gallery/default.gif",
-				name: "Agnieszka C.",
+				name: "Buziaczek22",
 				city: "Jarosław",
 				region: "Podkarpackie",
 				category: "Piłka nożna",
@@ -28,7 +28,7 @@ class LatestEventsTableController {
 			},
 			{	
 				avatar: "gallery/default.gif",
-				name: "Michał H.",
+				name: "Mechanix",
 				city: "Rzeszów",
 				region: "Podkarpackie",
 				category: "Siatkówka",
@@ -37,7 +37,7 @@ class LatestEventsTableController {
 			},
 			{
 				avatar: "gallery/default.gif",
-				name: "Elżbieta H.",
+				name: "KochamOgorki",
 				city: "Kraków",
 				region: "Małopolskie",
 				category: "Inne",
@@ -46,7 +46,7 @@ class LatestEventsTableController {
 			},
 			{
 				avatar: "gallery/default.gif",
-				name: "Damian M.",
+				name: "ElDammicos",
 				city: "Kraków",
 				region: "Małopolskie",
 				category: "Siatkówka",

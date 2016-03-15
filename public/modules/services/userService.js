@@ -5,7 +5,7 @@
  * @param $http
  */
 class UserService {
-    constructor($log, $http, $state, localStorageService, $q, $rootScope) {
+    constructor($log, $http, $state, localStorageService, $q, $rootScope, $mdDialog) {
         let self = this;
         self.$l = $log;
         self.$http = $http;
@@ -13,6 +13,7 @@ class UserService {
         self.$q = $q;
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
+        self.$mdDialog = $mdDialog;
 
     }
 
@@ -145,6 +146,17 @@ class UserService {
     getToken() {
         return token;
     };
+
+    showLoginModal() {
+        let self = this;
+        let parentElement = angular.element(document.body);
+        self.$mdDialog.show({
+            parent: parentElement,
+            templateUrl: 'modules/mainApp/views/loginModal.html',
+            controller:'LoginModalController',
+            controllerAs:'loginModalCtrl'
+        });
+    }
 
 }
 export default UserService;

@@ -11,6 +11,7 @@ import * as angular_material from 'angular-material';
 import routing from './routing';
 // -----------------------------------------------------   Controllers imports   ------------------------------------------------------------------------------------------
 import MainController from './controllers/mainAppCtrl';
+import LoginModalController from './controllers/loginModal.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 // -----------------------------------------------------   Directives imports    ------------------------------------------------------------------------------------------
@@ -19,6 +20,7 @@ import LatestEventsTableDirective from '../directives/latestEventsTable/latestEv
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial'])
     .controller("MainController", MainController)
+    .controller("LoginModalController", LoginModalController)
     .service("UserService", UserService)
     .directive("topNavBar", TopNavbarDirective)
 	.directive("latestEventsTable", LatestEventsTableDirective)

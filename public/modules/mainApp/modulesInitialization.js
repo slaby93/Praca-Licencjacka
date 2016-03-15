@@ -7,6 +7,8 @@ import * as angular from 'angular';
 import * as ui_router from 'angular-ui-router';
 import * as angular_local_storage from 'angular-local-storage';
 import * as angular_material from 'angular-material';
+import * as angular-material-data-table from 'angular-material-data-table'
+
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
 // -----------------------------------------------------   Controllers imports   ------------------------------------------------------------------------------------------

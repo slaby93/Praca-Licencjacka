@@ -64,9 +64,11 @@
       "angular": "github:angular/bower-angular@^1.5.0",
       "angular-local-storage": "npm:angular-local-storage@^0.2.6",
       "angular-material": "github:angular/bower-material@^1.0.6",
+      "angular-material-data-table": "npm:angular-material-data-table@^0.9.14",
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.18",
       "check-types": "npm:check-types@^6.0.0",
       "crypto-js": "npm:crypto-js@^3.1.6",
+      "md-data-table": "npm:md-data-table@^1.4.2",
       "ui-router": "npm:ui-router@^1.0.0-alpha0"
     },
     "devDependencies": {

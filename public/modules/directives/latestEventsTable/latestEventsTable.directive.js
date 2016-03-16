@@ -17,7 +17,10 @@ class LatestEventsTableController {
         let self = this;
 
 		self.events = [
-			{
+			{	
+				click: () => {
+
+                },
 				avatar: "gallery/default.gif",
 				name: "Buziaczek22",
 				city: "Jarosław",
@@ -27,6 +30,9 @@ class LatestEventsTableController {
 				description: "Szukamy ludzi do gry w piłkę..."
 			},
 			{	
+				click: () => {
+
+                },
 				avatar: "gallery/default.gif",
 				name: "Mechanix",
 				city: "Rzeszów",
@@ -35,7 +41,10 @@ class LatestEventsTableController {
 				date: "18.11.2008",
 				description: "Witam, jestem studentem pr..."
 			},
-			{
+			{	
+				click: () => {
+
+                },
 				avatar: "gallery/default.gif",
 				name: "KochamOgorki",
 				city: "Kraków",
@@ -44,7 +53,10 @@ class LatestEventsTableController {
 				date: "11.11.2008",
 				description: "4 osoby, 40 zł, własny sprzę..."
 			},
-			{
+			{	
+				click: () => {
+
+                },
 				avatar: "gallery/default.gif",
 				name: "ElDammicos",
 				city: "Kraków",

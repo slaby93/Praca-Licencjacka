@@ -12,3 +12,13 @@ $sm: 600px;
 body {
 
 }
+
+.parallax-height{
+		height: 150px;
+	}
+
+@media screen and (min-width: $sm) {
+    .parallax-height{
+		height: 250px;
+	}
+}

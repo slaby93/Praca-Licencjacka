@@ -1,11 +1,15 @@
+.no-background{
+	background: none;
+}
+
+
 latest-events-table{
 	.avatar{
 		height: 32px;
 		width: 32px;					
 	}
-	.table-with-x-overflow{
-		overflow-x: scroll;
-	}
+	.table-with-x-overflow  {overflow-x: scroll;}
+	
 	.overflow-description{
 		 overflow-y: auto;
 		 display: inline-block;

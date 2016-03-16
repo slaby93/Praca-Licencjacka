@@ -8,7 +8,6 @@ import * as ui_router from 'angular-ui-router';
 import * as angular_local_storage from 'angular-local-storage';
 import * as angular_material from 'angular-material';
 import * as angular_material_data_table from 'angular-material-data-table';
-import * as ng_parallax from 'ng-parallax';
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
@@ -21,7 +20,7 @@ import UserService from '../services/userService';
 import TopNavbarDirective from '../directives/topNavBar/topNavBar.directive';
 import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngParallax'])
+angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table'])
     .controller("MainController", MainController)
     .controller("LoginModalController", LoginModalController)
     .service("UserService", UserService)

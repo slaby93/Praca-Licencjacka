@@ -26,7 +26,6 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "crypto-js": "npm:crypto-js@3.1.6",
     "md-data-table": "npm:md-data-table@1.4.2",
-    "ng-parallax": "npm:ng-parallax@1.0.1",
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {

@@ -13,12 +13,28 @@ body {
 
 }
 
-.parallax-height{
-		height: 150px;
-	}
+
+.title{
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+.parallax-image{
+	height: 150px;
+	padding: 50px 0 0 0;
+	background-size: cover;
+}
+
+.img1 {
+    background:url("../resources/parallax_images/parallax1.jpg") 50% no-repeat fixed;
+}
 
 @media screen and (min-width: $sm) {
-    .parallax-height{
-		height: 250px;
+    .parallax-image{
+		height: 300px;
+		padding: 50px 0 0 0;
+		background-size: cover;
 	}
 }

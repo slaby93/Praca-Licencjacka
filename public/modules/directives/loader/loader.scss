@@ -1,0 +1,22 @@
+/**
+ * Created by danielslaby on 19/03/16.
+ */
+loader {
+  display: none;
+  position: fixed;
+  background-color: black;
+  z-index: 2147483640;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  div {
+    height: 100%;
+    div {
+      background-color: red;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

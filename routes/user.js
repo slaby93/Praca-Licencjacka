@@ -83,9 +83,17 @@ router.post('/register', function (req, res, next) {
             console.log("Dodawanie Uzytkownika");
             //dodanie uzytkownika do bazy
             db.user.insert(user);
-            res.status(200).json(user).end(function () {
-                db.close();
+            getUserByLogin(user.login, [], function (data) {
+                "use strict";
+                // generates token
+                tokenHandler.generateJWT(data._id, function (token) {
+                    res.status(200).json({token: token}).end(function () {
+                        db.close();
+                    });
+                });
+
             });
+
         });
     });
 });
@@ -197,4 +205,25 @@ function removeSensitiveUserDataArray(array) {
     });
     return array;
 }
+
+/**
+ *
+ */
+function getUserByLogin(login, attributes, callback) {
+    console.log("Login");
+    console.log(login);
+    "use strict";
+    mongo.connect("projekt", ["user"], function (db) {
+        db.user.findOne({
+            "login": login
+        }, function (err, foundedUser) {
+            if (err || foundedUser === undefined || foundedUser === null) {
+                return undefined;
+            }
+            (callback) ? callback(foundedUser) : false;
+            return foundedUser;
+        });
+    });
+}
+
 module.exports = router;

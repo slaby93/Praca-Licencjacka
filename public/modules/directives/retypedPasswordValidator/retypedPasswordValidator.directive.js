@@ -6,11 +6,16 @@ function RetypedPasswordValidator() {
     return {
         restrict: 'A',
         link: function (scope, element, attr, ctrl) {
+            scope.$watch('loginModalCtrl.userRegister.retypedPassword', (retypedPassword)=> {
+                let password = undefined;
+                try {
+                    password = scope.loginModalCtrl.userRegister.password;
+                } catch (e) {
 
-            scope.$watch('loginModalCtrl.userRegister.retypedPassword', (retypedPassword) => {
+                }
 
-                let password = scope.loginModalCtrl.userRegister.password;
-                if (retypedPassword === password) {
+
+                if (retypedPassword === password && retypedPassword !== undefined && retypedPassword !== '') {
                     scope.loginModalCtrl.registerForm.retypedPassword.$setValidity('notMatchingPassword', true);
                 } else {
                     scope.loginModalCtrl.registerForm.retypedPassword.$setValidity('notMatchingPassword', false);

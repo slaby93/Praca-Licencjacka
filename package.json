@@ -69,6 +69,7 @@
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.18",
       "check-types": "npm:check-types@^6.0.0",
       "crypto-js": "npm:crypto-js@^3.1.6",
+      "jquery": "npm:jquery@^2.2.2",
       "md-data-table": "npm:md-data-table@^1.4.2",
       "ui-router": "npm:ui-router@^1.0.0-alpha0"
     },
@@ -81,6 +82,11 @@
     "buildConfig": {
       "transpileES6": true,
       "minify": true
+    },
+    "overrides": {
+      "npm:jquery@2.2.2": {
+        "format": "global"
+      }
     }
   }
 }

@@ -3,10 +3,19 @@
  */
 
 class LoginModalController {
-    constructor($log, $mdDialog) {
+    constructor($log, $mdDialog, loader, UserService) {
         let self = this;
         self.$l = $log;
         self.$mdDialog = $mdDialog;
+        self.loader = loader;
+        self.UserService = UserService;
+        self.clearForms();
+    }
+
+    /**
+     * Remove and initialize models for forms.
+     */
+    clearForms() {
         self.userLogin = {
             login: "",
             password: ""
@@ -18,19 +27,51 @@ class LoginModalController {
         }
     }
 
+    /**
+     * Remove modal from screen
+     */
     closeModal() {
         let self = this;
         self.$mdDialog.hide()
     }
 
+    /**
+     * Login user by credentials.
+     */
     login() {
         let self = this;
+        self.loader.show();
         self.$l.debug("login credentials", self.userLogin.login, self.userLogin.password);
+        self.UserService.login(self.userLogin).then(
+            // Success
+            (data)=> {
+                self.loader.hide();
+                self.closeModal();
+            },
+            // Errors
+            (err)=> {
+                self.loader.hide();
+            });
+
     }
 
-    register(login, password, retypedPassword) {
+    /**
+     * Register new user to system
+     *
+     */
+    register() {
         let self = this;
-        self.$l.debug("register credentials", self.userRegister.login, self.userRegister.password, self.userRegister.retypedPassword);
+        self.loader.show();
+        self.UserService.register(self.userRegister).then(
+            // Success
+            (data)=> {
+                self.loader.hide();
+                self.closeModal();
+            },
+            // Errors
+            (err)=> {
+                self.loader.hide();
+            });
     }
 }
 

@@ -201,5 +201,6 @@
   "github:angular/bower-angular-messages@1.5.2": {
     "angular": "jspm:angular@^1.5.0"
   },
-  "github:angular/bower-angular@1.5.2": {}
+  "github:angular/bower-angular@1.5.2": {},
+  "npm:jquery@2.2.2": {}
 }

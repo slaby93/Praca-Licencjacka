@@ -14,78 +14,115 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
-
     }
 
-    //
-
+    /**
+     * Login user by credentials. Return promise.
+     * @param passedUser Promise
+     * @returns {*}
+     */
     login(passedUser) {
         let self = this;
-        let obietnica = self.$q.defer();
+        let promise = self.$q.defer();
         self.$http.post("/user", passedUser).then((received) => {
-            obietnica.resolve(received);
-            user = received.data.user;
-            token = received.data.token;
-            self.localStorage.set("token", token);
+            promise.resolve(received);
+            self.setUser(received.data.user);
+            self.setToken(received.data.token);
         }, (err) => {
-            obietnica.reject(err);
-            /*sweetAlert("Logowanie nieudane!", err.data.message, "error");*/
+            promise.reject(err);
         });
-        return obietnica.promise;
+        return promise.promise;
     };
 
-    openLoginRegister() {
+    /**
+     * Set token in local storage
+     * @param token
+     */
+    setToken(token) {
         let self = this;
-    };
+        self.localStorage.set("token", token);
+    }
 
+    /**
+     * Remove token from local storage
+     */
+    removeToken() {
+        let self = this;
+        self.localStorageService.remove("token");
+    }
+
+    /**
+     * Returns token from local storage
+     * @returns {*|token|null}
+     */
+    getToken() {
+        let self = this;
+        return self.localStorage.get("token");
+    }
+
+    /**
+     *  Set user object in service
+     * @param user
+     */
+    setUser(user) {
+        let self = this;
+        self.user = user;
+    }
+
+    /**
+     * Returns user object from service
+     * @returns {*|modalInstance.resolve.user|modalInstance.resolve."user"|null}
+     */
+    getUser() {
+        let self = this;
+        return self.user;
+    }
+
+    /**
+     * Register new user in server. Returns promise.
+     * @param passedUser
+     */
     register(passedUser) {
         let self = this;
-        var obietnica = self.$q.defer();
+        var promise = self.$q.defer();
         self.$rootScope.$evalAsync(() => {
             self.$http.post("/user/register", passedUser).then((received) => {
-                obietnica.resolve(received);
+                promise.resolve(received);
+                self.setToken(received.data.token);
             }, (err) => {
-                obietnica.reject(err);
+                promise.reject(err);
             });
         });
-        return obietnica.promise;
-
+        return promise.promise;
     };
 
     logout() {
         let self = this;
-        console.log("logout");
-        user = null;
-        token = null;
+        self.removeToken();
         self.localStorageService.remove("token");
     };
 
-    getUser() {
-        if (user) {
-            return user;
-        } else {
-            return null;
-        }
-    };
 
     fetchAllUsers() {
-        var odroczenie = $q.defer();
+        var promise = $q.defer();
         $rootScope.$evalAsync(function () {
             $http.post("/user/all").then(function (allUsers) {
-                odroczenie.resolve(allUsers.data);
+                promise.resolve(allUsers.data);
             }, function (err) {
-                odroczenie.reject(err);
+                promise.reject(err);
             });
         });
-        return odroczenie.promise;
+        return promise.promise;
     };
 
 
     loginByToken(tken) {
+        let self = this;
+        self.$l.debug("Login by token");
         if (!tken) {
             return;
         }
-        var odroczenie = $q.defer();
+        var promise = $q.defer();
 
         $rootScope.$applyAsync(function () {
             $http.post('/user/token', {"token": tken}).then(
@@ -93,11 +130,11 @@ class UserService {
                 function (data) {
                     user = data.data;
                     token = tken;
-                    odroczenie.resolve(user);
+                    promise.resolve(user);
                     // ERROR
                 }, function (err) {
                     localStorageService.remove("token");
-                    odroczenie.resolve(err);
+                    promise.resolve(err);
                 });
         });
 
@@ -106,6 +143,8 @@ class UserService {
     }
 
     editUser(user, callback) {
+        let self = this;
+        self.$l.debug("Edit user");
         $http.post("/user/update", {user: user}).then(
             function (message) {
                 callback();
@@ -129,6 +168,8 @@ class UserService {
     };
 
     removeUser(user, callback) {
+        let self = this;
+        self.$l.debug("Remove user");
         $http.post("/user/remove", {
             user: user
         }).then(function (message) {
@@ -143,18 +184,17 @@ class UserService {
         });
     };
 
-    getToken() {
-        return token;
-    };
-
+    /**
+     * Pop up login/register modal on screen.
+     */
     showLoginModal() {
         let self = this;
         let parentElement = angular.element(document.body);
         self.$mdDialog.show({
             parent: parentElement,
             templateUrl: 'modules/mainApp/views/loginModal.html',
-            controller:'LoginModalController',
-            controllerAs:'loginModalCtrl'
+            controller: 'LoginModalController',
+            controllerAs: 'loginModalCtrl'
         });
     }
 

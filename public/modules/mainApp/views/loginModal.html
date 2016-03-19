@@ -30,7 +30,8 @@
                                     <md-button type="submit" class="md-raised" flex-xs="50" flex-sm="50"
                                                flex-gt-sm="20" ng-disabled="loginModalCtrl.loginForm.$invalid">Loguj
                                     </md-button>
-                                    <md-button class="md-raised" flex-xs="50" flex-sm="50" flex-gt-sm="20">Zamknij
+                                    <md-button ng-click="loginModalCtrl.closeModal()" class="md-raised" flex-xs="50"
+                                               flex-sm="50" flex-gt-sm="20">Zamknij
                                     </md-button>
                                 </div>
 
@@ -77,10 +78,10 @@
                                                flex-gt-sm="20" ng-disabled="loginModalCtrl.registerForm.$invalid">
                                         Zarejestruj
                                     </md-button>
-                                    <md-button class="md-raised" flex-xs="50" flex-sm="50" flex-gt-sm="20">Zamknij
+                                    <md-button ng-click="loginModalCtrl.closeModal()" class="md-raised" flex-xs="50"
+                                               flex-sm="50" flex-gt-sm="20">Zamknij
                                     </md-button>
                                 </div>
-
                             </form>
                         </md-content>
                     </md-tab>

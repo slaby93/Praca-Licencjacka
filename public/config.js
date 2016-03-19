@@ -26,6 +26,7 @@ System.config({
     "clean-css": "npm:clean-css@3.4.10",
     "core-js": "npm:core-js@1.2.6",
     "crypto-js": "npm:crypto-js@3.1.6",
+    "jquery": "npm:jquery@2.2.2",
     "md-data-table": "npm:md-data-table@1.4.2",
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",

@@ -65,6 +65,7 @@
       "angular-local-storage": "npm:angular-local-storage@^0.2.6",
       "angular-material": "github:angular/bower-material@^1.0.6",
       "angular-material-data-table": "npm:angular-material-data-table@^0.9.14",
+      "angular-messages": "github:angular/bower-angular-messages@^1.5.2",
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.18",
       "check-types": "npm:check-types@^6.0.0",
       "crypto-js": "npm:crypto-js@^3.1.6",

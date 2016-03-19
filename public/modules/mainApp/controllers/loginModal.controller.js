@@ -7,15 +7,30 @@ class LoginModalController {
         let self = this;
         self.$l = $log;
         self.$mdDialog = $mdDialog;
-        self.user = {
+        self.userLogin = {
             login: "",
             password: ""
+        }
+        self.userRegister = {
+            login: "",
+            password: "",
+            retypedPassword: ""
         }
     }
 
     closeModal() {
         let self = this;
         self.$mdDialog.hide()
+    }
+
+    login() {
+        let self = this;
+        self.$l.debug("login credentials", self.userLogin.login, self.userLogin.password);
+    }
+
+    register(login, password, retypedPassword) {
+        let self = this;
+        self.$l.debug("register credentials", self.userRegister.login, self.userRegister.password, self.userRegister.retypedPassword);
     }
 }
 

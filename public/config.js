@@ -14,10 +14,11 @@ System.config({
   },
 
   map: {
-    "angular": "github:angular/bower-angular@1.5.0",
+    "angular": "github:angular/bower-angular@1.5.2",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",
     "angular-material": "github:angular/bower-material@1.0.6",
     "angular-material-data-table": "npm:angular-material-data-table@0.9.14",
+    "angular-messages": "github:angular/bower-angular-messages@1.5.2",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "babel": "npm:babel-core@5.8.35",
     "babel-runtime": "npm:babel-runtime@5.8.35",
@@ -29,19 +30,22 @@ System.config({
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.0"
+      "angular": "github:angular/bower-angular@1.5.2"
     },
     "github:angular/bower-angular-animate@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.0"
+      "angular": "github:angular/bower-angular@1.5.2"
     },
     "github:angular/bower-angular-aria@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.0"
+      "angular": "github:angular/bower-angular@1.5.2"
     },
     "github:angular/bower-angular-messages@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.0"
+      "angular": "github:angular/bower-angular@1.5.2"
+    },
+    "github:angular/bower-angular-messages@1.5.2": {
+      "angular": "github:angular/bower-angular@1.5.2"
     },
     "github:angular/bower-material@1.0.6": {
-      "angular": "github:angular/bower-angular@1.5.0",
+      "angular": "github:angular/bower-angular@1.5.2",
       "angular-animate": "github:angular/bower-angular-animate@1.5.0",
       "angular-aria": "github:angular/bower-angular-aria@1.5.0",
       "css": "github:systemjs/plugin-css@0.1.20"
@@ -96,7 +100,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-material@1.0.6": {
-      "angular": "github:angular/bower-angular@1.5.0",
+      "angular": "github:angular/bower-angular@1.5.2",
       "angular-animate": "github:angular/bower-angular-animate@1.5.0",
       "angular-aria": "github:angular/bower-angular-aria@1.5.0",
       "angular-messages": "github:angular/bower-angular-messages@1.5.0",

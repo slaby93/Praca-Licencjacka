@@ -17,7 +17,7 @@ class LatestEventsTableController {
         let self = this;
 
 		self.events = [
-			{
+			{	
 				avatar: "gallery/default.gif",
 				name: "Buziaczek22",
 				city: "Jarosław",
@@ -35,7 +35,7 @@ class LatestEventsTableController {
 				date: "18.11.2008",
 				description: "Witam, jestem studentem pr..."
 			},
-			{
+			{	
 				avatar: "gallery/default.gif",
 				name: "KochamOgorki",
 				city: "Kraków",

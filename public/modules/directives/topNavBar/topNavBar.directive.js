@@ -13,13 +13,22 @@ function topNavBar() {
 }
 
 class TopNavBarController {
-    constructor($log, localStorageService, UserService) {
+    constructor($log, localStorageService, UserService, $scope) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
         self.$l = $log;
+        self.$scope = $scope;
         self.setDefaultValues();
-        self.initLogin();
+        self.setWatchers();
+    }
+
+    setWatchers() {
+        let self = this;
+        // watch for user object change
+        self.$scope.$on('userObjectChange', (event, newUser)=> {
+            self.user = newUser;
+        });
     }
 
     setDefaultValues() {
@@ -63,12 +72,9 @@ class TopNavBarController {
             }
         ];
     }
+    
+    
 
-
-    initLogin() {
-        let self = this;
-        self.$l.debug("Login by token in navbar");
-    }
 }
 
 export default topNavBar;

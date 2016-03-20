@@ -10,13 +10,14 @@
  */
 function routing($stateProvider, $urlRouterProvider) {
     //******************** Defaultowy stan aplikacji ***************************\\
-    $urlRouterProvider.otherwise("/app");
+    // $urlRouterProvider.otherwise("/app");
     //**************************************************************************\\
     //
     $stateProvider.state('app', {
         url: "/app",
         templateUrl: "modules/mainApp/views/mainView.html",
-        controller: "MainController"
+        controller: "MainController",
+        controllerAs: "mainAppCtrl"
     });
 }
 

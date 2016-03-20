@@ -14,6 +14,9 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
+        self.setUser({
+            groups: []
+        });
     }
 
     /**
@@ -67,6 +70,7 @@ class UserService {
     setUser(user) {
         let self = this;
         self.user = user;
+        self.$rootScope.$broadcast('userObjectChange', user);
     }
 
     /**
@@ -106,7 +110,7 @@ class UserService {
     fetchAllUsers() {
         var promise = $q.defer();
         $rootScope.$evalAsync(function () {
-            $http.post("/user/all").then(function (allUsers) {
+            self.$http.post("/user/all").then(function (allUsers) {
                 promise.resolve(allUsers.data);
             }, function (err) {
                 promise.reject(err);
@@ -116,36 +120,29 @@ class UserService {
     };
 
 
-    loginByToken(tken) {
+    loginByToken(token) {
         let self = this;
         self.$l.debug("Login by token");
-        if (!tken) {
-            return;
-        }
-        var promise = $q.defer();
+        var promise = self.$q.defer();
+        self.$http.post('/user/token', {"token": token}).then(
+            // SUCCESS
+            function (data) {
+                self.setUser(data.data);
+                promise.resolve(data);
+                // ERROR
+            }, function (err) {
+                self.removeToken();
+                promise.resolve(err);
+            });
 
-        $rootScope.$applyAsync(function () {
-            $http.post('/user/token', {"token": tken}).then(
-                // SUCCESS
-                function (data) {
-                    user = data.data;
-                    token = tken;
-                    promise.resolve(user);
-                    // ERROR
-                }, function (err) {
-                    localStorageService.remove("token");
-                    promise.resolve(err);
-                });
-        });
-
-        return odroczenie.promise;
+        return promise.promise;
 
     }
 
     editUser(user, callback) {
         let self = this;
         self.$l.debug("Edit user");
-        $http.post("/user/update", {user: user}).then(
+        self.$http.post("/user/update", {user: user}).then(
             function (message) {
                 callback();
                 return;
@@ -170,7 +167,7 @@ class UserService {
     removeUser(user, callback) {
         let self = this;
         self.$l.debug("Remove user");
-        $http.post("/user/remove", {
+        self.$http.post("/user/remove", {
             user: user
         }).then(function (message) {
             if (callback) {
@@ -196,6 +193,26 @@ class UserService {
             controller: 'LoginModalController',
             controllerAs: 'loginModalCtrl'
         });
+    }
+
+    /**
+     *  Checks if user has passed right
+     * @param rightsToCheck
+     */
+    hasRight(rightsToCheck) {
+        let self = this;
+        let hasRight = true;
+
+        self.$l.debug("Rights To Chrck");
+
+        for (let i = 0; i < rightsToCheck.length; i++) {
+            let item = rightsToCheck[i];
+            if (self.user.groups.indexOf(item) === -1) {
+                hasRight = false;
+                break;
+            }
+        }
+        return hasRight;
     }
 
 }

@@ -13,8 +13,10 @@
                 </md-button>
 
                 <md-menu-content width="4">
-                    <md-menu-item ng-repeat="item in topNavBarCtrl.options">
-                        <md-button ng-click="item.click()">
+                    <md-menu-item ng-if="topNavBarCtrl.UserService.hasRight([item.visibility])"
+                                  ng-repeat="item in topNavBarCtrl.options">
+                        <md-button
+                                ng-click="item.click()">
                             <div layout="row" layout-align="center center" class="menu-list-item">
                                 {{item.placeholder}}
                                 <!--<md-icon md-menu-align-target md-svg-icon="call:portable-wifi-off" style="margin: auto 3px auto 0;"></md-icon>-->

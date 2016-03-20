@@ -64,7 +64,7 @@ class LoginModalController {
         self.loader.show();
         self.UserService.register(self.userRegister).then(
             // Success
-            (data)=> {
+            ()=> {
                 self.loader.hide();
                 self.closeModal();
             },

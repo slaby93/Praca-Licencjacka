@@ -6,9 +6,18 @@
 
 class MainAppCtrl {
 
-    constructor() {
+    constructor($scope, $log) {
         let self = this;
+        self.$scope = $scope;
+        self.$l = $log;
+        self.setWatchers();
+    }
 
+    setWatchers() {
+        let self = this;
+        self.$scope.$on('userObjectChange', (event, newUser)=> {
+            self.user = newUser;
+        });
     }
 }
 

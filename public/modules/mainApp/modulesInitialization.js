@@ -25,6 +25,8 @@ import TopNavbarDirective from '../directives/topNavBar/topNavBar.directive';
 import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
 import RetypedPasswordValidatorDirective from '../directives/retypedPasswordValidator/retypedPasswordValidator.directive';
 import LoaderDirective from '../directives/loader/loader.directive';
+// -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
+import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages'])
     .controller("MainController", MainController)
@@ -35,5 +37,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
-    .config(routing);
+    .config(routing)
+    .run(Main);
 

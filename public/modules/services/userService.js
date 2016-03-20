@@ -14,9 +14,7 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
-        self.setUser({
-            groups: []
-        });
+        self.setUser(undefined);
     }
 
     /**
@@ -51,7 +49,7 @@ class UserService {
      */
     removeToken() {
         let self = this;
-        self.localStorageService.remove("token");
+        self.localStorage.remove("token");
     }
 
     /**
@@ -69,8 +67,15 @@ class UserService {
      */
     setUser(user) {
         let self = this;
-        self.user = user;
+        if (user) {
+            self.user = user;
+        } else {
+            self.user = {
+                groups: ['guest']
+            };
+        }
         self.$rootScope.$broadcast('userObjectChange', user);
+        self.$rootScope.$emit('userObjectChange', user);
     }
 
     /**
@@ -92,6 +97,8 @@ class UserService {
         self.$rootScope.$evalAsync(() => {
             self.$http.post("/user/register", passedUser).then((received) => {
                 promise.resolve(received);
+                self.$l.debug(received);
+                self.setUser(received.data.user);
                 self.setToken(received.data.token);
             }, (err) => {
                 promise.reject(err);
@@ -103,7 +110,7 @@ class UserService {
     logout() {
         let self = this;
         self.removeToken();
-        self.localStorageService.remove("token");
+        self.setUser(undefined);
     };
 
 

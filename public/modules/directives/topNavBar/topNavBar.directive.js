@@ -66,7 +66,7 @@ class TopNavBarController {
                 placeholder: "Wyloguj",
                 click: () => {
                     let self = this;
-                    self.logout();
+                    self.UserService.logout();
                 },
                 visibility: "user"
             }

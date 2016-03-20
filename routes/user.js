@@ -68,7 +68,7 @@ router.post('/register', function (req, res, next) {
     var password = bcrypt.hashSync(req.body.password, 10);
     user = removeSensitiveUserData(user);
     user.password = password;
-    user.groups = {};
+    user.groups = ['user'];
     //laczenie z baza
     mongo.connect("projekt", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika
@@ -87,7 +87,7 @@ router.post('/register', function (req, res, next) {
                 "use strict";
                 // generates token
                 tokenHandler.generateJWT(data._id, function (token) {
-                    res.status(200).json({token: token}).end(function () {
+                    res.status(200).json({token: token,user:removeSensitiveUserData(data)}).end(function () {
                         db.close();
                     });
                 });

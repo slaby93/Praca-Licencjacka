@@ -12,22 +12,7 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-#application {
-  .parallax-image-container {
-    background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
-    latest-events-table md-content {
-      margin-top: 20px;
-    }
-    div {
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-    .home-page-title {
-      font-weight: bold;
-      font-size: 20px;
-    }
-  }
-}
+
 
 .full-width {
   width: 100%;

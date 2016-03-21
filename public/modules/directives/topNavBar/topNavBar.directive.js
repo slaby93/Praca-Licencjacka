@@ -35,32 +35,32 @@ class TopNavBarController {
         let self = this;
         self.options = [
             {
-                placeholder: "Login",
+                placeholder: "Jak to działa?",
                 click: () => {
-                    self.UserService.showLoginModal();
+				
                 },
-                visibility: "guest"
+				visibility: ["guest", "user"]
             },
             {
                 placeholder: "Dodaj wydarzenie",
                 click: () => {
 
                 },
-                visibility: "user"
+				visibility: ["user"]
             },
             {
                 placeholder: "Ustawienia konta",
                 click: () => {
 
                 },
-                visibility: "user"
+                visibility: ["user"]
             },
             {
                 placeholder: "CMS",
                 click: () => {
 
                 },
-                visibility: "admin"
+				visibility: ["admin"]
             },
             {
                 placeholder: "Wyloguj",
@@ -68,7 +68,7 @@ class TopNavBarController {
                     let self = this;
                     self.UserService.logout();
                 },
-                visibility: "user"
+				visibility: ["user"]
             }
         ];
     }

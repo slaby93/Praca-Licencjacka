@@ -4,16 +4,19 @@
             <span>My App's Title</span>
             <!-- fill up the space between left and right area -->
             <span flex></span>
-            <md-button ng-click="topNavBarCtrl.openLoginRegister()" class="login-register-button">
+            <md-button ng-if="topNavBarCtrl.UserService.hasRight(['guest'])" ng-click="topNavBarCtrl.UserService.showLoginModal();" class="login-register-button">
                 Logowanie/Rejestracja
+            </md-button>
+			<md-button ng-if="topNavBarCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button">
+                Witaj {{topNavBarCtrl.UserService.user.login}}!
             </md-button>
             <md-menu md-position-mode="target-right target" md-offset="0 55" class="navigation-menu">
                 <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                     <md-icon md-svg-src="resources/stack.svg"></md-icon>
                 </md-button>
-
+			
                 <md-menu-content width="4">
-                    <md-menu-item ng-if="topNavBarCtrl.UserService.hasRight([item.visibility])"
+                    <md-menu-item ng-if="topNavBarCtrl.UserService.hasRight([item.visibility[0]])"
                                   ng-repeat="item in topNavBarCtrl.options">
                         <md-button
                                 ng-click="item.click()">

@@ -205,17 +205,14 @@ class UserService {
     /**
      *  Checks if user has passed right
      * @param rightsToCheck
+	 * for arrays declared like:  visibility: ["user", "admin"]  pass visibility[0], for all other just pass the ["user","admin"]
      */
     hasRight(rightsToCheck) {
         let self = this;
-        let hasRight = true;
-
-        self.$l.debug("Rights To Chrck");
-
+        let hasRight = false;
         for (let i = 0; i < rightsToCheck.length; i++) {
-            let item = rightsToCheck[i];
-            if (self.user.groups.indexOf(item) === -1) {
-                hasRight = false;
+            if (self.user.groups.indexOf(rightsToCheck[i]) !== -1) {
+                hasRight = true;
                 break;
             }
         }

@@ -12,7 +12,7 @@ function routing($stateProvider, $urlRouterProvider) {
     //******************** Defaultowy stan aplikacji ***************************\\
     $urlRouterProvider.otherwise("/app/home");
     //**************************************************************************\\
-    
+
     $stateProvider
         .state('app', {
             url: "/app",

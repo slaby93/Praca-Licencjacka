@@ -1,45 +1,19 @@
-top-nav-bar {
-	div {
-		md-toolbar {
-			.no-padding-right {
-				padding-right: 0px !important;
-			}
-		}
-		.login-register-button {
-			text-transform: none !important;
-			font-weight: bold !important;
-		}
-		.navigation-menu{
-			height: 100%;
-			width: 10%;
-			background-color: #262626;
-		
-			.md-icon-button{
-				width: 100%;
-				height: 100%;
-				padding-left: 0px;
-				margin-left: 0px;
-			}
-			
-		}
-	}
-}
 
-.md-open-menu-container{
-	md-menu-content{
-		background-color: #262626 !important;
-		margin-top: 0px !important;
-		margin-bottom: 0px !important;
-		padding-bottom: 0px !important;
-		padding-top:0px !important;
-	}
-	md-menu-item{
-		 border-bottom: 1px groove #0d0d0d;
-		 
-		.menu-list-item{
-			color: #f2f2f2;
-			font-weight: 400;
-		}
-	}
+footer {
+  $background-color:#374567;
+  $text-color:#E5ECF4;
+  .footerWrapper {
+    height: 100%;
+    div{
+      width: 100%;
+      font-family: 'Lato', sans-serif;
+      span{
+        //padding-left: 15px;
+        //padding-right: 15px;
+      }
+    }
+  }
+  background-color: $background-color;
+  color:$text-color;
+  height: 80px;
 }
-

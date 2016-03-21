@@ -15,6 +15,7 @@ body {
 #application {
   .parallax-image-container {
     background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
+	padding: 50px 0 0 0;
     latest-events-table md-content {
       margin-top: 20px;
     }

@@ -16,13 +16,13 @@ function routing($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('app', {
             url: "/app",
-            templateUrl: "modules/mainApp/views/application.html",
+            templateUrl: "modules/mainApp/application/application.html",
             controller: "ApplicationController",
             controllerAs: "appCtrl"
         })
         .state('app.home', {
             url: "/home",
-            templateUrl: "modules/mainApp/views/home.html",
+            templateUrl: "modules/mainApp/home/home.html",
             controller: "HomeController",
             controllerAs: "homeCtrl"
         });

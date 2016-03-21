@@ -15,9 +15,9 @@ import * as ngMessages from 'angular-messages';
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
 // -----------------------------------------------------   Controllers imports   ------------------------------------------------------------------------------------------
-import ApplicationController from './controllers/application.controller';
-import LoginModalController from './controllers/loginModal.controller';
-import HomeController from './controllers/home.controller';
+import ApplicationController from './application/application.controller.js';
+import LoginModalController from './login/loginModal.controller.js';
+import HomeController from './home/home.controller.js';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import LoaderService from '../directives/loader/loader.service';

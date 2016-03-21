@@ -2,7 +2,6 @@
  * Created by danielslaby on 12/03/16.
  */
 
-
 //Screen break points
 $md: 960px;
 $lg: 1280px;
@@ -10,31 +9,50 @@ $xl: 1920px;
 $sm: 600px;
 
 body {
-	font-family: 'Lato', sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
-
-.title{
-	display: block;
-	text-align: center;
-	vertical-align: middle;
+#application {
+  .parallax-image-container {
+    background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
+    latest-events-table md-content {
+      margin-top: 20px;
+    }
+    div {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    .home-page-title {
+      font-weight: bold;
+      font-size: 20px;
+    }
+  }
 }
 
-
-.parallax-image{
-	height: 150px;
-	padding: 50px 0 0 0;
-	background-size: cover;
+.full-width {
+  width: 100%;
 }
 
-.img1 {
-    background:url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
-}
-
-@media screen and (min-width: $sm) {
-    .parallax-image{
-		height: 300px;
-		padding: 50px 0 0 0;
-		background-size: cover;
-	}
-}
+//.title {
+//  display: block;
+//  text-align: center;
+//  vertical-align: middle;
+//}
+//
+//.parallax-image {
+//  height: 150px;
+//  padding: 50px 0 0 0;
+//  background-size: cover;
+//}
+//
+//.img1 {
+//  background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
+//}
+//
+//@media screen and (min-width: $sm) {
+//  .parallax-image {
+//    height: 300px;
+//    padding: 50px 0 0 0;
+//    background-size: cover;
+//  }
+//}

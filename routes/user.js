@@ -50,6 +50,7 @@ router.post('/', function (req, res, next) {
  * @description Rejestracja
  */
 router.post('/register', function (req, res, next) {
+
     //niewypelnione pola
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
         console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");

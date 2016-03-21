@@ -3,16 +3,16 @@
  */
 
 
-function topNavBar() {
+function header() {
     return {
         restrict: 'E',
-        templateUrl: 'modules/directives/topNavBar/topNavBar.html',
-        controller: TopNavBarController,
-        controllerAs: "topNavBarCtrl"
+        templateUrl: 'modules/directives/header/header.html',
+        controller: HeaderController,
+        controllerAs: "headerCtrl"
     };
 }
 
-class TopNavBarController {
+class HeaderController {
     constructor($log, localStorageService, UserService, $scope) {
         let self = this;
         self.localStorageService = localStorageService;
@@ -77,4 +77,4 @@ class TopNavBarController {
 
 }
 
-export default topNavBar;
+export default header;

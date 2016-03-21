@@ -10,15 +10,22 @@
  */
 function routing($stateProvider, $urlRouterProvider) {
     //******************** Defaultowy stan aplikacji ***************************\\
-    // $urlRouterProvider.otherwise("/app");
+    $urlRouterProvider.otherwise("/app/home");
     //**************************************************************************\\
-    //
-    $stateProvider.state('app', {
-        url: "/app",
-        templateUrl: "modules/mainApp/views/mainView.html",
-        controller: "MainController",
-        controllerAs: "mainAppCtrl"
-    });
+    
+    $stateProvider
+        .state('app', {
+            url: "/app",
+            templateUrl: "modules/mainApp/views/application.html",
+            controller: "ApplicationController",
+            controllerAs: "appCtrl"
+        })
+        .state('app.home', {
+            url: "/home",
+            templateUrl: "modules/mainApp/views/home.html",
+            controller: "HomeController",
+            controllerAs: "homeCtrl"
+        });
 }
 
 export default routing;

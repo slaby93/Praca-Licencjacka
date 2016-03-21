@@ -19,12 +19,12 @@ class LoginModalController {
         self.userLogin = {
             login: "",
             password: ""
-        }
+        };
         self.userRegister = {
             login: "",
             password: "",
             retypedPassword: ""
-        }
+        };
     }
 
     /**
@@ -52,7 +52,6 @@ class LoginModalController {
             (err)=> {
                 self.loader.hide();
             });
-
     }
 
     /**

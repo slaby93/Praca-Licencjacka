@@ -4,7 +4,7 @@
  * @returns {undefined}
  */
 
-class MainAppCtrl {
+class ApplicationController {
 
     constructor($scope, $log) {
         let self = this;
@@ -21,4 +21,4 @@ class MainAppCtrl {
     }
 }
 
-export default MainAppCtrl;
+export default ApplicationController;

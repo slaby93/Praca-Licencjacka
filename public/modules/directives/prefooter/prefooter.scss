@@ -1,0 +1,31 @@
+$darker-color: #e6e6e6;
+
+//Screen break points
+$md: 960px;
+$lg: 1280px;
+$xl: 1920px;
+$sm: 600px;
+
+
+
+#prefooter{
+	div{
+		height: 180px;
+		.bg-color-darker{
+			background-color: $darker-color;
+		}
+	}
+	.parallax-image-container {
+		background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
+		padding: 50px 0 0 0;
+	}
+	.min-height-set{
+		min-height: 100px;
+	}
+	@media screen and (min-width: $md) {
+		.min-height-set{
+			min-height: 300px;
+		}
+	}
+  
+}

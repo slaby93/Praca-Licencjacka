@@ -18,8 +18,10 @@ import routing from './routing';
 import ApplicationController from './application/application.controller.js';
 import LoginModalController from './login/loginModal.controller.js';
 import HomeController from './home/home.controller.js';
+import TestController from './test/test.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
+import EventService from '../services/eventService';
 import LoaderService from '../directives/loader/loader.service';
 // -----------------------------------------------------   Directives imports    ------------------------------------------------------------------------------------------
 import HeaderDirective from '../directives/header/header.directive';
@@ -36,12 +38,18 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("HomeController", HomeController)
+    .controller("TestController", TestController)
     .service("UserService", UserService)
+    .service("EventService", EventService)
     .service("loader", LoaderService)
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
+<<<<<<< HEAD
 	.directive("prefooter", PrefooterDirective)
 	.directive("prefooter2", Prefooter2Directive)
+=======
+    .directive("prefooter", PrefooterDirective)
+>>>>>>> a108c493b0d55d937f4ffe6425d7ce423a24a2f8
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)

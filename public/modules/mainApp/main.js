@@ -3,19 +3,19 @@
  */
 function main(UserService, loader, $state) {
     "use strict";
-    let token = UserService.getToken();
+    let token = UserService.token;
     if (token) {
         loader.show();
         UserService.loginByToken(token).then(
             // Success
             ()=> {
                 loader.hide();
-                $state.go('app');
+                $state.go('app.home');
             },
             // Error
             ()=> {
                 loader.hide;
-                $state.go('app');
+                $state.go('app.home');
             }
         );
     }

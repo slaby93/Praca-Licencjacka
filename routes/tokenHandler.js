@@ -8,13 +8,16 @@ var jwt = require('jsonwebtoken');
  * @param passedUser
  * @param callback
  */
-exports.generateJWT = function (ID, callback) {
+exports.generateJWT = function (ID, groups, callback) {
     var today = new Date();
     var expire = new Date(today);
     // jak dlugo token ma byc uznawany za poprawny
-    expire.setDate(today.getDate() + 1);
+	expire.setTime(today.getTime() + 7200000);
     // generowanie tokena, 1 argumentem są zakodowane dane
-    jwt.sign({"_id": ID}, "SECRET", {"algorithm": "HS256"}, function (token) {
+    jwt.sign({"_id": ID,
+		"groups": groups,
+		"exp": parseInt(expire.getTime() / 1000)
+	}, "SECRET", {"algorithm": "HS256"}, function (token) {
         if (callback) {
             callback(token);
         }
@@ -33,5 +36,4 @@ exports.decodeToken = function (token) {
         console.log(err);
         return null;
     }
-
 };

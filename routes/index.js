@@ -8,6 +8,12 @@ var http = require('http');
 var util = require('util');
 var fs = require('fs');
 var tokenHandler = require("./tokenHandler");
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var guard = require('express-jwt-permissions')({
+  requestProperty: 'payload',
+  permissionsProperty: 'groups'
+})
 
 /**
  * @description Zwraca index.html
@@ -25,7 +31,7 @@ router.all('/testowo', function (req, res, next) {
 /**
  * @description pobiera plik od użytkownika i wgrywa do /public/gallery
  */
-router.post('/upload', function (req, res, next) {
+router.post('/upload', auth, function (req, res, next) {
     var form = new formidable.IncomingForm();
 
     /*

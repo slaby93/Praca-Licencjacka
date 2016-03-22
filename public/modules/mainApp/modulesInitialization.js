@@ -44,7 +44,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .service("loader", LoaderService)
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
-	.directive("prefooter", PrefooterDirective)
+    .directive("prefooter", PrefooterDirective)
 	.directive("prefooter2", Prefooter2Directive)
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)

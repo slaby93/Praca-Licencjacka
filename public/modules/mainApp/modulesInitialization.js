@@ -18,8 +18,10 @@ import routing from './routing';
 import ApplicationController from './application/application.controller.js';
 import LoginModalController from './login/loginModal.controller.js';
 import HomeController from './home/home.controller.js';
+import TestController from './test/test.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
+import EventService from '../services/eventService';
 import LoaderService from '../directives/loader/loader.service';
 // -----------------------------------------------------   Directives imports    ------------------------------------------------------------------------------------------
 import HeaderDirective from '../directives/header/header.directive';
@@ -35,11 +37,13 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("HomeController", HomeController)
+    .controller("TestController", TestController)
     .service("UserService", UserService)
+    .service("EventService", EventService)
     .service("loader", LoaderService)
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
-	.directive("prefooter", PrefooterDirective)
+    .directive("prefooter", PrefooterDirective)
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)

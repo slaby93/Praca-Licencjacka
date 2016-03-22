@@ -27,6 +27,7 @@ import LoaderService from '../directives/loader/loader.service';
 import HeaderDirective from '../directives/header/header.directive';
 import FooterDirective from '../directives/footer/footer.directive';
 import PrefooterDirective from '../directives/prefooter/prefooter.directive';
+import Prefooter2Directive from '../directives/prefooter2/prefooter2.directive';
 import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
 import RetypedPasswordValidatorDirective from '../directives/retypedPasswordValidator/retypedPasswordValidator.directive';
 import LoaderDirective from '../directives/loader/loader.directive';
@@ -43,7 +44,8 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .service("loader", LoaderService)
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
-    .directive("prefooter", PrefooterDirective)
+	.directive("prefooter", PrefooterDirective)
+	.directive("prefooter2", Prefooter2Directive)
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)

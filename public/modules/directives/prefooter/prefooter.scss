@@ -11,18 +11,21 @@ $sm: 600px;
 #prefooter{
 	div{
 		height: 180px;
-		.bg-color-darker{
+		padding-bottom: 5px;
+		.block-of-ads{
 			background-color: $darker-color;
+			padding-top: 5px;
 		}
 	}
 	.parallax-image-container {
 		background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
 		padding: 50px 0 0 0;
+		background-size: cover;
 	}
 	.min-height-set{
 		min-height: 100px;
 	}
-	@media screen and (min-width: $md) {
+	@media screen and (min-width: $sm) {
 		.min-height-set{
 			min-height: 300px;
 		}

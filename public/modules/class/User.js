@@ -12,7 +12,6 @@ class User {
         this.phone = phone;
         this.localization = localization;
     }
-
 }
 
 export default User;

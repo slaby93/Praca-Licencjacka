@@ -28,7 +28,7 @@ class UserService {
         let promise = self.$q.defer();
         self.$http.post("/user", passedUser).then((received) => {
             promise.resolve(received);
-            self.user = new User(received.data.user._id, received.data.user.login);
+            self.user = new User(received.data.user._id, received.data.user.login,received.data.user.groups);
             self.token = received.data.token;
         }, (err) => {
             promise.reject(err);

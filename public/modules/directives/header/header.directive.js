@@ -13,7 +13,7 @@ function header() {
 }
 
 class HeaderController {
-    constructor($log, localStorageService, UserService, $scope,EventService) {
+    constructor($log, localStorageService, UserService, $scope, EventService) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
@@ -25,10 +25,9 @@ class HeaderController {
 
     setWatchers() {
         let self = this;
-        // watch for user object change
-        self.$scope.$on('userObjectChange', (event, newUser)=> {
+        self.userWatch = self.$scope.$watch('headerCtrl.UserService.user', (newUser)=> {
             self.user = newUser;
-        });
+        }, true);
     }
 
     setDefaultValues() {

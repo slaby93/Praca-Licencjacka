@@ -28,8 +28,7 @@ class UserService {
         let promise = self.$q.defer();
         self.$http.post("/user", passedUser).then((received) => {
             promise.resolve(received);
-            self.$l.debug("data", received);
-            self.user = new User(received.data._id, received.data.login);
+            self.user = new User(received.data.user._id, received.data.user.login);
             self.token = received.data.token;
         }, (err) => {
             promise.reject(err);
@@ -72,8 +71,6 @@ class UserService {
      */
     set user(user) {
         this._user = user;
-        // self.$rootScope.$broadcast('userObjectChange', user);
-        // self.$rootScope.$emit('userObjectChange', user);
     }
 
     /**
@@ -109,20 +106,6 @@ class UserService {
         self.user = new User();
         self.token = undefined;
     };
-
-
-    // fetchAllUsers() {
-    //     var promise = $q.defer();
-    //     $rootScope.$evalAsync(function () {
-    //         self.$http.post("/user/all").then(function (allUsers) {
-    //             promise.resolve(allUsers.data);
-    //         }, function (err) {
-    //             promise.reject(err);
-    //         });
-    //     });
-    //     return promise.promise;
-    // };
-
 
     loginByToken() {
         let self = this;

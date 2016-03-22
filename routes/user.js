@@ -4,6 +4,12 @@ var bcrypt = require('bcryptjs');
 var assert = require('assert');
 var mongo = require('./dbConnect.js');
 var tokenHandler = require("./tokenHandler");
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var guard = require('express-jwt-permissions')({
+  requestProperty: 'payload',
+  permissionsProperty: 'groups'
+})
 // POST http://localhost:3000/user/login
 /**
  * @description Logowanie
@@ -28,7 +34,7 @@ router.post('/', function (req, res, next) {
             //poprawne haslo po weryfikacji biblioteki bcrypt
             if (bcrypt.compareSync(req.body.password, foundedUser.password)) {
                 // generowanie tokena
-                tokenHandler.generateJWT(foundedUser._id, function (token) {
+                tokenHandler.generateJWT(foundedUser._id, foundedUser.groups, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
                     foundedUser = removeSensitiveUserData(foundedUser);
                     //zwrot informacji o uzytkowniku oraz wygenerowanego tokena
@@ -127,7 +133,7 @@ router.post('/token', function (req, res, next) {
     });
 });
 
-router.post('/all', function (req, res, next) {
+router.post('/all', auth, function (req, res, next) {
     mongo.connect("projekt", ["user"], function (db) {
         db.user.find({}, {
                 "password": 0
@@ -145,7 +151,7 @@ router.post('/all', function (req, res, next) {
     });
 });
 
-router.post("/update", function (req, res, next) {
+router.post("/update", auth, function (req, res, next) {
     /**
      * TODO
      * Napisać testy
@@ -171,7 +177,7 @@ router.post("/update", function (req, res, next) {
     });
 });
 
-router.post("/remove", function (req, res, next) {
+router.post("/remove", auth, function (req, res, next) {
     /**
      * TODO
      * Napisać testy

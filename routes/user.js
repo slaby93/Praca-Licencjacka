@@ -122,7 +122,7 @@ router.post('/token', function (req, res, next) {
                 res.status(500).send("Token is valid, but error when fetching from db");
                 return;
             }
-            // nie znaleziono uzytkowika z bazie
+            // nie znaleziono uzytkowika w bazie
             if (foundedUser === undefined || foundedUser === null) {
                 res.status(500).send("User not found");
                 return;
@@ -133,67 +133,85 @@ router.post('/token', function (req, res, next) {
     });
 });
 
-router.post('/all', auth, function (req, res, next) {
-    mongo.connect("projekt", ["user"], function (db) {
-        db.user.find({}, {
-                "password": 0
-                , "retypedPassword": 0
-            }
-            , function (err, data) {
-                if (err) {
-                    console.error(err);
-                    res.status(404).send();
-                    return;
-                } else {
-                    res.status(200).send(data);
-                }
-            });
-    });
+router.post('/all', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		mongo.connect("projekt", ["user"], function (db) {
+			db.user.find({}, {
+					"password": 0
+					, "retypedPassword": 0
+				}
+				, function (err, data) {
+					if (err) {
+						console.error(err);
+						res.status(404).send();
+						return;
+					} else {
+						res.status(200).send(data);
+					}
+				});
+		});
+	});
 });
 
-router.post("/update", auth, function (req, res, next) {
+router.post("/update", auth, guard.check('user'), function (req, res, next) {
     /**
      * TODO
      * Napisać testy
      * Walidacja przesłanych danych
      * Przypadki brzegowe
      */
-    var usr = req.body.user;
-    var id = usr._id;
-    delete usr._id;
-    mongo.connect("projekt", ["user"], function (db) {
-        db.user.update({
-                _id: mongo.ObjectId(id)
-            },
-            {
-                "$set": usr
-            },
-            function (err, data) {
-                if (err) {
-                    res.status(500).send(err);
-                }
-                res.status(200).send(data);
-            });
-    });
+	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		var usr = req.body.user;
+		var id = usr._id;
+		delete usr._id;
+		mongo.connect("projekt", ["user"], function (db) {
+			db.user.update({
+					_id: mongo.ObjectId(id)
+				},
+				{
+					"$set": usr
+				},
+				function (err, data) {
+					if (err) {
+						res.status(500).send(err);
+					}
+					res.status(200).send(data);
+				});
+		});
+	});
 });
 
-router.post("/remove", auth, function (req, res, next) {
+router.post("/remove", auth, guard.check('user'), function (req, res, next) {
     /**
      * TODO
      * Napisać testy
      * Co, gdy dane są błędne? itd
      */
-    var usr = req.body.user;
-    mongo.connect("projekt", ["user"], function (db) {
-        db.user.remove({"login": usr.login},
-            function (err, data) {
-                if (err) {
-                    res.status(500).send(err);
-                } else {
-                    res.status(200).send("ok");
-                }
-            });
-    })
+	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		var usr = req.body.user;
+		mongo.connect("projekt", ["user"], function (db) {
+			db.user.remove({"login": usr.login},
+				function (err, data) {
+					if (err) {
+						res.status(500).send(err);
+					} else {
+						res.status(200).send("ok");
+					}
+				});
+		})
+	});
 });
 
 

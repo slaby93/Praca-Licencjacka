@@ -1,11 +1,22 @@
 #home {
+	padding-top: 20px;
 	.table-content{
 		height: 200px;
 		margin-left: 5px;
 		margin-right: 5px;
 	}
 	.cogs-image{
-			height: 150px;
-			width: 150px;
-		}
+		height: 150px;
+		width: 150px;
+	}
+	.table-header{
+		margin-top: 0px;
+		margin-left: 0px;
+		margin-right: 0px;
+		height: 35px;
+		overflow: hidden;
+	}
+	.cogs-image-padding  {padding-top: 5px}
+	.links-padding  {padding-top: 10px;}
+	.no-overflow  {overflow: hidden;}
 }

@@ -1,0 +1,47 @@
+$darker-color: #e6e6e6;
+
+//Screen break points
+$md: 960px;
+$lg: 1280px;
+$xl: 1920px;
+$sm: 600px;
+$smplus: 900px;
+
+
+
+#prefooter2{
+	.table-text-padding  {padding-bottom: 20px;}
+	.left-margin  {margin-left: 5px;}
+    .table-title{
+		height: 50px;
+		font-weight: 30;
+		font-size: 20px;
+		text-align: center;
+		margin-bottom: 0px;
+		md-content{
+			overflow: hidden;
+		}
+	}
+	div{
+		.faq-image{
+			height: 100px;
+			width: 100px;
+		}
+		
+		@media screen and (min-width: $smplus) {
+			.faq-image{
+				height: 150px;
+				width: 150px;
+			}
+		}
+		.table-content{
+			margin-top: 4px;
+			padding-top: 10px;
+			height: 250px;
+		}
+	
+	
+	}
+  
+  
+}

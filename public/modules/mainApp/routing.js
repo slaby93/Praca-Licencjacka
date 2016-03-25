@@ -25,7 +25,14 @@ function routing($stateProvider, $urlRouterProvider) {
             templateUrl: "modules/mainApp/home/home.html",
             controller: "HomeController",
             controllerAs: "homeCtrl"
-        });
+        })
+        .state('test', {
+            url: "/test",
+            templateUrl: "modules/mainApp/test/test.html",
+            controller: "TestController",
+            controllerAs: "homeCtrl"
+        })
+        ;
 }
 
 export default routing;

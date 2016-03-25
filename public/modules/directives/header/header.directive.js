@@ -1,7 +1,7 @@
 /**
  * Created by piec on 13.03.16.
  */
-
+import User from 'Classes/User';
 
 function header() {
     return {
@@ -13,7 +13,7 @@ function header() {
 }
 
 class HeaderController {
-    constructor($log, localStorageService, UserService, $scope) {
+    constructor($log, localStorageService, UserService, $scope, EventService) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
@@ -25,10 +25,9 @@ class HeaderController {
 
     setWatchers() {
         let self = this;
-        // watch for user object change
-        self.$scope.$on('userObjectChange', (event, newUser)=> {
+        self.userWatch = self.$scope.$watch('headerCtrl.UserService.user', (newUser)=> {
             self.user = newUser;
-        });
+        }, true);
     }
 
     setDefaultValues() {
@@ -37,16 +36,16 @@ class HeaderController {
             {
                 placeholder: "Jak to działa?",
                 click: () => {
-				
+
                 },
-				visibility: ["guest", "user"]
+                visibility: ["guest", "user"]
             },
             {
                 placeholder: "Dodaj wydarzenie",
                 click: () => {
 
                 },
-				visibility: ["user"]
+                visibility: ["user"]
             },
             {
                 placeholder: "Ustawienia konta",
@@ -60,7 +59,7 @@ class HeaderController {
                 click: () => {
 
                 },
-				visibility: ["admin"]
+                visibility: ["admin"]
             },
             {
                 placeholder: "Wyloguj",
@@ -68,12 +67,11 @@ class HeaderController {
                     let self = this;
                     self.UserService.logout();
                 },
-				visibility: ["user"]
+                visibility: ["user"]
             }
         ];
     }
-    
-    
+
 
 }
 

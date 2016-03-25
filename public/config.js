@@ -14,6 +14,7 @@ System.config({
   },
 
   map: {
+    "Classes": "modules/class",
     "angular": "github:angular/bower-angular@1.5.2",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",
     "angular-material": "github:angular/bower-material@1.0.6",
@@ -28,6 +29,7 @@ System.config({
     "crypto-js": "npm:crypto-js@3.1.6",
     "jquery": "npm:jquery@2.2.2",
     "md-data-table": "npm:md-data-table@1.4.2",
+    "moment": "npm:moment@2.12.0",
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {
@@ -163,6 +165,9 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:moment@2.12.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"

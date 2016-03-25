@@ -1,17 +1,22 @@
 #home {
-  .parallax-image-container {
-    background: url("../resources/parallax_images/parallax2-blur.jpg") 50% no-repeat fixed;
-    background-size: cover;
-    latest-events-table md-content {
-      margin-top: 20px;
-    }
-    div {
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-    .home-page-title {
-      font-weight: bold;
-      font-size: 20px;
-    }
-  }
+	padding-top: 20px;
+	.table-content{
+		height: 200px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	.cogs-image{
+		height: 150px;
+		width: 150px;
+	}
+	.table-header{
+		margin-top: 0px;
+		margin-left: 0px;
+		margin-right: 0px;
+		height: 35px;
+		overflow: hidden;
+	}
+	.cogs-image-padding  {padding-top: 5px}
+	.links-padding  {padding-top: 10px;}
+	.no-overflow  {overflow: hidden;}
 }

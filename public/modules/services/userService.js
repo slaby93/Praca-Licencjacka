@@ -4,6 +4,7 @@
  * @description Serwis odpowiedzialny za obsluge uzytkownika tj logowanie, wylogowanie, rejestracja, przechowywanie tokenu nadanego po logowaniu.
  * @param $http
  */
+import User from 'Classes/User';
 class UserService {
     constructor($log, $http, $state, localStorageService, $q, $rootScope, $mdDialog) {
         let self = this;
@@ -14,7 +15,7 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
-        self.setUser(undefined);
+        self.user = new User();
     }
 
     /**
@@ -27,8 +28,8 @@ class UserService {
         let promise = self.$q.defer();
         self.$http.post("/user", passedUser).then((received) => {
             promise.resolve(received);
-            self.setUser(received.data.user);
-            self.setToken(received.data.token);
+            self.user = new User(received.data.user._id, received.data.user.login,received.data.user.groups);
+            self.token = received.data.token;
         }, (err) => {
             promise.reject(err);
         });
@@ -36,56 +37,50 @@ class UserService {
     };
 
     /**
-     * Set token in local storage
+     * Returns token
+     * @returns {*}
+     */
+    get token() {
+        let self = this;
+        if (!self._token) {
+            self._token = self.localStorage.get('token');
+        }
+        return self._token;
+    }
+
+    /**
+     * Saves token to service variable and localStorage.
+     * If value is evaluated to false removes token from localStorage.
      * @param token
      */
-    setToken(token) {
+    set token(token) {
         let self = this;
-        self.localStorage.set("token", token);
+        self._token = token;
+        if (token) {
+            self.localStorage.add('token', token);
+        } else {
+            self.localStorage.remove('token', token);
+        }
+
     }
 
-    /**
-     * Remove token from local storage
-     */
-    removeToken() {
-        let self = this;
-        self.localStorage.remove("token");
-    }
-
-    /**
-     * Returns token from local storage
-     * @returns {*|token|null}
-     */
-    getToken() {
-        let self = this;
-        return self.localStorage.get("token");
-    }
 
     /**
      *  Set user object in service
      * @param user
      */
-    setUser(user) {
-        let self = this;
-        if (user) {
-            self.user = user;
-        } else {
-            self.user = {
-                groups: ['guest']
-            };
-        }
-        self.$rootScope.$broadcast('userObjectChange', user);
-        self.$rootScope.$emit('userObjectChange', user);
+    set user(user) {
+        this._user = user;
     }
 
     /**
      * Returns user object from service
      * @returns {*|modalInstance.resolve.user|modalInstance.resolve."user"|null}
      */
-    getUser() {
-        let self = this;
-        return self.user;
+    get user() {
+        return this._user;
     }
+
 
     /**
      * Register new user in server. Returns promise.
@@ -97,9 +92,8 @@ class UserService {
         self.$rootScope.$evalAsync(() => {
             self.$http.post("/user/register", passedUser).then((received) => {
                 promise.resolve(received);
-                self.$l.debug(received);
-                self.setUser(received.data.user);
-                self.setToken(received.data.token);
+                self.user = new User(received.data.user.id, received.data.user.login, received.data.user.groups);
+                self.token = received.data.token;
             }, (err) => {
                 promise.reject(err);
             });
@@ -109,84 +103,28 @@ class UserService {
 
     logout() {
         let self = this;
-        self.removeToken();
-        self.setUser(undefined);
+        self.user = new User();
+        self.token = undefined;
     };
 
-
-    fetchAllUsers() {
-        var promise = $q.defer();
-        $rootScope.$evalAsync(function () {
-            self.$http.post("/user/all").then(function (allUsers) {
-                promise.resolve(allUsers.data);
-            }, function (err) {
-                promise.reject(err);
-            });
-        });
-        return promise.promise;
-    };
-
-
-    loginByToken(token) {
+    loginByToken() {
         let self = this;
-        self.$l.debug("Login by token");
         var promise = self.$q.defer();
-        self.$http.post('/user/token', {"token": token}).then(
+        self.$http.post('/user/token', {"token": self.token}).then(
             // SUCCESS
             function (data) {
-                self.setUser(data.data);
+                self.$l.debug("Data", data);
+                self.user = new User(data.data._id, data.data.login, data.data.groups);
                 promise.resolve(data);
                 // ERROR
             }, function (err) {
-                self.removeToken();
+                self.token = undefined;
                 promise.resolve(err);
             });
 
         return promise.promise;
 
     }
-
-    editUser(user, callback) {
-        let self = this;
-        self.$l.debug("Edit user");
-        self.$http.post("/user/update", {user: user}).then(
-            function (message) {
-                callback();
-                return;
-            },
-            function (error) {
-                console.error(error);
-                swal({
-                    title: "Błąd",
-                    text: "Podczas komunikacji z serwerem wystąpił błąd.",
-                    type: "warning",
-                    //showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Zamknij",
-                }, function () {
-                    callback();
-                });
-
-            }
-        )
-    };
-
-    removeUser(user, callback) {
-        let self = this;
-        self.$l.debug("Remove user");
-        self.$http.post("/user/remove", {
-            user: user
-        }).then(function (message) {
-            if (callback) {
-                callback(message);
-            }
-        }, function (error) {
-            console.error(error);
-            if (callback) {
-                callback(error);
-            }
-        });
-    };
 
     /**
      * Pop up login/register modal on screen.
@@ -205,7 +143,7 @@ class UserService {
     /**
      *  Checks if user has passed right
      * @param rightsToCheck
-	 * for arrays declared like:  visibility: ["user", "admin"]  pass visibility[0], for all other just pass the ["user","admin"]
+     * for arrays declared like:  visibility: ["user", "admin"]  pass visibility[0], for all other just pass the ["user","admin"]
      */
     hasRight(rightsToCheck) {
         let self = this;

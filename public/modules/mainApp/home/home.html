@@ -1,38 +1,113 @@
-<div id="home" layout="column">
-    <!--Main Parallax-->
-    <div layout="column" class="parallax-image-container">
-        <latest-events-table></latest-events-table>
-        <div class="home-page-title" layout="row" layout-align="center center">
-            <span>FerryJerry, Twój Wyszukiwator Sportowy!</span>
-        </div>
-    </div>
-</div>
+<div id="home">
 
-<md-card>
-    <md-content layout-align="center center" layout="column" layout-padding>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-    </md-content>
-</md-card>
-<md-card>
-    <md-content layout-align="center center" layout="column" layout-padding>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-    </md-content>
-</md-card>
-<md-card>
-    <md-content layout-align="center center" layout="column" layout-padding>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-    </md-content>
-</md-card>
-<md-card>
-    <md-content layout-align="center center" layout="column" layout-padding>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-    </md-content>
-</md-card>
+
+	<div layout="row" layout-xs="column" layout-align="center">
+		<md-card flex="20" flex-xs="100" class="table-content" style="height: 350px;">
+			<md-content layout="column" style="margin-left: 15px;">
+			
+				<div layout="row" layout-align="center" flex>		
+					Znajdź sport w swoim regionie!<br>
+				</div>
+				
+				<div layout="row">
+					<md-input-container flex="90">
+						<label>Miasto</label>
+						<input ng-model="city" type="text">
+					</md-input-container>
+				</div>
+				
+				<div layout="row">
+					<md-input-container flex="45">
+					  <md-select ng-model="region" placeholder="Region">
+						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+					  </md-select>
+					</md-input-container>
+					<md-input-container flex="45">
+					  <md-select ng-model="category" placeholder="Kategoria">
+						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+					  </md-select>
+					</md-input-container>
+				</div>
+				<div layout="row">
+					<md-datepicker ng-model="from" flex="40"></md-datepicker>
+					<md-datepicker ng-model="from" flex="40"></md-datepicker>
+				</div>
+				
+			</md-content>
+		</md-card>
+		<md-card flex="80" flex-xs="100" class="table-content" style="height: 350px;">
+			<md-content layout="column">
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4></h4><br>          <!--tutaj, w zaleznosci od ilosci znalezionych eventów, ma być: Znaleziono eventów: 321/Nie znaleziono eventów/''-->
+						</md-content>
+					</md-card>
+				</div>
+			</md-content>
+		</md-card>
+	</div>
+
+
+
+
+
+	<div layout="row" layout-xs="column" layout-align="center">
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="column">
+			
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Jak działa FerryJerry?</h4><br>
+						</md-content>
+					</md-card>
+				</div>
+				
+				<div layout="row" layout-align="center" flex class="cogs-image-padding">
+					<a href=""><img ng-src="resources/cogs.png" class="cogs-image"></img></a>
+				</div>
+			</md-content>
+		</md-card>
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="column">
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Gorące wydarzenia:</h4><br>
+						</md-content>
+					</md-card>
+				</div>
+			</md-content>
+		</md-card>
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="row">
+				<div layout="column" layout-align="center" layout-fill>
+				
+					<div layout="row" layout-align="center" flex>
+						<md-card flex="100" class="table-header">
+							<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Portale społecznościowe:</h4><br>
+							</md-content>
+						</md-card>
+					</div>
+					
+					<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">
+						<div layout="row" layout-align="center center" flex="20">
+							<a href="https://www.facebook.com/ferryjerry" target="_blank"><img ng-src="resources/facebook-icon.png"></img></a>
+						</div>
+						facebook.com/ferryjerry
+						
+					</div>
+					<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">
+						<div layout="row" layout-align="center center" flex="20">
+							<a href="https://www.twitter.com/ferryjerry" target="_blank"><img ng-src="resources/twitter-icon.png"></img></a>
+						</div>
+						twitter.com/ferryjerry
+					</div>
+				</div>
+				
+			</md-content>
+		</md-card>
+	</div>
+</div>

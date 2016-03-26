@@ -8,7 +8,7 @@ function main(UserService, loader, $state) {
         loader.show();
         UserService.loginByToken(token).then(
             // Success
-            ()=> {
+            ()=> { 
                 loader.hide();
                 $state.go('app.home');
             },

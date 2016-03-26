@@ -1,4 +1,1 @@
-# Wizja Projektu #
-[![Build Status](https://codeship.com/projects/YOUR_PROJECT_UUID/status?branch=master
-)](https://codeship.com/projects/YOUR_PROJECT_UUID/status?branch=master
-)
+[![Build Status](http://letsplaypi.noip.me:8080/job/Praca Licencjacka/31//badge/icon)](http://letsplaypi.noip.me:8080/job/Praca Licencjacka/31/)

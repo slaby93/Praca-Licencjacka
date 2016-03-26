@@ -12,6 +12,11 @@
 var mongojs = require('mongojs');
 var check = require('check-types');
 var assert = require('assert');
+var clc = require('cli-color');
+
+var error = clc.red.bold;
+var warn = clc.yellow;
+var notice = clc.blue;
 
 var db;
 /**
@@ -21,23 +26,28 @@ var db;
 exports.ObjectId = mongojs.ObjectId;
 
 exports.connect = function (dataBase, collectionList, callback) {
+
+    console.log(notice("Connecting to database"));
     if (check.not.string(dataBase) || check.not.array(collectionList)) {
-        throw new Error("Parametr dataBase nie jest stringiem lub przekazana tablica nie jest tablica!");
+        // throw new Error("Parametr dataBase nie jest stringiem lub przekazana tablica nie jest tablica!");
+        throw new Error("dataBase parameter is not a string or collectionList is not an array!");
     }
-    if (process.env.konfiguracja_baza_mongo === "lokalna") {
+    if (process.env.NODE_ENV === "production") {
         db = mongojs('lokalny:lokalny@localhost/' + dataBase, collectionList);
-        console.log("Jestem na Raspberry -> lacze sie lokalnie");
-    } else if (process.env.konfiguracja_komputer_lokalny_Daniel === "tak") {
-        console.log("Daniel polaczenie z baza");
-        db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
-    } else {
-        db = mongojs('zdalny:zdalny@letsplaypi.noip.me/' + dataBase, collectionList);
+    } else if (process.env.NODE_ENV === 'development') {
+
+        if (process.env.localDaniel) {
+            db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
+        } else {
+            db = mongojs('zdalny:zdalny@letsplaypi.noip.me/' + dataBase, collectionList);
+        }
+
     }
     db.on('error', function (err) {
-        assert.ifError(err);
+        console.log(error(err));
     });
     db.on('connect', function () {
-        console.log('Database connected');
+        console.log(notice('Database connected'));
     });
     if (callback) {
         callback(db);

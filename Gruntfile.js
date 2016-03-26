@@ -28,7 +28,8 @@ module.exports = function (grunt) {
         },
         exec: {
             npm_install: 'npm install',
-            bower_install: 'jspm install'
+            bower_install: 'jspm install',
+            build: 'jspm bundle-sfx modules/mainApp/modulesInitialization.js public/build.js'
         },
         uglify: {
             options: {
@@ -81,6 +82,9 @@ module.exports = function (grunt) {
             dist: {
                 src: ["public/dist"]
             },
+            clearDist: {
+                src: ["public/dist", "public/index.html", "public/build.js", "public/build.js.map"]
+            },
             clear_scss: {
                 src: ["public/dist/concated.scss"]
             }
@@ -125,16 +129,39 @@ module.exports = function (grunt) {
                 src: 'public/modules/**/*.scss',
                 dest: 'public/dist/output.scss'
             },
+        },
+        preprocess: {
+            html: {
+                src: 'public/preprocessed.index.html',
+                dest: 'public/index.html'
+            }
+        },
+        env: {
+            development: {
+                NODE_ENV: 'development'
+            },
+            production: {
+                NODE_ENV: 'production',
+            },
+            daniel: {
+                NODE_ENV: 'development',
+                localDaniel: "yup"
+            }
         }
 
+
     });
-    grunt.registerTask('default', ['compile_scss', 'concurrent:target1']);
+    grunt.registerTask('doMagic', ['preprocess', 'compile_scss', 'concurrent:target1']);
     // clears dist folder
     grunt.registerTask('clear', ['clean']);
     // task for git
     grunt.registerTask('prepare', ['compile']);
     // remove recent file, concatenates all scss files into 1, then compile this concatenated file into css.
     grunt.registerTask('compile_scss', ['clean:clear_scss', 'concat:scss', 'sass:dist']);
+
+    grunt.registerTask('default', ['clean:clearDist', 'env:development', 'doMagic']);
+    grunt.registerTask('daniel', ['clean:clearDist', 'env:daniel', 'doMagic']);
+    grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build']);
 
 
 };

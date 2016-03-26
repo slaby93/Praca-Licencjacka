@@ -29,7 +29,8 @@ module.exports = function (grunt) {
         exec: {
             npm_install: 'npm install',
             bower_install: 'jspm install',
-            build: 'jspm bundle-sfx modules/mainApp/modulesInitialization.js public/build.js'
+            build: 'jspm bundle-sfx modules/mainApp/modulesInitialization.js public/build.js',
+            forever_start:'forever start server.js'
         },
         uglify: {
             options: {
@@ -161,7 +162,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['clean:clearDist', 'env:development', 'doMagic']);
     grunt.registerTask('daniel', ['clean:clearDist', 'env:daniel', 'doMagic']);
-    grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build']);
+    grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build','exec:forever_start']);
 
 
 };

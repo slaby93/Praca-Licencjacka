@@ -29,6 +29,7 @@ import FooterDirective from '../directives/footer/footer.directive';
 import PrefooterDirective from '../directives/prefooter/prefooter.directive';
 import Prefooter2Directive from '../directives/prefooter2/prefooter2.directive';
 import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
+import QueryTableDirective from '../directives/queryTable/queryTable.directive';
 import RetypedPasswordValidatorDirective from '../directives/retypedPasswordValidator/retypedPasswordValidator.directive';
 import LoaderDirective from '../directives/loader/loader.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
@@ -47,6 +48,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("prefooter", PrefooterDirective)
 	.directive("prefooter2", Prefooter2Directive)
     .directive("latestEventsTable", LatestEventsTableDirective)
+    .directive("queryTable", QueryTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
     .config(routing)

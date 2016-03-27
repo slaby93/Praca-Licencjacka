@@ -3,16 +3,16 @@
  */
 
  
-function latestEventsTable() {
+function queryTable() {
     return {
         restrict: 'E',
-        templateUrl: 'modules/directives/latestEventsTable/latestEventsTable.html',
-        controller: LatestEventsTableController,
-        controllerAs: "latestEventsTableCtrl"
+        templateUrl: 'modules/directives/queryTable/queryTable.html',
+        controller: QueryTableController,
+        controllerAs: "queryTableCtrl"
     };
 }
 
-class LatestEventsTableController {
+class QueryTableController {
     constructor() {
         let self = this;
 
@@ -57,4 +57,5 @@ class LatestEventsTableController {
 	}
 
 }
-export default latestEventsTable;
+		
+export default queryTable;

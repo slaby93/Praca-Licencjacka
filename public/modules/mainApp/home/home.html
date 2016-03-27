@@ -1,38 +1,61 @@
+<style>
+	button.md-datepicker-button.md-icon-button.md-button.md-ink-ripple{
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.md-datepicker-input-container{
+		margin-left: 0px;
+		max-width: 84px;
+	}
+
+</style>
+
 <div id="home">
 
 
-	<div layout="row" layout-xs="column" layout-align="center">
-		<md-card flex="20" flex-xs="100" class="table-content" style="height: 350px;">
-			<md-content layout="column" style="margin-left: 15px;">
+	<div layout="row" layout-xs="column" layout-align="center" flex-sm="100">
+		<md-card flex="20" flex-xs="100" layout="row" layout-align="center" style="height: 350px; margin-left: 5px; margin-right: 5px;">
+			<md-content layout="column" flex="100" style="overflow-x: hidden;">
 			
-				<div layout="row" layout-align="center" flex>		
-					Znajdź sport w swoim regionie!<br>
+				<div layout="row" layout-align="center" style="text-align: center;">	
+					Znajdź sport w swoim regionie!
 				</div>
 				
-				<div layout="row">
-					<md-input-container flex="90">
-						<label>Miasto</label>
-						<input ng-model="city" type="text">
-					</md-input-container>
+				<div layout="row" layout-align="center">
+					<div layout="column" layout-align="center" flex="90">	
+						<md-input-container style="margin-bottom: 0px;">
+							<label>Miasto</label>
+							<input ng-model="city" type="text">
+						</md-input-container>
+					</div>
+					
 				</div>
 				
-				<div layout="row">
-					<md-input-container flex="45">
+				<div layout="row" layout-sm="column" layout-align="center">
+					<md-input-container flex="45" flex-sm="100" style="padding-right: 15px; margin-top: 0px;">
 					  <md-select ng-model="region" placeholder="Region">
 						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
 					  </md-select>
 					</md-input-container>
-					<md-input-container flex="45">
+					<md-input-container flex="45" flex-sm="100" style="padding-right: 15px; margin-top: 0px;">
 					  <md-select ng-model="category" placeholder="Kategoria">
 						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
 					  </md-select>
 					</md-input-container>
 				</div>
-				<div layout="row">
-					<md-datepicker ng-model="from" flex="40"></md-datepicker>
-					<md-datepicker ng-model="from" flex="40"></md-datepicker>
+				<div layout="row" layout-align="center">
+					<div layout="column" layout-gt-md="row" layout-xs="row" layout-align="center" style="height: 80px;">
+						<md-datepicker ng-model="from" placeholder="Od" flex="45" flex-md="100"></md-datepicker>
+						<md-datepicker ng-model="to" placeholder="Do" flex="45" flex-md="100"></md-datepicker>
+					</div>
+				</div>
+				<div layout="row" layout-align="center">	
+					<div layout="column" layout-align="center" flex="80">	
+						<md-button class="md-raised">Wyszukaj</md-button>
+					</div>
 				</div>
 				
+			
 			</md-content>
 		</md-card>
 		<md-card flex="80" flex-xs="100" class="table-content" style="height: 350px;">

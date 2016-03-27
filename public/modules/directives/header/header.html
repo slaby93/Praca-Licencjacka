@@ -1,20 +1,20 @@
 <div layout="column" layout-fill>
-    <md-toolbar ng-class="{fullToolbar:(headerCtrl.scrollPosition > 300) ? true : false}">
-        <div class="md-toolbar-tools no-padding-right "><span>Smetter</span>
+    <md-toolbar>
+        <div class="md-toolbar-tools no-padding-right">
+            <span>My App's Title</span>
             <!-- fill up the space between left and right area -->
             <span flex></span>
-            <md-button ng-if="headerCtrl.UserService.hasRight(['guest'])"
-                       ng-click="headerCtrl.UserService.showLoginModal();" class="login-register-button">
+            <md-button ng-if="headerCtrl.UserService.hasRight(['guest'])" ng-click="headerCtrl.UserService.showLoginModal();" class="login-register-button">
                 Logowanie/Rejestracja
             </md-button>
-            <md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button">
+			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button">
                 Witaj {{headerCtrl.UserService.user.login}}!
             </md-button>
             <md-menu md-position-mode="target-right target" md-offset="0 55" class="navigation-menu">
                 <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                     <md-icon md-svg-src="resources/stack.svg"></md-icon>
                 </md-button>
-
+			
                 <md-menu-content width="4">
                     <md-menu-item ng-if="headerCtrl.UserService.hasRight([item.visibility[0]])"
                                   ng-repeat="item in headerCtrl.options">

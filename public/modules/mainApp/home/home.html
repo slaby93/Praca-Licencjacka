@@ -1,142 +1,113 @@
 <div id="home">
-    <latest-events-table/>
-    <!--<div layout="row" layout-xs="column" layout-align="center">-->
-        <!--<md-card flex="20" flex-xs="100" class="table-content">-->
-            <!--<md-content layout="column">-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-                <!--&lt;!&ndash;<div layout="row" layout-align="center" flex>		&ndash;&gt;-->
-                <!--&lt;!&ndash;Znajdź sport w swoim regionie!<br>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-                <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-input-container flex="90">&ndash;&gt;-->
-                <!--&lt;!&ndash;<label>Miasto</label>&ndash;&gt;-->
-                <!--&lt;!&ndash;<input ng-model="city" type="text">&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-                <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-input-container flex="45">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-select ng-model="region" placeholder="Region">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-input-container flex="45">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-select ng-model="category" placeholder="Kategoria">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-datepicker ng-model="from" flex="40"></md-datepicker>&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-datepicker ng-model="from" flex="40"></md-datepicker>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-            <!--</md-content>-->
-            <!--<div layout="row" layout-xs="column" layout-align="center">-->
-                <!--<md-card flex="20" flex-xs="100" class="table-content">-->
-                    <!--<md-content layout="column">-->
-                        <!--&lt;!&ndash;&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div layout="row" layout-align="center" flex>		&ndash;&gt;-->
-                        <!--&lt;!&ndash;Znajdź sport w swoim regionie!<br>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-input-container flex="90">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<label>Miasto</label>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<input ng-model="city" type="text">&ndash;&gt;-->
-                        <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-input-container flex="45">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-select ng-model="region" placeholder="Region">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-input-container flex="45">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-select ng-model="category" placeholder="Kategoria">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div layout="row">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-datepicker ng-model="from" flex="40"></md-datepicker>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<md-datepicker ng-model="from" flex="40"></md-datepicker>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;&ndash;&gt;-->
-                    <!--</md-content>-->
-        <!--</md-card>-->
-        <!--<md-card flex="80" flex-xs="100" class="table-content" style="height: 350px;">-->
-            <!--<md-content layout="column">-->
-                <!--&lt;!&ndash;<div layout="row" layout-align="center" flex">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-card flex="100" class="table-header">&ndash;&gt;-->
-                <!--&lt;!&ndash;<md-content layout="row" layout-align="center center" class="no-overflow">&ndash;&gt;-->
-                <!--&lt;!&ndash;<h4></h4><br>          &lt;!&ndash;tutaj, w zaleznosci od ilosci znalezionych eventów, ma być: Znaleziono eventów: 321/Nie znaleziono eventów/''&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</md-content>-->
-        <!--</md-card>-->
-    <!--</div>-->
 
 
-    <!--&lt;!&ndash;<div layout="row" layout-xs="column" layout-align="center">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="33" flex-xs="100" class="table-content">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="column">&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center" flex">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="100" class="table-header">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="row" layout-align="center center" class="no-overflow">&ndash;&gt;-->
-    <!--&lt;!&ndash;<h4>Jak działa FerryJerry?</h4><br>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center" flex class="cogs-image-padding">&ndash;&gt;-->
-    <!--&lt;!&ndash;<a href=""><img ng-src="resources/cogs.png" class="cogs-image"></img></a>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="33" flex-xs="100" class="table-content">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="column">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center" flex">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="100" class="table-header">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="row" layout-align="center center" class="no-overflow">&ndash;&gt;-->
-    <!--&lt;!&ndash;<h4>Gorące wydarzenia:</h4><br>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="33" flex-xs="100" class="table-content">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="row">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="column" layout-align="center" layout-fill>&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center" flex>&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-card flex="100" class="table-header">&ndash;&gt;-->
-    <!--&lt;!&ndash;<md-content layout="row" layout-align="center center" class="no-overflow">&ndash;&gt;-->
-    <!--&lt;!&ndash;<h4>Portale społecznościowe:</h4><br>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center center" flex="20">&ndash;&gt;-->
-    <!--&lt;!&ndash;<a href="https://www.facebook.com/ferryjerry" target="_blank"><img ng-src="resources/facebook-icon.png"></img></a>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;facebook.com/ferryjerry&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div layout="row" layout-align="center center" flex="20">&ndash;&gt;-->
-    <!--&lt;!&ndash;<a href="https://www.twitter.com/ferryjerry" target="_blank"><img ng-src="resources/twitter-icon.png"></img></a>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;twitter.com/ferryjerry&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-content>&ndash;&gt;-->
-    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+	<div layout="row" layout-xs="column" layout-align="center">
+		<md-card flex="20" flex-xs="100" class="table-content" style="height: 350px;">
+			<md-content layout="column" style="margin-left: 15px;">
+			
+				<div layout="row" layout-align="center" flex>		
+					Znajdź sport w swoim regionie!<br>
+				</div>
+				
+				<div layout="row">
+					<md-input-container flex="90">
+						<label>Miasto</label>
+						<input ng-model="city" type="text">
+					</md-input-container>
+				</div>
+				
+				<div layout="row">
+					<md-input-container flex="45">
+					  <md-select ng-model="region" placeholder="Region">
+						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+					  </md-select>
+					</md-input-container>
+					<md-input-container flex="45">
+					  <md-select ng-model="category" placeholder="Kategoria">
+						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+					  </md-select>
+					</md-input-container>
+				</div>
+				<div layout="row">
+					<md-datepicker ng-model="from" flex="40"></md-datepicker>
+					<md-datepicker ng-model="from" flex="40"></md-datepicker>
+				</div>
+				
+			</md-content>
+		</md-card>
+		<md-card flex="80" flex-xs="100" class="table-content" style="height: 350px;">
+			<md-content layout="column">
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4></h4><br>          <!--tutaj, w zaleznosci od ilosci znalezionych eventów, ma być: Znaleziono eventów: 321/Nie znaleziono eventów/''-->
+						</md-content>
+					</md-card>
+				</div>
+			</md-content>
+		</md-card>
+	</div>
+
+
+
+
+
+	<div layout="row" layout-xs="column" layout-align="center">
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="column">
+			
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Jak działa FerryJerry?</h4><br>
+						</md-content>
+					</md-card>
+				</div>
+				
+				<div layout="row" layout-align="center" flex class="cogs-image-padding">
+					<a href=""><img ng-src="resources/cogs.png" class="cogs-image"></img></a>
+				</div>
+			</md-content>
+		</md-card>
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="column">
+				<div layout="row" layout-align="center" flex">
+					<md-card flex="100" class="table-header">
+						<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Gorące wydarzenia:</h4><br>
+						</md-content>
+					</md-card>
+				</div>
+			</md-content>
+		</md-card>
+		<md-card flex="33" flex-xs="100" class="table-content">
+			<md-content layout="row">
+				<div layout="column" layout-align="center" layout-fill>
+				
+					<div layout="row" layout-align="center" flex>
+						<md-card flex="100" class="table-header">
+							<md-content layout="row" layout-align="center center" class="no-overflow">
+								<h4>Portale społecznościowe:</h4><br>
+							</md-content>
+						</md-card>
+					</div>
+					
+					<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">
+						<div layout="row" layout-align="center center" flex="20">
+							<a href="https://www.facebook.com/ferryjerry" target="_blank"><img ng-src="resources/facebook-icon.png"></img></a>
+						</div>
+						facebook.com/ferryjerry
+						
+					</div>
+					<div layout="row" layout-sm="column" layout-align="center center" class="links-padding">
+						<div layout="row" layout-align="center center" flex="20">
+							<a href="https://www.twitter.com/ferryjerry" target="_blank"><img ng-src="resources/twitter-icon.png"></img></a>
+						</div>
+						twitter.com/ferryjerry
+					</div>
+				</div>
+				
+			</md-content>
+		</md-card>
+	</div>
 </div>

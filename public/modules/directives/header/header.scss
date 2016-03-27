@@ -1,45 +1,64 @@
 header {
-	div {
-		md-toolbar {
-			.no-padding-right {
-				padding-right: 0px !important;
-			}
-		}
-		.login-register-button {
-			text-transform: none !important;
-			font-weight: bold !important;
-		}
-		.navigation-menu{
-			height: 100%;
-			width: 10%;
-			background-color: #262626;
-		
-			.md-icon-button{
-				width: 100%;
-				height: 100%;
-				padding-left: 0px;
-				margin-left: 0px;
-			}
-			
-		}
-	}
+  $background-color: #292929;
+  $background-color-invisible: transparent;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  z-index: 10;
+
+  div {
+
+    .fullToolbar {
+      background-color: $background-color !important;
+      -webkit-box-shadow: 0px 5px 15px 4px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 5px 15px 4px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 5px 15px 4px rgba(0, 0, 0, 0.75);
+      .navigation-menu {
+        background-color: #262626;
+      }
+    }
+    md-toolbar {
+      transition: background 0.3s ease-out;
+      background-color: $background-color-invisible !important;
+      .no-padding-right {
+        padding-right: 0px !important;
+      }
+    }
+
+    .login-register-button {
+      text-transform: none !important;
+      font-weight: bold !important;
+    }
+    .navigation-menu {
+      height: 100%;
+      width: 10%;
+
+      .md-icon-button {
+        width: 100%;
+        height: 100%;
+        padding-left: 0px;
+        margin-left: 0px;
+      }
+
+    }
+  }
 }
 
-.md-open-menu-container{
-	md-menu-content{
-		background-color: #262626 !important;
-		margin-top: 0px !important;
-		margin-bottom: 0px !important;
-		padding-bottom: 0px !important;
-		padding-top:0px !important;
-	}
-	md-menu-item{
-		 border-bottom: 1px groove #0d0d0d;
-		 
-		.menu-list-item{
-			color: #f2f2f2;
-			font-weight: 400;
-		}
-	}
+.md-open-menu-container {
+  md-menu-content {
+    background-color: #262626 !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+  }
+  md-menu-item {
+    border-bottom: 1px groove #0d0d0d;
+
+    .menu-list-item {
+      color: #f2f2f2;
+      font-weight: 400;
+    }
+  }
 }
 

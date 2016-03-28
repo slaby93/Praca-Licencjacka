@@ -10,7 +10,7 @@
  */
 function routing($stateProvider, $urlRouterProvider) {
     //******************** Defaultowy stan aplikacji ***************************\\
-    $urlRouterProvider.otherwise("/app/home");
+    $urlRouterProvider.otherwise("/app/introduction");
     //**************************************************************************\\
 
     $stateProvider

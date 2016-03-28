@@ -1,10 +1,42 @@
 #introduction {
   .mainImage {
     width: 100%;
+    //height: 573px;
     height: 100vh;
     background-repeat: no-repeat;
     background-image: url("/resources/miscellaneous/glyphsco-1459038560.jpg");
-    background-position-y: -110px;
     background-size: cover;
+    background-position: center;
+    //@media(min-width: 1300px){
+    //  background-position-y: -110px;
+    //}
+  }
+  .whatIsSmetter {
+    border-top: 1px solid #dcdcdc;
+    h3 {
+      font-family: "Pacifico", cursive;
+      font-size: 4.5em;
+    }
+    section {
+      font-size: 20px;
+      font-family: 'Raleway', sans-serif;
+    }
+    //.runner {
+    //  width: 400px;
+    //}
+    height: 400px;
+    background-color: white;
+  }
+  .iconsFunctionality {
+   background-color: #F8F8F8;
+    md-icon{
+      width: 40px;
+      height: 40px;
+      margin-right: 15px;
+    }
+  }
+  .svgIcon{
+    margin: 0px;
+    padding: 0px;
   }
 }

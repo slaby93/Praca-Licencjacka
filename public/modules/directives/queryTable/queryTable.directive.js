@@ -16,6 +16,18 @@ class QueryTableController {
     constructor() {
         let self = this;
 
+		self.events = [];
+	}
+	
+	paginate(page, limit){
+		let self = this;
+		console.log("Page: "+page+ " limit: "+limit);
+	}
+	
+	search(city, region, category, from, to){
+        let self = this;
+		console.log("City: "+city+ " region: "+region+" category: "+category+ " from: "+from+ " to: "+to);
+		
 		self.events = [
 			{	
 				avatar: "gallery/default.gif",
@@ -54,7 +66,10 @@ class QueryTableController {
 				description: "Chciałbym powiedzieć, że je..."
 			}
 		];
+		
+		
 	}
+	
 
 }
 		

@@ -1,29 +1,23 @@
-<md-table-container hide show-gt-xs flex class="table-with-x-overflow">
-	<md-content layout-align="center center" layout="column" class="no-background">
-	  <table md-table md-progress="promise">
-		<tbody md-body>
-		  <tr md-row md-select="item" md-select-id="{{item.name}}" md-auto-select ng-repeat="item in queryTableCtrl.events">
-			<md-card>
-				<md-content>
-					lol
-				</md-content>
-			</md-card>
-			<md-card layout="row" flex="100">
-				<md-content layout="column">
+
+<div layout="row" layout-align="center center">	
+	<div layout="column" layout-align="center" flex="100">	
+		<md-content layout="column" layout-align="center">
+			<md-table-container layout="row" layout-align="center" flex="100" class="table-with-x-overflow">
+			  <table md-table md-progress="promise" cellspacing="0" cellpadding="0">
+				<tbody md-body>
+				  <tr md-row md-select="item" md-select-id="name" md-auto-select ng-repeat="item in queryTableCtrl.events">
 					<td md-cell><img ng-src="{{item.avatar}}" class="avatar"></td>
-					<td md-cell>{{item.name}}</td>
-					<td md-cell>{{item.city}}</td>
-					<td md-cell>{{item.region}}</td>
-					<td md-cell>{{item.category}}</td>
-					<td md-cell class="overflow-description">{{item.description}}</td>
-				</md-content>
-			</md-card>
-		  </tr>
-		</tbody>
-	  </table>
-	</md-content>
-</md-table-container>
+					<td md-cell class="cell-padding">{{item.name}}</td>
+					<td md-cell class="cell-padding">{{item.city}}</td>
+					<td md-cell class="cell-padding">{{item.region}}</td>
+					<td md-cell class="cell-padding">{{item.category}}</td>
+					<td md-cell class="overflow-description cell-padding">{{item.description}}</td>
 
-
-
-
+				  </tr>
+				</tbody>
+			  </table>
+			</md-table-container>
+		</md-content>
+	</div>
+</div>
+	<md-table-pagination layout="row" layout-align="center center" md-label="{page: 'Strona:', rowsPerPage: '', of: 'z'}" md-limit="5" md-page="1" md-total="1587" md-on-paginate="queryTableCtrl.paginate" class="md-table-pagination">

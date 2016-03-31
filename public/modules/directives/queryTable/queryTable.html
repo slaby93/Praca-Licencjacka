@@ -20,4 +20,9 @@
 		</md-content>
 	</div>
 </div>
-	<md-table-pagination layout="row" layout-align="center center" md-label="{page: 'Strona:', rowsPerPage: '', of: 'z'}" md-limit="5" md-page="1" md-total="1587" md-on-paginate="queryTableCtrl.paginate" class="md-table-pagination">
+	<md-table-pagination layout="row" layout-align="center center"
+			md-label="{page: 'Strona:', rowsPerPage: '', of: 'z'}"
+			md-limit="queryTableCtrl.limit" md-page="queryTableCtrl.totalPages" md-total="{{queryTableCtrl.totalResults}}"
+			md-on-paginate="queryTableCtrl.paginate" 
+			class="md-table-pagination"
+	>

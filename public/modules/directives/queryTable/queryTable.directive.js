@@ -15,8 +15,11 @@ function queryTable() {
 class QueryTableController {
     constructor() {
         let self = this;
-
+		
 		self.events = [];
+		self.totalResults = 0;
+		self.totalPages = 1;
+		self.limit = 4;
 	}
 	
 	paginate(page, limit){
@@ -27,7 +30,8 @@ class QueryTableController {
 	search(city, region, category, from, to){
         let self = this;
 		console.log("City: "+city+ " region: "+region+" category: "+category+ " from: "+from+ " to: "+to);
-		
+		self.totalResults = 4;
+		self.totalPages = Math.ceil(self.totalResults / self.limit);
 		self.events = [
 			{	
 				avatar: "gallery/default.gif",

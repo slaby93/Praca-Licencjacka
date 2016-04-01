@@ -3,13 +3,13 @@ footer {
   $background-color: #171717;
   $text-color: #676767;
   $signature-color: #383838;
-  $border-color:#464646;
-
+  $border-color: #464646;
+  width: 100%;
   background-color: $background-color;
   color: $text-color;
   height: 80px;
   border-top: 1px solid $border-color;
-
+  z-index: 10;
   .footerWrapper {
     height: 100%;
     div {

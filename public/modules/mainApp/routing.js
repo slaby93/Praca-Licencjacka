@@ -26,7 +26,7 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "HomeController",
             controllerAs: "homeCtrl"
         })
-        .state('app.introduction', {
+        .state('introduction', {
             url: "/introduction",
             templateUrl: "modules/mainApp/introduction/introduction.html",
             controller: "introductionController",

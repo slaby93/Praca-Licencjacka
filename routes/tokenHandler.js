@@ -3,6 +3,7 @@
  */
 var jwt = require('jsonwebtoken');
 var mongo = require('./dbConnect.js');
+var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
 
 /**
  * @description Generowanie tokenow za pomoca biblioteki JWT
@@ -19,7 +20,7 @@ exports.generateJWT = function (ID, groups, callback) {
     jwt.sign({"_id": ID,
 		"groups": groups,
 		"exp": parseInt(expire.getTime() / 1000)
-	}, "SECRET", {"algorithm": "HS256"}, function (token) {
+	}, secret, {"algorithm": "HS256"}, function (token) {
         if (callback) {
             callback(token);
         }
@@ -31,7 +32,7 @@ exports.generateJWT = function (ID, groups, callback) {
  */
 exports.decodeToken = function (token) {
     try {
-        var decoded = jwt.verify(token, "SECRET");
+        var decoded = jwt.verify(token, secret);
         delete decoded["iat"];
         return decoded;
     } catch (err) {
@@ -51,13 +52,16 @@ exports.verifyToken = function (authorization, callback) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
                 callback(false);
+				return;
             }
-            // nie znaleziono uzytkowika w bazie
+            // nie znaleziono uzytkownika w bazie
             if (foundedUser === undefined || foundedUser === null) {
                 callback(false);
+				return;
             }
 			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(decodedToken.groups)) {
 				callback(false);
+				return;
             }
 			callback(true);
         });

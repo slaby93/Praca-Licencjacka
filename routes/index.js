@@ -9,7 +9,8 @@ var util = require('util');
 var fs = require('fs');
 var tokenHandler = require("./tokenHandler");
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
+var auth = jwt({secret: secret, userProperty: 'payload'});
 var guard = require('express-jwt-permissions')({
   requestProperty: 'payload',
   permissionsProperty: 'groups'

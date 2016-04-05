@@ -33,6 +33,7 @@
     "jsonwebtoken": "^5.4.1",
     "mongojs": "^1.4.1",
     "morgan": "^1.6.0",
+    "node-uuid": "^1.4.7",
     "passport": "^0.2.2",
     "serve-favicon": "~2.3.0"
   },
@@ -68,6 +69,7 @@
     },
     "dependencies": {
       "angular": "github:angular/bower-angular@^1.5.0",
+      "angular-jwt": "npm:angular-jwt@^0.0.9",
       "angular-local-storage": "npm:angular-local-storage@^0.2.6",
       "angular-material": "github:angular/bower-material@^1.0.6",
       "angular-material-data-table": "npm:angular-material-data-table@^0.9.14",

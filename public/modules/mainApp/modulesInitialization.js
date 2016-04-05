@@ -10,10 +10,12 @@ import * as angular_local_storage from 'angular-local-storage';
 import * as angular_material from 'angular-material';
 import * as angular_material_data_table from 'angular-material-data-table';
 import * as ngMessages from 'angular-messages';
+import * as angular_jwt from 'angular-jwt';
 
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
+import intercepting from './intercepting';
 // -----------------------------------------------------   Controllers imports   ------------------------------------------------------------------------------------------
 import ApplicationController from './application/application.controller.js';
 import LoginModalController from './login/loginModal.controller.js';
@@ -35,7 +37,7 @@ import LoaderDirective from '../directives/loader/loader.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages'])
+angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angular-jwt'])
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("introductionController", IntroductionController)
@@ -52,5 +54,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
     .config(routing)
+	.config(intercepting)
     .run(Main);
 

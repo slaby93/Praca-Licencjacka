@@ -26,7 +26,7 @@ class UserService {
     login(passedUser) {
         let self = this;
         let promise = self.$q.defer();
-        self.$http.post("/user", passedUser).then((received) => {
+        self.$http.post("/user", passedUser, {skipAuthorization: true}).then((received) => {
             promise.resolve(received);
             self.user = new User(received.data.user._id, received.data.user.login,received.data.user.groups);
             self.token = received.data.token;
@@ -90,7 +90,7 @@ class UserService {
         let self = this;
         var promise = self.$q.defer();
         self.$rootScope.$evalAsync(() => {
-            self.$http.post("/user/register", passedUser).then((received) => {
+            self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
                 promise.resolve(received);
                 self.user = new User(received.data.user.id, received.data.user.login, received.data.user.groups);
                 self.token = received.data.token;
@@ -110,7 +110,7 @@ class UserService {
     loginByToken() {
         let self = this;
         var promise = self.$q.defer();
-        self.$http.post('/user/token', {"token": self.token}).then(
+        self.$http.post('/user/token', {"token": self.token}, {skipAuthorization: true}).then(
             // SUCCESS
             function (data) {
                 self.$l.debug("Data", data);

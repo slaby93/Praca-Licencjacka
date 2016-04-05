@@ -16,6 +16,7 @@ System.config({
   map: {
     "Classes": "modules/class",
     "angular": "github:angular/bower-angular@1.5.2",
+    "angular-jwt": "npm:angular-jwt@0.0.9",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",
     "angular-material": "github:angular/bower-material@1.0.6",
     "angular-material-data-table": "npm:angular-material-data-table@0.9.14",

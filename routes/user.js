@@ -5,7 +5,8 @@ var assert = require('assert');
 var mongo = require('./dbConnect.js');
 var tokenHandler = require("./tokenHandler");
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
+var auth = jwt({secret: secret, userProperty: 'payload'});
 var guard = require('express-jwt-permissions')({
   requestProperty: 'payload',
   permissionsProperty: 'groups'
@@ -60,16 +61,12 @@ router.post('/register', function (req, res, next) {
     //niewypelnione pola
     if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
         console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");
-        return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
-            db.close();
-        });
+        return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'});
     }
     //niepasujace hasla
     if (req.body.password !== req.body.retypedPassword) {
         console.error("REGISTER ERROR : Hasła się nie zgadzają");
-        return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'}).end(function () {
-            db.close();
-        });
+        return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'});
     }
     var user = req.body;
     var password = bcrypt.hashSync(req.body.password, 10);
@@ -119,22 +116,48 @@ router.post('/token', function (req, res, next) {
     mongo.connect("projekt", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
-                res.status(500).send("Token is valid, but error when fetching from db");
+                res.status(500).send("Token is valid, but error when fetching from db").end(function () {
+					db.close();
+				});
                 return;
             }
-            // nie znaleziono uzytkowika w bazie
+            // nie znaleziono uzytkownika w bazie
             if (foundedUser === undefined || foundedUser === null) {
-                res.status(500).send("User not found");
+                res.status(500).send("User not found").end(function () {
+					db.close();
+				});
+                return;
+            }
+			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(decodedToken.groups)) {
+				res.status(500).send("Groups are invalid").end(function () {
+					db.close();
+				});
                 return;
             }
             foundedUser = removeSensitiveUserData(foundedUser);
-            res.status(200).send(foundedUser);
+            res.status(200).send(foundedUser).end(function () {
+				db.close();
+			});
         });
     });
 });
 
+router.post('/refresh', function (req, res, next) {
+	var token = req.body.token;
+	var payload = JSON.parse(new Buffer(token.split('.')[1], 'base64').toString());
+	tokenHandler.generateJWT(payload._id, payload.groups, function (token) {
+		tokenHandler.verifyToken("Bearer " + token, function (result) {
+			if (!result) {
+				res.status(401).send("Token is invalid");
+				return;
+			}
+			res.status(200).json({"token": token});
+		});
+	});
+});
+
 router.post('/all', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+	tokenHandler.verifyToken(req.headers.authorization, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -147,10 +170,14 @@ router.post('/all', auth, guard.check('user'), function (req, res, next) {
 				, function (err, data) {
 					if (err) {
 						console.error(err);
-						res.status(404).send();
+						res.status(404).send().end(function () {
+							db.close();
+						});
 						return;
 					} else {
-						res.status(200).send(data);
+						res.status(200).send(data).end(function () {
+						db.close();
+					});
 					}
 				});
 		});
@@ -164,7 +191,7 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
      * Walidacja przesłanych danych
      * Przypadki brzegowe
      */
-	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+	tokenHandler.verifyToken(req.headers.authorization, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -181,9 +208,13 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
 				},
 				function (err, data) {
 					if (err) {
-						res.status(500).send(err);
+						res.status(500).send(err).end(function () {
+							db.close();
+						});
 					}
-					res.status(200).send(data);
+					res.status(200).send(data).end(function () {
+						db.close();
+					});
 				});
 		});
 	});
@@ -195,7 +226,7 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
      * Napisać testy
      * Co, gdy dane są błędne? itd
      */
-	tokenHandler.verifyToken(req.headers.authorization, function(result) {
+	tokenHandler.verifyToken(req.headers.authorization, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -205,9 +236,13 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
 			db.user.remove({"login": usr.login},
 				function (err, data) {
 					if (err) {
-						res.status(500).send(err);
+						res.status(500).send(err).end(function () {
+							db.close();
+						});
 					} else {
-						res.status(200).send("ok");
+						res.status(200).send("ok").end(function () {
+							db.close();
+						});
 					}
 				});
 		})

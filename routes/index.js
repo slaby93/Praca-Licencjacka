@@ -53,7 +53,7 @@ router.post('/upload', auth, guard.check('user'), function (req, res, next) {
 		 */
 		form.parse(req, function (err, fields, files) {
 			var token = fields.token;
-			var userID = tokenHandler.decodeToken(token)._id;
+			var userID = tokenHandler.decodeToken(token, false)._id;
 			var userPath = "./public/gallery/" + userID + "/";
 			var userFile = files.file;
 			if (fs.existsSync(userPath) === false) {

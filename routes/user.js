@@ -104,7 +104,7 @@ router.post('/register', function (req, res, next) {
 
 router.post('/token', function (req, res, next) {
     var token = req.body.token;
-    var decodedToken = tokenHandler.decodeToken(token);
+    var decodedToken = tokenHandler.decodeToken(token, false);
 
 
     if (decodedToken === null) {
@@ -144,13 +144,20 @@ router.post('/token', function (req, res, next) {
 
 router.post('/refresh', function (req, res, next) {
 	var token = req.body.token;
-	var payload = JSON.parse(new Buffer(token.split('.')[1], 'base64').toString());
-	tokenHandler.generateJWT(payload._id, payload.groups, function (token) {
-		tokenHandler.verifyToken("Bearer " + token, function (result) {
-			if (!result) {
-				res.status(401).send("Token is invalid");
-				return;
-			}
+	var decodedToken = tokenHandler.decodeToken(token, true);
+
+	if (decodedToken === null) {
+        res.status(406).send("Token is invalid");
+
+        return;
+    }
+
+	tokenHandler.verifyToken("Bearer " + token, function (result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		tokenHandler.generateJWT(decodedToken._id, decodedToken.groups, function (token) {
 			res.status(200).json({"token": token});
 		});
 	});

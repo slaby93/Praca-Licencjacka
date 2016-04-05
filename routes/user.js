@@ -152,7 +152,7 @@ router.post('/refresh', function (req, res, next) {
         return;
     }
 
-	tokenHandler.verifyToken("Bearer " + token, function (result) {
+	tokenHandler.verifyToken(decodedToken, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -164,7 +164,7 @@ router.post('/refresh', function (req, res, next) {
 });
 
 router.post('/all', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.headers.authorization, function (result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -198,7 +198,7 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
      * Walidacja przesłanych danych
      * Przypadki brzegowe
      */
-	tokenHandler.verifyToken(req.headers.authorization, function (result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
@@ -233,7 +233,7 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
      * Napisać testy
      * Co, gdy dane są błędne? itd
      */
-	tokenHandler.verifyToken(req.headers.authorization, function (result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;

@@ -15,7 +15,7 @@ exports.generateJWT = function (ID, groups, callback) {
     var today = new Date();
     var expire = new Date(today);
     // jak dlugo token ma byc uznawany za poprawny
-	expire.setTime(today.getTime() + 60000);
+	expire.setTime(today.getTime() + 7200000);
     // generowanie tokena, 1 argumentem są zakodowane dane
     jwt.sign({"_id": ID,
 		"groups": groups,
@@ -45,11 +45,9 @@ exports.decodeToken = function (token, ignoreExp) {
  * @param authorization
  * @param callback
  */
-exports.verifyToken = function (authorization, callback) {
-	var token = authorization.split(' ')[1];
-    var decodedToken = jwt.decode(token);
+exports.verifyToken = function (payload, callback) {
 	mongo.connect("projekt", ["user"], function (db) {
-        db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
+        db.user.findOne({"_id": mongo.ObjectId(payload._id)}, function (err, foundedUser) {
             if (err) {
                 callback(false);
 				return;
@@ -59,7 +57,7 @@ exports.verifyToken = function (authorization, callback) {
                 callback(false);
 				return;
             }
-			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(decodedToken.groups)) {
+			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(payload.groups)) {
 				callback(false);
 				return;
             }

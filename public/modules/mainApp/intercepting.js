@@ -11,7 +11,7 @@
 function intercepting($httpProvider, jwtInterceptorProvider) {
 	jwtInterceptorProvider.tokenGetter = function(UserService, jwtHelper, $http) {
 		var token = UserService.token;
-		if (jwtHelper.isTokenExpired(token)) {
+		if (token && jwtHelper.isTokenExpired(token)) {
 			return $http.post("/user/refresh", {"token": token}, {skipAuthorization: true}).then(
 				function (data) {
 					var newToken = data.data.token;

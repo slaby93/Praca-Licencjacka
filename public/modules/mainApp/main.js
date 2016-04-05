@@ -22,7 +22,7 @@ function main(UserService, loader, $state, $rootScope, localStorageService) {
             // Error
             ()=> {
                 loader.hide;
-                $state.go('app.introduction');
+                $state.go('introduction');
             }
         );
     }

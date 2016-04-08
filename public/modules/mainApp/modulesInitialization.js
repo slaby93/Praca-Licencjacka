@@ -23,6 +23,8 @@ import ApplicationController from './application/application.controller.js';
 import LoginModalController from './login/loginModal.controller.js';
 import IntroductionController from './introduction/introduction.controller';
 import HomeController from './home/home.controller.js';
+import AccountController from './account/account.controller';
+import EventController from './events/event.controller';
 import TestController from './test/test.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
@@ -45,6 +47,8 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("LoginModalController", LoginModalController)
     .controller("introductionController", IntroductionController)
     .controller("HomeController", HomeController)
+    .controller("AccountController", AccountController)
+    .controller("EventController", EventController)
     .controller("TestController", TestController)
     .service("UserService", UserService)
     .service("EventService", EventService)
@@ -52,13 +56,13 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
     .directive("prefooter", PrefooterDirective)
-	.directive("prefooter2", Prefooter2Directive)
+    .directive("prefooter2", Prefooter2Directive)
     .directive("latestEventsTable", LatestEventsTableDirective)
     .directive("queryTable", QueryTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
     .config(routing)
-	.config(dateLocaleProvider)
-	.config(intercepting)
+    .config(dateLocaleProvider)
+    .config(intercepting)
     .run(Main);
 

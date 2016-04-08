@@ -13,12 +13,13 @@ function header() {
 }
 
 class HeaderController {
-    constructor($log, localStorageService, UserService, $scope, EventService) {
+    constructor($log, localStorageService, UserService, $scope, $state, EventService) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
         self.$l = $log;
         self.$scope = $scope;
+        self.$state = $state;
         self.setDefaultValues();
         self.setWatchers();
     }
@@ -43,14 +44,21 @@ class HeaderController {
             {
                 placeholder: "Dodaj wydarzenie",
                 click: () => {
-
+                    self.$state.go("app.event", {action: "add"});
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "Szukaj wydarzeń",
+                click: () => {
+                    self.$state.go("app.event", {action: "search"});
                 },
                 visibility: ["user"]
             },
             {
                 placeholder: "Ustawienia konta",
                 click: () => {
-
+                    self.$state.go("app.account");
                 },
                 visibility: ["user"]
             },

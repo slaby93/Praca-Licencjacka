@@ -92,7 +92,7 @@
 
     background: url("../resources/miscellaneous/test1.jpg") 50% no-repeat fixed;
     background-size: cover;
-    height: 300px; 
+    height: 300px;
   }
   .second-parallax-break {
     background: url("../resources/miscellaneous/test.jpg") 50% no-repeat fixed;
@@ -159,6 +159,13 @@
     .imageAndTextSectionsHolder .imageAndTextSection:not(:first-child) {
       margin-top: 100px;
       margin-bottom: 100px;
+    }
+    .onHoverStraightUp {
+      transition: all 0.5s linear;
+    }
+    .onHoverStraightUp:hover {
+      transform: rotateX(0deg) rotateY(0deg);
+      background-color: red;
     }
 
   }

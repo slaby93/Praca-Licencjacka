@@ -26,6 +26,18 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "HomeController",
             controllerAs: "homeCtrl"
         })
+        .state('app.account', {
+            url: "/account",
+            templateUrl: "modules/mainApp/account/account.html",
+            controller: "AccountController",
+            controllerAs: "accountCtrl"
+        })
+        .state('app.event', {
+            url: "/event/:action",
+            templateUrl: "modules/mainApp/events/event.html",
+            controller: "EventController",
+            controllerAs: "eventCtrl"
+        })
         .state('introduction', {
             url: "/introduction",
             templateUrl: "modules/mainApp/introduction/introduction.html",

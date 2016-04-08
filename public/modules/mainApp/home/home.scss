@@ -1,19 +1,57 @@
 #home {
-	.table-content{
-		height: 200px;
-		margin-left: 5px;
-		margin-right: 5px;
+	padding-top: 20px;
+	
+	#query-table{
+		.query-table-card{
+			height: 350px;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	
+		.overflow-hidden{
+			overflow-x: hidden;
+			.align-text-center  {text-align: center;}
+			.no-margin-bottom  {margin-bottom: 0px;}
+			.date-picker-height  {height: 80px;}
+			.md-datepicker-input-container{
+				margin-left: 0px;
+				max-width: 84px;
+			}
+			button.md-datepicker-button.md-icon-button.md-button.md-ink-ripple{
+				margin-left: 0px;
+				margin-right: 0px;
+			}
+			.select-input-padding{
+				padding-right: 15px;
+				margin-top: 0px;
+			}
+		}
+		
+		.table-content{
+			height: 350px;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+			
+	
+	
 	}
+	
 	.cogs-image{
 		height: 150px;
 		width: 150px;
 	}
 	.table-header{
-		margin-top: 0px;
-		margin-left: 0px;
-		margin-right: 0px;
+		margin: 0px 0px 0px 0px;
 		height: 35px;
 		overflow: hidden;
+		.header-content{
+			background: #f7f4ed; /* Old browsers */
+			background: -moz-linear-gradient(top, #f7f4ed 0%, #dfe5d7 81%, #9fa89a 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f4ed', endColorstr='#9fa89a',GradientType=0 ); /* IE6-9 */
+		}
 	}
 	.cogs-image-padding  {padding-top: 5px}
 	.links-padding  {padding-top: 10px;}

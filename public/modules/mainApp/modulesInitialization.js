@@ -11,11 +11,13 @@ import * as angular_material from 'angular-material';
 import * as angular_material_data_table from 'angular-material-data-table';
 import * as ngMessages from 'angular-messages';
 import * as angular_jwt from 'angular-jwt';
+import * as angular_moment from 'angular-moment';
 
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
 import intercepting from './intercepting';
+import dateLocaleProvider from './dateLocaleProvider';
 // -----------------------------------------------------   Controllers imports   ------------------------------------------------------------------------------------------
 import ApplicationController from './application/application.controller.js';
 import LoginModalController from './login/loginModal.controller.js';
@@ -32,12 +34,13 @@ import FooterDirective from '../directives/footer/footer.directive';
 import PrefooterDirective from '../directives/prefooter/prefooter.directive';
 import Prefooter2Directive from '../directives/prefooter2/prefooter2.directive';
 import LatestEventsTableDirective from '../directives/latestEventsTable/latestEventsTable.directive';
+import QueryTableDirective from '../directives/queryTable/queryTable.directive';
 import RetypedPasswordValidatorDirective from '../directives/retypedPasswordValidator/retypedPasswordValidator.directive';
 import LoaderDirective from '../directives/loader/loader.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angular-jwt'])
+angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angularMoment', 'angular-jwt'])
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("introductionController", IntroductionController)
@@ -49,11 +52,13 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
     .directive("prefooter", PrefooterDirective)
-    .directive("prefooter2", Prefooter2Directive)
+	.directive("prefooter2", Prefooter2Directive)
     .directive("latestEventsTable", LatestEventsTableDirective)
+    .directive("queryTable", QueryTableDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
     .config(routing)
+	.config(dateLocaleProvider)
 	.config(intercepting)
     .run(Main);
 

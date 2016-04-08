@@ -203,8 +203,9 @@
   },
   "github:angular/bower-angular@1.5.2": {},
   "npm:jquery@2.2.2": {},
-  "npm:moment@2.12.0": {
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:angular-jwt@0.0.9": {}
+  "npm:moment@2.12.0": {},
+  "npm:angular-jwt@0.0.9": {},
+  "npm:angular-moment@1.0.0-beta.5": {
+    "moment": "npm:moment@~2.12.0"
+  }
 }

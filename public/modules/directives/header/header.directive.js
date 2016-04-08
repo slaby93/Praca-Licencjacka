@@ -19,17 +19,6 @@ class HeaderController {
         self.UserService = UserService;
         self.$l = $log;
         self.$scope = $scope;
-        self.test = 'dupa';
-        self.scrollPosition = 0;
-        $(document).on('scroll', ()=> {
-            let actualScrollPosition = $(document).scrollTop();
-            let maximumScrollPosition = parseInt($(document).height()) - parseInt($(window).height());
-            let percent = ((actualScrollPosition / maximumScrollPosition) * 100).toFixed(0);
-            self.$scope.$evalAsync(()=> {
-                self.scrollPosition = actualScrollPosition;
-            });
-        });
-
         self.setDefaultValues();
         self.setWatchers();
     }

@@ -1,5 +1,11 @@
-
 query-table{
+	
+	md-table-pagination.md-select.md-default-theme .md-select-value, md-select .md-select-value{
+		display: none !important;
+	}
+
+
+	.stretch-vertically{height: 100%;}   /*it should be global? maybe?*/
 	.avatar{
 		height: 32px;
 		width: 32px;					
@@ -41,6 +47,9 @@ query-table{
 					background: -webkit-linear-gradient(top, #f7f4ed 0%,#dfe5d7 91%,#b3bead 100%); /* Chrome10-25,Safari5.1-6 */
 					background: linear-gradient(to bottom, #f7f4ed 0%,#dfe5d7 91%,#b3bead 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f4ed', endColorstr='#b3bead',GradientType=0 ); /* IE6-9 */
+					:hover{
+						cursor:  pointer;
+					}
 				}
 			}
 		}

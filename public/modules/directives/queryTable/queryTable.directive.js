@@ -22,6 +22,12 @@ class QueryTableController {
 		self.limit = 4;
 	}
 	
+	rowClicked(id){
+		console.log("clicked item with id " + id + "!");
+		//now you can redirect to event/{{id}}
+		
+	}
+	
 	paginate(page, limit){
 		let self = this;
 		console.log("Page: "+page+ " limit: "+limit);
@@ -29,11 +35,19 @@ class QueryTableController {
 	
 	search(city, region, category, from, to){
         let self = this;
-		console.log("City: "+city+ " region: "+region+" category: "+category+ " from: "+from+ " to: "+to);
+		
+		//We add "0" at the beginning, so "1" becomes "01" and "12" becomes "012", then we take the last 2 digits so that we get a number with length 2 //
+		//let fromStr = (( "0" + from.getDate()).slice(-2)) + "." + (( "0" + (from.getMonth()+1)).slice(-2)) + "." + from.getFullYear();
+		//let toStr = (( "0" + to.getDate()).slice(-2)) + "." + (( "0" + (to.getMonth()+1)).slice(-2)) + "." + to.getFullYear();
+		//console.log("City: "+city+ " region: "+region+" category: "+category+ " from: "+fromStr+ " to: "+toStr);
+		
+		
+		
 		self.totalResults = 4;
 		self.totalPages = Math.ceil(self.totalResults / self.limit);
 		self.events = [
 			{	
+				id: "222",
 				avatar: "gallery/default.gif",
 				name: "Buziaczek22",
 				city: "Jarosław",
@@ -43,6 +57,7 @@ class QueryTableController {
 				description: "Szukamy ludzi do gry w piłkę..."
 			},
 			{	
+				id: "223",
 				avatar: "gallery/default.gif",
 				name: "Mechanix",
 				city: "Rzeszów",
@@ -52,6 +67,7 @@ class QueryTableController {
 				description: "Witam, jestem studentem pr..."
 			},
 			{	
+				id: "224",
 				avatar: "gallery/default.gif",
 				name: "KochamOgorki",
 				city: "Kraków",
@@ -61,6 +77,7 @@ class QueryTableController {
 				description: "4 osoby, 40 zł, własny sprzę..."
 			},
 			{
+				id: "225",
 				avatar: "gallery/default.gif",
 				name: "ElDammicos",
 				city: "Kraków",

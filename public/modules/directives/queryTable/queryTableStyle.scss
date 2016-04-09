@@ -13,6 +13,19 @@ query-table{
 	}
 	
 	
+	.table-header{
+		margin: 0px 0px 0px 0px;
+		height: 35px;
+		overflow: hidden;
+		.header-content{
+			background: #f7f4ed; /* Old browsers */
+			background: -moz-linear-gradient(top, #f7f4ed 0%, #dfe5d7 81%, #9fa89a 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f4ed', endColorstr='#9fa89a',GradientType=0 ); /* IE6-9 */
+		}
+	}
+	
 	.table-with-x-overflow  {
 		overflow-x: auto;
 		padding-top: 0px;

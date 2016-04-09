@@ -1,0 +1,39 @@
+<div id="query-questionary">		
+	<div layout="row" layout-align="center" class="align-text-center">	
+		Znajdź sport w swoim regionie!
+	</div>
+	<div layout="row" layout-align="center">
+		<div layout="column" layout-align="center" flex="90">	
+			<md-input-container class="no-margin-bottom">
+				<label>Miasto</label>
+				<input ng-model="queryQuestionaryCtrl.queryInfo.city" type="text">
+			</md-input-container>
+		</div>
+		
+	</div>
+	<div layout="row" layout-sm="column" layout-align="center">
+		<md-input-container flex="45" flex-sm="100" class="select-input-padding">
+		  <md-select ng-model="queryQuestionaryCtrl.queryInfo.region" placeholder="Region">
+			<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+		  </md-select>
+		</md-input-container>
+		<md-input-container flex="45" flex-sm="100" class="select-input-padding">
+		  <md-select ng-model="queryQuestionaryCtrl.queryInfo.category" placeholder="Kategoria">
+			<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+		  </md-select>
+		</md-input-container>
+	</div>
+	<div layout="row" layout-align="center">
+		<div layout="column" layout-gt-md="row" layout-xs="row" layout-align="center" class="date-picker-height">
+			<md-datepicker ng-model="queryQuestionaryCtrl.queryInfo.from" placeholder="Od" flex="45" flex-md="100"></md-datepicker>
+			<md-datepicker ng-model="queryQuestionaryCtrl.queryInfo.to" placeholder="Do" flex="45" flex-md="100"></md-datepicker>
+		</div>
+	</div>
+	<div layout="row" layout-align="center">	
+		<div layout="column" layout-align="center" flex="80">	
+			<md-button class="md-raised" ng-click="queryTableCtrl.search(queryQuestionaryCtrl.queryInfo.city, queryQuestionaryCtrl.queryInfo.region, queryQuestionaryCtrl.queryInfo.category, queryQuestionaryCtrl.queryInfo.from, queryQuestionaryCtrl.queryInfo.to);">
+				Wyszukaj
+			</md-button>
+		</div>
+	</div>
+</div>

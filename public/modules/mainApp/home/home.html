@@ -2,72 +2,15 @@
 	<div id="query-table" layout="row" layout-xs="column" layout-align="center" flex-sm="100">
 		<md-card flex="20" flex-xs="100" layout="row" layout-align="center" class="query-content-card">
 			<md-content layout="column" flex="100" class="overflow-hidden">
-			
-				<div layout="row" layout-align="center" class="align-text-center">	
-					Znajdź sport w swoim regionie!
-				</div>
-				
-				<div layout="row" layout-align="center">
-					<div layout="column" layout-align="center" flex="90">	
-						<md-input-container class="no-margin-bottom">
-							<label>Miasto</label>
-							<input ng-model="queryInfo.city" type="text">
-						</md-input-container>
-					</div>
-					
-				</div>
-				
-				<div layout="row" layout-sm="column" layout-align="center">
-					<md-input-container flex="45" flex-sm="100" class="select-input-padding">
-					  <md-select ng-model="queryInfo.region" placeholder="Region">
-						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
-					  </md-select>
-					</md-input-container>
-					<md-input-container flex="45" flex-sm="100" class="select-input-padding">
-					  <md-select ng-model="queryInfo.category" placeholder="Kategoria">
-						<md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
-					  </md-select>
-					</md-input-container>
-				</div>
-				<div layout="row" layout-align="center">
-					<div layout="column" layout-gt-md="row" layout-xs="row" layout-align="center" class="date-picker-height">
-						<md-datepicker ng-model="queryInfo.from" placeholder="Od" flex="45" flex-md="100"></md-datepicker>
-						<md-datepicker ng-model="queryInfo.to" placeholder="Do" flex="45" flex-md="100"></md-datepicker>
-					</div>
-				</div>
-				<div layout="row" layout-align="center">	
-					<div layout="column" layout-align="center" flex="80">	
-						<md-button class="md-raised" ng-click="queryTableCtrl.search(queryInfo.city, queryInfo.region, queryInfo.category, queryInfo.from, queryInfo.to);">
-							Wyszukaj
-						</md-button>
-					</div>
-				</div>
-				
-			
+				<query-questionary/>
 			</md-content>
 		</md-card>
 		<md-card flex="80" flex-xs="100" class="table-content">
 			<md-content layout="column">
-				<div layout="row" layout-align="center" flex">
-					<md-card flex="100" class="table-header">
-						<md-content layout="row" layout-align="center center" class="no-overflow header-content">
-								<p>Wydarzenia spełniające kryteria:</p>          <!--tutaj, w zaleznosci od ilosci znalezionych eventów, ma być ilosc wydarzen-->
-						</md-content>
-					</md-card>
-				</div>
-				<query-table></query-table>
-				
+				<query-table/>				
 			</md-content>
 		</md-card>
 	</div>
-
-
-
-
-
-	
-
-
 
 	<div layout="row" layout-xs="column" layout-align="center">
 		<md-card flex="33" flex-xs="100" class="table-content">

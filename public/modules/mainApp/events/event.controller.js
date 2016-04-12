@@ -13,20 +13,22 @@ class EventController {
 
     defaultValues() {
         let self = this;
+        // self.state = "add";
+    }
+
+    toAdd() {
+        let self = this;
         self.state = "add";
     }
 
-    test() {
+    toEdit() {
         let self = this;
-        if (self.state === "add") {
-            self.state = "edit";
-        } else {
-            // $('.switchToEdit').css('transform', 'rotateY(90deg)');
-            // self.$scope.$evalAsync(()=> {
-                self.state = "add";
-            // },100);
-        }
+        self.state = "edit";
+    }
 
+    toSearch() {
+        let self = this;
+        self.state = "search";
     }
 }
 

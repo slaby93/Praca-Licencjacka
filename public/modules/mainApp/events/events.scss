@@ -11,12 +11,17 @@
     transform-origin: left !important;
     transform: rotateY(-90deg) !important;
   }
+  .switchToSearch {
+    transform-origin: top !important;
+    transform: rotateX(90deg) !important;
+  }
   .testHolder {
     position: relative;
     transform-style: preserve-3d;
     transition: all 0.5s linear;
     height: 100%;
     //perspective: 300px;
+    //transform: rotateZ(10deg) rotateY(-67deg) rotateX(10deg) translateX(-1180px) translateY(-230px) !important;
   }
   .center {
     background-color: red;
@@ -25,7 +30,6 @@
     //transform-origin: 50% 50%;
   }
   .firstPage {
-
     background-color: red;
     background: url("../resources/3d/1.jpg");
   }
@@ -42,6 +46,14 @@
     right: -100%;
     background: url("../resources/3d/2.jpg");
     background-color: #00F;
-    transform: rotateY(90deg) translateX(50%);
+    transform: rotateY(90deg) translateX(50%) translateZ(-921px);
+  }
+  .thirdPage {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    background: url("../resources/3d/3.jpg");
+    background-color: #00F;
+    transform: rotateX(-90deg) translateZ(270px) translateY(50%);
   }
 }

@@ -1,3 +1,23 @@
 <div id="events">
+    <md-card>
+        <md-card-content layout="column">
+            <div layout="row" layout-align="space-between">
+                <button ng-click="eventCtrl.toAdd()">Add</button>
+                <button ng-click="eventCtrl.toEdit()">Edit</button>
+                <button ng-click="eventCtrl.toSearch()">Search</button>
+            </div>
+            <div layout="column" layout-align="center center" class="testHolder"
+                 ng-class="{
+                 switchToEdit:eventCtrl.state === 'add',
+                 switchToSearch:eventCtrl.state === 'search'
+                 }">
 
+                <div flex="100" class="test firstPage">
+                </div>
+                <div flex="100" class="test secondPage">
+                </div>
+                <div flex="100" class="test thirdPage"></div>
+            </div>
+        </md-card-content>
+    </md-card>
 </div>

@@ -10,7 +10,8 @@
             </md-button>
 			
 			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" aria-label="Open demo menu" class="md-icon-button" ng-click="">
-					<md-icon md-svg-src="resources/mail.svg"></md-icon>
+					<div class="overlay-text"><b>{{headerCtrl.messageCount}}</b></div>
+					<md-icon md-svg-src="resources/mail.svg" class="svg-submissive"></md-icon>
 			</md-button>
 			
 			<div ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" ng-click="headerCtrl.goToProfile()" class="avatar-wrapper hover-effect">

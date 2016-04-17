@@ -9,6 +9,18 @@ header {
 				padding-right: 0px !important;
 			}
 		}
+		
+		.svg-submissive{position: relative;}
+		
+		.overlay-text{
+			position: absolute;
+			left: 3px;
+			bottom: 25%;
+			height: 30px;
+			color: black;
+			z-index: 10;
+		}
+		
 		.avatar-wrapper{
 		
 			 width:48px;

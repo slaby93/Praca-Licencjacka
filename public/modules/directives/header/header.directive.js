@@ -28,6 +28,7 @@ class HeaderController {
         let self = this;
         self.userWatch = self.$scope.$watch('headerCtrl.UserService.user', (newUser)=> {
             self.user = newUser;
+			self.messageCount = 0;
 			self.userImage = self.UserService.user.id;
         }, true);
     }

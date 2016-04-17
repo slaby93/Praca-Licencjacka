@@ -1,15 +1,26 @@
 <div layout="column" layout-fill>
     <md-toolbar>
         <div class="md-toolbar-tools no-padding-right">
-            <span>My App's Title</span>
+            <span class="hover-effect" ng-click="headerCtrl.goToHome()">My App's Title</span>
             <!-- fill up the space between left and right area -->
             <span flex></span>
+			
             <md-button ng-if="headerCtrl.UserService.hasRight(['guest'])" ng-click="headerCtrl.UserService.showLoginModal();" class="login-register-button">
                 Logowanie/Rejestracja
             </md-button>
-			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button">
+			
+			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" aria-label="Open demo menu" class="md-icon-button" ng-click="">
+					<md-icon md-svg-src="resources/mail.svg"></md-icon>
+			</md-button>
+			
+			<div ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" ng-click="headerCtrl.goToProfile()" class="avatar-wrapper hover-effect">
+				<img alt="User Image" ng-src="gallery/{{headerCtrl.userImage}}/avatar.jpg" onerror="this.src='gallery/default.jpg'" class="avatar"/>
+			</div>
+			
+			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button" ng-click="headerCtrl.goToProfile()">
                 Witaj {{headerCtrl.UserService.user.login}}!
             </md-button>
+			
             <md-menu md-position-mode="target-right target" md-offset="0 55" class="navigation-menu">
                 <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                     <md-icon md-svg-src="resources/stack.svg"></md-icon>

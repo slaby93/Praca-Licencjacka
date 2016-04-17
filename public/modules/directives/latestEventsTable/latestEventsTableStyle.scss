@@ -18,7 +18,18 @@ latest-events-table {
       font-size: 20px;
     }
   }
-
+	
+	.md-table{
+		.md-body{
+			.md-row{
+				:hover{
+					cursor:  pointer;
+				}
+			}
+		}
+	}
+	
+	
   .avatar {
     height: 32px;
     width: 32px;

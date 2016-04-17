@@ -28,8 +28,21 @@ class HeaderController {
         let self = this;
         self.userWatch = self.$scope.$watch('headerCtrl.UserService.user', (newUser)=> {
             self.user = newUser;
+			self.userImage = self.UserService.user.id;
         }, true);
     }
+	
+	goToProfile(){
+		let self = this;
+		self.$state.go("app.account");
+	}
+	goToHome(){
+		let self = this;
+		self.$state.go("app.home");
+	}
+	
+	
+	
 
     setDefaultValues() {
         let self = this;
@@ -58,7 +71,7 @@ class HeaderController {
             {
                 placeholder: "Ustawienia konta",
                 click: () => {
-                    self.$state.go("app.account");
+                    self.goToProfile();
                 },
                 visibility: ["user"]
             },

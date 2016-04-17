@@ -48,7 +48,7 @@ class QueryTableController {
 		self.events = [
 			{	
 				id: "222",
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "Buziaczek22",
 				city: "Jarosław",
 				region: "Podkarpackie",
@@ -58,7 +58,7 @@ class QueryTableController {
 			},
 			{	
 				id: "223",
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "Mechanix",
 				city: "Rzeszów",
 				region: "Podkarpackie",
@@ -68,7 +68,7 @@ class QueryTableController {
 			},
 			{	
 				id: "224",
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "KochamOgorki",
 				city: "Kraków",
 				region: "Małopolskie",
@@ -78,7 +78,7 @@ class QueryTableController {
 			},
 			{
 				id: "225",
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "ElDammicos",
 				city: "Kraków",
 				region: "Małopolskie",

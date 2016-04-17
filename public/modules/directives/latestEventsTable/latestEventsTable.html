@@ -4,7 +4,7 @@
 		<md-content layout-align="center center" layout="column" class="no-background">
 		  <table md-table md-progress="promise" >
 			<tbody md-body>
-			  <tr md-row md-select="item" md-select-id="{{item.name}}" md-auto-select ng-repeat="item in latestEventsTableCtrl.events">
+			  <tr ng-click="latestEventsTableCtrl.rowClicked(item.id)" md-row md-select="item" md-select-id="{{item.name}}" md-auto-select ng-repeat="item in latestEventsTableCtrl.events">
 				<td md-cell><img ng-src="{{item.avatar}}" class="avatar"></td>
 				<td md-cell>{{item.name}}</td>
 				<td md-cell>{{item.city}}</td>

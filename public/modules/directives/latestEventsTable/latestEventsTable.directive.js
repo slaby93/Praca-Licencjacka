@@ -18,7 +18,7 @@ class LatestEventsTableController {
 
 		self.events = [
 			{	
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "Buziaczek22",
 				city: "Jarosław",
 				region: "Podkarpackie",
@@ -27,7 +27,7 @@ class LatestEventsTableController {
 				description: "Szukamy ludzi do gry w piłkę..."
 			},
 			{	
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "Mechanix",
 				city: "Rzeszów",
 				region: "Podkarpackie",
@@ -36,7 +36,7 @@ class LatestEventsTableController {
 				description: "Witam, jestem studentem pr..."
 			},
 			{	
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "KochamOgorki",
 				city: "Kraków",
 				region: "Małopolskie",
@@ -45,7 +45,7 @@ class LatestEventsTableController {
 				description: "4 osoby, 40 zł, własny sprzę..."
 			},
 			{
-				avatar: "gallery/default.gif",
+				avatar: "gallery/default.jpg",
 				name: "ElDammicos",
 				city: "Kraków",
 				region: "Małopolskie",
@@ -56,5 +56,12 @@ class LatestEventsTableController {
 		];
 	}
 
+	rowClicked(id){
+		console.log("clicked item with id " + id + "!");
+		//now you can redirect to event/{{id}}
+		
+	}
+	
+	
 }
 export default latestEventsTable;

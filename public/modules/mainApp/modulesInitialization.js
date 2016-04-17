@@ -40,6 +40,11 @@ import QueryTableDirective from '../directives/queryTable/queryTable.directive';
 import QueryQuestionaryDirective from '../directives/queryQuestionary/queryQuestionary.directive';
 import RetypedPasswordValidatorDirective from '../directives/retypedPasswordValidator/retypedPasswordValidator.directive';
 import LoaderDirective from '../directives/loader/loader.directive';
+import UserPageDirective from '../directives/userPage/userPage.directive';
+import UserSettingsDirective from '../directives/userSettings/userSettings.directive';
+import UserObservedDirective from '../directives/userObserved/userObserved.directive';
+import UserMailDirective from '../directives/userMail/userMail.directive';
+import UserSearchDirective from '../directives/userSearch/userSearch.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,6 +68,11 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("queryQuestionary", QueryQuestionaryDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
+	.directive("userPage", UserPageDirective)
+	.directive("userSettings", UserSettingsDirective)
+	.directive("userObserved", UserObservedDirective)
+	.directive("userMail", UserMailDirective)
+	.directive("userSearch", UserSearchDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

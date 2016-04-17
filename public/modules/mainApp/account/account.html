@@ -10,20 +10,17 @@
         </div>
         <div class="informationHolder">
             <!--INFROMATIONS-->
-            <md-card>
-                <md-card-content>
-                    <h1>Informacje:</h1>
-                        <div layout="row" layout-wrap="wrap">
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                            <span flex="50">Imię:</span>
-                        </div>
-                </md-card-content>
-            </md-card>
+			<md-tabs>
+				<md-tab label="Moja strona">
+					<user-page/>
+				</md-tab>
+				<md-tab label="Ustawienia konta"><user-settings/></md-tab>
+				<md-tab label="Obserwowane"><user-observed/></md-tab>
+				<md-tab label="Poczta"><user-mail/></md-tab>
+				<md-tab label="Użytkownicy"><user-search/></md-tab>
+			</md-tabs>
+			
+            
         </div>
     </div>
 

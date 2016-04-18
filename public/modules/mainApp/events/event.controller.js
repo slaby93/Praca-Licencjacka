@@ -9,14 +9,18 @@ class EventController {
         self.$l = $log;
         self.$state = $state;
         self.UserService = UserService;
-        if (!self.UserService.hasRight(['user', 'admin']) && $stateParams.action == "add" || $stateParams.action == "edit")  self.$state.go("introduction");
-        $log.debug("Params", $stateParams);
+        self.$stateParams = $stateParams;
+        // if (!self.UserService.hasRight(['user', 'admin']) && $stateParams.action == "add" || $stateParams.action == "edit")  self.$state.go("introduction");
         self.defaultValues();
     }
 
     defaultValues() {
         let self = this;
-        self.state = "add";
+        if (self.$stateParams.action) {
+            self.state = self.$stateParams.action;
+        } else {
+            self.state = "add";
+        }
     }
 
     toAdd() {

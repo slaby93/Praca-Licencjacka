@@ -48,6 +48,9 @@ import UserSearchDirective from '../directives/userSearch/userSearch.directive';
 import ArchiveEventsTable from '../directives/archiveEventsTable/archiveEventsTable.directive';
 import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable.directive';
 import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
+import EventAddDirective from './../directives/event-add/event.add.directive';
+import EventEditDirective from './../directives/event-edit/event.edit.directive';
+import EventSearchDirective from './../directives/event-search/event.search.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,14 +74,17 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("queryQuestionary", QueryQuestionaryDirective)
     .directive("retypedPasswordValidator", RetypedPasswordValidatorDirective)
     .directive("loader", LoaderDirective)
-	.directive("userPage", UserPageDirective)
-	.directive("userSettings", UserSettingsDirective)
-	.directive("userObserved", UserObservedDirective)
-	.directive("userMail", UserMailDirective)
-	.directive("userSearch", UserSearchDirective)
-	.directive("userCommentsTable", UserCommentsTable)
-	.directive("activeEventsTable", ActiveEventsTable)
-	.directive("archiveEventsTable", ArchiveEventsTable)
+    .directive("userPage", UserPageDirective)
+    .directive("userSettings", UserSettingsDirective)
+    .directive("userObserved", UserObservedDirective)
+    .directive("userMail", UserMailDirective)
+    .directive("userSearch", UserSearchDirective)
+    .directive("userCommentsTable", UserCommentsTable)
+    .directive("activeEventsTable", ActiveEventsTable)
+    .directive("archiveEventsTable", ArchiveEventsTable)
+    .directive("eventAdd", EventAddDirective)
+    .directive("eventEdit", EventEditDirective)
+    .directive("eventSearch", EventSearchDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

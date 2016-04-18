@@ -45,6 +45,9 @@ import UserSettingsDirective from '../directives/userSettings/userSettings.direc
 import UserObservedDirective from '../directives/userObserved/userObserved.directive';
 import UserMailDirective from '../directives/userMail/userMail.directive';
 import UserSearchDirective from '../directives/userSearch/userSearch.directive';
+import ArchiveEventsTable from '../directives/archiveEventsTable/archiveEventsTable.directive';
+import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable.directive';
+import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,6 +76,9 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
 	.directive("userObserved", UserObservedDirective)
 	.directive("userMail", UserMailDirective)
 	.directive("userSearch", UserSearchDirective)
+	.directive("userCommentsTable", UserCommentsTable)
+	.directive("activeEventsTable", ActiveEventsTable)
+	.directive("archiveEventsTable", ArchiveEventsTable)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

@@ -1,9 +1,14 @@
 #account {
 
-  $profileHeight: 220px;
+  $profileHeight: 100px;
+
+    
   .topAccountHeader {
     $borderRadius: 24px;
     background-color: rgba(0, 0, 0, 0.63);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
     .profileImgHolder {
@@ -19,10 +24,36 @@
         background-color: white;
         border: 1px solid #B3B3B3;
       }
+	  .user-name{
+		bottom: -35px;
+		position: absolute;
+		right: 110px;
+		font-weight: 800;
+		.smaller-top-margin  {margin-top: 2px;}
+	  }
     }
   }
   .informationHolder {
-    margin-top: calc(#{$profileHeight/2} + 20px);
+    margin-top: calc(#{$profileHeight/2} + 100px);
+  }
+  
+  @media screen and (min-width: 640px) {
+    $profileHeight: 200px;
+	.topAccountHeader {
+      .profileImgHolder {
+		  left: calc(#{$profileHeight/2});
+		  top: calc(#{$profileHeight/2});
+		  .profileImg  {max-height: $profileHeight;}
+		  .user-name  {
+			right: 220px;
+			bottom: 20px;
+			font-size: 16px;
+		  }
+	  }
+	}
+	.informationHolder {
+		margin-top: calc(#{$profileHeight/2} + 50px);
+	}
   }
 
 }

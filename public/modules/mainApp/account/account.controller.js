@@ -49,11 +49,6 @@ class AccountController {
 			surname: "Krawczyk",
 			nickname: "Beton",
 			rank: "Weteran",
-			accountCreated: "11.03.2001",
-			lastSeen: "13.11.2008",
-			city: "Warszawa",
-			age: "32",
-			description: "Lubie placki/n Kocham firmę adidas!"
 		};
 	}
 	

@@ -3,10 +3,13 @@
  */
 class EventController {
 
-    constructor($scope, $log, $stateParams) {
+    constructor($scope, $log, $state, UserService, $stateParams) {
         let self = this;
         self.$scope = $scope;
         self.$l = $log;
+		self.$state = $state;
+		self.UserService = UserService;
+		if(!self.UserService.hasRight(['user', 'admin']) && $stateParams.action == "add" || $stateParams.action == "edit")  self.$state.go("introduction");
         $log.debug("Params", $stateParams);
         self.defaultValues();
     }

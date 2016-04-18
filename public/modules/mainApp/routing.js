@@ -27,7 +27,7 @@ function routing($stateProvider, $urlRouterProvider) {
             controllerAs: "homeCtrl"
         })
         .state('app.account', {
-            url: "/account",
+            url: "/account/:indexName",
             templateUrl: "modules/mainApp/account/account.html",
             controller: "AccountController",
             controllerAs: "accountCtrl"

@@ -33,6 +33,8 @@ class UserService {
         }, (err) => {
             promise.reject(err);
         });
+		if(self.$state.current.name == "introduction")  self.$state.go("app.home");
+		 else  self.$state.go(self.$state.current.name);
         return promise.promise;
     };
 
@@ -105,6 +107,7 @@ class UserService {
         let self = this;
         self.user = new User();
         self.token = undefined;
+		self.$state.go("introduction");
     };
 
     loginByToken() {
@@ -121,7 +124,6 @@ class UserService {
                 self.token = undefined;
                 promise.resolve(err);
             });
-
         return promise.promise;
 
     }

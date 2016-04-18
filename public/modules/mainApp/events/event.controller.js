@@ -7,16 +7,16 @@ class EventController {
         let self = this;
         self.$scope = $scope;
         self.$l = $log;
-		self.$state = $state;
-		self.UserService = UserService;
-		if(!self.UserService.hasRight(['user', 'admin']) && $stateParams.action == "add" || $stateParams.action == "edit")  self.$state.go("introduction");
+        self.$state = $state;
+        self.UserService = UserService;
+        if (!self.UserService.hasRight(['user', 'admin']) && $stateParams.action == "add" || $stateParams.action == "edit")  self.$state.go("introduction");
         $log.debug("Params", $stateParams);
         self.defaultValues();
     }
 
     defaultValues() {
         let self = this;
-        // self.state = "add";
+        self.state = "add";
     }
 
     toAdd() {

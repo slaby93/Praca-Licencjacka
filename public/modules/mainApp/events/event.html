@@ -6,17 +6,17 @@
                 <button ng-click="eventCtrl.toEdit()">Edit</button>
                 <button ng-click="eventCtrl.toSearch()">Search</button>
             </div>
-            <div layout="column" layout-align="center center" class="testHolder"
+            <div layout="column" layout-align="center center" class="rotateHolder"
                  ng-class="{
-                 switchToEdit:eventCtrl.state === 'add',
+                 switchToEdit:eventCtrl.state === 'edit',
                  switchToSearch:eventCtrl.state === 'search'
                  }">
 
-                <div flex="100" class="test firstPage">
+                <div flex="100" class="test addPage">
                 </div>
-                <div flex="100" class="test secondPage">
+                <div flex="100" class="test editPage">
                 </div>
-                <div flex="100" class="test thirdPage"></div>
+                <div flex="100" class="test searchPage"></div>
             </div>
         </md-card-content>
     </md-card>

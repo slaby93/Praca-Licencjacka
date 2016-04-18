@@ -8,52 +8,38 @@
     height: 100%;
   }
   .switchToEdit {
-    transform-origin: left !important;
-    transform: rotateY(-90deg) !important;
+    transform: rotateY(90deg) !important;
   }
   .switchToSearch {
-    transform-origin: top !important;
-    transform: rotateX(90deg) !important;
+    transform: rotateY(180deg) !important;
   }
-  .testHolder {
+  .rotateHolder {
+
     position: relative;
     transform-style: preserve-3d;
     transition: all 0.5s linear;
     height: 100%;
-    //perspective: 300px;
-    //transform: rotateZ(10deg) rotateY(-67deg) rotateX(10deg) translateX(-1180px) translateY(-230px) !important;
   }
-  .center {
-    background-color: red;
-    width: 10px;
-    height: 10px;
-    //transform-origin: 50% 50%;
-  }
-  .firstPage {
-    background-color: red;
+
+  .addPage {
+    height: 100%;
     background: url("../resources/3d/1.jpg");
   }
-  .platform {
-    transform: translateY(500px);
-    background-color: black;
-    width: 1000px;
-    height: 1000px;
-  }
-  .secondPage {
+  .editPage {
     position: absolute;
     top: 0px;
     width: 100%;
     right: -100%;
     background: url("../resources/3d/2.jpg");
     background-color: #00F;
-    transform: rotateY(90deg) translateX(50%) translateZ(-921px);
+    transform: rotateY(-90deg);
   }
-  .thirdPage {
+  .searchPage {
     position: absolute;
     top: 0px;
     width: 100%;
     background: url("../resources/3d/3.jpg");
     background-color: #00F;
-    transform: rotateX(-90deg) translateZ(270px) translateY(50%);
+    transform: rotateY(180deg) translateZ(10px);
   }
 }

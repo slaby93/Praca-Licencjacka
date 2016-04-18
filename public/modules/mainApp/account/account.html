@@ -5,7 +5,7 @@
         <div class="topAccountHeader">
             <!--PROFILE IMG-->
             <div layout="row" layout-align="end" class="profileImgHolder">
-                <img class="profileImg" ng-src="/gallery/daniel.jpg">
+                <img class="profileImg" ng-src="{{user.avatar}}" onerror="this.src='gallery/default.jpg'">
             </div>
         </div>
         <div class="informationHolder">

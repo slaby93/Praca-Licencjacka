@@ -8,10 +8,14 @@ class AccountController {
         let self = this;
 		self.$state = $state;
 		self.UserService = UserService;
-		if(!self.UserService.hasRight(['user', 'admin']))  self.$state.go("introduction");
         self.$scope = $scope;
         self.$l = $log;
         self.$l.debug("Account CTRL");
+		console.log($stateParams.userName);
+		if($stateParams.userName == "")  self.$state.go("app.home");
+		$scope.user = self.getUserInfo($stateParams.userName);
+		
+		
 		
 		let index = $stateParams.indexName;
 		switch(index) {
@@ -35,6 +39,26 @@ class AccountController {
 		}
 
     }
+	
+	
+	getUserInfo(){
+		return {
+			avatar: "gallery/default.jpg",
+			userImage: "gallery/defaultImg.jpg",
+			name: "Krzysztof",
+			surname: "Krawczyk",
+			nickname: "Beton",
+			rank: "Weteran",
+			accountCreated: "11.03.2001",
+			lastSeen: "13.11.2008",
+			city: "Warszawa",
+			age: "32",
+			description: "Lubie placki/n Kocham firmę adidas!"
+		};
+	}
+	
+	
 }
+
 
 export default AccountController;

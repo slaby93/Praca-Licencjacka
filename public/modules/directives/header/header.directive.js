@@ -33,9 +33,9 @@ class HeaderController {
         }, true);
     }
 	
-	goToProfile(index){
+	goToProfile(index, userName){
 		let self = this;
-		self.$state.go("app.account", {indexName: index});
+		self.$state.go("app.account", {userName: userName, indexName: index});
 	}
 	goToHome(){
 		let self = this;
@@ -72,7 +72,7 @@ class HeaderController {
             {
                 placeholder: "Ustawienia konta",
                 click: () => {
-                    self.goToProfile('settings');
+                    self.goToProfile('settings', self.UserService.user.login);
                 },
                 visibility: ["user"]
             },

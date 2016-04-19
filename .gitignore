@@ -2,7 +2,6 @@
 /node_modules/
 /env.js
 /public/dist
-/public/gallery
 /public/jspm_packages/*/*
 /public/index.html
 build.js

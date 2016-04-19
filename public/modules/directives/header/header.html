@@ -15,7 +15,7 @@
 			</md-button>
 			
 			<div ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" ng-click="headerCtrl.goToProfile('profile', headerCtrl.UserService.user.login)" class="avatar-wrapper hover-effect">
-				<img alt="User Image" ng-src="gallery/{{headerCtrl.userImage}}/avatar.jpg" onerror="this.src='gallery/default.jpg'" class="avatar"/>
+				<img alt="User Image" ng-src="gallery/{{headerCtrl.userImage}}/avatar.jpg" class="avatar"/>
 			</div>
 			
 			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" class="login-register-button" ng-click="headerCtrl.goToProfile('profile', headerCtrl.UserService.user.login)">

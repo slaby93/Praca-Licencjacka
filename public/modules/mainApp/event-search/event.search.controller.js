@@ -27,11 +27,16 @@ class EventSearchController {
 
     initMap() {
         let self = this;
-        self.$l.debug("GOTOWE");
-        self.map = new self.$window.google.maps.Map($('#event_search .map')[0], {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 5
-        });
+        let google = self.$window.google;
+        let map = self.map;
+        let config = {
+            center: {lat: 36.964, lng: -122.015},
+            zoom: 18,
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
+        map = new google.maps.Map($('#event_search .map')[0], config);
+        map.setTilt(45);
+
 
     }
 }

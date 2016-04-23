@@ -5,11 +5,9 @@ function main(UserService, loader, $state, $rootScope, localStorageService, $htt
     "use strict";
     let token = UserService.token;
 
-    // get google maps file
-    var url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o&callback=initMap";
     $http({
         method: 'JSONP',
-        url: url
+        url: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o&callback=initMap&libraries=places"
     });
     $window.initMap = function () {
         GoogleService.ready = true;

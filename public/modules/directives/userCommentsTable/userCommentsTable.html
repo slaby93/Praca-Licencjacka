@@ -2,27 +2,50 @@
 	<div layout="column" layout-align="center" flex="100">
 		<md-card layout="row" flex="100" class="table-header">
 			<div layout="row" flex="100">
-				<div flex="100" class="no-overflow header-content">
+				<div flex="100" class="header-content left-header-content">
 						{{userCommentsTableCtrl.positivePercentage}}% Pozytywnych Komentarzy
 				</div>
-				<div flex="100" class="no-overflow header-content" style="text-align: right;">
-						{{userCommentsTableCtrl.positives}}/{{userCommentsTableCtrl.commentsCount}}
+				<div flex="100" class="header-content right-header-content">
+						{{userCommentsTableCtrl.positives}}/{{userCommentsTableCtrl.commentsCount}} osób
 				</div>
 			</div>
 		</md-card>
+		<md-card layout="row" flex="100" class="table-header">
+			<div flex="20" class="no-overflow header-content">
+					Pozytywne: {{userCommentsTableCtrl.positives}}
+			</div>
+			<div flex="20" class="no-overflow header-content">
+					Negatywne: {{userCommentsTableCtrl.negatives}}
+			</div>
+			<div flex="20" class="no-overflow header-content">
+					Neutralne: {{userCommentsTableCtrl.neutrals}}
+			</div>
+			<div flex="40" class="no-overflow header-content">
+					Brał udział/organizował: {{userCommentsTableCtrl.takenPart}}/{{userCommentsTableCtrl.organized}}
+			</div>
+		</md-card>
+		<div class="solid-color-block"/>
 	</div>
 	<div layout="row" layout-align="center center">	
 		<div layout="column" layout-align="center" flex="100">	
 			<md-content layout="column" layout-align="center">
 				<md-table-container layout="row" layout-align="center" flex="100" class="table-with-x-overflow">
 				  <table md-table md-progress="promise" cellspacing="0" cellpadding="0">
-					<tbody md-body>
-					  <tr md-row md-select="item" md-select-id="name" md-auto-select ng-repeat="item in userCommentsTableCtrl.comments">
-						<!--<td md-cell class="cell-padding">{{item.city}}</td>
-						<td md-cell class="cell-padding">{{item.category}}</td>
-						<td md-cell class="cell-padding">{{item.date}}</td>
-						<td md-cell class="cell-padding">{{item.participants}}/{{item.limit}}</td>-->
-
+					<tbody md-body md-select="item" md-select-id="name" md-auto-select ng-repeat="item in userCommentsTableCtrl.comments">
+					  <tr md-row class="first-row">
+						<td md-cell class="cell-padding">{{item.name}}</td>
+						<td md-cell class="cell-padding">{{item.role}}</td>
+						<td md-cell class="cell-padding">{{item.type}}</td>
+					  </tr>
+					  <tr md-row class="second-row">
+						<td md-cell class="cell-padding">{{item.content}}</td>
+						<td md-cell class="cell-padding"></td>
+						<td md-cell class="cell-padding" ng-if="item.response != ''">{{item.response}}</td>
+						<td md-cell class="cell-padding" ng-if="item.response == ''">
+							<md-button class="md-raised button-text" ng-click="userCommentsTableCtrl.showCommentModal()">
+								Odpowiedz
+							</md-button>
+						</td>
 					  </tr>
 					</tbody>
 				  </table>
@@ -30,7 +53,7 @@
 			</md-content>
 		</div>
 	</div>
-	<div layout="row" layout-align="center end" flex>
+	<div layout="row" layout-align="center end" flex class="bordered">
 		<md-table-pagination layout="row" layout-align="center center"
 				md-label="{page: 'Strona:', rowsPerPage: '', of: 'z'}"
 				md-limit="userCommentsTableCtrl.limit" md-page="userCommentsTableCtrl.totalPages" md-total="{{userCommentsTableCtrl.totalResults}}"

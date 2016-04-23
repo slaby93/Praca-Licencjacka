@@ -11,13 +11,12 @@
 			<md-content layout="column" layout-align="center">
 				<md-table-container layout="row" layout-align="center" flex="100" class="table-with-x-overflow">
 				  <table md-table md-progress="promise" cellspacing="0" cellpadding="0">
-					<tbody md-body>
-					  <tr ng-click="activeEventsTableCtrl.rowClicked(item.id)" md-row md-select="item" md-select-id="name" md-auto-select ng-repeat="item in activeEventsTableCtrl.events">
+					<tbody md-body ng-click="activeEventsTableCtrl.rowClicked(item.id)" md-select="item" md-select-id="name" md-auto-select ng-repeat="item in activeEventsTableCtrl.events">
+					  <tr md-row>
 						<td md-cell class="cell-padding">{{item.city}}</td>
 						<td md-cell class="cell-padding">{{item.category}}</td>
 						<td md-cell class="cell-padding">{{item.date}}</td>
 						<td md-cell class="cell-padding">{{item.participants}}/{{item.limit}}</td>
-
 					  </tr>
 					</tbody>
 				  </table>

@@ -11,8 +11,8 @@
 			<md-content layout="column" layout-align="center">
 				<md-table-container layout="row" layout-align="center" flex="100" class="table-with-x-overflow">
 				  <table md-table md-progress="promise" cellspacing="0" cellpadding="0">
-					<tbody md-body>
-					  <tr ng-click="queryTableCtrl.rowClicked(item.id)" md-row md-select="item" md-select-id="name" md-auto-select ng-repeat="item in queryTableCtrl.events">
+					<tbody md-body ng-click="queryTableCtrl.rowClicked(item.id)" md-select="item" md-select-id="name" md-auto-select ng-repeat="item in queryTableCtrl.events">
+					  <tr md-row>
 						<td md-cell>
 							<a href=""><img ng-src="{{item.avatar}}" class="avatar"></a>
 						</td>

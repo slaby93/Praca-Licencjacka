@@ -46,7 +46,7 @@ class ActiveEventsTableController {
 		
 		
 		
-		self.totalResults = 4;
+		self.totalResults = 8;
 		self.totalPages = Math.ceil(self.totalResults / self.limit);
 		self.totalPages = 1;
 		self.events = [

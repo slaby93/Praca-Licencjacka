@@ -15,6 +15,7 @@ System.config({
 
   map: {
     "Classes": "modules/class",
+    "amcharts/ammap3": "github:amcharts/ammap3@3.20.3",
     "angular": "github:angular/bower-angular@1.5.2",
     "angular-jwt": "npm:angular-jwt@0.0.9",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",

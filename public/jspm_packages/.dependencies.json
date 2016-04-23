@@ -207,5 +207,6 @@
   "npm:angular-jwt@0.0.9": {},
   "npm:angular-moment@1.0.0-beta.5": {
     "moment": "npm:moment@~2.12.0"
-  }
+  },
+  "github:amcharts/ammap3@3.20.3": {}
 }

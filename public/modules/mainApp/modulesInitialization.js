@@ -12,7 +12,7 @@ import * as angular_material_data_table from 'angular-material-data-table';
 import * as ngMessages from 'angular-messages';
 import * as angular_jwt from 'angular-jwt';
 import * as angular_moment from 'angular-moment';
-
+import * as amMap from 'amcharts/ammap3';
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
@@ -24,12 +24,19 @@ import LoginModalController from './login/loginModal.controller.js';
 import IntroductionController from './introduction/introduction.controller';
 import HomeController from './home/home.controller.js';
 import AccountController from './account/account.controller';
+
 import EventController from './events/event.controller';
+
+import EventAddController from './event-add/event.add.controller';
+import EventEditController from './event-edit/event.edit.controller';
+import EventSearchController from './event-search/event.search.controller';
+
 import TestController from './test/test.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
 import LoaderService from '../directives/loader/loader.service';
+import GoogleService from '../services/googleService';
 // -----------------------------------------------------   Directives imports    ------------------------------------------------------------------------------------------
 import HeaderDirective from '../directives/header/header.directive';
 import FooterDirective from '../directives/footer/footer.directive';
@@ -48,9 +55,7 @@ import UserSearchDirective from '../directives/userSearch/userSearch.directive';
 import ArchiveEventsTable from '../directives/archiveEventsTable/archiveEventsTable.directive';
 import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable.directive';
 import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
-import EventAddDirective from './../directives/event-add/event.add.directive';
-import EventEditDirective from './../directives/event-edit/event.edit.directive';
-import EventSearchDirective from './../directives/event-search/event.search.directive';
+import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,9 +66,13 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("HomeController", HomeController)
     .controller("AccountController", AccountController)
     .controller("EventController", EventController)
+    .controller("EventAddController", EventAddController)
+    .controller("EventEditController", EventEditController)
+    .controller("EventSearchController", EventSearchController)
     .controller("TestController", TestController)
     .service("UserService", UserService)
     .service("EventService", EventService)
+    .service("GoogleService", GoogleService)
     .service("loader", LoaderService)
     .directive("header", HeaderDirective)
     .directive("footer", FooterDirective)
@@ -82,9 +91,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("userCommentsTable", UserCommentsTable)
     .directive("activeEventsTable", ActiveEventsTable)
     .directive("archiveEventsTable", ArchiveEventsTable)
-    .directive("eventAdd", EventAddDirective)
-    .directive("eventEdit", EventEditDirective)
-    .directive("eventSearch", EventSearchDirective)
+    .directive("wojewodztwaMap", WojewodztwaMapDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

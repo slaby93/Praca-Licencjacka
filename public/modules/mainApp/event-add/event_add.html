@@ -1,0 +1,16 @@
+<div id="event_add">
+    <md-card>
+        <md-card-content>
+            <form name="newEventForm">
+                <md-input-container>
+                    <label>Tytuł</label>
+                    <input type="text">
+                </md-input-container>
+                <md-datepicker ng-model="event.startDate" md-placeholder="Data rozpoczęcia wydarzenia:"></md-datepicker>
+            </form>
+        </md-card-content>
+    </md-card>
+    <md-card>
+        {{eventAddCtrl.newEventForm}}
+    </md-card>
+</div>

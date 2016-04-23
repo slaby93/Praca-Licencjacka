@@ -1,5 +1,9 @@
 query-table{
 	
+	.no-overflow{
+		overflow-y: hidden;
+	}
+	
 	md-table-pagination.md-select.md-default-theme .md-select-value, md-select .md-select-value{
 		display: none !important;
 	}

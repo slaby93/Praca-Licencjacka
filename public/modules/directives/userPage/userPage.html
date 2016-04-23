@@ -1,19 +1,43 @@
 <md-card>
 	<md-card-content>
-		<div layout="row" flex="100">
-			<div layout="row" flex="40">
-				<md-input-container class="md-block" flex="100">
-				  <label>O użytkowniku</label>
-				  <textarea ng-readonly="true" ng-model="userPageCtrl.user.description" md-maxlength="1000" rows="10" md-select-on-focus></textarea>
-				</md-input-container>
+		<div layout="column" flex="100">
+			<div layout="row" flex="100">
+				<div layout="column" flex="55">
+					<div>
+						<md-input-container class="md-block small-margin" layout="column" flex="100">
+						  <p class="large-text small-margin">O użytkowniku:</p>
+						  <textarea ng-readonly="true" ng-model="userPageCtrl.user.description" md-maxlength="1000" rows="10" md-select-on-focus></textarea>
+						</md-input-container>
+					</div>
+				</div>
+				<span flex/>
+				<div layout="column" flex="40">
+					<div class="small-margin">
+						<div flex="100" class="info-text">
+							<inline class="bold-text">Użytkownik od: </inline>{{userPageCtrl.user.accountCreated}}r</div>
+						<div flex="100" class="info-text">
+							<inline class="bold-text">Ostatnio zalogowany: </inline>{{userPageCtrl.user.lastSeen}}r</div>
+						<div flex="100" class="info-text" ng-if="userPageCtrl.user.age !=''">
+							<inline class="bold-text">Wiek: </inline>{{userPageCtrl.user.age}}</div>
+						<div flex="100" class="info-text" ng-if="userPageCtrl.user.city !=''">
+							<inline class="bold-text">Miasto: </inline>{{userPageCtrl.user.city}}</div>
+					</div>
+				</div>
 			</div>
-			<span flex/>
-			<div layout="column" flex="40">
-				<p flex="100" class="smaller-margin">Użytkownik od {{userPageCtrl.user.accountCreated}}r</p>
-				<p flex="100" class="smaller-margin">Ostatnio zalogowany {{userPageCtrl.user.lastSeen}}r</p>
-				<p flex="100" class="smaller-margin" ng-if="userPageCtrl.user.age !=''">Wiek: {{userPageCtrl.user.age}}</p>
-				<p flex="100" class="smaller-margin" ng-if="userPageCtrl.user.city !=''">Miasto: {{userPageCtrl.user.city}}</p>
+			<div layout="row" layout-xs="column" layout-sm="column" flex="100">
+				<div layout="row" flex="55" flex-xs="100" flex-sm="100">
+					<user-comments-table flex="100"/>
+				</div>
+				<span flex/>
+				<div layout="column" flex="40" flex-xs="100" flex-sm="100">
+					<div>
+						<active-events-table/>
+						<div class="solid-color-block"/>
+						<archive-events-table/>
+					</div>
+				</div>
 			</div>
+			
 		</div>
 	</md-card-content>
 </md-card>

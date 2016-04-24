@@ -60,11 +60,10 @@ class EventSearchController {
                 lat: lat,
                 lng: lng
             },
-            zoom: 13,
-            mapTypeId: google.maps.MapTypeId.SATELLITE
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         self.map = new google.maps.Map($('#event_search .map')[0], config);
-
         self.map.setTilt(45);
     }
 

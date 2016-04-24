@@ -2,11 +2,13 @@
  * Created by piec on 4/8/2016.
  */
 class EventSearchController {
-    constructor($log, $scope, GoogleService, $window) {
+    constructor($log, $scope, $q, GoogleService, $window, UserService) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
+        self.$q = $q;
+        self.UserService = UserService;
         self.GoogleService = GoogleService;
         self.observeObjects();
     }
@@ -25,6 +27,12 @@ class EventSearchController {
 
     };
 
+    test() {
+        let self = this;
+        self.$l.debug("TEST FUNCTION");
+        self.UserService.saveUser();
+    }
+
     initMap() {
         let self = this;
         let google = self.$window.google;
@@ -36,9 +44,9 @@ class EventSearchController {
         };
         map = new google.maps.Map($('#event_search .map')[0], config);
         map.setTilt(45);
-
-
     }
+
+
 }
 
 export default EventSearchController;

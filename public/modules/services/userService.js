@@ -16,6 +16,16 @@ class UserService {
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
         self.user = new User();
+        self.watchUserObject();
+    }
+
+    watchUserObject() {
+        let self = this;
+        self.$rootScope.$watch(()=> {
+            return self.user;
+        }, (newValue)=> {
+
+        }, true);
     }
 
     /**
@@ -28,13 +38,20 @@ class UserService {
         let promise = self.$q.defer();
         self.$http.post("/user", passedUser, {skipAuthorization: true}).then((received) => {
             promise.resolve(received);
-            self.user = new User(received.data.user._id, received.data.user.login,received.data.user.groups);
+            self.setUser(new User(
+                received.data.user._id,
+                received.data.user.login,
+                received.data.user.groups,
+                received.data.user.email,
+                received.data.user.firstName,
+                received.data.user.lastName,
+                received.data.user.localization,
+                received.data.user.phone));
             self.token = received.data.token;
         }, (err) => {
             promise.reject(err);
         });
-		if(self.$state.current.name == "introduction")  self.$state.go("app.home");
-		 else  self.$state.go(self.$state.current.name);
+        if (self.$state.current.name == "introduction")  self.$state.go("app.home");
         return promise.promise;
     };
 
@@ -67,22 +84,35 @@ class UserService {
     }
 
 
-    /**
-     *  Set user object in service
-     * @param user
-     */
-    set user(user) {
-        this._user = user;
+    setUser(user) {
+        let self = this;
+        self.$l.debug("USER", user, self.user);
+        if (user.isLogged() && !self.user.isLogged() && self.user.localization.length > 0) {
+            // login
+            self.$l.debug("login");
+            _.forEach(self.user.localization, (item)=> {
+                user.localization.push(item);
+            });
+            self.user = user;
+            self.saveUser();
+            return;
+        } else if (!user.isLogged() && self.user.isLogged()) {
+            // logout
+            self.$l.debug("logout");
+            user.localization = _.last(self.user.localization);
+        }
+
+        self.user = user;
     }
 
-    /**
-     * Returns user object from service
-     * @returns {*|modalInstance.resolve.user|modalInstance.resolve."user"|null}
-     */
-    get user() {
-        return this._user;
+    addUserLocalization(object) {
+        let self = this;
+        self.user.localization.push(object);
+        // if user is logged save new data to database
+        if (self.user.isLogged()) {
+            self.saveUser();
+        }
     }
-
 
     /**
      * Register new user in server. Returns promise.
@@ -93,8 +123,9 @@ class UserService {
         var promise = self.$q.defer();
         self.$rootScope.$evalAsync(() => {
             self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
+                self.$l.debug("Received", received);
                 promise.resolve(received);
-                self.user = new User(received.data.user.id, received.data.user.login, received.data.user.groups);
+                self.setUser(new User(received.data.user._id, received.data.user.login, received.data.user.groups));
                 self.token = received.data.token;
             }, (err) => {
                 promise.reject(err);
@@ -105,9 +136,9 @@ class UserService {
 
     logout() {
         let self = this;
-        self.user = new User();
+        self.setUser(new User());
         self.token = undefined;
-		self.$state.go("introduction");
+        self.$state.go("introduction");
     };
 
     loginByToken() {
@@ -116,8 +147,7 @@ class UserService {
         self.$http.post('/user/token', {"token": self.token}, {skipAuthorization: true}).then(
             // SUCCESS
             function (data) {
-                self.$l.debug("Data", data);
-                self.user = new User(data.data._id, data.data.login, data.data.groups);
+                self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
                 promise.resolve(data);
                 // ERROR
             }, function (err) {
@@ -157,6 +187,23 @@ class UserService {
             }
         }
         return hasRight;
+    }
+
+    /**
+     * Saves to databse new user inforamtions eg new localization etc
+     */
+    saveUser() {
+        let self = this;
+        self.$l.debug("SAVE USER", self.user);
+        self.$http({
+            method: "POST",
+            url: "/user/update",
+            data: {user: self.user}
+        });
+    }
+
+    refreshUser() {
+
     }
 
 }

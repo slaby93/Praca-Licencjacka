@@ -31,6 +31,7 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "crypto-js": "npm:crypto-js@3.1.6",
     "jquery": "npm:jquery@2.2.2",
+    "lodash": "npm:lodash@4.11.1",
     "md-data-table": "npm:md-data-table@1.4.2",
     "moment": "npm:moment@2.12.0",
     "sweetalert": "npm:sweetalert@1.1.3",
@@ -171,6 +172,10 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:lodash@4.11.1": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:moment@2.12.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"

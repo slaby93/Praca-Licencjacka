@@ -86,10 +86,8 @@ class UserService {
 
     setUser(user) {
         let self = this;
-        self.$l.debug("USER", user, self.user);
-        if (user.isLogged() && !self.user.isLogged() && self.user.localization.length > 0) {
+        if (user.isLogged() && !self.user.isLogged()) {
             // login
-            self.$l.debug("login");
             _.forEach(self.user.localization, (item)=> {
                 user.localization.push(item);
             });
@@ -98,11 +96,11 @@ class UserService {
             return;
         } else if (!user.isLogged() && self.user.isLogged()) {
             // logout
-            self.$l.debug("logout");
-            user.localization = _.last(self.user.localization);
+            user.localization = [_.last(self.user.localization)];
+            self.user = user;
         }
 
-        self.user = user;
+
     }
 
     addUserLocalization(object) {

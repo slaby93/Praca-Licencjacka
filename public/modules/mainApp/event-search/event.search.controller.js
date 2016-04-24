@@ -30,19 +30,33 @@ class EventSearchController {
     test() {
         let self = this;
         self.$l.debug("TEST FUNCTION");
-        self.UserService.saveUser();
+        self.GoogleService.googleAutocompleteRequest("Kr");
     }
 
     initMap() {
         let self = this;
         let google = self.$window.google;
         let map = self.map;
+        let lat = self.UserService.getLastLocation().latitude;
+        let lng = self.UserService.getLastLocation().longitude;
+        let service;
         let config = {
-            center: {lat: 36.964, lng: -122.015},
-            zoom: 18,
+            center: {
+                lat: lat,
+                lng: lng
+            },
+            zoom: 15,
             mapTypeId: google.maps.MapTypeId.SATELLITE
         };
         map = new google.maps.Map($('#event_search .map')[0], config);
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+            location: new google.maps.LatLng(lat, lng),
+            radius: '50000',
+            types: ['atm']
+        }, (data)=> {
+            self.$l.debug("Google response", data);
+        });
         map.setTilt(45);
     }
 

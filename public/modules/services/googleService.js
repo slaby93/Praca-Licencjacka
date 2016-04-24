@@ -3,11 +3,12 @@
  */
 
 class GoogleService {
-
-    constructor($log, $q, UserService, $window, $rootScope) {
+    // API KEY AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o
+    constructor($log, $q, UserService, $window, $rootScope, $http) {
         let self = this;
         self.$l = $log;
         self.$q = $q;
+        self.$http = $http;
         self.$rootScope = $rootScope;
         self.$window = $window;
         self.UserService = UserService;
@@ -36,7 +37,24 @@ class GoogleService {
     defaultValues() {
         let self = this;
         self.ready = false;
+        self.apiKey = 'AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o';
     };
+
+    googleAutocompleteRequest(text) {
+        let self = this;
+        let config = {};
+        self.$http({
+            method: "GET",
+            // url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${self.apiKey}`
+            url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Vict&types=geocode&language=fr&key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o`
+        }).then((successData)=> {
+            self.$l.debug("Success",successData);
+        }, (err)=> {
+            self.$l.debug("ERROR", err);
+        }, (err)=> {
+            self.$l.debug("ERROR", err);
+        });
+    }
 
     get ready() {
         return this._ready;

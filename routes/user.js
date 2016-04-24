@@ -89,7 +89,7 @@ router.post('/register', function (req, res, next) {
             getUserByLogin(user.login, [], function (data) {
                 "use strict";
                 // generates token
-                tokenHandler.generateJWT(data._id, [], function (token) {
+                tokenHandler.generateJWT(data._id, data.groups, function (token) {
                     res.status(200).json({token: token, user: removeSensitiveUserData(data)}).end(function () {
                         db.close();
                     });

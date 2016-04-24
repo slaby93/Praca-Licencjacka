@@ -112,6 +112,11 @@ class UserService {
         }
     }
 
+    getLastLocation() {
+        let self = this;
+        return _.last(self.user.localization);
+    }
+
     /**
      * Register new user in server. Returns promise.
      * @param passedUser

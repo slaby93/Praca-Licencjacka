@@ -1,6 +1,8 @@
 #event_search {
-    .map {
-    height: 700px;
-    width: 700px;
-    }
+  height: 100%;
+  .map {
+    min-height: 400px;
+    height: 30%;
+    width: 100%;
+  }
 }

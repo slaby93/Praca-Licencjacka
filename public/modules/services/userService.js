@@ -126,7 +126,6 @@ class UserService {
         var promise = self.$q.defer();
         self.$rootScope.$evalAsync(() => {
             self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
-                self.$l.debug("Received", received);
                 promise.resolve(received);
                 self.setUser(new User(received.data.user._id, received.data.user.login, received.data.user.groups));
                 self.token = received.data.token;
@@ -197,7 +196,6 @@ class UserService {
      */
     saveUser() {
         let self = this;
-        self.$l.debug("SAVE USER", self.user);
         self.$http({
             method: "POST",
             url: "/user/update",

@@ -43,17 +43,22 @@ class GoogleService {
     googleAutocompleteRequest(text) {
         let self = this;
         let config = {};
-        self.$http({
-            method: "GET",
-            // url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${self.apiKey}`
-            url: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Vict&types=geocode&language=fr&key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o`
-        }).then((successData)=> {
-            self.$l.debug("Success",successData);
-        }, (err)=> {
-            self.$l.debug("ERROR", err);
-        }, (err)=> {
-            self.$l.debug("ERROR", err);
+        let dfr = self.$q.defer();
+        self.getUserLocation().then((location)=> {
+            self.$http({
+                method: "POST",
+                data: {
+                    query: text,
+                    location: [location.coords.latitude, location.coords.longitude]
+                },
+                url: `/user/autocomplete`
+            }).then((successData)=> {
+                dfr.resolve(successData);
+            }, (err)=> {
+                dfr.reject(err);
+            });
         });
+        return dfr.promise;
     }
 
     get ready() {

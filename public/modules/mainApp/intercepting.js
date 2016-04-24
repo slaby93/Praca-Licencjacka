@@ -9,6 +9,7 @@
  * @returns {undefined}
  */
 function intercepting($httpProvider, jwtInterceptorProvider) {
+	delete $httpProvider.defaults.headers.common["X-Requested-With"];
 	jwtInterceptorProvider.tokenGetter = function(UserService, jwtHelper, $http) {
 		var token = UserService.token;
 		if (token && jwtHelper.isTokenExpired(token)) {

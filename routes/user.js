@@ -7,6 +7,7 @@ var tokenHandler = require("./tokenHandler");
 var jwt = require('express-jwt');
 var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
 var auth = jwt({secret: secret, userProperty: 'payload'});
+var https = require('https');
 var guard = require('express-jwt-permissions')({
     requestProperty: 'payload',
     permissionsProperty: 'groups'
@@ -225,6 +226,22 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
         });
     });
 });
+
+router.post("/autocomplete", function (req, res, next) {
+    var query = req.body.query;
+    var location = req.body.location;
+    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&location=' + location[0] + ',' + location[1] + '&types=geocode&components=country:pl&language=pl&key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o';
+    var result = '';
+    https.request(url, function (response) {
+        response.on('data', function (dane) {
+            result += dane;
+        })
+        response.on('end', function (dane) {
+            res.end(result);
+        })
+    }).end();
+});
+
 
 router.post("/remove", auth, guard.check('user'), function (req, res, next) {
     /**

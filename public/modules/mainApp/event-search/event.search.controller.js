@@ -2,12 +2,16 @@
  * Created by piec on 4/8/2016.
  */
 class EventSearchController {
-    constructor($log, $scope, GoogleService, $window) {
+    constructor($log, $scope, $q, GoogleService, $window, UserService, loader) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
+        self.$q = $q;
+        self.loader = loader;
+        self.UserService = UserService;
         self.GoogleService = GoogleService;
+        self.setDefaultValues();
         self.observeObjects();
     }
 
@@ -21,24 +25,60 @@ class EventSearchController {
                 tmp();
             }
         });
-
-
     };
+
+    setDefaultValues() {
+        let self = this;
+    }
+
+    test() {
+        let self = this;
+    }
+
+    changeOfQueryString() {
+        let self = this;
+        self.loader.show();
+        self.resultList = [];
+        self.GoogleService.googleAutocompleteRequest(self.queryString).then((dane)=> {
+            self.resultList = dane.data.predictions;
+            self.loader.hide();
+        }, (err)=> {
+            self.loader.hide();
+            throw err;
+        });
+    }
 
     initMap() {
         let self = this;
         let google = self.$window.google;
         let map = self.map;
+        let lat = self.UserService.getLastLocation().latitude;
+        let lng = self.UserService.getLastLocation().longitude;
+        let service;
         let config = {
-            center: {lat: 36.964, lng: -122.015},
-            zoom: 18,
-            mapTypeId: google.maps.MapTypeId.SATELLITE
+            center: {
+                lat: lat,
+                lng: lng
+            },
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        map = new google.maps.Map($('#event_search .map')[0], config);
-        map.setTilt(45);
-
-
+        self.map = new google.maps.Map($('#event_search .map')[0], config);
+        self.map.setTilt(45);
     }
+
+    handleResultClick(value) {
+        let self = this;
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode({address: value.description}, (result, status)=> {
+            if (status === "OK") {
+                self.map.setCenter(result[0].geometry.location);
+            }
+
+        });
+    }
+
+
 }
 
 export default EventSearchController;

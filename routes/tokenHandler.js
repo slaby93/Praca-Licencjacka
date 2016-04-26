@@ -15,12 +15,13 @@ exports.generateJWT = function (ID, groups, callback) {
     var today = new Date();
     var expire = new Date(today);
     // jak dlugo token ma byc uznawany za poprawny
-	expire.setTime(today.getTime() + 7200000);
+    expire.setTime(today.getTime() + 7200000);
     // generowanie tokena, 1 argumentem są zakodowane dane
-    jwt.sign({"_id": ID,
-		"groups": groups,
-		"exp": parseInt(expire.getTime() / 1000)
-	}, secret, {"algorithm": "HS256"}, function (token) {
+    jwt.sign({
+        "_id": ID,
+        "groups": groups,
+        "exp": parseInt(expire.getTime() / 1000)
+    }, secret, {"algorithm": "HS256"}, function (token) {
         if (callback) {
             callback(token);
         }
@@ -46,22 +47,22 @@ exports.decodeToken = function (token, ignoreExp) {
  * @param callback
  */
 exports.verifyToken = function (payload, callback) {
-	mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("projekt", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(payload._id)}, function (err, foundedUser) {
             if (err) {
                 callback(false);
-				return;
+                return;
             }
             // nie znaleziono uzytkownika w bazie
             if (foundedUser === undefined || foundedUser === null) {
                 callback(false);
-				return;
+                return;
             }
-			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(payload.groups)) {
-				callback(false);
-				return;
+            if (JSON.stringify(foundedUser.groups) !== JSON.stringify(payload.groups)) {
+                callback(false);
+                return;
             }
-			callback(true);
+            callback(true);
         });
     });
 };

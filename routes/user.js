@@ -7,9 +7,10 @@ var tokenHandler = require("./tokenHandler");
 var jwt = require('express-jwt');
 var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
 var auth = jwt({secret: secret, userProperty: 'payload'});
+var https = require('https');
 var guard = require('express-jwt-permissions')({
-  requestProperty: 'payload',
-  permissionsProperty: 'groups'
+    requestProperty: 'payload',
+    permissionsProperty: 'groups'
 })
 // POST http://localhost:3000/user/login
 /**
@@ -84,14 +85,13 @@ router.post('/register', function (req, res, next) {
                     db.close();
                 });
             }
-            console.log("Dodawanie Uzytkownika");
             //dodanie uzytkownika do bazy
             db.user.insert(user);
             getUserByLogin(user.login, [], function (data) {
                 "use strict";
                 // generates token
-                tokenHandler.generateJWT(data._id, function (token) {
-                    res.status(200).json({token: token,user:removeSensitiveUserData(data)}).end(function () {
+                tokenHandler.generateJWT(data._id, data.groups, function (token) {
+                    res.status(200).json({token: token, user: removeSensitiveUserData(data)}).end(function () {
                         db.close();
                     });
                 });
@@ -117,78 +117,78 @@ router.post('/token', function (req, res, next) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
                 res.status(500).send("Token is valid, but error when fetching from db").end(function () {
-					db.close();
-				});
+                    db.close();
+                });
                 return;
             }
             // nie znaleziono uzytkownika w bazie
             if (foundedUser === undefined || foundedUser === null) {
                 res.status(500).send("User not found").end(function () {
-					db.close();
-				});
+                    db.close();
+                });
                 return;
             }
-			if (JSON.stringify(foundedUser.groups) !== JSON.stringify(decodedToken.groups)) {
-				res.status(500).send("Groups are invalid").end(function () {
-					db.close();
-				});
+            if (JSON.stringify(foundedUser.groups) !== JSON.stringify(decodedToken.groups)) {
+                res.status(500).send("Groups are invalid").end(function () {
+                    db.close();
+                });
                 return;
             }
             foundedUser = removeSensitiveUserData(foundedUser);
             res.status(200).send(foundedUser).end(function () {
-				db.close();
-			});
+                db.close();
+            });
         });
     });
 });
 
 router.post('/refresh', function (req, res, next) {
-	var token = req.body.token;
-	var decodedToken = tokenHandler.decodeToken(token, true);
+    var token = req.body.token;
+    var decodedToken = tokenHandler.decodeToken(token, true);
 
-	if (decodedToken === null) {
+    if (decodedToken === null) {
         res.status(406).send("Token is invalid");
 
         return;
     }
 
-	tokenHandler.verifyToken(decodedToken, function (result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		tokenHandler.generateJWT(decodedToken._id, decodedToken.groups, function (token) {
-			res.status(200).json({"token": token});
-		});
-	});
+    tokenHandler.verifyToken(decodedToken, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        tokenHandler.generateJWT(decodedToken._id, decodedToken.groups, function (token) {
+            res.status(200).json({"token": token});
+        });
+    });
 });
 
 router.post('/all', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function (result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		mongo.connect("projekt", ["user"], function (db) {
-			db.user.find({}, {
-					"password": 0
-					, "retypedPassword": 0
-				}
-				, function (err, data) {
-					if (err) {
-						console.error(err);
-						res.status(404).send().end(function () {
-							db.close();
-						});
-						return;
-					} else {
-						res.status(200).send(data).end(function () {
-						db.close();
-					});
-					}
-				});
-		});
-	});
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        mongo.connect("projekt", ["user"], function (db) {
+            db.user.find({}, {
+                    "password": 0
+                    , "retypedPassword": 0
+                }
+                , function (err, data) {
+                    if (err) {
+                        console.error(err);
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                        return;
+                    } else {
+                        res.status(200).send(data).end(function () {
+                            db.close();
+                        });
+                    }
+                });
+        });
+    });
 });
 
 router.post("/update", auth, guard.check('user'), function (req, res, next) {
@@ -198,34 +198,50 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
      * Walidacja przesłanych danych
      * Przypadki brzegowe
      */
-	tokenHandler.verifyToken(req.payload, function (result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		var usr = req.body.user;
-		var id = usr._id;
-		delete usr._id;
-		mongo.connect("projekt", ["user"], function (db) {
-			db.user.update({
-					_id: mongo.ObjectId(id)
-				},
-				{
-					"$set": usr
-				},
-				function (err, data) {
-					if (err) {
-						res.status(500).send(err).end(function () {
-							db.close();
-						});
-					}
-					res.status(200).send(data).end(function () {
-						db.close();
-					});
-				});
-		});
-	});
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var usr = req.body.user;
+        var id = usr.id;
+        delete usr.id;
+        mongo.connect("projekt", ["user"], function (db) {
+            db.user.update({
+                    _id: mongo.ObjectId(id)
+                },
+                {
+                    "$set": usr
+                },
+                function (err, data) {
+                    if (err) {
+                        res.status(500).send(err).end(function () {
+                            db.close();
+                        });
+                    }
+                    res.status(200).send(data).end(function () {
+                        db.close();
+                    });
+                });
+        });
+    });
 });
+
+router.post("/autocomplete", function (req, res, next) {
+    var query = req.body.query;
+    var location = req.body.location;
+    var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&location=' + location[0] + ',' + location[1] + '&types=geocode&components=country:pl&language=pl&key=AIzaSyCdp3QzFm-6Xp1qULwW4JPMJiYX0lydf-o';
+    var result = '';
+    https.request(url, function (response) {
+        response.on('data', function (dane) {
+            result += dane;
+        })
+        response.on('end', function (dane) {
+            res.end(result);
+        })
+    }).end();
+});
+
 
 router.post("/remove", auth, guard.check('user'), function (req, res, next) {
     /**
@@ -233,27 +249,27 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
      * Napisać testy
      * Co, gdy dane są błędne? itd
      */
-	tokenHandler.verifyToken(req.payload, function (result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		var usr = req.body.user;
-		mongo.connect("projekt", ["user"], function (db) {
-			db.user.remove({"login": usr.login},
-				function (err, data) {
-					if (err) {
-						res.status(500).send(err).end(function () {
-							db.close();
-						});
-					} else {
-						res.status(200).send("ok").end(function () {
-							db.close();
-						});
-					}
-				});
-		})
-	});
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var usr = req.body.user;
+        mongo.connect("projekt", ["user"], function (db) {
+            db.user.remove({"login": usr.login},
+                function (err, data) {
+                    if (err) {
+                        res.status(500).send(err).end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                });
+        })
+    });
 });
 
 
@@ -277,8 +293,6 @@ function removeSensitiveUserDataArray(array) {
  *
  */
 function getUserByLogin(login, attributes, callback) {
-    console.log("Login");
-    console.log(login);
     "use strict";
     mongo.connect("projekt", ["user"], function (db) {
         db.user.findOne({

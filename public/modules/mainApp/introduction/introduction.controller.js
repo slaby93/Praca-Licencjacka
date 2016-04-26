@@ -6,6 +6,7 @@ class IntroductionController {
     constructor($log, $mdDialog, loader, UserService) {
         let self = this;
         self.$l = $log;
+        self.UserService = UserService;
     }
 }
 

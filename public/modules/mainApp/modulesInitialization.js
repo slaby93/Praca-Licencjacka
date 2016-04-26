@@ -13,6 +13,7 @@ import * as ngMessages from 'angular-messages';
 import * as angular_jwt from 'angular-jwt';
 import * as angular_moment from 'angular-moment';
 import * as amMap from 'amcharts/ammap3';
+import * as lodash from 'lodash';
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';

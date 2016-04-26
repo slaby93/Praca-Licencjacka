@@ -2,7 +2,7 @@
  * Created by piec on 3/22/2016.
  */
 class User {
-    constructor(id, login, groups = ['guest'], email, firstName, lastName, phone, localization) {
+    constructor(id, login, groups = ['guest'], email, firstName, lastName, localization = [], phone) {
         this.id = id;
         this.login = login;
         this.email = email;
@@ -11,6 +11,10 @@ class User {
         this.lastName = lastName;
         this.phone = phone;
         this.localization = localization;
+    }
+
+    isLogged() {
+        return (this.login) ? true : false;
     }
 }
 

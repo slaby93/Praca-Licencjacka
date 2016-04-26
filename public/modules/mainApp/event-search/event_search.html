@@ -1,4 +1,21 @@
-<div id="event_search">
+<div layout-align="column" id="event_search">
+    <div layout="row" layout-align="center center">
+        <md-input-container flex="grow">
+            <label>Wpisz nazwę miejscowości:</label>
+            <input ng-model-options="{ updateOn: 'blur' }" ng-model="eventSearchCtrl.queryString"
+                   ng-change="eventSearchCtrl.changeOfQueryString()" type="text"/>
+        </md-input-container>
+    </div>
     <div class="map"></div>
+    <md-list layout="row">
+        <md-list-item flex="20" ng-click="eventSearchCtrl.handleResultClick(item)"
+                      ng-repeat="item in eventSearchCtrl.resultList">
+            <md-card flex="grow">
+                <md-card-content>
+                    {{item.description}}
+                </md-card-content>
+            </md-card>
+        </md-list-item>
+    </md-list>
 </div>
 

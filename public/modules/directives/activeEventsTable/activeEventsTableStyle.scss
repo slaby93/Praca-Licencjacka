@@ -1,4 +1,65 @@
 active-events-table{
 	
+	.no-overflow{
+		overflow-y: hidden;
+	}
+	
+	
+	md-table-pagination.md-select.md-default-theme .md-select-value, md-select .md-select-value{
+		display: none !important;
+	}
+
+
+	.stretch-vertically{height: 100%;}   /*it should be global? maybe?*/
+	
+	.cell-padding  {padding-right: 5px;}
+	@media screen and (min-width: 1200px) {
+		.cell-padding  {padding-right: 50px;}
+	}
+	@media screen and (min-width: 1900px) {
+		.cell-padding  {padding-right: 70px;}
+	}
+	
+	
+	.table-header{
+		margin: 0px 0px 0px 0px;
+		height: 35px;
+		overflow: hidden;
+		.header-content{
+			background: #f7f4ed; /* Old browsers */
+			background: -moz-linear-gradient(top, #f7f4ed 0%, #dfe5d7 81%, #9fa89a 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, #f7f4ed 0%,#dfe5d7 81%,#9fa89a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f4ed', endColorstr='#9fa89a',GradientType=0 ); /* IE6-9 */
+		}
+	}
+	
+	.table-with-x-overflow  {
+		overflow-x: auto;
+		padding-top: 0px;
+		.md-table{
+			width: 100%;
+			height: 100%;
+			.md-body{
+				background: #f7f4ed; /* Old browsers */
+				background: -moz-linear-gradient(top, #f7f4ed 0%, #dfe5d7 91%, #b3bead 100%); /* FF3.6-15 */
+				background: -webkit-linear-gradient(top, #f7f4ed 0%,#dfe5d7 91%,#b3bead 100%); /* Chrome10-25,Safari5.1-6 */
+				background: linear-gradient(to bottom, #f7f4ed 0%,#dfe5d7 91%,#b3bead 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f4ed', endColorstr='#b3bead',GradientType=0 ); /* IE6-9 */
+				:hover{
+					cursor:  pointer;
+					background: #ffffff; /* Old browsers */
+					background: -moz-linear-gradient(top, #ffffff 0%, #dfe5d7 94%, #b3bead 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(top, #ffffff 0%,#dfe5d7 94%,#b3bead 100%); /* Chrome10-25,Safari5.1-6 */
+					background: linear-gradient(to bottom, #ffffff 0%,#dfe5d7 94%,#b3bead 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#b3bead',GradientType=0 ); /* IE6-9 */
+				}
+				.md-row{
+					border: 0px;
+					height: 50px;
+				}
+			}
+		}
+	}
 	
 }

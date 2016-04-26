@@ -1,12 +1,29 @@
 user-page{
+	.small-margin  {margin-top: 10px;}
+	.md-errors-spacer  {display: none;}
 	md-card{
 		md-card-content{
 			div{
-				.smaller-margin{
+				.large-text  {font-size: 24px;}
+				@media screen and (min-width: 600px) {
+					.large-text  {font-size: 32px;}
+				}
+				.solid-color-block{
+					 height: 40px;
+					 background-color: gray;
+				}
+				.rounded-top{
+					border-top-left-radius: 6px;
+					border-top-right-radius: 6px;
+				}
+				
+				.info-text{
 					margin-top: 3px;
 					margin-bottom: 3px;
-					font-weight: 700px;
 					font-size: 16px;
+					.bold-text{
+						font-weight: 900;
+					}
 				}
 			}
 		

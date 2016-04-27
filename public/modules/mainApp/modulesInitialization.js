@@ -30,7 +30,8 @@ import EventController from './events/event.controller';
 
 import EventAddController from './event-add/event.add.controller';
 import EventEditController from './event-edit/event.edit.controller';
-import EventSearchController from './event-search/event.search.controller';
+import CenterController from './center/center.controller';
+
 
 import TestController from './test/test.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
@@ -69,7 +70,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("EventController", EventController)
     .controller("EventAddController", EventAddController)
     .controller("EventEditController", EventEditController)
-    .controller("EventSearchController", EventSearchController)
+    .controller("CenterController", CenterController)
     .controller("TestController", TestController)
     .service("UserService", UserService)
     .service("EventService", EventService)

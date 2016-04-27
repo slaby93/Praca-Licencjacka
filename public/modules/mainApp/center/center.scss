@@ -1,0 +1,77 @@
+#center_element {
+  height: 100%;
+  .map {
+    min-height: 400px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 0;
+  }
+  .itemsOverMap {
+    height: 100%;
+    z-index: 1;
+    position: relative !important;
+    pointer-events: none;
+
+  }
+  .searchBox {
+    pointer-events: all;
+    width: 250px;
+    margin: 0px;
+    top: 10px;
+    left: 10vw;
+    md-card-content {
+      padding: 0px 20px 0px 20px;
+    }
+    md-input-container {
+      min-width: 210px;
+      margin: 5px 0px 5px 0px;
+      input {
+        border: none;
+      }
+    }
+    md-list {
+      padding: 0px !important;
+    }
+    .md-errors-spacer {
+      display: none;
+    }
+  }
+  .resultPanelHolder {
+    pointer-events: all;
+    background-color: green;
+    width: 100%;
+    transition: all 1s linear;
+  }
+
+  .editMenu {
+    min-width: 0px;
+    pointer-events: all;
+    background-color: red;
+    height: 100%;
+    width: 30vw;
+    transform-style: preserve-3d;
+    transform: rotateY(90deg);
+    transform-origin: right;
+    transition: all 1s linear;
+    flex-basis: 0%;
+  }
+  .showEdit {
+    flex-basis: 30%;
+    transform: rotateY(0deg) !important;
+  }
+
+}
+
+.queryResultsHolder {
+
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  md-menu-item {
+    background-color: white;
+  }
+}

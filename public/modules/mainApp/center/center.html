@@ -16,7 +16,8 @@
                                        placeholder="Wpisz nazwę miejscowości:"
                                        type="text"/>
                             </md-input-container>
-                            <button ng-click="centerCtrl.test()">SWITCH</button>
+                            <button ng-click="centerCtrl.switchEdit()">SHOW EDIT</button>
+                            <button ng-click="centerCtrl.switchResults()">SHOW RESULTS</button>
                             <md-list flex>
                                 <md-list-item ng-click="centerCtrl.handleResultClick(item)"
                                               ng-repeat="item in centerCtrl.resultList" class="md-3-line"
@@ -33,7 +34,7 @@
             </div>
             <div flex="grow"></div>
             <!--RESULT PANEL-->
-            <div class="resultPanelHolder">
+            <div ng-class="{showResult:centerCtrl.resultStatus}" class="resultPanelHolder">
                 <h1 ng-repeat="item in [1,2,3]">
                     {{item}}
                 </h1>

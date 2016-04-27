@@ -30,6 +30,7 @@ class CenterController {
     setDefaultValues() {
         let self = this;
         self.editStatus = false;
+        self.resultStatus = false;
     }
 
     test() {
@@ -88,9 +89,14 @@ class CenterController {
         });
     }
 
-    test() {
+    switchEdit() {
         let self = this;
         self.editStatus = !self.editStatus;
+    }
+
+    switchResults() {
+        let self = this;
+        self.resultStatus = !self.resultStatus;
     }
 
 

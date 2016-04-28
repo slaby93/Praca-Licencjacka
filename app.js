@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/user');
 var cms = require('./routes/cms');
+var events = require('./routes/event');
 
 var app = express();
 /**
@@ -27,6 +28,7 @@ app.use("/fonts", express.static(path.join(__dirname, './node_modules/bootstrap/
 app.use('/', routes);
 app.use('/user', users);
 app.use('/cms', cms);
+app.use('/event', events);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

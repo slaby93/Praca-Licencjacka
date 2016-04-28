@@ -30,6 +30,7 @@ exports.generateJWT = function (ID, groups, callback) {
 /**
  * @description Dekoduje otrzymany token
  * @param token
+ * @param ignoreExp
  */
 exports.decodeToken = function (token, ignoreExp) {
     try {
@@ -43,7 +44,7 @@ exports.decodeToken = function (token, ignoreExp) {
 };
 /**
  * @description Porownuje otrzymany token z baza danych
- * @param authorization
+ * @param payload
  * @param callback
  */
 exports.verifyToken = function (payload, callback) {

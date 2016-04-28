@@ -3,6 +3,9 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var assert = require('assert');
 var mongo = require('./dbConnect.js');
+var formidable = require('formidable');
+var fs = require('fs');
+var path = require('path');
 var tokenHandler = require("./tokenHandler");
 var jwt = require('express-jwt');
 var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
@@ -12,6 +15,7 @@ var guard = require('express-jwt-permissions')({
     requestProperty: 'payload',
     permissionsProperty: 'groups'
 })
+var uploadHandler = require("./uploadHandler");
 // POST http://localhost:3000/user/login
 /**
  * @description Logowanie
@@ -270,6 +274,40 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
                 });
         })
     });
+});
+
+router.post('/avatar', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function(result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		uploadHandler.upload(req, 'avatar', function (result, json) {
+			if (!result) {
+				res.status(500).send("Error while file writing");
+				return;
+			}
+			res.status(200).json(json);
+		});
+
+	});
+});
+
+router.post('/background', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function(result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		uploadHandler.upload(req, 'background', function (result, json) {
+			if (!result) {
+				res.status(500).send("Error while file writing");
+				return;
+			}
+			res.status(200).json(json);
+		});
+
+	});
 });
 
 

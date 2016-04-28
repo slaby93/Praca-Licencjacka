@@ -1,0 +1,5 @@
+Sprawa jest trywialna (xD), wykonujemy nastêpuj¹ce kroki:
+1. Instalujemy rhc wed³ug instrukcji na stronie: https://developers.openshift.com/getting-started/windows.html#client-tools (polecam Ruby 2.0.0-p648 (x64), bo dzia³a).
+2. Uruchamiamy rhc setup i konfigurujemy do koñca (danny.slaby@gmail.com, daniel22).
+3. Odpalamy rhc port-forward serwer.
+4. Po zakoñczeniu pracy z aplikacj¹ zabijamy powy¿szy proces.

@@ -24,7 +24,7 @@ router.post('/', function (req, res, next) {
         });
     }
     //polaczenie do bazy
-    mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("serwer", ["user"], function (db) {
         //zapytanie o uzytkownika
         db.user.findOne({"login": req.body.login}, function (err, foundedUser) {
             //niepoprawny login
@@ -75,7 +75,7 @@ router.post('/register', function (req, res, next) {
     user.password = password;
     user.groups = ['user'];
     //laczenie z baza
-    mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("serwer", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika
         db.user.find({"login": user.login}, function (err, docs) {
             //jezeli znaleziono uzytkownika
@@ -113,7 +113,7 @@ router.post('/token', function (req, res, next) {
         return;
     }
 
-    mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("serwer", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
             if (err) {
                 res.status(500).send("Token is valid, but error when fetching from db").end(function () {
@@ -169,7 +169,7 @@ router.post('/all', auth, guard.check('user'), function (req, res, next) {
             res.status(401).send("Token is invalid");
             return;
         }
-        mongo.connect("projekt", ["user"], function (db) {
+        mongo.connect("serwer", ["user"], function (db) {
             db.user.find({}, {
                     "password": 0
                     , "retypedPassword": 0
@@ -206,7 +206,7 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
         var usr = req.body.user;
         var id = usr.id;
         delete usr.id;
-        mongo.connect("projekt", ["user"], function (db) {
+        mongo.connect("serwer", ["user"], function (db) {
             db.user.update({
                     _id: mongo.ObjectId(id)
                 },
@@ -255,7 +255,7 @@ router.post("/remove", auth, guard.check('user'), function (req, res, next) {
             return;
         }
         var usr = req.body.user;
-        mongo.connect("projekt", ["user"], function (db) {
+        mongo.connect("serwer", ["user"], function (db) {
             db.user.remove({"login": usr.login},
                 function (err, data) {
                     if (err) {
@@ -294,7 +294,7 @@ function removeSensitiveUserDataArray(array) {
  */
 function getUserByLogin(login, attributes, callback) {
     "use strict";
-    mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("serwer", ["user"], function (db) {
         db.user.findOne({
             "login": login
         }, function (err, foundedUser) {

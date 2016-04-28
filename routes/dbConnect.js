@@ -39,7 +39,7 @@ exports.connect = function (dataBase, collectionList, callback) {
         if (process.env.localDaniel) {
             db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
         } else {
-            db = mongojs('zdalny:zdalny@letsplaypi.noip.me/' + dataBase, collectionList);
+            db = mongojs('admin:2U3CMIds2rgQ@localhost/' + dataBase, collectionList);
         }
 
     }

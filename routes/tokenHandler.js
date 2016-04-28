@@ -47,7 +47,7 @@ exports.decodeToken = function (token, ignoreExp) {
  * @param callback
  */
 exports.verifyToken = function (payload, callback) {
-    mongo.connect("projekt", ["user"], function (db) {
+    mongo.connect("serwer", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(payload._id)}, function (err, foundedUser) {
             if (err) {
                 callback(false);

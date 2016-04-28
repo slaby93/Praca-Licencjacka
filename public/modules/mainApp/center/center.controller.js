@@ -1,7 +1,7 @@
 /**
  * Created by piec on 4/8/2016.
  */
-class EventSearchController {
+class CenterController {
     constructor($log, $scope, $q, GoogleService, $window, UserService, loader) {
         let self = this;
         self.$l = $log;
@@ -29,6 +29,8 @@ class EventSearchController {
 
     setDefaultValues() {
         let self = this;
+        self.editStatus = false;
+        self.resultStatus = false;
     }
 
     test() {
@@ -52,8 +54,15 @@ class EventSearchController {
         let self = this;
         let google = self.$window.google;
         let map = self.map;
-        let lat = self.UserService.getLastLocation().latitude;
-        let lng = self.UserService.getLastLocation().longitude;
+        let lat, lng;
+        if (self.UserService.getLastLocation()) {
+            lat = self.UserService.getLastLocation().latitude;
+            lng = self.UserService.getLastLocation().longitude;
+        } else {
+            self.$l.log("NIEMA");
+            lat = 50;
+            lng = 18;
+        }
         let service;
         let config = {
             center: {
@@ -63,22 +72,34 @@ class EventSearchController {
             zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        self.map = new google.maps.Map($('#event_search .map')[0], config);
+        self.map = new google.maps.Map($('#center_element .map')[0], config);
         self.map.setTilt(45);
     }
 
     handleResultClick(value) {
         let self = this;
         let geocoder = new google.maps.Geocoder();
+        self.$scope.$evalAsync(()=> {
+            self.resultList = [];
+        });
         geocoder.geocode({address: value.description}, (result, status)=> {
             if (status === "OK") {
                 self.map.setCenter(result[0].geometry.location);
             }
-
         });
+    }
+
+    switchEdit() {
+        let self = this;
+        self.editStatus = !self.editStatus;
+    }
+
+    switchResults() {
+        let self = this;
+        self.resultStatus = !self.resultStatus;
     }
 
 
 }
 
-export default EventSearchController;
+export default CenterController;

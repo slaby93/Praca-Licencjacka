@@ -1,0 +1,61 @@
+<div id="center_element">
+
+    <div layout="row" class="itemsOverMap">
+        <!--MAIN CONTENT-->
+        <div flex="grow" layout="column" layout-align="start start">
+            <!-- SEARCH BOX-->
+            <div class="rowContainer">
+                <div flex="grow" layout="row">
+                    <div flex="10"></div>
+                    <md-card class="searchBox">
+                        <md-card-content layout="column">
+                            <md-input-container md-no-float class="md-block">
+                                <input ng-model-options="{ updateOn: 'default',debounce:500 }"
+                                       ng-model="centerCtrl.queryString"
+                                       ng-change="centerCtrl.changeOfQueryString()"
+                                       placeholder="Wpisz nazwę miejscowości:"
+                                       type="text"/>
+                            </md-input-container>
+                            <button ng-click="centerCtrl.switchEdit()">SHOW EDIT</button>
+                            <button ng-click="centerCtrl.switchResults()">SHOW RESULTS</button>
+                            <md-list flex>
+                                <md-list-item ng-click="centerCtrl.handleResultClick(item)"
+                                              ng-repeat="item in centerCtrl.resultList" class="md-3-line"
+                                              ng-click="null">
+                                    <div class="md-list-item-text" layout="column">
+                                        <span>{{ item.description }}</span>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-card-content>
+                    </md-card>
+                    <div flex="grow"></div>
+                    <md-icon class="menuBootstraper" md-svg-src="resources/icons/wrench.svg"></md-icon>
+                </div>
+            </div>
+            <div flex="grow"></div>
+            <!--RESULT PANEL-->
+            <div ng-class="{showResult:centerCtrl.resultStatus}" class="resultPanelHolder">
+                <h1 ng-repeat="item in [1,2,3]">
+                    {{item}}
+                </h1>
+            </div>
+        </div>
+        <!--RIGHT EDIT PLACE-->
+        <div ng-class="{showEdit:centerCtrl.editStatus}" flex="30" class="editMenu">
+            <h1>EDIT</h1>
+        </div>
+    </div>
+    <div class="map"></div>
+    <!--<md-list layout="row">-->
+    <!--<md-list-item flex="20" ng-click="centerCtrl.handleResultClick(item)"-->
+    <!--ng-repeat="item in centerCtrl.resultList">-->
+    <!--<md-card flex="grow">-->
+    <!--<md-card-content>-->
+    <!--{{item.description}}-->
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+    <!--</md-list-item>-->
+    <!--</md-list>-->
+</div>
+

@@ -50,11 +50,11 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "EventEditController",
             controllerAs: "eventEditCtrl"
         })
-        .state('app.event.search', {
-            url: "/search",
-            templateUrl: "modules/mainApp/event-search/event_search.html",
-            controller: "EventSearchController",
-            controllerAs: "eventSearchCtrl"
+        .state('center', {
+            url: "/center",
+            templateUrl: "modules/mainApp/center/center.html",
+            controller: "CenterController",
+            controllerAs: "centerCtrl"
         })
         .state('introduction', {
             url: "/introduction",

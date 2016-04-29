@@ -14,6 +14,7 @@ import * as angular_jwt from 'angular-jwt';
 import * as angular_moment from 'angular-moment';
 import * as amMap from 'amcharts/ammap3';
 import * as lodash from 'lodash';
+import * as ng_file_upload from 'ng-file-upload';
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
@@ -25,9 +26,7 @@ import LoginModalController from './login/loginModal.controller.js';
 import IntroductionController from './introduction/introduction.controller';
 import HomeController from './home/home.controller.js';
 import AccountController from './account/account.controller';
-
 import EventController from './events/event.controller';
-
 import EventAddController from './event-add/event.add.controller';
 import EventEditController from './event-edit/event.edit.controller';
 import CenterController from './center/center.controller';
@@ -61,7 +60,7 @@ import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angularMoment', 'angular-jwt'])
+angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angularMoment', 'angular-jwt', 'ngFileUpload'])
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("introductionController", IntroductionController)

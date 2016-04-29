@@ -34,6 +34,7 @@ System.config({
     "lodash": "npm:lodash@4.11.1",
     "md-data-table": "npm:md-data-table@1.4.2",
     "moment": "npm:moment@2.12.0",
+    "ng-file-upload": "npm:ng-file-upload@12.0.4",
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {
@@ -178,6 +179,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:moment@2.12.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:ng-file-upload@12.0.4": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:os-browserify@0.1.2": {

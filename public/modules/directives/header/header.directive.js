@@ -64,7 +64,7 @@ class HeaderController {
             {
                 placeholder: "Szukaj wydarzeń",
                 click: () => {
-                    self.$state.go("app.event.search");
+                    self.$state.go("center");
                 },
                 visibility: ["user"]
             },

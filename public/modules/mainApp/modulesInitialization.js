@@ -56,6 +56,7 @@ import ArchiveEventsTable from '../directives/archiveEventsTable/archiveEventsTa
 import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable.directive';
 import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
 import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap.directive';
+import EventEditDirective from '../directives/eventEdit/eventEdit.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +71,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("EventEditController", EventEditController)
     .controller("CenterController", CenterController)
     .controller("TestController", TestController)
-	.controller("UploadModalController", UploadModalController)
+    .controller("UploadModalController", UploadModalController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)
@@ -93,6 +94,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("activeEventsTable", ActiveEventsTable)
     .directive("archiveEventsTable", ArchiveEventsTable)
     .directive("wojewodztwaMap", WojewodztwaMapDirective)
+    .directive("eventEdit", EventEditDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

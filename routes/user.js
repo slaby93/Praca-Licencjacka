@@ -293,13 +293,13 @@ router.post('/avatar', auth, guard.check('user'), function (req, res, next) {
 	});
 });
 
-router.post('/background', auth, guard.check('user'), function (req, res, next) {
+router.post('/photo', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function(result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		uploadHandler.upload(req, 'background', function (result, json) {
+		uploadHandler.upload(req, 'photo', function (result, json) {
 			if (!result) {
 				res.status(500).send("Error while file writing");
 				return;

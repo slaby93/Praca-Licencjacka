@@ -30,9 +30,8 @@ import EventController from './events/event.controller';
 import EventAddController from './event-add/event.add.controller';
 import EventEditController from './event-edit/event.edit.controller';
 import CenterController from './center/center.controller';
-
-
 import TestController from './test/test.controller';
+import UploadModalController from './upload/uploadModal.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -71,6 +70,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("EventEditController", EventEditController)
     .controller("CenterController", CenterController)
     .controller("TestController", TestController)
+	.controller("UploadModalController", UploadModalController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)

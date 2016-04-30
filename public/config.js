@@ -17,6 +17,7 @@ System.config({
     "Classes": "modules/class",
     "amcharts/ammap3": "github:amcharts/ammap3@3.20.3",
     "angular": "github:angular/bower-angular@1.5.2",
+    "angular-img-cropper": "npm:angular-img-cropper@0.0.2",
     "angular-jwt": "npm:angular-jwt@0.0.9",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",
     "angular-material": "github:angular/bower-material@1.0.6",
@@ -35,6 +36,7 @@ System.config({
     "md-data-table": "npm:md-data-table@1.4.2",
     "moment": "npm:moment@2.12.0",
     "ng-file-upload": "npm:ng-file-upload@12.0.4",
+    "ng-img-crop": "npm:ng-img-crop@0.2.0",
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {
@@ -183,6 +185,10 @@ System.config({
     },
     "npm:ng-file-upload@12.0.4": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:ng-img-crop@0.2.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"

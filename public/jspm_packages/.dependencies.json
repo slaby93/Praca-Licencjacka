@@ -112,10 +112,10 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
   "npm:amdefine@1.0.0": {
-    "module": "github:jspm/nodelibs-module@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "path": "github:jspm/nodelibs-path@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "module": "github:jspm/nodelibs-module@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
   "npm:events@1.0.2": {},
   "github:jspm/nodelibs-events@0.1.1": {
@@ -212,5 +212,14 @@
   "npm:lodash@4.11.1": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "npm:ng-file-upload@12.0.4": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:ng-img-crop@0.2.0": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "github:systemjs/plugin-json@0.1.2": {},
+  "npm:angular-img-cropper@0.0.2": {}
 }

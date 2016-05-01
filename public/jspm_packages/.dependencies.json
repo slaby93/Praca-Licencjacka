@@ -221,5 +221,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "github:systemjs/plugin-json@0.1.2": {},
-  "npm:angular-img-cropper@0.0.2": {}
+  "npm:angular-img-cropper@0.0.2": {},
+  "github:alexk111/ngImgCrop@0.3.2": {}
 }

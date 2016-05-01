@@ -15,6 +15,7 @@ import * as angular_moment from 'angular-moment';
 import * as amMap from 'amcharts/ammap3';
 import * as lodash from 'lodash';
 import * as ng_file_upload from 'ng-file-upload';
+import * as ng_img_crop from 'alexk111/ngImgCrop';
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';
@@ -59,7 +60,7 @@ import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angularMoment', 'angular-jwt', 'ngFileUpload'])
+angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.data.table', 'ngMessages', 'angularMoment', 'angular-jwt', 'ngFileUpload', 'ngImgCrop'])
     .controller("ApplicationController", ApplicationController)
     .controller("LoginModalController", LoginModalController)
     .controller("introductionController", IntroductionController)

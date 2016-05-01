@@ -10,11 +10,13 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
+    "npm:*": "jspm_packages/npm/*",
+    "git:*": "jspm_packages/git/*"
   },
 
   map: {
     "Classes": "modules/class",
+    "alexk111/ngImgCrop": "github:alexk111/ngImgCrop@0.3.2",
     "amcharts/ammap3": "github:amcharts/ammap3@3.20.3",
     "angular": "github:angular/bower-angular@1.5.2",
     "angular-img-cropper": "npm:angular-img-cropper@0.0.2",

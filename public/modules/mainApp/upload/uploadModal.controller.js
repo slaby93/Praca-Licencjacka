@@ -3,9 +3,10 @@
  */
 
 class UploadModalController {
-    constructor(Upload, $timeout, loader, UserService) {
+    constructor(Upload, $timeout, $mdDialog, loader, UserService) {
         let self = this;
         self.Upload = Upload;
+		self.$mdDialog = $mdDialog;
         self.$timeout = $timeout;
         self.loader = loader;
         self.UserService = UserService;
@@ -32,6 +33,7 @@ class UploadModalController {
 			self.$timeout(function () {
 				self.result = response.data;
 				self.loader.hide();
+				self.closeModal();
 			});
 		}, function (response) {
 			if (response.status > 0) {
@@ -42,7 +44,6 @@ class UploadModalController {
 			self.progress = parseInt(100.0 * evt.loaded / evt.total);
 		});
 	}
-    
 }
 
 export default UploadModalController;

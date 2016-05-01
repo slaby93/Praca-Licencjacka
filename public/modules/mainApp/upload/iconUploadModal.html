@@ -1,0 +1,32 @@
+<md-dialog id="upload-modal" flex="50">
+    <md-dialog-content>
+        <div ng-cloak>
+            <md-content>
+				<md-content class="md-padding">
+					<form layout="column" novalidate name="uploadModalCtrl.uploadForm"
+						  ng-submit="uploadModalCtrl.upload(croppedDataUrl, 'foo', 'event/icon')">
+						<md-input-container>
+							<input type="file" required ngf-select ng-model="picFile" accept="image/*">
+						</md-input-container>
+						<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
+							<img-crop image="picFile | ngfDataUrl" result-image="croppedDataUrl"
+									  area-type="square" area-min-size="0" result-image-size="100"
+									  result-image-format="image/jpeg" ng-init="croppedDataUrl=''">
+							</img-crop>
+						</div>
+						<div layout-xs="column" layout-sm="column" layout-gt-sm="row"
+							 layout-align-gt-sm="center center"
+							 layout-align-sm="space-around stretch" layout-align-xs="space-around stretch">
+							<md-button type="submit" class="md-raised" flex-xs="50" flex-sm="50"
+									   flex-gt-sm="20" ng-disabled="uploadModalCtrl.uploadForm.$invalid">Wyślij
+							</md-button>
+							<md-button ng-click="uploadModalCtrl.closeModal()" class="md-raised" flex-xs="50"
+									   flex-sm="50" flex-gt-sm="20">Zamknij
+							</md-button>
+						</div>
+					</form>
+				</md-content>
+            </md-content>
+        </div>
+    </md-dialog-content>
+</md-dialog>

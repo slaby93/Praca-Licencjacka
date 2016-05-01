@@ -2,12 +2,13 @@
  * Created by piec on 4/8/2016.
  */
 class CenterController {
-    constructor($log, $scope, $q, GoogleService, $window, UserService, loader) {
+    constructor($log, $scope, $q, GoogleService, $timeout, $window, UserService, loader) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
         self.$q = $q;
+        self.$timeout = $timeout;
         self.loader = loader;
         self.UserService = UserService;
         self.GoogleService = GoogleService;
@@ -59,11 +60,10 @@ class CenterController {
             lat = self.UserService.getLastLocation().latitude;
             lng = self.UserService.getLastLocation().longitude;
         } else {
-            self.$l.log("NIEMA");
+            self.$l.log("DEFAULT USER POSITION");
             lat = 50;
-            lng = 18;
+            lng = 20;
         }
-        let service;
         let config = {
             center: {
                 lat: lat,
@@ -74,6 +74,75 @@ class CenterController {
         };
         self.map = new google.maps.Map($('#center_element .map')[0], config);
         self.map.setTilt(45);
+        let mark = {
+            lat: 50,
+            lng: 20,
+            title: "Testowy Event",
+            draggable: false,
+            event_id: 123456
+        };
+        self.addClickListenerToMarker(self.addMarker(mark), self.handleMarkerClick);
+    }
+
+    /**
+     *
+     * @param self Controller scope object
+     * @param originalMarkerObject Marker with data
+     * @param googleMapsClickEventObject
+     */
+    handleMarkerClick(self, originalMarkerObject, googleMapsClickEventObject) {
+        self.$l.debug("MARKER", originalMarkerObject, googleMapsClickEventObject);
+        self.setEditedEvent(originalMarkerObject);
+    }
+
+    addMarker(obj = {}) {
+        let self = this;
+        self.$l.debug("ASDA", obj);
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(obj.lat, obj.lng),
+            map: self.map,
+            title: obj.title,
+            draggable: obj.draggable,
+        });
+        marker.customData = {
+            eventId: obj.event_id
+        };
+        self.$l.debug("ZWRACAM", marker);
+        return marker;
+    }
+
+    /**
+     *
+     * @param tab Array of objects in format {Number:lat, Number:lng, String:title, Boolean:draggable}
+     */
+    addArrayOfMarkers(tab) {
+        let self = this;
+        let tmp = [];
+        _.forEach(tab, (item)=> {
+            tmp.push(self.addMarker(item));
+        });
+        return tmp;
+    }
+
+    /**
+     *  Adds callback function to marker
+     * @param marker Marker object
+     * @param callback Function
+     */
+    addClickListenerToMarker(marker, callback) {
+        let self = this;
+        marker.addListener('click', (item)=> {
+            // self.$l.debug("ITEM", item);
+            callback(self, marker, item);
+        });
+    }
+
+    /**
+     *  Removes marker from map.
+     * @param marker Marker object from addArrayOfMarkers or addMarker
+     */
+    removeMarker(marker) {
+        marker.setMap(null);
     }
 
     handleResultClick(value) {
@@ -97,6 +166,17 @@ class CenterController {
     switchResults() {
         let self = this;
         self.resultStatus = !self.resultStatus;
+    }
+
+    setEditedEvent(marker) {
+        let self = this;
+        self.$timeout(()=> {
+            self.editStatus = true;
+            // self.$l.debug("EDIT EVENT", marker);
+            self.editedEvent = marker;
+        });
+
+
     }
 
 

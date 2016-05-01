@@ -6,8 +6,8 @@
             <!-- SEARCH BOX-->
             <div class="rowContainer">
                 <div flex="grow" layout="row">
-                    <div flex="10"></div>
-                    <md-card class="searchBox">
+                    <div flex-gt-sm="10" flex-sm="10" flex-xs="10"></div>
+                    <md-card flex-sm="grow" flex-xs="grow" class="searchBox">
                         <md-card-content layout="column">
                             <md-input-container md-no-float class="md-block">
                                 <input ng-model-options="{ updateOn: 'default',debounce:500 }"
@@ -16,8 +16,8 @@
                                        placeholder="Wpisz nazwę miejscowości:"
                                        type="text"/>
                             </md-input-container>
-                            <button ng-click="centerCtrl.switchEdit()">SHOW EDIT</button>
-                            <button ng-click="centerCtrl.switchResults()">SHOW RESULTS</button>
+                            <!--<button ng-click="centerCtrl.switchEdit()">SHOW EDIT</button>-->
+                            <!--<button ng-click="centerCtrl.switchResults()">SHOW RESULTS</button>-->
                             <md-list flex>
                                 <md-list-item ng-click="centerCtrl.handleResultClick(item)"
                                               ng-repeat="item in centerCtrl.resultList" class="md-3-line"
@@ -29,7 +29,7 @@
                             </md-list>
                         </md-card-content>
                     </md-card>
-                    <div flex="grow"></div>
+                    <div flex-gt-sm="grow" flex-sm="10" flex-xs="10"></div>
                     <md-icon class="menuBootstraper" md-svg-src="resources/icons/wrench.svg"></md-icon>
                 </div>
             </div>
@@ -43,7 +43,8 @@
         </div>
         <!--RIGHT EDIT PLACE-->
         <div ng-class="{showEdit:centerCtrl.editStatus}" flex="30" class="editMenu">
-            <h1>EDIT</h1>
+            <!--<h1>EDIT {{centerCtrl.editedEvent.customData}}</h1>-->
+            <event-edit edited-event="centerCtrl.editedEvent" center-controller="centerCtrl"></event-edit>
         </div>
     </div>
     <div class="map"></div>

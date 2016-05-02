@@ -10,7 +10,7 @@
 						</md-input-container>
 						<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
 							<img-crop image="picFile | ngfDataUrl" result-image="croppedDataUrl"
-									  area-type="square" area-min-size="0" result-image-size="100"
+									  area-type="square" area-min-size="0" result-image-size="64"
 									  result-image-format="image/jpeg" ng-init="croppedDataUrl=''">
 							</img-crop>
 						</div>

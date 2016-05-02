@@ -116,6 +116,22 @@ class HeaderController {
                 },
                 visibility: ["user"]
             },
+			{
+                placeholder: "TEST-isActive (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.isActive("57278a1c61b11eca7471141e");
+                },
+                visibility: ["user"]
+            },
+			{
+                placeholder: "TEST-joinEvent (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.joinEvent("57278a1c61b11eca7471141e", "onomatopeja");
+                },
+                visibility: ["user"]
+            },
             {
                 placeholder: "Wyloguj",
                 click: () => {

@@ -93,6 +93,41 @@ class EventService {
             });
         return promise.promise;
     };
+	
+	
+	isActive(id) {
+        let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/isActive', {"id" : id}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
+				console.log(data.data.isActive.isActive);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas usuwania starych, zakończonych eventów!");
+                promise.resolve(err);
+            });
+        return promise.promise;
+    };
+	
+	
+	joinEvent(id, name){
+		let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/joinEvent', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Pomyślnie dołączono użytkownika: "+name+ " do wydarzenia o id: "+id);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas dodawania uzytkownika do wydarzenia o id: "+id);
+                promise.resolve(err);
+            });
+        return promise.promise;
+	}
 
 }
 export default EventService;

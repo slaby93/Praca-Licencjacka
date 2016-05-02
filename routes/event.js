@@ -91,14 +91,38 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
 });
 
 router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
-
-	});
+		var id = new ObjectId(req.body.id);
+		var name = req.body.name;
+		mongo.connect("serwer", ["event"], function (db) {
+		
+			//switching the isActive to false for the found event
+			db.event.update(
+				{"_id": id},
+				{$addToSet: 
+					{"participants" :
+						{"name" : name}
+					}
+				},
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send("ok").end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
 });
 
 
@@ -124,19 +148,6 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
 
 	});
 });
-
-
-router.post('/deactivate', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		//dosth
-
-	});
-});
-
 
 router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function (result) {
@@ -203,15 +214,33 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
 
 
 router.post('/isActive', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-	
-		//dosth
-
-	});
+		var id = new ObjectId(req.body.id);
+		mongo.connect("serwer", ["event"], function (db) {
+		
+			//switching the isActive to false for the found event
+			db.event.find(
+				{"_id": id},
+				{_id : 0, isActive : 1},
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send({"isActive" : data}).end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
 });
 
 

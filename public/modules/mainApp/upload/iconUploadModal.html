@@ -8,7 +8,7 @@
 						<md-input-container>
 							<input type="file" required ngf-select ng-model="picFile" accept="image/*">
 						</md-input-container>
-						<div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
+						<div class="cropArea">
 							<img-crop image="picFile | ngfDataUrl" result-image="croppedDataUrl"
 									  area-type="square" area-min-size="0" result-image-size="64"
 									  result-image-format="image/jpeg" ng-init="croppedDataUrl=''">

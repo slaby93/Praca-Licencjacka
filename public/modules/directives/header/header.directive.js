@@ -96,7 +96,7 @@ class HeaderController {
                 placeholder: "TEST-dezactivateById (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.deactivateById("57274a27948405580da41120");
+					self.EventService.deactivateById("5727b52e61b11eca74711435");
                 },
                 visibility: ["user"]
             },
@@ -129,6 +129,22 @@ class HeaderController {
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
 					self.EventService.joinEvent("57278a1c61b11eca7471141e", "onomatopeja");
+                },
+                visibility: ["user"]
+            },
+			{
+                placeholder: "TEST-kickUser (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.kickUser("57278a1c61b11eca7471141e", "onomatopeja");
+                },
+                visibility: ["user"]
+            },
+			{
+                placeholder: "TEST-remove (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.remove("5727b52e61b11eca74711435");
                 },
                 visibility: ["user"]
             },

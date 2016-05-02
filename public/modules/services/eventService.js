@@ -48,6 +48,9 @@ class EventService {
             // SUCCESS
             function (data) {
 				console.log("Event o id: "+id+" został zdeaktywowany!");
+				console.log("Oto uczestnicy eventu: ");
+				console.log(data.data.docs);
+				console.log("Powinienes ich powiadomic o zamknieciu eventu!");
                 promise.resolve(data);
             // ERROR
             }, function (err) {
@@ -68,6 +71,9 @@ class EventService {
             // SUCCESS
             function (data) {
 				console.log("Kontrola świeżości eventów zakończona pozytywnie!");
+				console.log("Oto uczestnicy eventu: ");
+				console.log(data.data.docs);
+				console.log("Powinienes ich powiadomic o zamknieciu eventu!");
                 promise.resolve(data);
             // ERROR
             }, function (err) {
@@ -123,10 +129,49 @@ class EventService {
                 promise.resolve(data);
             // ERROR
             }, function (err) {
-                console.log("Porazka podczas dodawania uzytkownika do wydarzenia o id: "+id);
+                console.log("Porazka podczas dodawania uzytkownika: "+name+ " do wydarzenia o id: "+id);
                 promise.resolve(err);
             });
         return promise.promise;
+	}
+	
+	
+	kickUser(id,name){
+		let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/kickUser', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Pomyślnie wyrzucono użytkownika: "+name+ " z wydarzenia o id: "+id);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas usuwania uzytkownika: "+name+" z wydarzenia o id: "+id);
+                promise.resolve(err);
+            });
+        return promise.promise;
+	}
+	
+	remove(id){
+		let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/remove', {"id": id}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Event o id: "+id+" został usuniety!");
+				console.log("Oto uczestnicy eventu: ");
+				console.log(data.data.docs);
+				console.log("Powinienes ich powiadomic o usunieciu eventu!");
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas deaktywacji eventu!");
+                promise.resolve(err);
+            });
+        return promise.promise;
+	
+	
+	
 	}
 
 }

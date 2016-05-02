@@ -127,42 +127,23 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
 
 
 router.post('/kickUser', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		//dosth
-
-	});
-});
-
-
-router.post('/remove', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		//dosth
-
-	});
-});
-
-router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		var currentDate = new Date();
+		var id = new ObjectId(req.body.id);
+		var name = req.body.name;
 		mongo.connect("serwer", ["event"], function (db) {
-
-			//switching the isActive to false for the found events
+		
+			//switching the isActive to false for the found event
 			db.event.update(
-				{$and: [{"date": {$lte: currentDate}},{"isActive" : true}]},
-				{$set: {"isActive" : false}},
-				{multi: true},
+				{"_id": id},
+				{$pull: 
+					{"participants" :
+						{"name" : name}
+					}
+				},
 				function (err, data) {
 					if (err) {
 						res.status(404).send().end(function () {
@@ -181,6 +162,77 @@ router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (
 });
 
 
+router.post('/remove', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function (result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		var id = new ObjectId(req.body.id);
+		var docs = [];
+		mongo.connect("serwer", ["event"], function (db) {
+			db.event.find(
+				{"_id": id},
+				{_id : 0, participants : 1},
+				function (err, data) {docs = data;}
+			);
+			//switching the isActive to false for the found event
+			db.event.remove(
+				{"_id": id},
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send({"docs" : docs}).end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
+});
+
+router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function (result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		var currentDate = new Date();
+		var docs = [];
+		mongo.connect("serwer", ["event"], function (db) {
+			db.event.find(
+				{$and: [{"date": {$lte: currentDate}},{"isActive" : true}]},
+				{_id : 0, participants : 1},
+				function (err, data) {docs = data;}
+			);
+			//switching the isActive to false for the found events
+			db.event.update(
+				{$and: [{"date": {$lte: currentDate}},{"isActive" : true}]},
+				{$set: {"isActive" : false}},
+				{multi: true},
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send({"docs": docs}).end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
+});
+
+
 router.post('/deactivateById', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
@@ -188,8 +240,13 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
 			return;
 		}
 		var id = new ObjectId(req.body.id);
+		var docs = [];
 		mongo.connect("serwer", ["event"], function (db) {
-		
+			db.event.find(
+				{"_id": id},
+				{_id : 0, participants : 1},
+				function (err, data) {docs = data;}
+			);
 			//switching the isActive to false for the found event
 			db.event.update(
 				{"_id": id},
@@ -202,7 +259,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
 						});
 						return;
 					} else {
-						res.status(200).send("ok").end(function () {
+						res.status(200).send({"docs" : docs}).end(function () {
 							db.close();
 						});
 					}

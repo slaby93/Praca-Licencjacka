@@ -7,6 +7,12 @@ class SportEvent {
     constructor(author, createdDate, date, defaultEventIcon, defaultEventImage, description, payment, ownEquipment, experienced, usersLimit, isActive, latitude, longitude, participants = []) {
 		
 		
+		//IMPORTANT:
+		//WHEN CREATING EVENT, THE DATES MUST HAVE HOURS AND MINUTES SET TO 00:00!!!!
+		createdDate.setMinutes(0);  createdDate.setHours(0);
+		date.setMinutes(0);  date.setHours(0);
+		//
+		
 		this.author = author;
 		this.createdDate = createdDate;
 		this.date = date;

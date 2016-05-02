@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var tokenHandler = require("./tokenHandler");
 var mongo = require('./dbConnect.js');
+var ObjectId = mongo.ObjectId;
 var jwt = require('express-jwt');
 var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
 var auth = jwt({secret: secret, userProperty: 'payload'});
@@ -29,7 +30,6 @@ router.post('/icon', auth, guard.check('user'), function (req, res, next) {
 });
 
 
-
 router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
@@ -42,8 +42,8 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 			//creation of document to insert
 			var doc = {
 				"author" : passedEvent.author,
-				"createdDate" : passedEvent.createdDate,
-				"date" : passedEvent.date,
+				"createdDate" : new Date(passedEvent.createdDate),
+				"date" : new Date(passedEvent.date),
 				"isActive" : true,
 				"localization" : {
 					"latitude" : passedEvent.localization.latitude,
@@ -138,28 +138,67 @@ router.post('/deactivate', auth, guard.check('user'), function (req, res, next) 
 });
 
 
-
-router.post('/deactivateByDate', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
+		var currentDate = new Date();
+		mongo.connect("serwer", ["event"], function (db) {
 
-	});
+			//switching the isActive to false for the found events
+			db.event.update(
+				{$and: [{"date": {$lte: currentDate}},{"isActive" : true}]},
+				{$set: {"isActive" : false}},
+				{multi: true},
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send("ok").end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
 });
 
 
-router.post('/dezactivateById', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+router.post('/deactivateById', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
-
-	});
+		var id = new ObjectId(req.body.id);
+		mongo.connect("serwer", ["event"], function (db) {
+		
+			//switching the isActive to false for the found event
+			db.event.update(
+				{"_id": id},
+				{$set: {"isActive" : false}},
+				{ multi: true },
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send("ok").end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
 });
 
 

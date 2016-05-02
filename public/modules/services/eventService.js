@@ -20,6 +20,8 @@ class EventService {
         let self = this;
     };
 
+	
+
 	addEvent(passedEvent) {
         let self = this;
 		var promise = self.$q.defer();
@@ -32,6 +34,44 @@ class EventService {
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas dodawania nowego eventu!");
+                promise.resolve(err);
+            });
+        return promise.promise;
+    };
+	
+	
+	
+	deactivateById(id) {
+        let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/deactivateById', {"id": id}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Event o id: "+id+" został zdeaktywowany!");
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas deaktywacji eventu!");
+                promise.resolve(err);
+            });
+        return promise.promise;
+    };
+	
+	
+	
+	//should be run at 24:00 everyday to ensure all events that are supposed to be closed,
+	//are, in fact, closed. It iterates through all events and check if they have been finished or not
+	checkForEventsToDeactivate() {
+        let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/checkForEventsToDeactivate', {}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Kontrola świeżości eventów zakończona pozytywnie!");
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas kontroli świeżości eventów");
                 promise.resolve(err);
             });
         return promise.promise;

@@ -10,6 +10,7 @@
  * @param callback funkcja wywolana po polaczeniu z baza. Pamietaj o db.close()
  */
 var mongojs = require('mongojs');
+var ObjectId = require('mongojs').ObjectId;
 var check = require('check-types');
 var assert = require('assert');
 var clc = require('cli-color');

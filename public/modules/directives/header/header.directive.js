@@ -92,6 +92,22 @@ class HeaderController {
                 },
                 visibility: ["user"]
             },
+			{
+                placeholder: "TEST-dezactivateById (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.deactivateById("57274a27948405580da41120");
+                },
+                visibility: ["user"]
+            },
+			{
+                placeholder: "TEST-checkForEventsToDeactivate (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.checkForEventsToDeactivate();
+                },
+                visibility: ["user"]
+            },
             {
                 placeholder: "Wyloguj",
                 click: () => {

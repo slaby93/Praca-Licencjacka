@@ -13,7 +13,7 @@ function header() {
 }
 
 class HeaderController {
-    constructor($log, localStorageService, UserService, $scope, $state, EventService) {
+    constructor($log, localStorageService, UserService, $scope, $state) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
@@ -78,9 +78,16 @@ class HeaderController {
             {
                 placeholder: "CMS",
                 click: () => {
-
+					showUploadModal()
                 },
                 visibility: ["admin"]
+            },
+			{
+                placeholder: "TEST",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                },
+                visibility: ["user"]
             },
             {
                 placeholder: "Wyloguj",

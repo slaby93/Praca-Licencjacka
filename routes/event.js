@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var tokenHandler = require("./tokenHandler");
+var mongo = require('./dbConnect.js');
 var jwt = require('express-jwt');
 var secret = new Buffer('a2571790-c4a2-4f1c-b5d0-a54bcfc0b98f', 'base64');
 var auth = jwt({secret: secret, userProperty: 'payload'});
@@ -30,40 +31,39 @@ router.post('/icon', auth, guard.check('user'), function (req, res, next) {
 
 
 router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
-	console.log("lol1");
-	tokenHandler.verifyToken(req.payload, function(result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
 		
-		var event = req.body;
-		mongo.connect("serwer", ["user"], function (db) {
+		console.log("lol1");
+		var passedEvent = req.body.event;
+		mongo.connect("serwer", ["event"], function (db) {
 			
 			//dodanie eventu do bazy
 			db.event.insert({
-				"author" : event.author,
-				"createdDate" : event.createdDate,
-				"date" : event.date,
-				"region" : event.region,
-				"city" : event.city,
+				"author" : passedEvent.author,
+				"createdDate" : passedEvent.createdDate,
+				"date" : passedEvent.date,
+				"region" : passedEvent.region,
+				"city" : passedEvent.city,
 				"isActive" : true,
 				"localization" : {
-					"latitude" : event.localization.latitude,
-					"longitude" : event.localization.longitude
+					"latitude" : passedEvent.localization.latitude,
+					"longitude" : passedEvent.localization.longitude
 				},
 				"eventInfo" : {
-					"description" : event.description,
-					"payment" : event.payment,
-					"ownEquipment" : event.ownEquipment,
-					"experienced" : event.experienced,
-					"usersLimit" : event.usersLimit,
+					"description" : passedEvent.description,
+					"payment" : passedEvent.payment,
+					"ownEquipment" : passedEvent.ownEquipment,
+					"experienced" : passedEvent.experienced,
+					"usersLimit" : passedEvent.usersLimit,
 				},
-				"defaultEventImage" : event.defaultEventImage,
-				"defaultEventIcon" : event.defaultEventIcon,
-				"participants" : event.participants
-			}
-			, function (err, data) {
+				"defaultEventImage" : passedEvent.defaultEventImage,
+				"defaultEventIcon" : passedEvent.defaultEventIcon,
+				"participants" : passedEvent.participants
+			}, function (err, data) {
 				if (err) {
 					console.error(err);
 					res.status(404).send().end(function () {

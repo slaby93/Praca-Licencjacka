@@ -24,7 +24,7 @@ class EventService {
 		console.log("lol");
         let self = this;
 		
-		let passedEvent1 = {
+		self.passedEvent1 = {
 			"author" : "slaby",
 			"city" : "krakow",
 			"createdDate" : new Date(2016, 3, 17, 0, 0),
@@ -50,13 +50,13 @@ class EventService {
 			],
 			"region" : "malopolskie"
 		};
-        let promise = self.$q.defer();
-        self.$http.post("/addEvent", passedEvent1, {skipAuthorization: true}).then((received) => {
-            promise.resolve(received);
-        }, (err) => {
-            promise.reject(err);
+		
+		console.log("Trying to make post method to /event/addEvent...");
+        self.$http({
+            method: "POST",
+            url: "/event/addEvent",
+            data: {event: self.passedEvent1}
         });
-        return promise.promise;
     };
 
 }

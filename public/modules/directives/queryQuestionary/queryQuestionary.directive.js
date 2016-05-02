@@ -13,7 +13,6 @@ class QueryQuestionaryController{
 
     constructor(moment) {
         let self = this;
-		
 		self.queryInfo = {
 			city: "",
 			region: "",

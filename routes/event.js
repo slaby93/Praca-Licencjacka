@@ -128,7 +128,7 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
 });
 
 
-router.post('/dezactivate', auth, guard.check('user'), function (req, res, next) {
+router.post('/deactivate', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function(result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
@@ -141,7 +141,7 @@ router.post('/dezactivate', auth, guard.check('user'), function (req, res, next)
 
 
 
-router.post('/dezactivateByDate', auth, guard.check('user'), function (req, res, next) {
+router.post('/deactivateByDate', auth, guard.check('user'), function (req, res, next) {
 	tokenHandler.verifyToken(req.payload, function(result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");

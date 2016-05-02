@@ -25,6 +25,11 @@ class EventService {
 	addEvent(passedEvent) {
         let self = this;
 		var promise = self.$q.defer();
+		var currentDate = new Date();  var date = new Date(passedEvent.date);
+		if(date <= currentDate){
+			console.log("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+			return;
+		}
 		self.$http.post('/event/addEvent', {"event": passedEvent}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
@@ -108,8 +113,8 @@ class EventService {
             // SUCCESS
             function (data) {
 				console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
-				console.log(data.data.isActive.isActive);
-                promise.resolve(data);
+				console.log(data.data.isActive[0].isActive);
+                promise.resolve(data.data.isActive[0].isActive);
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas usuwania starych, zakończonych eventów!");
@@ -121,36 +126,47 @@ class EventService {
 	
 	joinEvent(id, name){
 		let self = this;
-		var promise = self.$q.defer();
-		self.$http.post('/event/joinEvent', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
-            // SUCCESS
-            function (data) {
-				console.log("Pomyślnie dołączono użytkownika: "+name+ " do wydarzenia o id: "+id);
-                promise.resolve(data);
-            // ERROR
-            }, function (err) {
-                console.log("Porazka podczas dodawania uzytkownika: "+name+ " do wydarzenia o id: "+id);
-                promise.resolve(err);
-            });
-        return promise.promise;
+		var active = self.isActive(id);
+		active.then(function(value){
+			if(value == true) {
+				var promise = self.$q.defer();
+				self.$http.post('/event/joinEvent', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
+					// SUCCESS
+					function (data) {
+						console.log("Pomyślnie dołączono użytkownika: "+name+ " do wydarzenia o id: "+id);
+						promise.resolve(data);
+					// ERROR
+					}, function (err) {
+						console.log("Porazka podczas dodawania uzytkownika: "+name+ " do wydarzenia o id: "+id);
+						promise.resolve(err);
+					});
+				return promise.promise;
+			}else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
+		});	
 	}
 	
 	
 	kickUser(id,name){
 		let self = this;
-		var promise = self.$q.defer();
-		self.$http.post('/event/kickUser', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
-            // SUCCESS
-            function (data) {
-				console.log("Pomyślnie wyrzucono użytkownika: "+name+ " z wydarzenia o id: "+id);
-                promise.resolve(data);
-            // ERROR
-            }, function (err) {
-                console.log("Porazka podczas usuwania uzytkownika: "+name+" z wydarzenia o id: "+id);
-                promise.resolve(err);
-            });
-        return promise.promise;
+		var active = self.isActive(id);
+		active.then(function(value){
+			if(value == true) {
+				var promise = self.$q.defer();
+				self.$http.post('/event/kickUser', {"id" : id, "name" : name}, {skipAuthorization: false}).then(
+					// SUCCESS
+					function (data) {
+						console.log("Pomyślnie wyrzucono użytkownika: "+name+ " z wydarzenia o id: "+id);
+						promise.resolve(data);
+					// ERROR
+					}, function (err) {
+						console.log("Porazka podczas usuwania uzytkownika: "+name+" z wydarzenia o id: "+id);
+						promise.resolve(err);
+					});
+				return promise.promise;			
+			}else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
+		}
 	}
+	
 	
 	remove(id){
 		let self = this;
@@ -169,10 +185,26 @@ class EventService {
                 promise.resolve(err);
             });
         return promise.promise;
-	
-	
-	
 	}
+	
+	findByUser(name){
+		let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/findByUser', {"name" : name}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Pomyślnie znaleziono eventy uzytkownika: "+name);
+				console.log("Oto one: ");
+				console.log(data.data.docs);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas wyszukiwania eventow uzytkownika: "+name);
+                promise.resolve(err);
+            });
+        return promise.promise;
+	}
+	
 
 }
 export default EventService;

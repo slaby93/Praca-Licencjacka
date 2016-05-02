@@ -279,7 +279,7 @@ router.post('/isActive', auth, guard.check('user'), function (req, res, next) {
 		var id = new ObjectId(req.body.id);
 		mongo.connect("serwer", ["event"], function (db) {
 		
-			//switching the isActive to false for the found event
+			
 			db.event.find(
 				{"_id": id},
 				{_id : 0, isActive : 1},
@@ -340,26 +340,38 @@ router.post('/cleanOld', auth, guard.check('user'), function (req, res, next) {
 
 
 router.post('/find', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
-		if (!result) {
-			res.status(401).send("Token is invalid");
-			return;
-		}
-		//dosth
-
-	});
+	
 });
 
 
-router.post('/findFromUser', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+router.post('/findByUser', auth, guard.check('user'), function (req, res, next) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
-
-	});
+		var name = req.body.name;
+		mongo.connect("serwer", ["event"], function (db) {
+		
+			db.event.aggregate(
+			[
+				{ $match : {"author": name} },
+				{ $sort : {date : -1} }
+			], function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send({"docs" : data}).end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
+    });
 });
 
 

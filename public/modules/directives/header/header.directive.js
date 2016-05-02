@@ -2,6 +2,7 @@
  * Created by piec on 13.03.16.
  */
 import User from 'Classes/User';
+import SportEvent from 'Classes/SportEvent';
 
 function header() {
     return {
@@ -13,13 +14,14 @@ function header() {
 }
 
 class HeaderController {
-    constructor($log, localStorageService, UserService, $scope, $state) {
+    constructor($log, localStorageService, UserService, $scope, $state, EventService, moment) {
         let self = this;
         self.localStorageService = localStorageService;
         self.UserService = UserService;
         self.$l = $log;
         self.$scope = $scope;
         self.$state = $state;
+		self.EventService = EventService;
         self.setDefaultValues();
         self.setWatchers();
     }
@@ -83,9 +85,10 @@ class HeaderController {
                 visibility: ["admin"]
             },
 			{
-                placeholder: "TEST",
+                placeholder: "TEST-addEvent (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2016, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", 30, false, true, 30, true, 50.0543231, 50.0543231, []));
                 },
                 visibility: ["user"]
             },

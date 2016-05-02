@@ -36,42 +36,40 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		
-		console.log("lol1");
 		var passedEvent = req.body.event;
 		mongo.connect("serwer", ["event"], function (db) {
 			
-			//dodanie eventu do bazy
-			db.event.insert({
+			//creation of document to insert
+			var doc = {
 				"author" : passedEvent.author,
 				"createdDate" : passedEvent.createdDate,
 				"date" : passedEvent.date,
-				"region" : passedEvent.region,
-				"city" : passedEvent.city,
 				"isActive" : true,
 				"localization" : {
 					"latitude" : passedEvent.localization.latitude,
 					"longitude" : passedEvent.localization.longitude
 				},
 				"eventInfo" : {
-					"description" : passedEvent.description,
-					"payment" : passedEvent.payment,
-					"ownEquipment" : passedEvent.ownEquipment,
-					"experienced" : passedEvent.experienced,
-					"usersLimit" : passedEvent.usersLimit,
+					"description" : passedEvent.eventInfo.description,
+					"payment" : passedEvent.eventInfo.payment,
+					"ownEquipment" : passedEvent.eventInfo.ownEquipment,
+					"experienced" : passedEvent.eventInfo.experienced,
+					"usersLimit" : passedEvent.eventInfo.usersLimit,
 				},
 				"defaultEventImage" : passedEvent.defaultEventImage,
 				"defaultEventIcon" : passedEvent.defaultEventIcon,
 				"participants" : passedEvent.participants
-			}, function (err, data) {
+			};
+			
+			//dodanie eventu do bazy
+			db.event.insert(doc, function (err, data) {
 				if (err) {
-					console.error(err);
 					res.status(404).send().end(function () {
 						db.close();
 					});
 					return;
 				} else {
-					res.status(200).send(data).end(function () {
+					res.status(200).send({"id" : doc._id}).end(function () {
 						db.close();
 					});
 				}

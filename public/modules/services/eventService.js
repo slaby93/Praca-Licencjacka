@@ -164,7 +164,7 @@ class EventService {
 					});
 				return promise.promise;			
 			}else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
-		}
+		});
 	}
 	
 	
@@ -203,6 +203,35 @@ class EventService {
                 promise.resolve(err);
             });
         return promise.promise;
+	}
+	
+	update(passedEvent){
+		let self = this;
+		var currentDate = new Date();  var date = new Date(passedEvent.date);
+		if(date <= currentDate){
+			console.log("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+			return;
+		}
+		var active = self.isActive(passedEvent._id);
+		active.then(function(value){
+			if(value == true) {
+				var promise = self.$q.defer();
+				self.$http.post('/event/update', {"passedEvent" : passedEvent}, {skipAuthorization: false}).then(
+					// SUCCESS
+					function (data) {
+						console.log("Pomyślnie zedytowano event o id: "+passedEvent._id);
+						promise.resolve(data);
+					// ERROR
+					}, function (err) {
+						console.log("Porazka podczas edytowania eventu o id: "+passedEvent._id);
+						promise.resolve(err);
+					});
+				return promise.promise;
+			}else  console.log("Wystapil blad podczas edytowania eventu! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
+		});	
+	
+	
+	
 	}
 	
 

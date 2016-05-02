@@ -80,14 +80,48 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 });
 
 router.post('/update', auth, guard.check('user'), function (req, res, next) {
-	tokenHandler.verifyToken(req.payload, function(result) {
+	tokenHandler.verifyToken(req.payload, function (result) {
 		if (!result) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
-
-	});
+		var passedEvent = req.body.passedEvent;
+		var id = new ObjectId(req.body.passedEvent._id);
+		mongo.connect("serwer", ["event"], function (db) {
+			
+			
+			//dodanie eventu do bazy
+			db.event.update({"_id" : id},
+			{$set : {
+				"date" : new Date(passedEvent.date),
+				"localization" : {
+					"latitude" : passedEvent.localization.latitude,
+					"longitude" : passedEvent.localization.longitude
+				},
+				"eventInfo" : {
+					"description" : passedEvent.eventInfo.description,
+					"payment" : passedEvent.eventInfo.payment,
+					"ownEquipment" : passedEvent.eventInfo.ownEquipment,
+					"experienced" : passedEvent.eventInfo.experienced,
+					"usersLimit" : passedEvent.eventInfo.usersLimit,
+				},
+				"defaultEventImage" : passedEvent.defaultEventImage,
+				"defaultEventIcon" : passedEvent.defaultEventIcon
+			}},function (err, data) {
+				if (err) {
+					res.status(404).send().end(function () {
+						db.close();
+					});
+					return;
+				} else {
+					res.status(200).send("ok").end(function () {
+						db.close();
+					});
+				}
+			  }
+			);
+		});
+    });
 });
 
 router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {

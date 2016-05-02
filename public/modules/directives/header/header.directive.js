@@ -108,6 +108,14 @@ class HeaderController {
                 },
                 visibility: ["user"]
             },
+			{
+                placeholder: "TEST-cleanOld (fixed)",
+                click: () => {
+					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+					self.EventService.cleanOld();
+                },
+                visibility: ["user"]
+            },
             {
                 placeholder: "Wyloguj",
                 click: () => {

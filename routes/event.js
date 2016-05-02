@@ -208,6 +208,7 @@ router.post('/isActive', auth, guard.check('user'), function (req, res, next) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
+	
 		//dosth
 
 	});
@@ -220,8 +221,34 @@ router.post('/cleanOld', auth, guard.check('user'), function (req, res, next) {
 			res.status(401).send("Token is invalid");
 			return;
 		}
-		//dosth
-
+		
+		var currentDate = new Date();
+		currentDate.setDate(currentDate.getDate()-365);
+		var docs = [];
+		mongo.connect("serwer", ["event"], function (db) {
+		
+			//finding all inactive events, which are older than year (only for returning their id's for deleting icons)
+			db.event.find(
+				{$and: [{"date": {$lte: currentDate}},{"isActive" : false}]},
+				{ _id:1 }, function (err, data)  {docs = data;}
+			);
+			//finding all inactive events, which are older than year and deleting them
+			db.event.remove(
+				{$and: [{"date": {$lte: currentDate}},{"isActive" : false}]}, 
+				function (err, data) {
+					if (err) {
+						res.status(404).send().end(function () {
+							db.close();
+						});
+						return;
+					} else {
+						res.status(200).send({"docs" : docs}).end(function () {
+							db.close();
+						});
+					}
+				}
+			);
+		});
 	});
 });
 

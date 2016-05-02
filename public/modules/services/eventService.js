@@ -76,6 +76,23 @@ class EventService {
             });
         return promise.promise;
     };
+	
+	cleanOld() {
+        let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/cleanOld', {}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Usunięto stare, zakończone eventy. Ich dokumenty to: ");
+				console.log(data.data.docs);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas usuwania starych, zakończonych eventów!");
+                promise.resolve(err);
+            });
+        return promise.promise;
+    };
 
 }
 export default EventService;

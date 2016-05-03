@@ -10,8 +10,7 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*",
-    "git:*": "jspm_packages/git/*"
+    "npm:*": "jspm_packages/npm/*"
   },
 
   map: {

@@ -6,7 +6,12 @@
 					<form layout="column" novalidate name="uploadModalCtrl.uploadForm"
 						  ng-submit="uploadModalCtrl.upload(croppedDataUrl, 'foo', 'event/icon')">
 						<md-input-container>
-							<input type="file" required ngf-select ng-model="picFile" accept="image/*">
+							<input type="file" required ngf-select ng-model="picFile"
+								   name="file" accept="image/*" ngf-max-size="2MB">
+							<div ng-messages="uploadModalCtrl.uploadForm.file.$error"
+								 ng-if="uploadModalCtrl.uploadForm.file.$invalid && uploadModalCtrl.uploadForm.file.$touched">
+								<div ng-message="maxSize">Plik jest zbyt duży.</div>
+							</div>
 						</md-input-container>
 						<div class="cropArea">
 							<img-crop image="picFile | ngfDataUrl" result-image="croppedDataUrl"

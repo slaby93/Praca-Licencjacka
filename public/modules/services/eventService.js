@@ -124,7 +124,8 @@ class EventService {
     };
 	
 	
-	joinEvent(id, name){
+//:todo:  check if the user isn't on the blacklist of the event author (one additional parameter - author and function isBlacklisted) //
+	joinEvent(id, author, name){
 		let self = this;
 		var active = self.isActive(id);
 		active.then(function(value){
@@ -229,11 +230,26 @@ class EventService {
 				return promise.promise;
 			}else  console.log("Wystapil blad podczas edytowania eventu! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
 		});	
-	
-	
-	
 	}
 	
-
+	
+	//radius in geo hours and minutes
+	find(latitude, longitude, radius){
+		let self = this;
+		var promise = self.$q.defer();
+		self.$http.post('/event/find', {"latitude" : latitude, "longitude" : longitude, "radius" : radius}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+				console.log("Pomyślnie znaleziono eventy w zasiegu: "+radius);
+				console.log("Oto one: ");
+				console.log(data.data.docs);
+                promise.resolve(data);
+            // ERROR
+            }, function (err) {
+                console.log("Porazka podczas wyszukiwania eventow w zasiegu: "+radius);
+                promise.resolve(err);
+            });
+        return promise.promise;
+	}
 }
 export default EventService;

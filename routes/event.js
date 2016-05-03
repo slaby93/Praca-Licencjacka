@@ -370,7 +370,6 @@ router.post('/find', auth, guard.check('user'), function (req, res, next) {
 		var userLongitude = req.body.longitude;
 		var radius = req.body.radius;
 		mongo.connect("serwer", ["event"], function (db) {
-			var radius = 4;
 			db.event.aggregate([
 			   {$match : {isActive : true}},
 			   {$project: {

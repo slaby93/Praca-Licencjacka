@@ -160,7 +160,7 @@ class HeaderController {
                 placeholder: "TEST-find (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.find(50.0543231, 50.0543231,4);
+					self.EventService.find(50, 20,99999999999999);
                 },
                 visibility: ["user"]
             },

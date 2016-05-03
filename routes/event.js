@@ -372,58 +372,45 @@ router.post('/cleanOld', auth, guard.check('user'), function (req, res, next) {
 
 
 router.post('/find', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
-        var userLatitude = req.body.latitude;
-        var userLongitude = req.body.longitude;
-        var radius = req.body.radius;
-
-        mongo.connect("serwer", ["event"], function (db) {
-            var radius = 4;
-            db.event.aggregate([
-                {$match: {isActive: true}},
-                {
-                    $project: {
-                        distance: {
-                            $sqrt: {
-                                $add: [
-                                    {$pow: [{$subtract: ["$localization.longitude", userLongitude]}, 2]},
-                                    {$pow: [{$subtract: ["$localization.latitude", userLatitude]}, 2]}
-                                ]
-                            }
-                        },
-                        author: 1,
-                        createdDate: 1,
-                        date: 1,
-                        region: 1,
-                        city: 1,
-                        localization: 1,
-                        eventInfo: 1,
-                        defaultEventImage: 1,
-                        defaultEventIcon: 1,
-                        participants: 1,
-                        isActive: 1
-                    }
-                },
-                {$match: {"distance": {$lte: radius}}}
-            ], function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                    return;
-                } else {
-                    res.status(200).send({"docs": data}).end(function () {
-                        db.close();
-                    });
-                }
-            });
-
-
-        });
+	tokenHandler.verifyToken(req.payload, function (result) {
+		if (!result) {
+			res.status(401).send("Token is invalid");
+			return;
+		}
+		var userLatitude = req.body.latitude;
+		var userLongitude = req.body.longitude;
+		var radius = req.body.radius;
+		mongo.connect("serwer", ["event"], function (db) {
+			db.event.aggregate([
+			   {$match : {isActive : true}},
+			   {$project: {
+					distance: {
+					   $sqrt: {
+						   $add: [
+							  { $pow: [ { $subtract: [ "$localization.longitude", userLongitude ] }, 2 ] },
+							  { $pow: [ { $subtract: [ "$localization.latitude", userLatitude ] }, 2 ] }
+						   ]
+					   }
+					},
+					author : 1, createdDate : 1, date : 1, region: 1, city : 1, localization : 1, eventInfo: 1, defaultEventImage : 1, defaultEventIcon : 1, participants : 1, isActive : 1
+				 }
+			   },
+			   {$match : {"distance": {$lte: radius}}}
+			], function (err, data) {
+				if (err) {
+					res.status(404).send().end(function () {
+						db.close();
+					});
+					return;
+				} else {
+					res.status(200).send({"docs" : data}).end(function () {
+						db.close();
+					});
+				}
+			});
+			
+			
+		});
     });
 });
 

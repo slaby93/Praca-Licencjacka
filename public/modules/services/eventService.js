@@ -252,7 +252,7 @@ class EventService {
             function (data) {
 				console.log("Pomyślnie znaleziono eventy w zasiegu: "+radius);
 				console.log("Oto one: ");
-				console.log(data.data.docs);
+				console.log(data);
                 promise.resolve(data);
             // ERROR
             }, function (err) {

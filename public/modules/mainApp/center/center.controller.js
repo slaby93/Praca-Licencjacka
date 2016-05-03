@@ -2,7 +2,7 @@
  * Created by piec on 4/8/2016.
  */
 class CenterController {
-    constructor($log, $scope, $q, GoogleService, $timeout, $window, UserService, loader) {
+    constructor($log, $scope, $q, GoogleService, $timeout, $window, UserService, loader, EventService) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
@@ -12,6 +12,7 @@ class CenterController {
         self.loader = loader;
         self.UserService = UserService;
         self.GoogleService = GoogleService;
+        self.eventService = EventService;
         self.setDefaultValues();
         self.observeObjects();
     }
@@ -36,6 +37,10 @@ class CenterController {
 
     test() {
         let self = this;
+        self.eventService.find(50, 20, 9999).then((resp)=> {
+            self.$l.debug("RESP", resp);
+        });
+
     }
 
     changeOfQueryString() {
@@ -60,7 +65,6 @@ class CenterController {
             lat = self.UserService.getLastLocation().latitude;
             lng = self.UserService.getLastLocation().longitude;
         } else {
-            self.$l.log("DEFAULT USER POSITION");
             lat = 50;
             lng = 20;
         }
@@ -97,7 +101,6 @@ class CenterController {
 
     addMarker(obj = {}) {
         let self = this;
-        self.$l.debug("ASDA", obj);
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(obj.lat, obj.lng),
             map: self.map,
@@ -153,7 +156,12 @@ class CenterController {
         });
         geocoder.geocode({address: value.description}, (result, status)=> {
             if (status === "OK") {
-                self.map.setCenter(result[0].geometry.location);
+                self.$scope.$evalAsync(()=> {
+                    self.map.setCenter(result[0].geometry.location);
+                    // get all events in that area;
+                    self.switchResults();
+                    // self.switchEdit();
+                });
             }
         });
     }

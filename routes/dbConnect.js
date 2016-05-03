@@ -34,15 +34,13 @@ exports.connect = function (dataBase, collectionList, callback) {
         throw new Error("dataBase parameter is not a string or collectionList is not an array!");
     }
     if (process.env.NODE_ENV === "production") {
-        // db = mongojs('lokalny:lokalny@localhost/' + dataBase, collectionList);
-        db = mongojs('admin:2U3CMIds2rgQ@localhost/' + dataBase, collectionList);
+        db = mongojs('lokalny:lokalny@localhost/' + dataBase, collectionList);
     } else if (process.env.NODE_ENV === 'development') {
 
         if (process.env.localDaniel) {
-            // db = mongojs('slaby:daniel22@192.168.1.16/' + dataBase, collectionList);
-            db = mongojs('admin:2U3CMIds2rgQ@localhost/' + dataBase, collectionList);
+            db = mongojs('slaby:daniel22@192.168.1.20/' + dataBase, collectionList);
         } else {
-            db = mongojs('admin:2U3CMIds2rgQ@localhost/' + dataBase, collectionList);
+            db = mongojs('slaby:daniel22@letsplaypi.noip.me/' + dataBase, collectionList);
         }
 
     }

@@ -1,5 +1,4 @@
 #!/bin/env node
-var socketIO = require('./routes/socket.io');
 var AppContainer = function () {
     //  Scope.
     var self = this;
@@ -81,14 +80,6 @@ var AppContainer = function () {
          * Create HTTP server.
          */
         var server = http.createServer(app);
-        /**
-         * Inicjalizuje framework socket.io
-         */
-        socketIO.init(server);
-        /**
-         * Inicjalizacja frameworka socket.io
-         */
-        //socketIo.setUp(server);
         /**
          * Listen on provided port, on all network interfaces.
          */

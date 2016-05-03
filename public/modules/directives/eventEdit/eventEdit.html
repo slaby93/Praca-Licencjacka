@@ -1,1 +1,13 @@
-<h1>EDIT</h1>
+<div layout="column">
+    <!--TITLE-->
+    <div layout="row" layout-align="center">
+        <h1>{{editCtrl.editedEvent.eventInfo.title}}</h1>
+    </div>
+    <!--START BEGINS-->
+    <div>
+        <span>Start za: {{editCtrl.startsIn}}</span>
+    </div>
+</div>
+<pre>
+    {{editCtr.editedEvent | json}}
+</pre>

@@ -18,7 +18,7 @@
                             </md-input-container>
                             <button ng-click="centerCtrl.switchEdit()">SHOW EDIT</button>
                             <button ng-click="centerCtrl.switchResults()">SHOW RESULTS</button>
-                            <!--<button ng-click="centerCtrl.test()">TEST</button>-->
+                            <button ng-click="centerCtrl.test()">TEST</button>
                             <md-list flex>
                                 <md-list-item ng-click="centerCtrl.handleResultClick(item)"
                                               ng-repeat="item in centerCtrl.resultList" class="md-3-line"
@@ -50,6 +50,9 @@
                          md-svg-src="resources/icons/cross.svg"></md-icon>
             </div>
             <event-edit edited-event="centerCtrl.editedEvent" center-controller="centerCtrl"></event-edit>
+            <pre>
+                {{centerCtrl.editedEvent.tile | json}}
+            </pre>
         </div>
     </div>
     <div class="map"></div>

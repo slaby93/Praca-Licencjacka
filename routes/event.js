@@ -89,8 +89,6 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
 		var id = new ObjectId(req.body.passedEvent._id);
 		mongo.connect("serwer", ["event"], function (db) {
 			
-			
-			//dodanie eventu do bazy
 			db.event.update({"_id" : id},
 			{$set : {
 				"date" : new Date(passedEvent.date),
@@ -134,7 +132,6 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
 		var name = req.body.name;
 		mongo.connect("serwer", ["event"], function (db) {
 		
-			//switching the isActive to false for the found event
 			db.event.update(
 				{"_id": id},
 				{$addToSet: {"participants" : name} },
@@ -166,7 +163,6 @@ router.post('/kickUser', auth, guard.check('user'), function (req, res, next) {
 		var name = req.body.name;
 		mongo.connect("serwer", ["event"], function (db) {
 		
-			//switching the isActive to false for the found event
 			db.event.update(
 				{"_id": id},
 				{$pull: {"participants" : name } },
@@ -202,7 +198,7 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
 				{_id : 0, participants : 1},
 				function (err, data) {docs = data;}
 			);
-			//switching the isActive to false for the found event
+			
 			db.event.remove(
 				{"_id": id},
 				function (err, data) {
@@ -233,7 +229,7 @@ router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (
 		mongo.connect("serwer", ["event"], function (db) {
 			db.event.find(
 				{$and: [{"date": {$lte: currentDate}},{"isActive" : true}]},
-				{_id : 0, participants : 1},
+				{participants : 1},
 				function (err, data) {docs = data;}
 			);
 			//switching the isActive to false for the found events
@@ -305,7 +301,6 @@ router.post('/isActive', auth, guard.check('user'), function (req, res, next) {
 		var id = new ObjectId(req.body.id);
 		mongo.connect("serwer", ["event"], function (db) {
 		
-			
 			db.event.find(
 				{"_id": id},
 				{_id : 0, isActive : 1},

@@ -93,10 +93,10 @@ class HeaderController {
                 visibility: ["user"]
             },
 			{
-                placeholder: "TEST-dezactivateById (fixed)",
+                placeholder: "TEST-deactivateById (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.deactivateById("5728714b6aad6e0a7c0b74f9");
+					self.EventService.deactivateById("5728714b6aad6e0a7c000000");
                 },
                 visibility: ["user"]
             },

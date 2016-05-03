@@ -52,11 +52,11 @@ class EventService {
 		self.$http.post('/event/deactivateById', {"id": id}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Event o id: "+id+" został zdeaktywowany!");
+				console.log("Event o id: "+id+" został zdeaktywowany (o ile istniał)!");
 				console.log("Oto uczestnicy eventu: ");
 				console.log(data.data.docs);
 				console.log("Powinienes ich powiadomic o zamknieciu eventu!");
-                promise.resolve(data);
+				promise.resolve(data);
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas deaktywacji eventu!");
@@ -75,11 +75,11 @@ class EventService {
 		self.$http.post('/event/checkForEventsToDeactivate', {}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Kontrola świeżości eventów zakończona pozytywnie!");
-				console.log("Oto uczestnicy eventu: ");
+				console.log("Kontrola świeżości eventów zakończona pozytywnie! ");
+				console.log("Oto uczestnicy eventow: ");
 				console.log(data.data.docs);
-				console.log("Powinienes ich powiadomic o zamknieciu eventu!");
-                promise.resolve(data);
+				console.log("Powinienes ich powiadomic o zamknieciu eventow!");
+				promise.resolve(data);
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas kontroli świeżości eventów");
@@ -94,9 +94,14 @@ class EventService {
 		self.$http.post('/event/cleanOld', {}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Usunięto stare, zakończone eventy. Ich dokumenty to: ");
-				console.log(data.data.docs);
-                promise.resolve(data);
+				if(data.data.docs.length == 0){
+					console.log("Nie znaleziono eventów do usunięcia!");
+					promise.resolve(data);
+				}else{
+					console.log("Usunięto stare, zakończone eventy. Ich dokumenty to: ");
+					console.log(data.data.docs);
+					promise.resolve(data);
+				}
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas usuwania starych, zakończonych eventów!");
@@ -112,12 +117,17 @@ class EventService {
 		self.$http.post('/event/isActive', {"id" : id}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
-				console.log(data.data.isActive[0].isActive);
-                promise.resolve(data.data.isActive[0].isActive);
+				if(data.data.isActive[0] == null){
+					console.log("Event o podanym id nie istnieje!");
+					promise.resolve(-1);
+				}else{
+					console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
+					console.log(data.data.isActive[0].isActive);
+					promise.resolve(data.data.isActive[0].isActive);
+				}
             // ERROR
             }, function (err) {
-                console.log("Porazka podczas usuwania starych, zakończonych eventów!");
+                console.log("Porazka podczas sprawdzania świeżości eventu");
                 promise.resolve(err);
             });
         return promise.promise;
@@ -164,7 +174,7 @@ class EventService {
 						promise.resolve(err);
 					});
 				return promise.promise;			
-			}else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
+			}else  console.log("Wystapil blad podczas usuwania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");			
 		});
 	}
 	
@@ -175,11 +185,11 @@ class EventService {
 		self.$http.post('/event/remove', {"id": id}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Event o id: "+id+" został usuniety!");
+				console.log("Event o id: "+id+" został usuniety (o ile istnieje!)!");
 				console.log("Oto uczestnicy eventu: ");
 				console.log(data.data.docs);
 				console.log("Powinienes ich powiadomic o usunieciu eventu!");
-                promise.resolve(data);
+				promise.resolve(data);
             // ERROR
             }, function (err) {
                 console.log("Porazka podczas deaktywacji eventu!");
@@ -194,7 +204,7 @@ class EventService {
 		self.$http.post('/event/findByUser', {"name" : name}, {skipAuthorization: false}).then(
             // SUCCESS
             function (data) {
-				console.log("Pomyślnie znaleziono eventy uzytkownika: "+name);
+				console.log("Znaleziono eventy uzytkownika: "+name);
 				console.log("Oto one: ");
 				console.log(data.data.docs);
                 promise.resolve(data);

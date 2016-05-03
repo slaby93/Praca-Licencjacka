@@ -1,11 +1,9 @@
 /bower_components/
 /node_modules/
 /env.js
-/public/dist
-/public/jspm_packages/*/*
-/public/jspm_packages/*
 /public/jspm_packages
-/public/index.html
+/public/dist
+public/index.html
 build.js
 build.js.map
 /.project

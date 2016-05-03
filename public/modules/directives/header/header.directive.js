@@ -88,7 +88,7 @@ class HeaderController {
                 placeholder: "TEST-addEvent (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2016, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", 30, false, true, 30, true, 50.0543231, 50.0543231, []));
+					self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", 30, false, true, 30, true, 50.283197, 18.674011, []));
                 },
                 visibility: ["user"]
             },
@@ -160,7 +160,7 @@ class HeaderController {
                 placeholder: "TEST-find (fixed)",
                 click: () => {
 					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.find(50, 20,99999999999999);
+					self.EventService.find(21.38, 18.04,6152);
                 },
                 visibility: ["user"]
             },

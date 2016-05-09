@@ -1,0 +1,53 @@
+result-panel {
+  .modeSwitchHolder {
+    z-index: 1;
+    position: absolute;
+    right: 0px;
+    padding: 10px 10px;
+    div {
+      cursor: pointer;
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+    .active {
+
+      md-icon {
+        box-shadow: 9px 13px 36px -6px rgba(0, 0, 0, 0.75);
+        svg {
+          fill: rgba(68, 197, 222, 0.95);
+        }
+      }
+    }
+  }
+  .resultContentHolder {
+    padding-top: 45px;
+    .result {
+      &.rowResult {
+        transition: box-shadow 0.2s linear;
+        &:active {
+          box-shadow: 6px 9px 21px 1px rgba(0, 0, 0, 0.75);
+        }
+      }
+    }
+    .noResults {
+      position: relative;
+      .noResultsText {
+        text-transform: uppercase;
+        font-size: 45px;
+        color: #ADADAD;
+      }
+      .noResultsIcon {
+        position: absolute;
+        left: calc(50% - 60px);
+        top: calc(50% + 45px);
+        width: 120px;
+        height: 120px;
+        svg {
+          fill: #ADADAD;
+        }
+      }
+    }
+  }
+
+}

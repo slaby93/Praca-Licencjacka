@@ -58,6 +58,7 @@ import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable
 import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
 import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap.directive';
 import EventEditDirective from '../directives/eventEdit/eventEdit.directive';
+import ResultPanelDirective from '../directives/resultPanel/resultPanel.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,6 +97,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("archiveEventsTable", ArchiveEventsTable)
     .directive("wojewodztwaMap", WojewodztwaMapDirective)
     .directive("eventEdit", EventEditDirective)
+    .directive("resultPanel", ResultPanelDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

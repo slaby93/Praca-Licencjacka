@@ -21,7 +21,7 @@ class HeaderController {
         self.$l = $log;
         self.$scope = $scope;
         self.$state = $state;
-		self.EventService = EventService;
+        self.EventService = EventService;
         self.setDefaultValues();
         self.setWatchers();
     }
@@ -80,101 +80,101 @@ class HeaderController {
             {
                 placeholder: "CMS",
                 click: () => {
-					showUploadModal()
+                    showUploadModal()
                 },
                 visibility: ["admin"]
             },
-			{
+            {
                 placeholder: "TEST-addEvent (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2016, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", 30, false, true, 30, true, 50.0543231, 50.0543231, []));
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", 30, false, true, 30, "A", true, 50.283197, 18.674011, []));
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-deactivateById (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.deactivateById("5728714b6aad6e0a7c000000");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.deactivateById("5728714b6aad6e0a7c000000");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-checkForEventsToDeactivate (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.checkForEventsToDeactivate();
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.checkForEventsToDeactivate();
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-cleanOld (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.cleanOld();
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.cleanOld();
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-isActive (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.isActive("57278a1c61b11eca7471141e");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.isActive("57278a1c61b11eca7471141e");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-joinEvent (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.joinEvent("5728714b6aad6e0a7c0b74f9","danny","onomatopeja");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.joinEvent("5728714b6aad6e0a7c0b74f9", "danny", "onomatopeja");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-kickUser (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.kickUser("57278a1c61b11eca7471141e", "onomatopeja");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.kickUser("57278a1c61b11eca7471141e", "onomatopeja");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-remove (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.remove("5727b52e61b11eca74711435");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.remove("5727b52e61b11eca74711435");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-findByUser (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.findByUser("slaby");
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.findByUser("slaby");
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-find (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					self.EventService.find(50, 20,99999999999999);
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.find(21.38, 18.04, 6152);
                 },
                 visibility: ["user"]
             },
-			{
+            {
                 placeholder: "TEST-update (fixed)",
                 click: () => {
-					//IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-					let sportEvent = new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2033, 3, 19, 0, 0), false, false, "hacked!", 666, true, false, 666, false, 11.0543231, 11.0543231, []);
-					sportEvent._id = "5727c9f4a6fe57940c8165ab";
-					self.EventService.update(sportEvent);
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let sportEvent = new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2033, 3, 19, 0, 0), false, false, "hacked!", 666, true, false, 666, false, 11.0543231, 11.0543231, []);
+                    sportEvent._id = "5727c9f4a6fe57940c8165ab";
+                    self.EventService.update(sportEvent);
                 },
                 visibility: ["user"]
             },
-			
+
             {
                 placeholder: "Wyloguj",
                 click: () => {

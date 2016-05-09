@@ -9,7 +9,11 @@ function eventEdit() {
         controller: EventEditController,
         scope: {
             "editedEvent": "=",
-            "centerController": "="
+            "centerController": "=",
+            /**
+             * To assign it eventEditController endpoint has to be different from false for example {}
+             */
+            "eventController": "="
         },
         controllerAs: "editCtrl",
         bindToController: true
@@ -17,14 +21,18 @@ function eventEdit() {
 }
 
 class EventEditController {
-    constructor($log, $timeout, $scope, $window, moment) {
+    constructor($log, $interval, $scope, $window, moment) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
+        self.$interval = $interval;
         self.moment = moment;
         self.observeObjects();
 
+        if (self.eventController) {
+            self.eventController = self;
+        }
     }
 
     observeObjects() {
@@ -41,27 +49,56 @@ class EventEditController {
     parseProcedure() {
         let self = this;
         let event = self.editedEvent;
-        self.$l.debug("EVENT", event);
         self.countRemaningTime(event.date);
     }
 
     countRemaningTime(startDate) {
         let self = this;
         let start = self.moment(startDate);
-        self.$l.debug("START", start);
         let currentDate = self.moment();
-        self.$l.debug("CURRENT DATE", currentDate);
         let diff = start.diff(currentDate, 'seconds');
-        let result = ``;
-        self.$l.debug("DIFF", diff);
-        let years = 0;
-        let months = 0;
-        let days = 0;
-        let hours = 0;
-        let minutes = (diff % 3600);
-        let seconds = (diff % 60);
 
-        self.startsIn = `Years: ${years} months: ${months} days ${days} hours ${hours} minutes ${minutes} seconds ${seconds}`;
+        if (diff > 0) {
+            self.remainingTime = self.formatOutputDate(diff);
+            self.interval = self.$interval(()=> {
+                diff -= 1;
+                if (diff > 0) {
+                    self.remainingTime = self.formatOutputDate(diff);
+                } else {
+                    self.remainingTime = 'Zakonczono';
+                    self.$interval.cancel(self.interval);
+                }
+            }, 1000);
+        } else {
+            self.remainingTime = 'Zakonczono';
+        }
+
+
+    }
+
+    onExit() {
+        let self = this;
+        self.$l.log("EXIT");
+        if (self.interval) {
+            self.$interval.cancel(self.interval);
+        }
+    }
+
+    formatOutputDate(remainingSeconds) {
+        let self = this;
+        let result = ``;
+        let days = Math.floor(remainingSeconds / (86400));
+        let hours = Math.floor(remainingSeconds / (3600)) % 24;
+        let minutes = Math.floor(remainingSeconds / 60) % 60;
+        let seconds = (remainingSeconds % 60) % 60;
+        if (days > 0) {
+            result = ` ${days} dni ${hours} godzin`;
+        } else if (hours > 0) {
+            result = `${hours} godziny ${minutes} miunt`;
+        } else {
+            result = ` ${minutes} minuty ${seconds} sekund `;
+        }
+        return result;
     }
 
 }

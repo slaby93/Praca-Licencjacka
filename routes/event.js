@@ -55,6 +55,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
                     "ownEquipment": passedEvent.eventInfo.ownEquipment,
                     "experienced": passedEvent.eventInfo.experienced,
                     "usersLimit": passedEvent.eventInfo.usersLimit,
+                    "title": passedEvent.eventInfo.title
                 },
                 "defaultEventImage": passedEvent.defaultEventImage,
                 "defaultEventIcon": passedEvent.defaultEventIcon,
@@ -381,46 +382,43 @@ router.post('/find', auth, guard.check('user'), function (req, res, next) {
         var userLongitude = req.body.longitude;
         var radius = req.body.radius;
         mongo.connect("serwer", ["event"], function (db) {
-            db.event.aggregate([
-                {$match: {isActive: true}},
-                {
-                    $project: {
-                        distance: {
-                            $sqrt: {
-                                $add: [
-                                    {$pow: [{$subtract: ["$localization.longitude", userLongitude]}, 2]},
-                                    {$pow: [{$subtract: ["$localization.latitude", userLatitude]}, 2]}
-                                ]
+            var userLatitude = req.body.latitude;
+            var userLongitude = req.body.longitude;
+            var radius = req.body.radius;
+            mongo.connect("serwer", ["event"], function (db) {
+                db.event.aggregate([
+                    {$match: {"isActive": true}}
+                ], function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                        return;
+                    } else {
+                        var docs = [];
+                        data.forEach(function (event) {   //Haversine formula
+                            var R = 6371; // Radius of the earth in km
+                            var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
+                            var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
+                            var a =
+                                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                    Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
+                                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                                ;
+                            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            var d = R * c; // Distance in km
+                            if (d <= radius) {
+                                event.distance = d;
+                                docs.push(event);
                             }
-                        },
-                        author: 1,
-                        createdDate: 1,
-                        date: 1,
-                        region: 1,
-                        city: 1,
-                        localization: 1,
-                        eventInfo: 1,
-                        defaultEventImage: 1,
-                        defaultEventIcon: 1,
-                        participants: 1,
-                        isActive: 1
+
+                        });
+                        res.status(200).send({"docs": docs}).end(function () {
+                            db.close();
+                        });
                     }
-                },
-                {$match: {"distance": {$lte: radius}}}
-            ], function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                    return;
-                } else {
-                    res.status(200).send({"docs": data}).end(function () {
-                        db.close();
-                    });
-                }
+                });
             });
-
-
         });
     });
 });

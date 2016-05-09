@@ -1,0 +1,40 @@
+<!--MODE SWITCH-->
+<div layout="row" layout-align="center" class="modeSwitchHolder">
+    <div ng-click="resultCtrl.setViewMode('rows')" ng-class="{active:resultCtrl.viewMode === 'rows'}">
+        <md-icon md-svg-src="resources/icons/four-rows-content-layout-design.svg"></md-icon>
+    </div>
+    <div ng-click="resultCtrl.setViewMode('grid')" ng-class="{active:resultCtrl.viewMode === 'grid'}">
+        <md-icon md-svg-src="resources/icons/nine-squares-of-phone-keyboard-buttons.svg"></md-icon>
+    </div>
+
+</div>
+<div class="resultContentHolder" ng-if="resultCtrl.isData()">
+    <!--ROWS-->
+    <div class="rowsResultsHolder" ng-if="resultCtrl.getViewMode() === 'rows'" layout="column">
+        <md-card class="result rowResult" ng-click="resultCtrl.handleResultClick(result)" flex="grow"
+                 ng-repeat="result in resultCtrl.centerController.eventsPool">
+            <md-card-content>
+                <div layout="row" layout-align="center">
+                    <span>{{result.eventInfo.title}}</span>
+                </div>
+                <div layout="row">
+                    <span>{{result.eventInfo.description}}</span>
+                </div>
+                <!--<pre>{{result | json}}</pre>-->
+            </md-card-content>
+        </md-card>
+    </div>
+    <!--GRID-->
+    <div class="gridResultsHolder" ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
+        <md-card flex="grow" ng-repeat="result in [1,2,3,4,5,6,7,8,9,10,11,12]">
+            <md-card-content>
+                {{result}}
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+<div class="noResults" layout="row" layout-align="center" ng-if="!resultCtrl.isData()">
+    <h1 class="noResultsText">Brak Wynikow</h1>
+    <md-icon class="noResultsIcon" md-svg-src="resources/icons/sad-rounded-square-emoticon.svg"></md-icon>
+</div>
+

@@ -1,6 +1,12 @@
 /**
  * Created by piec on 4/8/2016.
  */
+/**
+ * Explenation of variables:
+ *      * resultList -> holds results from google API when user input search query.
+ *          It will be destroyed as soon as user choose something from menu.
+ *      * eventsPool -> array of currently displayed events
+ */
 class CenterController {
     constructor($log, $scope, $q, GoogleService, $timeout, $window, UserService, loader, EventService) {
         let self = this;
@@ -34,7 +40,9 @@ class CenterController {
         self.editStatus = false;
         self.resultStatus = false;
         self.eventsPool = [];
-        self.radius = 100;
+        self.radius = 200;
+        self.markers = [];
+        self.eventEditCtrl = {};
     }
 
     test() {
@@ -57,6 +65,13 @@ class CenterController {
             self.loader.hide();
             throw err;
         });
+    }
+
+    removeAllMarkers() {
+        let self = this;
+        _.forEach(self.markers, (marker)=> {
+            self.removeMarker(marker);
+        })
     }
 
     filterQuery(query) {
@@ -143,7 +158,6 @@ class CenterController {
 
     addMarker(obj = {}) {
         let self = this;
-        self.$l.debug("Marker", obj);
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(obj.lat, obj.lng),
             map: self.map,
@@ -153,6 +167,7 @@ class CenterController {
         marker.customData = {
             eventId: obj.event_id
         };
+        self.markers.push(marker);
 
         return marker;
     }
@@ -168,11 +183,21 @@ class CenterController {
         let index = _.findIndex(self.eventsPool, (item)=> {
             return item._id === event_id;
         });
-        if (!index) {
-            return undefined;
-        } else {
-            return self.eventsPool[index];
+        return self.eventsPool[index];
+    }
+
+    getMarker(eventId) {
+        let self = this;
+        if (!eventId) {
+            return;
         }
+        let result;
+        _.forEach(self.markers, (item)=> {
+            if (item.customData.eventId === eventId) {
+                result = item;
+            }
+        });
+        return result;
     }
 
     /**
@@ -206,6 +231,15 @@ class CenterController {
         marker.setMap(null);
     }
 
+    setMapCenter(lat = 50, lng = 20) {
+        let self = this;
+        self.$l.debug("LAT LNG", lat, lng);
+        self.map.setCenter({
+            lat: lat,
+            lng: lng
+        });
+    }
+
     handleResultClick(value) {
         let self = this;
         let geocoder = new google.maps.Geocoder();
@@ -215,10 +249,13 @@ class CenterController {
         geocoder.geocode({address: value.description}, (result, status)=> {
             if (status === "OK") {
                 self.$scope.$evalAsync(()=> {
+                    self.removeAllMarkers();
                     self.map.setCenter(result[0].geometry.location);
                     // get all events in that area;
                     self.requestForEvents(result[0].geometry.location.lat(), result[0].geometry.location.lng(), self.radius);
-                    self.switchResults();
+                    if (!self.resultStatus) {
+                        self.switchResults();
+                    }
                 });
             }
         });
@@ -230,6 +267,9 @@ class CenterController {
         if (!self.editedEvent) {
             self.editedEvent = undefined;
         }
+        if (self.editStatus === false) {
+            self.eventEditCtrl.onExit();
+        }
     }
 
     switchResults() {
@@ -240,8 +280,9 @@ class CenterController {
     setEditedEvent(marker) {
         let self = this;
         self.$timeout(()=> {
-            self.$l.debug(marker);
-            self.editedEvent = self.getEvent(marker.customData.eventId);
+            self.eventEditCtrl.onExit();
+            let foundedEvent = self.getEvent(marker.customData.eventId);
+            self.editedEvent = foundedEvent;
         });
 
 

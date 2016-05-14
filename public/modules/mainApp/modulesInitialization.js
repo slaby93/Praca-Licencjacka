@@ -28,8 +28,6 @@ import IntroductionController from './introduction/introduction.controller';
 import HomeController from './home/home.controller.js';
 import AccountController from './account/account.controller';
 import EventController from './events/event.controller';
-import EventAddController from './event-add/event.add.controller';
-import EventEditController from './event-edit/event.edit.controller';
 import CenterController from './center/center.controller';
 import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
@@ -59,6 +57,10 @@ import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable
 import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap.directive';
 import EventEditDirective from '../directives/eventEdit/eventEdit.directive';
 import ResultPanelDirective from '../directives/resultPanel/resultPanel.directive';
+import EventMapDirective from '../directives/eventMap/eventMap.directive';
+import EventBasicInfoDirective from '../directives/eventBasicInfo/eventBasicInfo.directive';
+import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExtendedInfo.directive';
+import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,8 +71,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("HomeController", HomeController)
     .controller("AccountController", AccountController)
     .controller("EventController", EventController)
-    .controller("EventAddController", EventAddController)
-    .controller("EventEditController", EventEditController)
     .controller("CenterController", CenterController)
     .controller("TestController", TestController)
     .controller("UploadModalController", UploadModalController)
@@ -98,6 +98,10 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("wojewodztwaMap", WojewodztwaMapDirective)
     .directive("eventEdit", EventEditDirective)
     .directive("resultPanel", ResultPanelDirective)
+    .directive("eventMap", EventMapDirective)
+    .directive("eventBasicInfo", EventBasicInfoDirective)
+    .directive("eventExtendedInfo", EventExtendedInfoDirective)
+    .directive("eventParticipantsList", EventParticipantsListDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

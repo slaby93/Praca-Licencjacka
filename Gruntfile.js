@@ -26,6 +26,8 @@ module.exports = function (grunt) {
                 files: ["public/dist/*.css"]
             }
         },
+
+
         exec: {
             npm_install: 'npm install',
             bower_install: 'jspm install',
@@ -96,8 +98,15 @@ module.exports = function (grunt) {
                 options: {
                     logConcurrentOutput: true
                 }
+            },
+            target_without_watch_for_dammic: {
+                tasks: ["nodemon"],
+                options: {
+                    logConcurrentOutput: true
+                }
             }
         },
+
         nodemon: {
             dev: {
                 //script: 'bin/www',
@@ -107,6 +116,7 @@ module.exports = function (grunt) {
                 }
             }
         },
+
         karma: {
             //continuous integration mode: run tests once in PhantomJS browser.
             continuous: {
@@ -164,5 +174,10 @@ module.exports = function (grunt) {
     grunt.registerTask('daniel', ['clean:clearDist', 'env:daniel', 'doMagic']);
     grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build','exec:forever_start']);
 
+
+
+    //those tasks have been created by Dammic for Dammic and his slow computer:
+    grunt.registerTask('doMagicForDammic', ['preprocess', 'compile_scss', 'concurrent:target_without_watch_for_dammic']);
+    grunt.registerTask('dammic', ['clean:clearDist', 'env:development', 'doMagicForDammic']);
 
 };

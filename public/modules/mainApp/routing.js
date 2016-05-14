@@ -33,22 +33,10 @@ function routing($stateProvider, $urlRouterProvider) {
             controllerAs: "accountCtrl"
         })
         .state('app.event', {
-            url: "/event",
+            url: "/event/:eventID/",
             templateUrl: "modules/mainApp/events/event.html",
             controller: "EventController",
             controllerAs: "eventCtrl"
-        })
-        .state('app.event.add', {
-            url: "/add",
-            templateUrl: "modules/mainApp/event-add/event_add.html",
-            controller: "EventAddController",
-            controllerAs: "eventAddCtrl"
-        })
-        .state('app.event.edit', {
-            url: "/edit",
-            templateUrl: "modules/mainApp/event-edit/event_edit.html",
-            controller: "EventEditController",
-            controllerAs: "eventEditCtrl"
         })
         .state('center', {
             url: "/center",

@@ -174,7 +174,14 @@ class HeaderController {
                 },
                 visibility: ["user"]
             },
-
+            {
+                placeholder: "TEST-findById (fixed)",
+                    click: () => {
+                        //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                        self.EventService.findById("572f0c19c40ef7op253e98fd");//572f0c19c40ef768253e98fd
+                    },
+                    visibility: ["guest","user"]
+            },
             {
                 placeholder: "Wyloguj",
                 click: () => {

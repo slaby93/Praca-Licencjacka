@@ -214,6 +214,24 @@ class EventService {
         return promise.promise;
     }
 
+    findById(id) {
+        let self = this;
+        var promise = self.$q.defer();
+        self.$http.post('/event/findById', {"id": id}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+                console.log("Znaleziono event o id: " + id);
+                console.log("Oto on: ");
+                console.log(data.data.docs);
+                promise.resolve(data);
+                // ERROR
+            }, function (err) {
+                console.log("Porazka podczas wyszukiwania eventu o id: " + id);
+                promise.resolve(err);
+            });
+        return promise.promise;
+    }
+
     update(passedEvent) {
         let self = this;
         var currentDate = new Date();

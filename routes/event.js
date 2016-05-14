@@ -454,5 +454,27 @@ router.post('/findByUser', auth, guard.check('user'), function (req, res, next) 
     });
 });
 
+router.post('/findById', function (req, res, next) {
+
+    var id = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["event"], function (db) {
+
+        db.event.find(
+            {"_id": id}, function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                    return;
+                } else {
+                    res.status(200).send({"docs": data}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
 
 module.exports = router;

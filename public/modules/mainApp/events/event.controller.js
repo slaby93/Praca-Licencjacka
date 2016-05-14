@@ -27,6 +27,7 @@ class EventController {
     }
 
     defaultValues() {
+
         let self = this;
 
         self.eventID = self.$stateParams.eventID;
@@ -40,12 +41,12 @@ class EventController {
                 alert("ERROR");
                 return;
             }
-            self.$scope.eventInfo = resp.data.docs[0];
 
             //in case we don't find an event in the database
             //(the _id is not present), we should redirect the user to to the error site or wherever else
             //placeholder:  redirect to introduction
-            if(self.$scope.eventInfo === undefined)  {self.$state.go("introduction");  return;}
+            if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
+            self.$scope.$broadcast('event:filled',resp.data.docs[0]);
         });
     }
 }

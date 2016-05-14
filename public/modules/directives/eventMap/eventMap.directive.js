@@ -32,11 +32,11 @@ class EventMapController {
         let self = this;
         let tmp = self.$scope.$watch(()=> {
                 return self.GoogleService.ready;
-    }, (value)=> {
-        if (value) {
-            self.initMap();
-            tmp();
-        }
+        }, (value)=> {
+            if (value) {
+                self.initMap();
+                tmp();
+            }
         });
     };
 
@@ -44,23 +44,20 @@ class EventMapController {
         let self = this;
         self.editStatus = false;
         self.resultStatus = false;
-        //console.log("lol: ");
-        //console.log(self.$scope.$parent);
-        self.eventInfo = [];//self.$scope.$parent.eventInfo.value.data.docs[0];
+        self.eventInfo = null;
         self.marker = null;
+        self.$scope.$on('event:filled', function(event,data) {
+            // you could inspect the data to see if what you care about changed, or just update your own scope
+            self.marker = self.addMarker({"lat": data.localization.latitude, "lng": data.localization.longitude})
+            self.setMapCenter(data.localization.latitude,data.localization.longitude);
+        });
     }
-
 
 
     initMap() {
         let self = this;
         let google = self.$window.google;
-        let map = self.map;
-        let lat, lng;
-
-        lat = 50;
-        lng = 20;
-
+        let lat = 50, lng = 20;
         let config = {
             center: {
                 lat: lat,
@@ -69,41 +66,22 @@ class EventMapController {
             zoom: 10,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        self.map = new google.maps.Map($('#center_element .map')[0], config);
+        self.map = new google.maps.Map(document.getElementById("view-map"), config);
         self.map.setTilt(45);
     }
 
 
-
     addMarker(obj = {}) {
         let self = this;
-        var markerTmp = new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position: new google.maps.LatLng(obj.lat, obj.lng),
             map: self.map,
             draggable: false
         });
-        marker.customData = {
-            eventId: obj.event_id
-        };
-        self.marker = markerTmp;
+        self.marker = marker;
 
         return marker;
     }
-
-    /**
-     * Returns event with specified eventID
-     * @param event_id takes event_id. Usually it is created by mongodb in _id.
-     * If no event was found returns undefined.
-     * @returns Return event object
-     */
-    getEvent(event_id) {
-        let self = this;
-        let index = _.findIndex(self.eventsPool, (item)=> {
-                return item._id === event_id;
-    });
-    return self.eventsPool[index];
-    }
-
 
     /**
      *  Removes marker from map.
@@ -121,6 +99,7 @@ class EventMapController {
             lng: lng
         });
     }
+
 }
-		
+
 export default eventMap;

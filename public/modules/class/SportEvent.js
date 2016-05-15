@@ -15,6 +15,8 @@ class SportEvent {
         date.setHours(0);
         //
 
+        if(experienced < 0 || experienced > 10 )  experienced = 0;
+
         this.author = author;
         this.createdDate = createdDate;
         this.date = date;

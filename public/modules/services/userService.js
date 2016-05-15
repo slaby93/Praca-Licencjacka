@@ -42,11 +42,7 @@ class UserService {
                 received.data.user._id,
                 received.data.user.login,
                 received.data.user.groups,
-                received.data.user.email,
-                received.data.user.firstName,
-                received.data.user.lastName,
-                received.data.user.localization,
-                received.data.user.phone));
+                received.data.user.localization));
             self.token = received.data.token;
         }, (err) => {
             promise.reject(err);

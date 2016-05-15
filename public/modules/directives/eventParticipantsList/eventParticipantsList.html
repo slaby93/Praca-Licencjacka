@@ -1,1 +1,17 @@
-Uzytkownicy bioracy udzial
+Uczestnicy wydarzenia:
+<md-content layout-padding>
+    <md-grid-list
+            md-cols-gt-md="8" md-cols="8" md-cols-md="8"
+            md-row-height-gt-md="100px" md-row-height="100px"
+            md-gutter-gt-md="20px" md-gutter-md="20px" md-gutter="20px">
+        <md-grid-tile
+                ng-repeat="participant in eventParticipantsListCtrl.participants"
+                style="background: #e6ffee"
+                md-colspan-gt-sm="1"
+                md-rowspan-gt-sm="1">
+            <md-content class="transparent-background">
+                <md-button ng-click="eventParticipantsListCtrl.showUserModal(participant.id)"  flex="100"  flex-gt-md="auto" class="transparent-background"/>
+            </md-content>
+        </md-grid-tile>
+    </md-grid-list>
+</md-content>

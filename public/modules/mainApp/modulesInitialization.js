@@ -31,6 +31,7 @@ import EventController from './events/event.controller';
 import CenterController from './center/center.controller';
 import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
+import UserQuickInfoTooltipController from './userQuickInfoTooltip/userQuickInfoTooltip.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -61,7 +62,6 @@ import EventMapDirective from '../directives/eventMap/eventMap.directive';
 import EventBasicInfoDirective from '../directives/eventBasicInfo/eventBasicInfo.directive';
 import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExtendedInfo.directive';
 import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
-import UserQuickInfoTooltipDirective from '../directives/userQuickInfoTooltip/userQuickInfoTooltip.directive';
 import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
@@ -76,6 +76,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("CenterController", CenterController)
     .controller("TestController", TestController)
     .controller("UploadModalController", UploadModalController)
+    .controller("UserQuickInfoTooltipController", UserQuickInfoTooltipController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)
@@ -104,7 +105,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("eventBasicInfo", EventBasicInfoDirective)
     .directive("eventExtendedInfo", EventExtendedInfoDirective)
     .directive("eventParticipantsList", EventParticipantsListDirective)
-    .directive("userQuickInfoTooltip", UserQuickInfoTooltipDirective)
     .directive("sportIcons", SportIconsDirective)
     .config(routing)
     .config(dateLocaleProvider)

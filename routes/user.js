@@ -81,6 +81,16 @@ router.post('/register', function (req, res, next) {
     user.groups = ['user'];
     user.email = "";
     user.blacklist = [];
+    user.joinDate = new Date();
+    user.settings = {
+        "isPrivate": false,
+        "radius": 10,
+        "description" : "",
+        "name": "",
+        "surname": ""
+    };
+    user.mailBox = [];
+
     //laczenie z baza
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika

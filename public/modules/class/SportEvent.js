@@ -4,7 +4,7 @@
 import Moment from 'moment';
 
 class SportEvent {
-    constructor(author, createdDate, date, defaultEventIcon, defaultEventImage, description = 'Missing Description', payment, ownEquipment, experienced, usersLimit = 0, title = "Missing title", isActive = false, latitude = 50, longitude = 20, participants = []) {
+    constructor(author, createdDate, date, defaultEventIcon, defaultEventImage, description = 'Missing Description', category, payment, ownEquipment, experienced, usersLimit = 0, title = "Missing title", isActive = false, latitude = 50, longitude = 20, participants = []) {
 
 
         //IMPORTANT:
@@ -22,6 +22,7 @@ class SportEvent {
         this.defaultEventImage = defaultEventImage;
         this.eventInfo = {
             "description": description,
+            "category" : category,
             "payment": payment,
             "ownEquipment": ownEquipment,
             "experienced": experienced,

@@ -194,7 +194,7 @@ class UserService {
         let self = this;
         self.$http({
             method: "POST",
-            url: "/user/update",
+            url: "/user/updateBasic",
             data: {user: self.user}
         });
     }

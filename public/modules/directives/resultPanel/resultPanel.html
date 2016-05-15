@@ -25,8 +25,8 @@
         </md-card>
     </div>
     <!--GRID-->
-    <div class="gridResultsHolder" ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
-        <md-card flex="grow" ng-repeat="result in [1,2,3,4,5,6,7,8,9,10,11,12]">
+    <div class="gridResultsHolder" layout-wrap ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
+        <md-card flex="30" ng-repeat="result in resultCtrl._.times(50)">
             <md-card-content>
                 {{result}}
             </md-card-content>

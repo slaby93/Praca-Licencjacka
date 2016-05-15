@@ -27,6 +27,7 @@ class ResultPanelController {
         self.$window = $window;
         self.$interval = $interval;
         self.moment = moment;
+        self._ = _;
         self.setDefaultValues();
         self.observeObjects();
     }

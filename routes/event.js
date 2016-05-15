@@ -51,6 +51,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
                 },
                 "eventInfo": {
                     "description": passedEvent.eventInfo.description,
+                    "category": passedEvent.eventInfo.category,
                     "payment": passedEvent.eventInfo.payment,
                     "ownEquipment": passedEvent.eventInfo.ownEquipment,
                     "experienced": passedEvent.eventInfo.experienced,
@@ -88,6 +89,7 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         }
         var passedEvent = req.body.passedEvent;
         var id = new ObjectId(req.body.passedEvent._id);
+        console.log(passedEvent);
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.update({"_id": id},
@@ -100,17 +102,21 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                         },
                         "eventInfo": {
                             "description": passedEvent.eventInfo.description,
+                            "category": passedEvent.eventInfo.category,
                             "payment": passedEvent.eventInfo.payment,
                             "ownEquipment": passedEvent.eventInfo.ownEquipment,
                             "experienced": passedEvent.eventInfo.experienced,
                             "usersLimit": passedEvent.eventInfo.usersLimit,
+                            "title": passedEvent.eventInfo.title
                         },
                         "defaultEventImage": passedEvent.defaultEventImage,
                         "defaultEventIcon": passedEvent.defaultEventIcon
                     }
                 }, function (err, data) {
+                    console.log(data);
                     if (err) {
                         res.status(404).send().end(function () {
+                            console.log("lol");
                             db.close();
                         });
                         return;

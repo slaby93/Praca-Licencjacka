@@ -79,6 +79,18 @@ router.post('/register', function (req, res, next) {
     user = removeSensitiveUserData(user);
     user.password = password;
     user.groups = ['user'];
+    user.email = "";
+    user.joinDate = new Date();
+    user.blacklist = [];
+    user.settings = {
+        "isPrivate": false,
+        "radius": 10,
+        "description" : "",
+        "name": "",
+        "surname": ""
+    };
+    user.mailBox = [];
+
     //laczenie z baza
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika
@@ -198,7 +210,7 @@ router.post('/all', auth, guard.check('user'), function (req, res, next) {
     });
 });
 
-router.post("/update", auth, guard.check('user'), function (req, res, next) {
+router.post("/updateBasic", auth, guard.check('user'), function (req, res, next) {
     /**
      * TODO
      * Napisać testy
@@ -217,8 +229,11 @@ router.post("/update", auth, guard.check('user'), function (req, res, next) {
             db.user.update({
                     _id: mongo.ObjectId(id)
                 },
-                {
-                    "$set": usr
+                {"$set":
+                    {"localization" : usr.localization,
+                        "login" : usr.login,
+                        "groups" : usr.groups
+                    }
                 },
                 function (err, data) {
                     if (err) {
@@ -338,7 +353,8 @@ function getUserByLogin(login, attributes, callback) {
     mongo.connect("serwer", ["user"], function (db) {
         db.user.findOne({
             "login": login
-        }, function (err, foundedUser) {
+        },
+        {"login" : 1, "password" : 1, "groups" : 1, "localization" : 1}, function (err, foundedUser) {
             if (err || foundedUser === undefined || foundedUser === null) {
                 return undefined;
             }

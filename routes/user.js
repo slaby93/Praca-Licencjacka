@@ -80,8 +80,8 @@ router.post('/register', function (req, res, next) {
     user.password = password;
     user.groups = ['user'];
     user.email = "";
-    user.blacklist = [];
     user.joinDate = new Date();
+    user.blacklist = [];
     user.settings = {
         "isPrivate": false,
         "radius": 10,

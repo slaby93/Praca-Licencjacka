@@ -128,7 +128,7 @@ class HeaderController {
                 placeholder: "TEST-joinEvent (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.joinEvent("5728714b6aad6e0a7c0b74f9", "danny", "onomatopeja");
+                    self.EventService.joinEvent("572f0f8f8a490757a3e346ef", "slaby", "slaby", "571ca790e033b8ab254a680e");
                 },
                 visibility: ["user"]
             },

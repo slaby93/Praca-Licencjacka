@@ -42,12 +42,8 @@ class EventMapController {
 
     setDefaultValues() {
         let self = this;
-        self.editStatus = false;
-        self.resultStatus = false;
-        self.eventInfo = null;
         self.marker = null;
         self.$scope.$on('event:filled', function(event,data) {
-            // you could inspect the data to see if what you care about changed, or just update your own scope
             self.marker = self.addMarker({"lat": data.localization.latitude, "lng": data.localization.longitude})
             self.setMapCenter(data.localization.latitude,data.localization.longitude);
         });

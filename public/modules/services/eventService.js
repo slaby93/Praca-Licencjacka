@@ -133,13 +133,13 @@ class EventService {
 
 
 //:todo:  check if the user isn't on the blacklist of the event author (one additional parameter - author and function isBlacklisted) //
-    joinEvent(id, author, name) {
+    joinEvent(id, author, name, userID) {
         let self = this;
         var active = self.isActive(id);
         active.then(function (value) {
             if (value == true) {
                 var promise = self.$q.defer();
-                self.$http.post('/event/joinEvent', {"id": id, "name": name}, {skipAuthorization: false}).then(
+                self.$http.post('/event/joinEvent', {"id": id, "name": name, "userID" : userID}, {skipAuthorization: false}).then(
                     // SUCCESS
                     function (data) {
                         console.log("Pomyślnie dołączono użytkownika: " + name + " do wydarzenia o id: " + id);

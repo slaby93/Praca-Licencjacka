@@ -133,11 +133,12 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
         }
         var id = new ObjectId(req.body.id);
         var name = req.body.name;
+        var userID = new ObjectId(req.body.userID);
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.update(
                 {"_id": id},
-                {$addToSet: {"participants": name}},
+                {$addToSet: {"participants": {"id" : userID, "name" : name}}},
                 function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {

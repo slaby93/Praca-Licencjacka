@@ -30,7 +30,8 @@ router.post('/', function (req, res, next) {
     //polaczenie do bazy
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie o uzytkownika
-        db.user.findOne({"login": req.body.login}, function (err, foundedUser) {
+        db.user.findOne({"login": req.body.login},
+                        {"login" : 1, "password" : 1, "groups" : 1, "localization" : 1}, function (err, foundedUser) {
             //niepoprawny login
             if (foundedUser === undefined || foundedUser === null) {
                 return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
@@ -81,7 +82,8 @@ router.post('/register', function (req, res, next) {
     //laczenie z baza
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie do bazy o uzytkownika
-        db.user.find({"login": user.login}, function (err, docs) {
+        db.user.find({"login": user.login},
+                     {"_id" : 1}, function (err, docs) {
             //jezeli znaleziono uzytkownika
             if (docs.length > 0) {
                 console.error("REGISTER ERROR : Użytkownik już istnieje");
@@ -118,7 +120,8 @@ router.post('/token', function (req, res, next) {
     }
 
     mongo.connect("serwer", ["user"], function (db) {
-        db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)}, function (err, foundedUser) {
+        db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)},
+            {"login" : 1, "password" : 1, "groups" : 1, "localization" : 1}, function (err, foundedUser) {
             if (err) {
                 res.status(500).send("Token is valid, but error when fetching from db").end(function () {
                     db.close();

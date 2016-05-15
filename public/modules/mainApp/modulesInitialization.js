@@ -62,6 +62,7 @@ import EventBasicInfoDirective from '../directives/eventBasicInfo/eventBasicInfo
 import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExtendedInfo.directive';
 import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
 import UserQuickInfoTooltipDirective from '../directives/userQuickInfoTooltip/userQuickInfoTooltip.directive';
+import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -104,6 +105,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("eventExtendedInfo", EventExtendedInfoDirective)
     .directive("eventParticipantsList", EventParticipantsListDirective)
     .directive("userQuickInfoTooltip", UserQuickInfoTooltipDirective)
+    .directive("sportIcons", SportIconsDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

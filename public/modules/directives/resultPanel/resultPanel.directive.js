@@ -44,6 +44,10 @@ class ResultPanelController {
         self.viewMode = 'rows';
     }
 
+    isFree(event) {
+        return (event.eventInfo.payment > 0) ? false : true;
+    }
+
     observeObjects() {
         let self = this;
     }

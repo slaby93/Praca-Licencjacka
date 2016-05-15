@@ -1,6 +1,7 @@
 #center_element {
   overflow: hidden;
   height: 100%;
+
   .map {
     min-height: 400px;
     height: 100%;
@@ -17,12 +18,22 @@
     pointer-events: none;
 
   }
+
+  .leftBouncer {
+    @media(min-width: $md) {
+      padding-left: 140px;
+    }
+  }
+
   .searchBox {
     pointer-events: all;
     width: 250px;
     margin: 0px;
     top: 10px;
     left: 10vw;
+    @media(max-width: $md) {
+      top: 30px;
+    }
     md-card-content {
       padding: 0px 20px 0px 20px;
     }
@@ -64,7 +75,9 @@
 
       &.filpIcon {
         transform: rotate(180deg);
-        top: -60px;
+        top: -100px;
+        height: 50px;
+        width: 50px;
       }
     }
     md-content {
@@ -95,7 +108,10 @@
   .rowContainer {
     width: 100%;
     position: relative;
-    margin-top: 30px;
+    margin-top: 10px;
+    @media(max-width: $md) {
+      margin-top: 60px;
+    }
   }
   .menuBootstraper {
     display: none;

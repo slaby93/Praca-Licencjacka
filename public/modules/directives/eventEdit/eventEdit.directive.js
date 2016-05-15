@@ -21,10 +21,11 @@ function eventEdit() {
 }
 
 class EventEditController {
-    constructor($log, $interval, $scope, $window, moment) {
+    constructor($log, $interval, $scope, $window, moment, $state) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
+        self.$state = $state;
         self.$window = $window;
         self.$interval = $interval;
         self.moment = moment;
@@ -50,6 +51,15 @@ class EventEditController {
         let self = this;
         let event = self.editedEvent;
         self.countRemaningTime(event.date);
+    }
+
+    /**
+     * Redirect user to see page with full details of current event
+     * @param event
+     */
+    goToEditEvent(event) {
+        let self = this;
+        self.$state.go(`app.event`, {eventID: event._id});
     }
 
     countRemaningTime(startDate) {

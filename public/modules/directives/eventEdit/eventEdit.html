@@ -1,8 +1,11 @@
 <div layout="column">
     <!--TITLE-->
     <div layout="row" layout-align="center">
-        <h1>{{editCtrl.editedEvent.eventInfo.title}}</h1>
+        <h1 ng-click="editCtrl.goToEditEvent(editCtrl.editedEvent)">{{editCtrl.editedEvent.eventInfo.title}}</h1>
     </div>
+    <pre>
+        {{editCtrl.editedEvent| json}}
+    </pre>
     <!--START BEGINS-->
     <div>
         <span>Start za: {{editCtrl.remainingTime}}</span>

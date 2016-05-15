@@ -14,23 +14,36 @@
         <md-card class="result rowResult" ng-click="resultCtrl.handleResultClick(result)" flex="grow"
                  ng-repeat="result in resultCtrl.centerController.eventsPool">
             <md-card-content>
-                <div layout="row" layout-align="center">
+                <div class="headerResultRow" layout="row" layout-align="center">
+                    <sport-icons sport="result.eventInfo.category"></sport-icons>
                     <span>{{result.eventInfo.title}}</span>
                 </div>
                 <div layout="row">
-                    <span>{{result.eventInfo.description}}</span>
+                    <span>Koszt:
+                        <span ng-if="!resultCtrl.isFree(result)">{{result.eventInfo.payment}} zł</span>
+                        <span ng-if="resultCtrl.isFree(result)">bezpłatny</span>
+                    </span>
                 </div>
                 <!--<pre>{{result | json}}</pre>-->
             </md-card-content>
         </md-card>
+
     </div>
     <!--GRID-->
     <div class="gridResultsHolder" layout-wrap ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
-        <md-card flex="30" ng-repeat="result in resultCtrl._.times(50)">
-            <md-card-content>
-                {{result}}
-            </md-card-content>
-        </md-card>
+        <div flex-sm="50" flex-xs="50" flex-md="33" flex-gt-md="25"
+             ng-repeat="result in resultCtrl.centerController.eventsPool">
+            <md-card class="result gridResult" ng-click="resultCtrl.handleResultClick(result)">
+                <md-card-content layout="column">
+                    <div layout="row" layout-align="start">
+                        <span> {{result.eventInfo.title}}</span>
+                        <div flex="grow"></div>
+                        <sport-icons sport="result.eventInfo.category"></sport-icons>
+                    </div>
+
+                </md-card-content>
+            </md-card>
+        </div>
     </div>
 </div>
 <div class="noResults" layout="row" layout-align="center" ng-if="!resultCtrl.isData()">

@@ -1,0 +1,10 @@
+<div ng-switch="sportIconsCtrl.sport">
+    <md-icon ng-switch-when="voleyball" class="resultSportIcon"
+             md-svg-src="resources/icons/voleyball.svg"></md-icon>
+    <md-icon ng-switch-when="basketball"
+             class="resultSportIcon" md-svg-src="resources/icons/basket.svg"></md-icon>
+    <md-icon ng-switch-when="football" class="resultSportIcon"
+             md-svg-src="resources/icons/football.svg"></md-icon>
+    <md-icon ng-switch-default="" class="resultSportIcon"
+             md-svg-src="resources/icons/unknown.svg"></md-icon>
+</div>

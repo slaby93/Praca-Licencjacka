@@ -56,13 +56,13 @@ import ArchiveEventsTable from '../directives/archiveEventsTable/archiveEventsTa
 import ActiveEventsTable from '../directives/activeEventsTable/activeEventsTable.directive';
 import UserCommentsTable from '../directives/userCommentsTable/userCommentsTable.directive';
 import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap.directive';
-import EventEditDirective from '../directives/eventEdit/eventEdit.directive';
 import ResultPanelDirective from '../directives/resultPanel/resultPanel.directive';
 import EventMapDirective from '../directives/eventMap/eventMap.directive';
 import EventBasicInfoDirective from '../directives/eventBasicInfo/eventBasicInfo.directive';
 import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExtendedInfo.directive';
 import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
 import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
+import InfoBoxDirective from '../directives/infoBox/infoBox.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -99,13 +99,13 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("activeEventsTable", ActiveEventsTable)
     .directive("archiveEventsTable", ArchiveEventsTable)
     .directive("wojewodztwaMap", WojewodztwaMapDirective)
-    .directive("eventEdit", EventEditDirective)
     .directive("resultPanel", ResultPanelDirective)
     .directive("eventMap", EventMapDirective)
     .directive("eventBasicInfo", EventBasicInfoDirective)
     .directive("eventExtendedInfo", EventExtendedInfoDirective)
     .directive("eventParticipantsList", EventParticipantsListDirective)
     .directive("sportIcons", SportIconsDirective)
+    .directive("infoBox", InfoBoxDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

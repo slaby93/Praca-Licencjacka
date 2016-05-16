@@ -1,0 +1,21 @@
+<div id="infoBox">
+    <div class="mainContent">
+        <div class="representationSection">
+            <span class="title">{{infoBoxCtrl.event.eventInfo.title}}</span>
+            <div layout="row">
+                <span class="date">{{infoBoxCtrl.formatDate(infoBoxCtrl.event)}}</span>
+                <sport-icons sport="infoBoxCtrl.event.eventInfo.category"></sport-icons>
+            </div>
+
+            <span class="savedUsers">Zapisani uczestnicy: {{infoBoxCtrl.event.participants.length}}/{{infoBoxCtrl.event.eventInfo.usersLimit}}</span>
+        </div>
+        <div class="imageHolder">
+            <img src="https://johnochwat.files.wordpress.com/2010/07/mini-avatar.gif">
+        </div>
+
+    </div>
+    <div class="goButtonHolder">
+        <md-button ng-click="infoBoxCtrl.handleClick()" class="md-raised md-primary goButton">Przejdz do strony eventu
+        </md-button>
+    </div>
+</div>

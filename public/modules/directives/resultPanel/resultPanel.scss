@@ -43,6 +43,7 @@ result-panel {
   .resultContentHolder {
     background-image: url("../resources/background/triangles.jpg");
     background-repeat: repeat-y;
+    background-size: cover;
     padding-top: 45px;
     .result {
       transition: box-shadow 0.2s linear;

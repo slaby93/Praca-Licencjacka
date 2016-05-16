@@ -85,17 +85,8 @@
     }
   }
 
-  .editMenu {
-    min-width: 0px;
+  .dontClickTrough {
     pointer-events: all;
-    background-color: white;
-    height: 100%;
-    transition: all 0.3s linear;
-    flex-basis: 0%;
-    transform: rotateY(90deg);
-    transform-origin: right;
-    border-left: 1px solid gray;
-    box-shadow: -2px -3px 8px 1px rgba(0, 0, 0, 0.51);
   }
   .showEdit {
     flex-basis: 30%;
@@ -139,5 +130,51 @@
   text-overflow: ellipsis;
   md-menu-item {
     background-color: white;
+  }
+}
+
+#infoBox {
+  display: flex;
+  flex-direction: column;
+  .mainContent {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    .representationSection {
+      .date {
+        margin-right: 30px;
+      }
+      .savedUsers {
+        margin-top: 5px;
+      }
+      sport-icons {
+        position: relative;
+        top: -2px;
+      }
+      .title {
+        font-size: 20px;
+        padding-bottom: 8px;
+      }
+      display: flex;
+      flex-direction: column;
+    }
+    .imageHolder {
+      img {
+        margin-left: 15px;
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .goButtonHolder {
+    display: flex;
+    margin-top: 3px;
+    margin-bottom: -3px;
+    justify-content: center;
+    align-items: center;
+    .goButton {
+      background-color: #4C88F9;
+    }
   }
 }

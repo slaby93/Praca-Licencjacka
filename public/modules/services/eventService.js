@@ -38,8 +38,8 @@ class EventService {
                 promise.resolve(data);
                 // ERROR
             }, function (err) {
-                console.log("Porazka podczas dodawania nowego eventu!");
-                promise.resolve(err);
+                console.log("Porazka podczas dodawania nowego eventu!", err);
+                promise.reject(err);
             });
         return promise.promise;
     };
@@ -59,7 +59,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas deaktywacji eventu!");
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     };
@@ -81,7 +81,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas kontroli świeżości eventów");
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     };
@@ -103,7 +103,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas usuwania starych, zakończonych eventów!");
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     };
@@ -126,7 +126,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas sprawdzania świeżości eventu");
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     };
@@ -139,7 +139,11 @@ class EventService {
         active.then(function (value) {
             if (value == true) {
                 var promise = self.$q.defer();
-                self.$http.post('/event/joinEvent', {"id": id, "name": name, "userID" : userID}, {skipAuthorization: false}).then(
+                self.$http.post('/event/joinEvent', {
+                    "id": id,
+                    "name": name,
+                    "userID": userID
+                }, {skipAuthorization: false}).then(
                     // SUCCESS
                     function (data) {
                         console.log("Pomyślnie dołączono użytkownika: " + name + " do wydarzenia o id: " + id);
@@ -147,7 +151,7 @@ class EventService {
                         // ERROR
                     }, function (err) {
                         console.log("Porazka podczas dodawania uzytkownika: " + name + " do wydarzenia o id: " + id);
-                        promise.resolve(err);
+                        promise.reject(err);
                     });
                 return promise.promise;
             } else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
@@ -169,7 +173,7 @@ class EventService {
                         // ERROR
                     }, function (err) {
                         console.log("Porazka podczas usuwania uzytkownika: " + name + " z wydarzenia o id: " + id);
-                        promise.resolve(err);
+                        promise.reject(err);
                     });
                 return promise.promise;
             } else  console.log("Wystapil blad podczas usuwania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
@@ -191,7 +195,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas deaktywacji eventu!");
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     }
@@ -209,7 +213,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     }
@@ -227,7 +231,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas wyszukiwania eventu o id: " + id);
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     }
@@ -277,7 +281,7 @@ class EventService {
                 // ERROR
             }, function (err) {
                 console.log("Porazka podczas wyszukiwania eventow w zasiegu: " + radius);
-                promise.resolve(err);
+                promise.reject(err);
             });
         return promise.promise;
     }

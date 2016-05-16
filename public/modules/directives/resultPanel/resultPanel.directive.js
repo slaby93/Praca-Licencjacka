@@ -20,7 +20,7 @@ function resultPanel() {
 }
 
 class ResultPanelController {
-    constructor($log, $interval, $scope, $window, moment) {
+    constructor($log, $interval, $scope, $window, moment, $state) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
@@ -28,6 +28,7 @@ class ResultPanelController {
         self.$interval = $interval;
         self.moment = moment;
         self._ = _;
+        self.$state = $state;
         self.setDefaultValues();
         self.observeObjects();
     }
@@ -46,6 +47,15 @@ class ResultPanelController {
 
     isFree(event) {
         return (event.eventInfo.payment > 0) ? false : true;
+    }
+
+    /**
+     * Redirect user to see page with full details of current event
+     * @param event
+     */
+    goToEditEvent(event) {
+        let self = this;
+        self.$state.go(`app.event`, {eventID: event._id});
     }
 
     observeObjects() {

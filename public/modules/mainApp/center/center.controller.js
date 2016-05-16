@@ -8,12 +8,15 @@
  *      * eventsPool -> array of currently displayed events
  */
 class CenterController {
-    constructor($log, $scope, $q, GoogleService, $timeout, $window, UserService, loader, EventService) {
+    constructor($log, $scope, $q, GoogleService, moment, $timeout, $window, UserService, loader, EventService, $state, $compile) {
         let self = this;
         self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
         self.$q = $q;
+        self.moment = moment;
+        self.$compile = $compile;
+        self.$state = $state;
         self.$timeout = $timeout;
         self.loader = loader;
         self.UserService = UserService;
@@ -43,6 +46,10 @@ class CenterController {
         self.radius = 200;
         self.markers = [];
         self.eventEditCtrl = {};
+        self.infoBox = {
+            isCompiled: false
+        };
+
     }
 
     test() {
@@ -119,12 +126,14 @@ class CenterController {
         let self = this;
         self.$l.debug("requestForEvents", lat, lng, radius);
         self.eventService.find(lat, lng, radius).then((resp)=> {
-            if (!resp) {
-                alert("ERROR");
-                return;
-            }
             self.eventsPool = resp.data.docs;
             self.showReceivedEvents(self.eventsPool);
+        }, (err)=> {
+
+            if (err.status === 401) {
+                self.$l.debug("Uzytkownik nie jest zalogowany", err)
+                self.$state.go("introduction");
+            }
         });
     }
 
@@ -154,6 +163,33 @@ class CenterController {
             self.switchEdit();
         }
         self.setEditedEvent(originalMarkerObject);
+
+        let event = self.getEvent(originalMarkerObject.customData.eventId);
+        let contentString = `
+          <div id="infoBoxMainHolder">
+            <info-box event="centerCtrl.editedEvent"></info-box>
+          </div>
+          
+        `;
+        let google = self.$window.google;
+        if (!self.infoBox.reference) {
+            self.infoBox.reference = new google.maps.InfoWindow({
+                content: ""
+            });
+        }
+
+        self.infoBox.reference.setContent(contentString);
+        self.infoBox.reference.open(self.map, originalMarkerObject);
+        /**
+         * Should compile template jsut once
+         * @type {boolean}
+         */
+        if (!self.infoBox.isListenerSet) {
+            google.maps.event.addListener(self.infoBox.reference, 'domready', function () {
+                self.$compile($("#infoBoxMainHolder"))(self.$scope);
+                self.infoBox.isListenerSet = true;
+            });
+        }
     }
 
     addMarker(obj = {}) {
@@ -240,6 +276,10 @@ class CenterController {
         });
     }
 
+    /**
+     * Handle click on result after user input desired location ( this is for search input).
+     * @param value
+     */
     handleResultClick(value) {
         let self = this;
         let geocoder = new google.maps.Geocoder();
@@ -268,7 +308,7 @@ class CenterController {
             self.editedEvent = undefined;
         }
         if (self.editStatus === false) {
-            self.eventEditCtrl.onExit();
+            // self.eventEditCtrl.onExit();
         }
     }
 
@@ -280,7 +320,7 @@ class CenterController {
     setEditedEvent(marker) {
         let self = this;
         self.$timeout(()=> {
-            self.eventEditCtrl.onExit();
+            // self.eventEditCtrl.onExit();
             let foundedEvent = self.getEvent(marker.customData.eventId);
             self.editedEvent = foundedEvent;
         });

@@ -10,8 +10,6 @@ class AccountController {
 		self.UserService = UserService;
         self.$scope = $scope;
         self.$l = $log;
-        self.$l.debug("Account CTRL");
-		console.log($stateParams.userName);
 		if($stateParams.userName == "")  self.$state.go("app.home");
 		$scope.user = self.getUserInfo($stateParams.userName);
 		

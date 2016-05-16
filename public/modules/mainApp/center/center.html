@@ -44,16 +44,6 @@
                 </md-content>
             </div>
         </div>
-        <!--RIGHT EDIT PLACE-->
-        <div ng-class="{showEdit:centerCtrl.editStatus}" flex="30" class="editMenu">
-            <!--CLOSE BUTTON-->
-            <div layout="row" layout-align="end" flex="grow">
-                <md-icon ng-click="centerCtrl.switchEdit()" class="editCloseIcon"
-                         md-svg-src="resources/icons/cross.svg"></md-icon>
-            </div>
-            <event-edit edited-event="centerCtrl.editedEvent" event-controller="centerCtrl.eventEditCtrl"
-                        center-controller="centerCtrl"></event-edit>
-        </div>
     </div>
     <div class="map"></div>
 </div>

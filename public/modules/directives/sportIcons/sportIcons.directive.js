@@ -8,7 +8,8 @@ function sportIcons() {
         restrict: 'E',
         templateUrl: 'modules/directives/sportIcons/sportIcons.html',
         scope: {
-            "sport": "="
+            "sport": "=",
+            "sportSolid": "@",
         },
         controller: SportIconsController,
         controllerAs: "sportIconsCtrl",

@@ -18,11 +18,17 @@
                     <sport-icons sport="result.eventInfo.category"></sport-icons>
                     <span>{{result.eventInfo.title}}</span>
                 </div>
+                <div>
+                    <span>{{result.date | date}}</span>
+                </div>
                 <div layout="row">
                     <span>Koszt:
                         <span ng-if="!resultCtrl.isFree(result)">{{result.eventInfo.payment}} zł</span>
                         <span ng-if="resultCtrl.isFree(result)">bezpłatny</span>
                     </span>
+                </div>
+                <div ng-click="resultCtrl.goToEditEvent(result)">
+
                 </div>
                 <!--<pre>{{result | json}}</pre>-->
             </md-card-content>

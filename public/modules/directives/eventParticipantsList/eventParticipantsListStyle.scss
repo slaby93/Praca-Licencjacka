@@ -1,5 +1,33 @@
-
 md-tooltip.user-tooltip {
+	$profileHeight: 100px;
+	$top: -70px;
+
+	.imageHolder{
+		height: 100px;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.63) no-repeat fixed 50% 50%, 0 0;
+		background-position: center;
+		background-color: rgba(0, 0, 0, 0.63);
+		background-size:cover;
+	}
+	.profileImgHolder {
+		left: -220px;
+		position: relative;
+		top: $top;
+
+	}
+	.profileImg {
+		height: 64px;
+		width: 64px;
+		box-shadow: 8px 8px 15px -1px rgba(0, 0, 0, 0.75);
+		transform: rotate(-5deg);
+		border-radius: 50%;
+		max-height: $profileHeight;
+		padding: 5px;
+		background-color: white;
+		border: 1px solid #B3B3B3;
+	}
+
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
 	.md-background {
 		border-radius: inherit;
@@ -11,8 +39,13 @@ md-tooltip.user-tooltip {
 		font-size: 14px;
 		width: 300px;
 		max-width: 300px;
-		padding: 8px;
+		padding: 0;
 		white-space: initial;
+	}
+	.deeper-content{
+		padding: 8px;
+		top: $top;
+		position: relative;
 	}
 }
 
@@ -47,8 +80,7 @@ md-tooltip.user-tooltip {
 				}
 				.user-info  {
 					height: 25px;
-					overflow-x: auto;
-					overflow-y: hidden;
+					overflow: hidden;
 				}
 				background: #e6ffee;
 				.avatar{

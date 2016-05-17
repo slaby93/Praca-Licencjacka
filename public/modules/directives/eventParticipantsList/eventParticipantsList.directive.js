@@ -13,7 +13,7 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $mdDialog, $rootScope) {
+    constructor(UserService, EventService, $scope, $mdDialog, $rootScope, $state) {
         let self = this;
         
         self.UserService = UserService;
@@ -21,6 +21,7 @@ class EventParticipantsListController {
         self.$scope = $scope;
         self.$mdDialog = $mdDialog;
         self.$rootScope = $rootScope;
+        self.$state = $state;
         self.watchParticipants();
         self.setDefaultValues();
 	}   
@@ -36,6 +37,7 @@ class EventParticipantsListController {
     
     setDefaultValues(){
         let self = this;
+        self.number = 3;
         self.user = {};
 
 
@@ -65,8 +67,19 @@ class EventParticipantsListController {
         participant.wasClicked = true;
     }
 
+    getNumber(num) {
+        if(num == 1) return [1];
+        if(num == 2) return [1,2];
+        if(num == 3) return [1,2,3];
+        if(num == 4) return [1,2,3,4];
+        if(num == 5) return [1,2,3,4,5];
+        return [];
+    }
 
-    
+    goToUserPage(user) {
+        let self = this;
+        self.$state.go(`app.account`, {"userName": user._id, "indexName": "profile"});
+    }
 
 }
 		

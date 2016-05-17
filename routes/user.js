@@ -340,7 +340,7 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
 
         db.user.find(
             {"_id": {$in : idOnlyArray}},
-            {"login" : 1},
+            {"login" : 1, "settings.name" : 1, "settings.surname" : 1},
             function (err, data) {
                 if (err) {
                     res.status(404).send().end(function () {

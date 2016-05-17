@@ -21,10 +21,18 @@
                         <div layout="row" layout-align="end" class="profileImgHolder">
                             <img class="profileImg" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
                         </div>
+                        <div class="name">{{participant.settings.name}} {{participant.settings.surname}} ({{participant.login}})</div>
                         <div class="deeper-content">
-                            <md-button>LOL</md-button><br>
-                            Id kliknietego uzytkownika: {{participant._id}}<br>
-                            Lol2<br>
+                            <div flex/>
+                            <div layout="row" layout-align="bottom right">
+                                <md-button class="no-text-transformation" ng-click="eventParticipantsListCtrl.goToUserPage(participant)" flex="60">Przejdź do profilu</md-button>
+                                <inline flex="40">
+                                    <md-icon ng-repeat="i in eventParticipantsListCtrl.getNumber(eventParticipantsListCtrl.number)" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
+                                    <md-icon ng-repeat="i in eventParticipantsListCtrl.getNumber(5 - eventParticipantsListCtrl.number)" md-svg-src="resources/white-star.svg" class="svg-submissive icon"></md-icon>
+                                    Weteran
+                                    <div>Ocena: 87/89</div>
+                                </inline>
+                            </div>
                         </div>
 
 

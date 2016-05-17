@@ -33,9 +33,9 @@ md-tooltip.user-tooltip {
 		border-radius: inherit;
 	}
 	.md-content {
-		min-height: 250px;
-		height: 250px;
-		max-height: 250px;
+		min-height: 200px;
+		height: 200px;
+		max-height: 200px;
 		font-size: 14px;
 		width: 300px;
 		max-width: 300px;
@@ -44,26 +44,36 @@ md-tooltip.user-tooltip {
 	}
 	.deeper-content{
 		padding: 8px;
-		top: $top;
+		top: $top - 30px;
 		position: relative;
+	}
+	.name{
+		position: relative;
+		top: $top - 30px;
+		left: 100px;
+	}
+	.icon{
+		width: 16px;
+		height: 16px;
 	}
 }
 
+.no-text-transformation {
+	text-transform: none !important;
+	font-weight: bold !important;
+}
 
 
 #event-participants-list{
 	.transparent-background  {background-color: transparent;  }
-	.no-text-transformation {
-		text-transform: none !important;
-		font-weight: bold !important;
-	}
+
 
 	.user-list-intro  {text-align: center;}
 	md-content{
 		md-grid-list{
 			md-grid-tile{
 				border-bottom-left-radius : 20px;
-				border-top-right-radius : 20px;
+				border-bottom-right-radius : 20px;
 				border-top-left-radius : 20px;
 
 				.tile-button{

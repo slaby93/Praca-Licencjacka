@@ -62,6 +62,7 @@ import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExt
 import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
 import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
 import InfoBoxDirective from '../directives/infoBox/infoBox.directive';
+import ErrSrcDirective from '../directives/errSrc/errSrc.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -104,6 +105,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("eventParticipantsList", EventParticipantsListDirective)
     .directive("sportIcons", SportIconsDirective)
     .directive("infoBox", InfoBoxDirective)
+    .directive("errSrc", ErrSrcDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

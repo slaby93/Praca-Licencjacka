@@ -2,15 +2,19 @@
     <div class="user-list-intro">Uczestnicy wydarzenia:</div>
     <md-content layout-padding>
         <md-grid-list
-                md-cols-gt-md="8" md-cols="8" md-cols-md="8"
+                md-cols-gt-md="8" md-cols-gt-lg="14" md-cols-gt-xl="20" md-cols-md="6" md-cols-sm="4" md-cols-xs="2"
                 md-row-height-gt-md="100px" md-row-height="100px"
                 md-gutter-gt-md="20px" md-gutter-md="20px" md-gutter="20px">
             <md-grid-tile
                     ng-repeat="participant in eventParticipantsListCtrl.participants"
                     md-colspan-gt-sm="1"
                     md-rowspan-gt-sm="1">
-                <md-content class="transparent-background">
-                    <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background" ng-click="eventParticipantsListCtrl.showToolTip(participant)"/>
+                <md-content class="transparent-background tile-content">
+                    <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background tile-button" ng-click="eventParticipantsListCtrl.showToolTip(participant)">
+                        <img alt="User Image" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg" class="avatar"/>
+                        <div class="no-text-transformation user-info">{{participant.login}}</div>
+
+                    </md-button>
                     <md-tooltip class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
 
                         <md-button>LOL</md-button><br>
@@ -19,6 +23,7 @@
 
                     </md-tooltip>
                 </md-content>
+
             </md-grid-tile>
         </md-grid-list>
     </md-content>

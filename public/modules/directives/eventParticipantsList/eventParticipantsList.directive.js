@@ -46,7 +46,12 @@ class EventParticipantsListController {
             _.forEach(self.participants, (value, key) => {
                 self.participants[key].wasClicked = false;
             });
-            console.log(self.participants);
+            self.UserService.findBasicUserInfoById(self.participants).then((resp)=> {
+                _.merge(self.participants, resp.data.docs);
+                console.log(self.participants);
+            });
+
+
         });
         
     }
@@ -58,8 +63,6 @@ class EventParticipantsListController {
         });
 
         participant.wasClicked = true;
-        console.log("id");
-        console.log(participant.id);
     }
 
 

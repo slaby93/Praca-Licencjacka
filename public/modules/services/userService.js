@@ -203,5 +203,26 @@ class UserService {
 
     }
 
+
+
+    findBasicUserInfoById(idArray) {
+        let self = this;
+        var promise = self.$q.defer();
+        self.$http.post('/user/findBasicUserInfoById', {"idArray": idArray}, {skipAuthorization: false}).then(
+            // SUCCESS
+            function (data) {
+                console.log("Oto wyszukane podstawowe dane szukanych uzytkownikow: ");
+                console.log(data.data.docs);
+                promise.resolve(data);
+                // ERROR
+            }, function (err) {
+                console.log("Porazka podczas wyszukiwania podstawowych danych szukanych uzytkownikow");
+                promise.reject(err);
+            });
+        return promise.promise;
+    }
+
+
+
 }
 export default UserService;

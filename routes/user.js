@@ -3,6 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var assert = require('assert');
 var mongo = require('./dbConnect.js');
+var ObjectId = mongo.ObjectId;
 var formidable = require('formidable');
 var fs = require('fs');
 var path = require('path');
@@ -329,6 +330,34 @@ router.post('/photo', auth, guard.check('user'), function (req, res, next) {
 });
 
 
+router.post('/findBasicUserInfoById', function (req, res, next) {
+    var idArray = req.body.idArray;
+    var idOnlyArray = [];
+    idArray.forEach(function(item) {
+        idOnlyArray.push(new ObjectId(item._id));
+    });
+    mongo.connect("serwer", ["user"], function (db) {
+
+        db.user.find(
+            {"_id": {$in : idOnlyArray}},
+            {"login" : 1},
+            function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                    return;
+                } else {
+                    res.status(200).send({"docs": data}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
+
 function closeDB(db) {
     db.close();
 }
@@ -363,5 +392,10 @@ function getUserByLogin(login, attributes, callback) {
         });
     });
 }
+
+
+
+
+
 
 module.exports = router;

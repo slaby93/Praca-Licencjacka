@@ -128,7 +128,7 @@ class HeaderController {
                 placeholder: "TEST-joinEvent (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.joinEvent("572f0f8f8a490757a3e346ef", "slaby", "slaby", "571ca790e033b8ab254a680e");
+                    self.EventService.joinEvent("572f0f8f8a490757a3e346ef", "slaby", "573a4b337403fa1847714ce4");
                 },
                 visibility: ["user"]
             },
@@ -136,7 +136,7 @@ class HeaderController {
                 placeholder: "TEST-kickUser (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.kickUser("57278a1c61b11eca7471141e", "onomatopeja");
+                    self.EventService.kickUser("572f0f8f8a490757a3e346ef", "573a4b337403fa1847714ce4");
                 },
                 visibility: ["user"]
             },

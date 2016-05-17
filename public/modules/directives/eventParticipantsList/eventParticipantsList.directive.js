@@ -13,46 +13,57 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $mdDialog) {
+    constructor(UserService, EventService, $scope, $mdDialog, $rootScope) {
         let self = this;
         
         self.UserService = UserService;
         self.EventService = EventService;
         self.$scope = $scope;
         self.$mdDialog = $mdDialog;
+        self.$rootScope = $rootScope;
+        self.watchParticipants();
         self.setDefaultValues();
 	}   
-    
+
+    watchParticipants(){
+        let self = this;
+        self.$rootScope.$watch(()=> {
+            return self.participants;
+        }, (newValue)=> {
+
+        }, true);
+    }
     
     setDefaultValues(){
         let self = this;
+        self.user = {};
+
 
         self.participants = [];
-        self.$scope.$watch()
+        self.$scope.$watch();
         self.$scope.$on('event:filled', function(event,data) {
             self.participants = data.participants;
+            _.forEach(self.participants, (value, key) => {
+                self.participants[key].wasClicked = false;
+            });
             console.log(self.participants);
         });
         
     }
 
-
-    showUserModal(id) {
+    showToolTip(participant){
         let self = this;
-        let parentElement = angular.element(document.body);
-        console.log(parentElement);
-        self.$mdDialog.show({
-            templateUrl: 'modules/mainApp/userQuickInfoTooltip/userQuickInfoTooltip.html',
-            controller: 'UserQuickInfoTooltipController',
-            controllerAs: 'userQuickInfoTooltipCtrl',
-            clickOutsideToClose : true,
-            resolve: {
-                getId: function () {
-                    return id;
-                }
-            }
+        _.forEach(self.participants, (value, key) => {
+            self.participants[key].wasClicked = false;
         });
+
+        participant.wasClicked = true;
+        console.log("id");
+        console.log(participant.id);
     }
+
+
+    
 
 }
 		

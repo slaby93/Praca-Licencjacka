@@ -41,7 +41,10 @@ class EventController {
                 alert("ERROR");
                 return;
             }
-
+            console.log("Event controller redirect bug test");
+            console.log(resp.data.docs[0]);
+            console.log("If the one above is undefined when you enter the site and you are sure you pasted the correct id and you got" +
+                "redirected to introduction, its some sort of bug");
             //in case we don't find an event in the database
             //(the _id is not present), we should redirect the user to to the error site or wherever else
             //placeholder:  redirect to introduction

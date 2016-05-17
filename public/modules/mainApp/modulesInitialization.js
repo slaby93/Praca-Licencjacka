@@ -31,7 +31,6 @@ import EventController from './events/event.controller';
 import CenterController from './center/center.controller';
 import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
-import UserQuickInfoTooltipController from './userQuickInfoTooltip/userQuickInfoTooltip.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -76,7 +75,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("CenterController", CenterController)
     .controller("TestController", TestController)
     .controller("UploadModalController", UploadModalController)
-    .controller("UserQuickInfoTooltipController", UserQuickInfoTooltipController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)

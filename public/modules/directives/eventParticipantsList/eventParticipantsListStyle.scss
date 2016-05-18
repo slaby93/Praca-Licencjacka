@@ -64,6 +64,62 @@ md-tooltip.user-tooltip {
 }
 
 
+.close-ribbon{
+	position: absolute;
+	top: 5px;
+	right: 0;
+	z-index: 30;
+	color: #eee;
+	font-size: 2em;
+	cursor: pointer;
+	width: 32px;
+	line-height: 0.5em;
+	-webkit-transition: line-height 0.5s;
+	transition: line-height 0.5s;
+
+	:after {
+		content: "";
+		font-size: 0.5em;
+		position: absolute;
+		height: 1.2em;
+		border: 1.5em solid #F44336;
+		z-index: -1;
+		top: -1em;
+		border-top-width: 1.5em;
+		border-bottom-color: transparent;
+		right: 0;
+		-webkit-transition: height 0.5s;
+		transition: height 0.5s;
+	}
+
+	:before {
+		content: "";
+		font-size: 0.5em;
+		position: absolute;
+		border-style: solid;
+		border-color: transparent transparent #B71C1C transparent;
+		top: -1em;
+		right: 3em;
+		border-width: 0 0 1em 0.7em;
+		z-index: -1;
+	}
+	:hover{
+		line-height: 0.9em;
+		color: #333;
+		-webkit-transition: line-height 0.5s;
+		transition: line-height 0.5s;
+	}
+	:hover:after {
+		border: 1.5em solid #EF5350;
+		border-bottom-color: transparent;
+		height: 1.6em;
+		-webkit-transition: height 0.5s;
+		transition: height 0.5s;
+	}
+}
+
+
+
 #event-participants-list{
 	.transparent-background  {background-color: transparent;  }
 
@@ -71,8 +127,8 @@ md-tooltip.user-tooltip {
 	.user-list-intro  {text-align: center;}
 
 	.pushpin-icon{
-		height:32px;
-		width:32px;
+		height:48px;
+		width:48px;
 	}
 	md-content{
 		md-grid-list{
@@ -97,6 +153,8 @@ md-tooltip.user-tooltip {
 				.user-info  {
 					height: 25px;
 					overflow: hidden;
+					margin-left: 9px;
+					margin-right: 9px;
 				}
 				background: #e6ffee;
 				.avatar{

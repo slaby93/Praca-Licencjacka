@@ -67,6 +67,11 @@ class EventParticipantsListController {
         participant.wasClicked = true;
     }
 
+    test(){
+        console.log("lol");
+
+    }
+
     getNumber(num) {
         if(num == 1) return [1];
         if(num == 2) return [1,2];

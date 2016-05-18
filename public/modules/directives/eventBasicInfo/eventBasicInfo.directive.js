@@ -13,10 +13,26 @@ function eventBasicInfo() {
 }
 
 class EventBasicInfoController {
-    constructor() {
+    constructor(UserService, EventService, $scope, $state) {
         let self = this;
-
+        self.UserService = UserService;
+        self.EventService = EventService;
+        self.$scope = $scope;
+        self.$state = $state;
+        self.setDefaultValues();
 	}
+
+
+    setDefaultValues(){
+        let self = this;
+        self.number = 3;
+        self.eventInfo = {};
+
+        self.$scope.$on('event:filled', function(event,data) {
+            self.eventInfo = data;
+        });
+
+    }
 	
 
 }

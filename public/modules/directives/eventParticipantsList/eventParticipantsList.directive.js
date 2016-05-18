@@ -13,15 +13,14 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $mdDialog, $rootScope, $state) {
+    constructor(UserService, EventService, $scope, $state, $rootScope) {
         let self = this;
         
         self.UserService = UserService;
         self.EventService = EventService;
         self.$scope = $scope;
-        self.$mdDialog = $mdDialog;
-        self.$rootScope = $rootScope;
         self.$state = $state;
+        self.$rootScope = $rootScope;
         self.watchParticipants();
         self.setDefaultValues();
 	}   
@@ -38,7 +37,6 @@ class EventParticipantsListController {
     setDefaultValues(){
         let self = this;
         self.number = 3;
-        self.user = {};
 
 
         self.participants = [];

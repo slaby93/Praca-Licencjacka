@@ -1,6 +1,26 @@
 <div id="event-basic-info">
-    Podstawowe informacje o evencie
-
-
-
+    <div class="event-basic-intro">Podstawowe informacje o wydarzeniu:</div>
+    <div layout="row" layout-align="center center">
+        <div layout="column" layout-align="center center" flex="25">
+            <inline flex="100">
+                Autor:
+                <md-button class="no-text-transformation">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
+            </inline>
+            <div flex="100">Data utworzenia: {{eventBasicInfoCtrl.eventInfo.createdDate}}</div>
+            <div flex="100">Data wydarzenia: {{eventBasicInfoCtrl.eventInfo.date}}</div>
+            <div ng-if="{{eventBasicInfoCtrl.eventInfo.date}} < new Date()" flex="100">Aktywny</div>
+        </div>
+        <div layout="column" layout-align="center center" flex="25">
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+        </div>
+        <div layout="column" layout-align="center center" flex="50">
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+            <div flex="100">1</div>
+        </div>
+    </div>
 </div>

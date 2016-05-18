@@ -12,15 +12,9 @@
                 <md-content class="transparent-background tile-content">
                     <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background tile-button" ng-click="eventParticipantsListCtrl.showToolTip(participant)">
                         <div layout="row">
-                            <div flex="33">
-                                <img ng-src="resources/pushpin.png" class="pushpin-icon">
-                            </div>
+                            <img ng-src="resources/pushpin.png" class="pushpin-icon" flex="33">
                             <img alt="User Image" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg" class="avatar"/>
-
-                            <div flex="33">
-
-                            </div>
-
+                            <div flex="33"/>
                         </div>
 
                         <div class="no-text-transformation user-info">{{participant.login}}</div>

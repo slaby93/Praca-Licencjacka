@@ -21,6 +21,19 @@ class EventService {
     };
 
 
+
+
+    /**
+     *
+     * @param passedEvent - in form of a filled SportEvent class object
+     * @functionality sends a http request to server in order to add an user to the database
+     * In case of an 'eventDate' < 'currentDate', it logs to console and resolves to '-1'
+     * In case of a success, it logs to console and resolves to data (which has a form: {"id": id}}
+     **    where id is the string representation of the added document's id
+     **    It also redirects the user to the newly added event's page like:  /#/app/event/[id]/
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
     addEvent(passedEvent) {
         let self = this;
         return new Promise((resolve,reject)=> {
@@ -36,7 +49,7 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         console.log("Dodawanie nowego eventu powiodło się! Oto jego id: " + data.data.id);
-                        //tutaj mozna zrobic przekierowanie do strony nowoutworzonego eventu poprzez jego id
+                        self.$state.go(`app.event`, {eventID: data.data.id});
                         resolve(data);
                         // ERROR
                     }, function (err) {
@@ -49,33 +62,68 @@ class EventService {
     };
 
 
+
+
+
+    /**
+     *
+     * @param id - in form of a String, it represents the id of an event to deactivate
+     **     The string has to be convertable to ObjectId!
+     * @functionality checks if the id is convertable to ObjectID
+     *      and sends a http request to server in order to deactivate an event (make it not active) and also
+     *      sets it's event date to currentDate to avoid situations when an user sets an event to 2099 and then disables it
+     *      and then it would not be removed with >1yr old closed events.
+     * In case of a success, it logs to console and resolves to data (which has a form: {"id": id}}
+     * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to -1
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     * @userWhen  We want to forcefully deactivate an event (when closing an event by the creator or the admin).
+     */
     deactivateById(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http({
-                method: 'POST',
-                url: '/event/deactivateById',
-                data: {id: id}
-            }).then(
-                // SUCCESS
-                function (data) {
-                    console.log("Event o id: " + id + " został zdeaktywowany (o ile istniał)!");
-                    console.log("Oto uczestnicy eventu: ");
-                    console.log(data.data.docs);
-                    console.log("Powinienes ich powiadomic o zamknieciu eventu!");
-                    resolve(data);
-                    // ERROR
-                }, function (err) {
-                    console.log("Porazka podczas deaktywacji eventu!");
-                    reject(err);
-                }
-            );
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/deactivateById',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        console.log("Event o id: " + id + " został zdeaktywowany (o ile istniał)!");
+                        console.log("Oto uczestnicy eventu: ");
+                        console.log(data.data.docs);
+                        console.log("Powinienes ich powiadomic o zamknieciu eventu!");
+                        resolve(data);
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas deaktywacji eventu!");
+                        reject(err);
+                    }
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
         });
     };
 
 
-    //should be run at 24:00 everyday to ensure all events that are supposed to be closed,
-    //are, in fact, closed. It iterates through all events and check if they have been finished or not
+
+
+
+    /**
+     *
+     * @functionality goes through database and checks if there are events, whose 'currentDate' > 'eventDate'
+     *      and sets it's isActive to false
+     * In case of a success, it logs to console and resolves to data (which has a form of an array: {"_id": id, "participants": participants}}
+     **      where _id is an id of the deactivated event and the participants is an array of it's participants (having a form: {_id : id}
+     **      where _id is an id of an user
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     * @todo: SHOULD NOTIFY ALL PARTICIPANTS ABOUT THE DEACTIVATION OF AN EVENT
+     * @usedWhen it should fire every minute to ensure that the events in the database are as precise as possible
+     */
     checkForEventsToDeactivate() {
         let self = this;
         return new Promise((resolve,reject)=> {
@@ -101,6 +149,21 @@ class EventService {
     };
 
 
+
+
+
+    /**
+     *
+     * @functionality goes through database and checks if there are events, whose are older than a year after an inactivation
+     * In case of a success, it logs to console and resolves to data (which has a form of an array: {"_id": id, "participants": participants}}
+     **      where _id is an id of the removed event and the participants is an array of it's participants (having a form: {_id : id}
+     **      where _id is an id of an user
+     * In case there were no deleted documents, it logs to console and resolves []
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     * @todo: SHOULD NOTIFY ALL PARTICIPANTS ABOUT THE DELETION OF AN EVENT
+     * @usedWhen it should fire everyday to ensure that the archive events do not take too much space
+     */
     cleanOld() {
         let self = this;
         return new Promise((resolve,reject)=> {
@@ -113,7 +176,7 @@ class EventService {
                 function (data) {
                     if (data.data.docs.length == 0) {
                         console.log("Nie znaleziono eventów do usunięcia!");
-                        resolve(data);
+                        resolve([]);
                     } else {
                         console.log("Usunięto stare, zakończone eventy. Ich dokumenty to: ");
                         console.log(data.data.docs);
@@ -129,116 +192,203 @@ class EventService {
     };
 
 
+
+
+
+    /**
+     * @params  id - id in form of String, represents an id of an event
+     * @functionality checks if the isActive parameter of an event is true (if the event is active)
+     * In case of a success, it logs to console and resolves to data (in the form of: {"isActive" : isActive}
+     * In case of a failure, it logs to console and resolves to err
+     * In case the event does not exist in database, it logs to console and resolves to -1
+     * In case the id is not convertable to ObjectId, it logs to console and resolves to -1
+     * @returns {Promise}
+     */
     isActive(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http({
-                method: 'POST',
-                url: '/event/isActive',
-                data: {id: id}
-            }).then(
-                // SUCCESS
-                function (data) {
-                    if (data.data.isActive[0] == null) {
-                        console.log("Event o podanym id nie istnieje!");
-                        resolve(-1);
-                    } else {
-                        console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
-                        console.log(data.data.isActive[0].isActive);
-                        resolve(data.data.isActive[0].isActive);
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/isActive',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data.isActive[0] == null) {
+                            console.log("Event o podanym id nie istnieje!");
+                            resolve(-1);
+                        } else {
+                            console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
+                            console.log(data.data.isActive[0].isActive);
+                            resolve(data.data.isActive[0].isActive);
+                        }
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas sprawdzania świeżości eventu");
+                        reject(err);
                     }
-                    // ERROR
-                }, function (err) {
-                    console.log("Porazka podczas sprawdzania świeżości eventu");
-                    reject(err);
-                }
-            );
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
         });
     };
 
 
-//:todo:  check if the user isn't on the blacklist of the event author (one additional parameter - author and function isBlacklisted) //
+
+
+
+    /**
+     * @params  (String) id - id of an event we add the user into
+     *          (String) author - login of an author to check if we aren't on it's blacklist
+     *          (String) userID - id of an user we add to the event
+     * @functionality tries to add an user into the event's participants
+     *      It checks if the passed ids are correct
+     *      An user cannot be added to inactive event (it is checked inside mongodb)
+     *      An user cannot be added to full event (it is checked inside mongodb)
+     * In case of a success, it logs to console and resolves to data "ok"
+     * In case the query does not modify anything (event does not exist/is inactive/is full) it logs to console and resolves to "nochange"
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
     joinEvent(id, author, userID) {
         let self = this;
         return new Promise((resolve,reject)=>{
-            self.isActive(id).then(function (value) {
-                if (value == true) {
-                    self.$http({
-                        method: 'POST',
-                        url: '/event/joinEvent',
-                        data: {id: id, userID: userID}
-                    }).then(
-                        // SUCCESS
-                        function (data) {
-                            if(data.data == "nochange"){
-                                console.log("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
-                                    " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione");
-                                resolve(data);
-                            }else {
-                                console.log("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
-                                resolve(data);
-                            }
-                            // ERROR
-                        }, function (err) {
-                            console.log("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
-                            reject(err);
-                        });
-                } else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
-            });
+            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/joinEvent',
+                    data: {id: id, userID: userID}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data == "nochange") {
+                            console.log("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
+                                " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione");
+                            resolve("nochange");
+                        } else {
+                            console.log("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
+                        reject(err);
+                    }
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
         });
     }
 
 
+
+
+
+    /**
+     * @params  (String) id - id of an event we add the user into
+     *          (String) userID - id of an user we remove from the event
+     * @functionality tries to remove from user from the event's participants
+     *      An user cannot be removed from inactive event (it is checked inside mongodb)
+     *      It checks if the passed ids are correct
+     * In case of a success, it logs to console and resolves to data "ok"
+     * In case the query does not modify anything (event does not exist/is inactive) it logs to console and resolves to "nochange"
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
     kickUser(id, userID) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.isActive(id).then(function (value) {
-                if (value == true) {
-                    self.$http({
-                        method: 'POST',
-                        url: '/event/kickUser',
-                        data: {id: id, userID: userID}
-                    }).then(
-                        // SUCCESS
-                        function (data) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/kickUser',
+                    data: {id: id, userID: userID}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data == "nochange") {
+                            console.log("Uzytkownik o id: " + userID + " nie zostal wyrzucony z wydarzenia o id: " + id +
+                                " ||wydarzenie nie istnieje/jest zakonczone");
+                            resolve("nochange");
+                        } else {
                             console.log("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
-                            resolve(data);
-                            // ERROR
-                        }, function (err) {
-                            console.log("Porazka podczas usuwania uzytkownika: " + userID + " z wydarzenia o id: " + id);
-                            reject(err);
+                            console.log("ok");
                         }
-                    );
-                } else  console.log("Wystapil blad podczas usuwania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
-            });
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas usuwania uzytkownika: " + userID + " z wydarzenia o id: " + id);
+                        reject(err);
+                    }
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
         });
     }
 
 
+
+
+
+    /**
+     * @params  (String) id - id of an event we want to remove
+     * @functionality tries to forcefully remove an event
+     * It checks if the id is valid
+     * In case of a success, it logs to console and resolves to {"_id" : id, "participants" : participants}
+     *      where _id is an id of the deleted event and participants is an array of participants of a format {"_id" : id}
+     *      where _id is an id of the user participating in an event
+     * In case of a success, it logs to console and resolves to data
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     * @todo: notify all users of the deleted event about that fact
+     * @usedWhen:  only for admin, should be used in special circumstances (e.g. when the event offends the law or people)
+     */
     remove(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http({
-                method: 'POST',
-                url: '/event/remove',
-                data: {id: id}
-            }).then(
-                // SUCCESS
-                function (data) {
-                    console.log("Event o id: " + id + " został usuniety (o ile istnieje!)!");
-                    console.log("Oto uczestnicy eventu: ");
-                    console.log(data.data.docs);
-                    console.log("Powinienes ich powiadomic o usunieciu eventu!");
-                    resolve(data);
-                    // ERROR
-                }, function (err) {
-                    console.log("Porazka podczas deaktywacji eventu!");
-                    reject(err);
-                }
-            );
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/remove',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        console.log("Event o id: " + id + " został usuniety (o ile istnieje!)!");
+                        console.log("Oto uczestnicy eventu: ");
+                        console.log(data.data.docs);
+                        console.log("Powinienes ich powiadomic o usunieciu eventu!");
+                        resolve(data);
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas deaktywacji eventu!");
+                        reject(err);
+                    }
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
         });
     }
 
+
+
+
+
+    /**
+     * @params  (String) name - login of an user
+     * @functionality finds all events organized by the passed user name
+     * In case of a success, it logs to console and resolves to array of events, sorted by date in an ascending order
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
     findByUser(name) {
         let self = this;
         return new Promise((resolve,reject)=> {
@@ -262,62 +412,102 @@ class EventService {
         });
     }
 
+
+
+
+
+    /**
+     * @params  (String) id - id of the event we want to find
+     * @functionality  gets the full information about an event
+     * It checks if the id is valid
+     * In case of a success, it logs to console and resolves to full data about event
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     * */
     findById(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http({
-                method: 'POST',
-                url: '/event/findById',
-                data: {id: id}
-            }).then(
-                // SUCCESS
-                function (data) {
-                    console.log("Znaleziono event o id: " + id);
-                    console.log("Oto on: ");
-                    console.log(data.data.docs);
-                    resolve(data);
-                    // ERROR
-                }, function (err) {
-                    console.log("Porazka podczas wyszukiwania eventu o id: " + id);
-                    reject(err);
-                }
-            );
-        });
-    }
-
-    update(passedEvent) {
-        let self = this;
-        return new Promise((resolve,reject)=> {
-            if ((new Date(passedEvent.date)) <= (new Date())) {
-                console.log("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
-                promise.resolve(-1);
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/findById',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        console.log("Znaleziono event o id: " + id);
+                        console.log("Oto on: ");
+                        console.log(data.data.docs);
+                        resolve(data);
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas wyszukiwania eventu o id: " + id);
+                        reject(err);
+                    }
+                );
             }else{
-                var active = self.isActive(passedEvent._id);
-                active.then(function (value) {
-                    if (value == true) {
-                        self.$http({
-                            method: 'POST',
-                            url: '/event/update',
-                            data: {passedEvent: passedEvent}
-                        }).then(
-                            // SUCCESS
-                            function (data) {
-                                console.log("Pomyślnie zedytowano event o id: " + passedEvent._id);
-                                resolve(data);
-                                // ERROR
-                            }, function (err) {
-                                console.log("Porazka podczas edytowania eventu o id: " + passedEvent._id);
-                                resolve(err);
-                            }
-                        );
-                    } else  console.log("Wystapil blad podczas edytowania eventu! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
-                });
+                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
             }
         });
     }
 
 
-    //radius in geo hours and minutes
+
+
+
+    /**
+     * @params  (SportEvent) passedEvent - full SportEvent object, id - id of an event that is to be updated
+     * @functionality updates the event in a database
+     * It checks if the id is valid
+     * Inside mongodb, it checks if the event is active
+     * You cannot edit an inactive event
+     * In case of a success, it logs to console and resolves to full event data
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
+    update(passedEvent, id) {
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            if ((new Date(passedEvent.date)) <= (new Date())) {
+                console.log("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+                promise.resolve(-1);
+            }else if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/update',
+                    data: {passedEvent: passedEvent}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        console.log("Pomyślnie zedytowano event o id: " + id);
+                        resolve(data);
+                        // ERROR
+                    }, function (err) {
+                        console.log("Porazka podczas edytowania eventu o id: " + id);
+                        resolve(err);
+                    }
+                );
+            }else{
+                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                resolve(-1);
+            }
+        });
+    }
+
+
+
+
+
+    /**
+     * @params  (double) latitude - current latitude of the user,
+     *          (double) longitude - current longitude of the user,
+     *          (double) radius - in km, the radius in which the search will take place
+     * @functionality searches for event in a specific radius from the (latitude, longitude) point on a map
+     * In case of a success, it logs to console and resolves array of full events data
+     * In case of a failure, it logs to console and resolves to err
+     * @returns {Promise}
+     */
     find(latitude, longitude, radius) {
         let self = this;
         return new Promise((resolve,reject)=> {

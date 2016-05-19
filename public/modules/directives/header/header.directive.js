@@ -169,8 +169,7 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     let sportEvent = new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2033, 3, 19, 0, 0), false, false, "hacked!", "koszykówka", 666, true, 0, 666,"title", false, 11.0543231, 11.0543231, []);
-                    sportEvent._id = "572f0c19c40ef768253e98fd";
-                    self.EventService.update(sportEvent);
+                    self.EventService.update(sportEvent, "572f0c19c40ef768253e98fd");
                 },
                 visibility: ["user"]
             },

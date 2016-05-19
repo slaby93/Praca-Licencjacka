@@ -92,7 +92,11 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         console.log(passedEvent);
         mongo.connect("serwer", ["event"], function (db) {
 
-            db.event.update({"_id": id},
+            db.event.update(
+                {$and :[
+                    {"isActive": true},
+                    {"_id": id}
+                ]},
                 {
                     $set: {
                         "date": new Date(passedEvent.date),
@@ -153,7 +157,6 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
                         res.status(404).send().end(function () {
                             db.close();
                         });
-                        return;
                     }else if (data.nModified == 0){
                         res.status(200).send("nochange").end(function () {
                             db.close();
@@ -181,14 +184,20 @@ router.post('/kickUser', auth, guard.check('user'), function (req, res, next) {
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.update(
-                {"_id": id},
+                {$and :[
+                    {"isActive": true},
+                    {"_id": id}
+                ]},
                 {$pull: {"participants": {"_id" : userID}}},
                 function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {
                             db.close();
                         });
-                        return;
+                    }else if (data.nModified == 0){
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
                     } else {
                         res.status(200).send("ok").end(function () {
                             db.close();
@@ -284,6 +293,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
         }
         var id = new ObjectId(req.body.id);
         var docs = [];
+        var date = new Date();
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.find(
@@ -296,7 +306,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
             //switching the isActive to false for the found event
             db.event.update(
                 {"_id": id},
-                {$set: {"isActive": false}},
+                {$set: {"isActive": false, "date": date}},
                 {multi: true},
                 function (err, data) {
                     if (err) {
@@ -361,7 +371,7 @@ router.post('/cleanOld', auth, guard.check('user'), function (req, res, next) {
             //finding all inactive events, which are older than year (only for returning their id's for deleting icons)
             db.event.find(
                 {$and: [{"date": {$lte: currentDate}}, {"isActive": false}]},
-                {_id: 1}, function (err, data) {
+                {participants: 1}, function (err, data) {
                     docs = data;
                 }
             );

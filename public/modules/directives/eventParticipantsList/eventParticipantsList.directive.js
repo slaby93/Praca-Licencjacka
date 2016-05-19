@@ -13,7 +13,7 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $state, $rootScope) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log) {
         let self = this;
         
         self.UserService = UserService;
@@ -21,6 +21,7 @@ class EventParticipantsListController {
         self.$scope = $scope;
         self.$state = $state;
         self.$rootScope = $rootScope;
+        self.$l = $log;
         self.watchParticipants();
         self.setDefaultValues();
 	}   
@@ -48,7 +49,7 @@ class EventParticipantsListController {
             });
             self.UserService.findBasicUserInfoById(self.participants).then((resp)=> {
                 _.merge(self.participants, resp.data.docs);
-                console.log(self.participants);
+                self.$l.debug(self.participants);
             });
 
 

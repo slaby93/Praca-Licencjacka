@@ -38,8 +38,8 @@ class EventService {
         let self = this;
         return new Promise((resolve,reject)=> {
             if ((new Date(passedEvent.date)) <= (new Date())) {
-                console.log("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
-                promise.resolve(-1);
+                self.$l.debug("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+                resolve(-1);
             }else{
                 self.$http({
                     method: 'POST',
@@ -48,12 +48,12 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Dodawanie nowego eventu powiodło się! Oto jego id: " + data.data.id);
+                        self.$l.debug("Dodawanie nowego eventu powiodło się! Oto jego id: " + data.data.id);
                         self.$state.go(`app.event`, {eventID: data.data.id});
                         resolve(data);
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas dodawania nowego eventu!", err);
+                        self.$l.debug("Porazka podczas dodawania nowego eventu!"+ $(err));
                         reject(err);
                     }
                 );
@@ -90,19 +90,17 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Event o id: " + id + " został zdeaktywowany (o ile istniał)!");
-                        console.log("Oto uczestnicy eventu: ");
-                        console.log(data.data.docs);
-                        console.log("Powinienes ich powiadomic o zamknieciu eventu!");
+                        self.$l.debug("Event o id: " + id + " został zdeaktywowany (o ile istniał)! Oto jego uczestnicy: ", data.data.docs);
+                        self.$l.debug("Powinienes ich powiadomic o zamknieciu eventu!");
                         resolve(data);
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas deaktywacji eventu!");
+                        self.$1.debug("Porazka podczas deaktywacji eventu!");
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -134,14 +132,12 @@ class EventService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    console.log("Kontrola świeżości eventów zakończona pozytywnie! ");
-                    console.log("Oto uczestnicy eventow: ");
-                    console.log(data.data.docs);
-                    console.log("Powinienes ich powiadomic o zamknieciu eventow!");
+                    self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Oto uczestnicy eventow: ", data.data.docs);
+                    self.$l.debug("Powinienes ich powiadomic o zamknieciu eventow!");
                     resolve(data);
                     // ERROR
                 }, function (err) {
-                    console.log("Porazka podczas kontroli świeżości eventów");
+                    self.$l.debug("Porazka podczas kontroli świeżości eventów");
                     reject(err);
                 }
             );
@@ -175,16 +171,15 @@ class EventService {
                 // SUCCESS
                 function (data) {
                     if (data.data.docs.length == 0) {
-                        console.log("Nie znaleziono eventów do usunięcia!");
+                        self.$l.debug("Nie znaleziono eventów do usunięcia!");
                         resolve([]);
                     } else {
-                        console.log("Usunięto stare, zakończone eventy. Ich dokumenty to: ");
-                        console.log(data.data.docs);
+                        self.$l.debug("Usunięto stare, zakończone eventy. Ich dokumenty to: ", data.data.docs);
                         resolve(data);
                     }
                     // ERROR
                 }, function (err) {
-                    console.log("Porazka podczas usuwania starych, zakończonych eventów!");
+                    self.$l.debug("Porazka podczas usuwania starych, zakończonych eventów!");
                     reject(err);
                 }
             );
@@ -216,21 +211,20 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         if (data.data.isActive[0] == null) {
-                            console.log("Event o podanym id nie istnieje!");
+                            self.$l.debug("Event o podanym id nie istnieje!");
                             resolve(-1);
                         } else {
-                            console.log("Pomyślnie sprawdzono świeżość eventu, ma on status: ");
-                            console.log(data.data.isActive[0].isActive);
+                            self.$l.debug("Pomyślnie sprawdzono świeżość eventu, ma on status: "+ data.data.isActive[0].isActive );
                             resolve(data.data.isActive[0].isActive);
                         }
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas sprawdzania świeżości eventu");
+                        self.$l.debug("Porazka podczas sprawdzania świeżości eventu");
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -265,21 +259,21 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         if (data.data == "nochange") {
-                            console.log("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
+                            self.$l.debug("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
                                 " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione");
                             resolve("nochange");
                         } else {
-                            console.log("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
+                            self.$l.debug("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
                             resolve("ok");
                         }
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
+                        self.$l.debug("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -312,21 +306,21 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         if (data.data == "nochange") {
-                            console.log("Uzytkownik o id: " + userID + " nie zostal wyrzucony z wydarzenia o id: " + id +
+                            self.$l.debug("Uzytkownik o id: " + userID + " nie zostal wyrzucony z wydarzenia o id: " + id +
                                 " ||wydarzenie nie istnieje/jest zakonczone");
                             resolve("nochange");
                         } else {
-                            console.log("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
-                            console.log("ok");
+                            self.$l.debug("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
+                            self.$l.debug("ok");
                         }
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas usuwania uzytkownika: " + userID + " z wydarzenia o id: " + id);
+                        self.$l.debug("Porazka podczas usuwania uzytkownika: " + userID + " z wydarzenia o id: " + id);
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -360,19 +354,17 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Event o id: " + id + " został usuniety (o ile istnieje!)!");
-                        console.log("Oto uczestnicy eventu: ");
-                        console.log(data.data.docs);
-                        console.log("Powinienes ich powiadomic o usunieciu eventu!");
+                        self.$l.debug("Event o id: " + id + " został usuniety (o ile istnieje!)! Oto uczestnicy eventu: ", data.data.docs);
+                        self.$l.debug("Powinienes ich powiadomic o usunieciu eventu!");
                         resolve(data);
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas deaktywacji eventu!");
+                        self.$l.debug("Porazka podczas deaktywacji eventu!");
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -399,13 +391,11 @@ class EventService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    console.log("Znaleziono eventy uzytkownika: " + name);
-                    console.log("Oto one: ");
-                    console.log(data.data.docs);
+                    self.$l.debug("Znaleziono eventy uzytkownika: " + name + " Oto one: ", data.data.docs);
                     resolve(data);
                     // ERROR
                 }, function (err) {
-                    console.log("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
+                    self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
                     reject(err);
                 }
             );
@@ -435,18 +425,16 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Znaleziono event o id: " + id);
-                        console.log("Oto on: ");
-                        console.log(data.data.docs);
+                        self.$l.debug("Znaleziono event o id: " + id + " Oto on: ", data.data.docs);
                         resolve(data);
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas wyszukiwania eventu o id: " + id);
+                        self.$l.debug("Porazka podczas wyszukiwania eventu o id: " + id);
                         reject(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -470,7 +458,7 @@ class EventService {
         let self = this;
         return new Promise((resolve,reject)=> {
             if ((new Date(passedEvent.date)) <= (new Date())) {
-                console.log("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+                self.$l.debug("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
                 promise.resolve(-1);
             }else if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
@@ -480,16 +468,16 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Pomyślnie zedytowano event o id: " + id);
+                        self.$l.debug("Pomyślnie zedytowano event o id: " + id);
                         resolve(data);
                         // ERROR
                     }, function (err) {
-                        console.log("Porazka podczas edytowania eventu o id: " + id);
+                        self.$l.debug("Porazka podczas edytowania eventu o id: " + id);
                         resolve(err);
                     }
                 );
             }else{
-                console.log("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
                 resolve(-1);
             }
         });
@@ -518,12 +506,11 @@ class EventService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    console.log("Pomyślnie znaleziono eventy w zasiegu: " + radius);
-                    console.log("Liczba eventow: ", data.data.docs.length);
+                    self.$l.debug("Pomyślnie znaleziono eventy w zasiegu: " + radius + " Liczba eventow: ", data.data.docs.length);
                     resolve(data);
                     // ERROR
                 }, function (err) {
-                    console.log("Porazka podczas wyszukiwania eventow w zasiegu: " + radius);
+                    self.$l.debug("Porazka podczas wyszukiwania eventow w zasiegu: " + radius);
                     reject(err);
                 }
             );

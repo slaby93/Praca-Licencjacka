@@ -49,7 +49,6 @@ class EventController {
             self.$scope.$broadcast('event:filled',resp.data.docs[0]);
         });
         self.$scope.$on('event:joined', function(event,data) {
-            console.log(event);
             self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
                 console.log(resp);
 

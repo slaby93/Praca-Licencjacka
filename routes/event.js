@@ -65,18 +65,16 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 
             //dodanie eventu do bazy
             db.event.insert(doc, function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({"id": doc._id}).end(function () {
-                            db.close();
-                        });
-                    }
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"id": doc._id}).end(function () {
+                        db.close();
+                    });
                 }
-            );
+            });
         });
     });
 });
@@ -89,7 +87,6 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         }
         var passedEvent = req.body.passedEvent;
         var id = new ObjectId(req.body.passedEvent._id);
-        console.log(passedEvent);
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.update(
@@ -117,13 +114,10 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                         "defaultEventIcon": passedEvent.defaultEventIcon
                     }
                 }, function (err, data) {
-                    console.log(data);
                     if (err) {
                         res.status(404).send().end(function () {
-                            console.log("lol");
                             db.close();
                         });
-                        return;
                     } else {
                         res.status(200).send("ok").end(function () {
                             db.close();
@@ -210,7 +204,7 @@ router.post('/kickUser', auth, guard.check('user'), function (req, res, next) {
 });
 
 
-router.post('/remove', auth, guard.check('user'), function (req, res, next) {
+router.post('/remove', auth, guard.check('admin'), function (req, res, next) {
     tokenHandler.verifyToken(req.payload, function (result) {
         if (!result) {
             res.status(401).send("Token is invalid");
@@ -226,7 +220,6 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
                     docs = data;
                 }
             );
-
             db.event.remove(
                 {"_id": id},
                 function (err, data) {
@@ -234,7 +227,6 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
                         res.status(404).send().end(function () {
                             db.close();
                         });
-                        return;
                     } else {
                         res.status(200).send({"docs": docs}).end(function () {
                             db.close();
@@ -246,41 +238,34 @@ router.post('/remove', auth, guard.check('user'), function (req, res, next) {
     });
 });
 
-router.post('/checkForEventsToDeactivate', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
-        var currentDate = new Date();
-        var docs = [];
-        mongo.connect("serwer", ["event"], function (db) {
-            db.event.find(
-                {$and: [{"date": {$lte: currentDate}}, {"isActive": true}]},
-                {participants: 1},
-                function (err, data) {
-                    docs = data;
+router.post('/checkForEventsToDeactivate', function (req, res, next) {
+    var currentDate = new Date();
+    var docs = [];
+    mongo.connect("serwer", ["event"], function (db) {
+        db.event.find(
+            {$and: [{"date": {$lte: currentDate}}, {"isActive": true}]},
+            {participants: 1},
+            function (err, data) {
+                docs = data;
+            }
+        );
+        //switching the isActive to false for the found events
+        db.event.update(
+            {$and: [{"date": {$lte: currentDate}}, {"isActive": true}]},
+            {$set: {"isActive": false}},
+            {multi: true},
+            function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs": docs}).end(function () {
+                        db.close();
+                    });
                 }
-            );
-            //switching the isActive to false for the found events
-            db.event.update(
-                {$and: [{"date": {$lte: currentDate}}, {"isActive": true}]},
-                {$set: {"isActive": false}},
-                {multi: true},
-                function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({"docs": docs}).end(function () {
-                            db.close();
-                        });
-                    }
-                }
-            );
-        });
+            }
+        );
     });
 });
 
@@ -313,7 +298,6 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
                         res.status(404).send().end(function () {
                             db.close();
                         });
-                        return;
                     } else {
                         res.status(200).send({"docs": docs}).end(function () {
                             db.close();
@@ -326,170 +310,138 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
 });
 
 
-router.post('/isActive', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
-        var id = new ObjectId(req.body.id);
-        mongo.connect("serwer", ["event"], function (db) {
+router.post('/isActive', function (req, res, next) {
+    var id = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["event"], function (db) {
 
-            db.event.find(
-                {"_id": id},
-                {_id: 0, isActive: 1},
-                function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({"isActive": data}).end(function () {
-                            db.close();
-                        });
-                    }
+        db.event.find(
+            {"_id": id},
+            {_id: 0, isActive: 1},
+            function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"isActive": data}).end(function () {
+                        db.close();
+                    });
                 }
-            );
-        });
+            }
+        );
     });
 });
 
 
-router.post('/cleanOld', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
+router.post('/cleanOld', function (req, res, next) {
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 365);
+    var docs = [];
+    mongo.connect("serwer", ["event"], function (db) {
 
-        var currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - 365);
-        var docs = [];
-        mongo.connect("serwer", ["event"], function (db) {
-
-            //finding all inactive events, which are older than year (only for returning their id's for deleting icons)
-            db.event.find(
-                {$and: [{"date": {$lte: currentDate}}, {"isActive": false}]},
-                {participants: 1}, function (err, data) {
-                    docs = data;
+        //finding all inactive events, which are older than year (only for returning their id's for deleting icons)
+        db.event.find(
+            {$and: [{"date": {$lte: currentDate}}, {"isActive": false}]},
+            {participants: 1}, function (err, data) {
+                docs = data;
+            }
+        );
+        //finding all inactive events, which are older than year and deleting them
+        db.event.remove(
+            {$and: [{"date": {$lte: currentDate}}, {"isActive": false}]},
+            function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs": docs}).end(function () {
+                        db.close();
+                    });
                 }
-            );
-            //finding all inactive events, which are older than year and deleting them
-            db.event.remove(
-                {$and: [{"date": {$lte: currentDate}}, {"isActive": false}]},
-                function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({"docs": docs}).end(function () {
-                            db.close();
-                        });
-                    }
-                }
-            );
-        });
+            }
+        );
     });
 });
 
 
-router.post('/find', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
+router.post('/find', function (req, res, next) {
+
+    var userLatitude = req.body.latitude;
+    var userLongitude = req.body.longitude;
+    var radius = req.body.radius;
+    mongo.connect("serwer", ["event"], function (db) {
         var userLatitude = req.body.latitude;
         var userLongitude = req.body.longitude;
         var radius = req.body.radius;
         mongo.connect("serwer", ["event"], function (db) {
-            var userLatitude = req.body.latitude;
-            var userLongitude = req.body.longitude;
-            var radius = req.body.radius;
-            mongo.connect("serwer", ["event"], function (db) {
-                db.event.aggregate([
-                    {$match: {"isActive": true}}
-                ], function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        var docs = [];
-                        data.forEach(function (event) {   //Haversine formula
-                            var R = 6371; // Radius of the earth in km
-                            var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
-                            var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
-                            var a =
-                                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                    Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
-                                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
-                                ;
-                            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                            var d = R * c; // Distance in km
-                            if (d <= radius) {
-                                event.distance = d;
-                                docs.push(event);
-                            }
+            db.event.aggregate([
+                {$match: {"isActive": true}}
+            ], function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    var docs = [];
+                    data.forEach(function (event) {   //Haversine formula
+                        var R = 6371; // Radius of the earth in km
+                        var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
+                        var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
+                        var a =
+                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                            ;
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        var d = R * c; // Distance in km
+                        if (d <= radius) {
+                            event.distance = d;
+                            docs.push(event);
+                        }
 
-                        });
-                        res.status(200).send({"docs": docs}).end(function () {
-                            db.close();
-                        });
-                    }
-                });
+                    });
+                    res.status(200).send({"docs": docs}).end(function () {
+                        db.close();
+                    });
+                }
             });
         });
     });
 });
 
 
-router.post('/findByUser', auth, guard.check('user'), function (req, res, next) {
-    tokenHandler.verifyToken(req.payload, function (result) {
-        if (!result) {
-            res.status(401).send("Token is invalid");
-            return;
-        }
-        var name = req.body.name;
-        mongo.connect("serwer", ["event"], function (db) {
-
-            db.event.aggregate(
-                [
-                    {$match: {"author": name}},
-                    {$sort: {date: -1}}
-                ], function (err, data) {
-                    if (err) {
-                        res.status(404).send().end(function () {
-                            db.close();
-                        });
-                        return;
-                    } else {
-                        res.status(200).send({"docs": data}).end(function () {
-                            db.close();
-                        });
-                    }
+router.post('/findByUser', function (req, res, next) {
+    var name = req.body.name;
+    mongo.connect("serwer", ["event"], function (db) {
+        db.event.aggregate(
+            [
+                {$match: {"author": name}},
+                {$sort: {date: -1}}
+            ], function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs": data}).end(function () {
+                        db.close();
+                    });
                 }
-            );
-        });
+            }
+        );
     });
 });
 
 router.post('/findById', function (req, res, next) {
-
     var id = new ObjectId(req.body.id);
     mongo.connect("serwer", ["event"], function (db) {
-
         db.event.find(
             {"_id": id}, function (err, data) {
                 if (err) {
                     res.status(404).send().end(function () {
                         db.close();
                     });
-                    return;
                 } else {
                     res.status(200).send({"docs": data}).end(function () {
                         db.close();

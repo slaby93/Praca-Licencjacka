@@ -94,7 +94,6 @@ class UserService {
             });
             self.user = user;
             self.saveUser();
-            return;
         } else if (!user.isLogged() && self.user.isLogged()) {
             // logout
             user.localization = [_.last(self.user.localization)];
@@ -232,12 +231,11 @@ class UserService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    console.log("Oto wyszukane podstawowe dane szukanych uzytkownikow: ");
-                    console.log(data.data.docs);
+                    self.$l.debug("Oto wyszukane podstawowe dane szukanych uzytkownikow: ", data.data.docs);
                     resolve(data);
                     // ERROR
                 }, function (err) {
-                    console.log("Porazka podczas wyszukiwania podstawowych danych szukanych uzytkownikow");
+                    self.$l.debug("Porazka podczas wyszukiwania podstawowych danych szukanych uzytkownikow");
                     reject(err);
                 }
             );

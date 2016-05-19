@@ -27,7 +27,7 @@ class EventBasicInfoController {
 
     setDefaultValues(){
         let self = this;
-        self.eventInfo = {"eventInfo" : {}};
+        self.eventInfo = {"eventInfo" : {}, "participants" :[]};
         self.isActive = false;
         self.eventDate = '';
         self.eventCreatedDate = '';
@@ -49,6 +49,10 @@ class EventBasicInfoController {
         }, true);
     }
 
+    joinEvent(){
+        let self = this;
+        self.$scope.$emit("event:joined",{});
+    }
 
     buildDateString(date){
         return (( "0" + date.getHours()).slice(-2)) + ':'+(( "0" + date.getMinutes()).slice(-2))+' '+(( "0" + date.getDate()).slice(-2))+'.'+(( "0" + (date.getMonth()+1)).slice(-2))+'.'+date.getFullYear();
@@ -66,6 +70,18 @@ class EventBasicInfoController {
     getOwnEquipment(){
         let self = this;
         return (self.eventInfo.eventInfo.ownEquipment ? "Tak" : "Nie");
+    }
+    getExperience(){
+        let self = this;
+        return self.eventInfo.eventInfo.experience;
+    }
+    isJoin(){
+        let self = this;
+        return (self.eventInfo.participants.length < self.eventInfo.eventInfo.usersLimit);
+    }
+    getParticipantsCount(){
+        let self = this;
+        return self.eventInfo.participants.length + "/" + self.eventInfo.eventInfo.usersLimit;
     }
 
     getNumber(num) {

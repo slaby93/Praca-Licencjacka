@@ -142,7 +142,11 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.update(
-                {"_id": id},
+                {$and :[
+                    {"isActive": true},
+                    {"_id": id},
+                    {$where : "this.participants.length < this.eventInfo.usersLimit"}
+                ]},
                 {$addToSet: {"participants": {"_id" : userID}}},
                 function (err, data) {
                     if (err) {
@@ -150,6 +154,10 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
                             db.close();
                         });
                         return;
+                    }else if (data.nModified == 0){
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
                     } else {
                         res.status(200).send("ok").end(function () {
                             db.close();

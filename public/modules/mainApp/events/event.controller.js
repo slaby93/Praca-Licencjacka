@@ -29,7 +29,7 @@ class EventController {
     defaultValues() {
 
         let self = this;
-
+        self.eventInfo = {};
         self.eventID = self.$stateParams.eventID;
 
         // Checking, if the passed string is an ObjectID and can be passes as _id argument to db.find
@@ -41,15 +41,19 @@ class EventController {
                 alert("ERROR");
                 return;
             }
-            console.log("Event controller redirect bug test");
-            console.log(resp.data.docs[0]);
-            console.log("If the one above is undefined when you enter the site and you are sure you pasted the correct id and you got" +
-                "redirected to introduction, its some sort of bug");
             //in case we don't find an event in the database
             //(the _id is not present), we should redirect the user to to the error site or wherever else
             //placeholder:  redirect to introduction
             if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
+            self.eventInfo = resp.data.docs[0];
             self.$scope.$broadcast('event:filled',resp.data.docs[0]);
+        });
+        self.$scope.$on('event:joined', function(event,data) {
+            console.log(event);
+            console.log(self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id)).then((resp) => {
+                console.log(resp);
+
+            });
         });
     }
 }

@@ -1,30 +1,108 @@
 <div id="event-basic-info">
     <div class="event-basic-intro">Podstawowe informacje o wydarzeniu:</div>
     <div layout="row">
-        <div layout="column" flex="25">
-            <inline flex="100">
-                Autor:
-                <md-button class="no-text-transformation">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
-            </inline>
-            <div flex="100">Data utworzenia: {{eventBasicInfoCtrl.eventCreatedDate}}</div>
-            <div flex="100">Data wydarzenia: {{eventBasicInfoCtrl.eventDate}}</div>
-            <div ng-if="eventBasicInfoCtrl.isActive" flex="100">Wydarzenie jest aktywne</div>
-            <div ng-if="!eventBasicInfoCtrl.isActive" flex="100">Wydarzenie zakończone</div>
-        </div>
-        <div layout="column" flex="25">
-            <div flex="100">Kategoria: {{eventBasicInfoCtrl.getCategory()}}</div>
-            <div flex="100">Składka: {{eventBasicInfoCtrl.getPayment()}}</div>
-            <div flex="100">Wymóg własnego sprzętu: {{eventBasicInfoCtrl.getOwnEquipment()}}</div>
-            <inline flex="100">Stopień zaawansowania:
-                <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.eventInfo.experience)" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
-                <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.eventInfo.experience)" md-svg-src="resources/white-star.svg" class="svg-submissive icon"></md-icon>
-            </inline>
+        <div layout="column" flex="50">
+            <div layout="row" flex="100">
+                <div layout="column" flex="50">
+                    <div>
+                        <inline flex="100">
+                            Autor:
+                            <md-button class="no-text-transformation">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
+                        </inline>
+                        <div class="text-padding" flex="100">Data utworzenia: {{eventBasicInfoCtrl.eventCreatedDate}}</div>
+                        <div class="text-padding" flex="100">Data wydarzenia: {{eventBasicInfoCtrl.eventDate}}</div>
+                        <div class="text-padding" flex="100">Zapełnienie: {{eventBasicInfoCtrl.getParticipantsCount()}}</div>
+                    </div>
+                </div>
+                <div layout="column" flex="50">
+                    <div>
+                        <div class="text-padding" flex="100">Kategoria: {{eventBasicInfoCtrl.getCategory()}}</div>
+                        <div class="text-padding" flex="100">Składka: {{eventBasicInfoCtrl.getPayment()}}</div>
+                        <div class="text-padding" flex="100">Wymóg własnego sprzętu: {{eventBasicInfoCtrl.getOwnEquipment()}}</div>
+                        <div class="text-padding">
+                            <inline flex="100">Stopień zaawansowania:
+                                <inline class="text-padding">
+                                    <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
+                                    <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.getExperience())" md-svg-src="resources/black-star.svg" class="svg-submissive icon-black"></md-icon>
+                                </inline>
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 0" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Nie wymagane jest żadne doświadczenie<br>
+                                        Każdy użytkownik może dołączyć.<br><br>
+
+                                        W końcu najważniejsza jest dobra zabawa<br>
+                                        oraz poznawanie nowych dziedzin sportu!
+                                    </div>
+                                </md-tooltip>
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 1" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Po uczestnikach oczekuje się przynajmniej znajomości<br>
+                                        dziedziny sportowej.<br><br>
+
+                                        Niekoniecznie potrzebna jest dobra technika<br>
+                                        Wystarczy wiedzieć czym się gra.
+                                    </div>
+                                </md-tooltip>
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 2" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Po uczestnikach oczekuje się znajomości sportu.<br><br>
+
+                                        Przyda się do tego jakaś technika i zainteresowanie sportem.<br>
+                                        Nie trzeba być dobrym, wystarczą chęci do nauki.
+                                    </div>
+                                </md-tooltip>
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 3" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Dla średnio-zaawansowanych użytkowników.<br><br>
+
+                                        Trzeba się wykazać zainteresowaniem sportem<br>
+                                        Oraz sensowną techniką.
+                                    </div>
+                                </md-tooltip>
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 4" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Dla zaawansowanych użytkowników.<br><br>
+
+                                        Poszukiwani są użytkownicy, którzy znają się na rzeczy<br>
+                                        W celu znalezienia ekipy która zniszczy wszystkie inne!
+                                    </div>
+                                </md-tooltip>
+
+                                <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 5" md-direction="top">
+                                    <div class="tooltip-container">
+                                        Dla bardzo dobrych użytkowników<br><br>
+
+                                        Poszukiwani są użytkownicy, którzy bardzo dobrze znają się na rzeczy<br>
+                                        Być może chodzi o zespół na jakieś zawody
+                                    </div>
+                                </md-tooltip>
+                            </inline>
+                        </div>
+                    </div>
+                    <span flex/>
+                </div>
+            </div>
+            <div layout="row" layout-align="center center" class="event-join">
+                <div class="text-padding" ng-if="eventBasicInfoCtrl.isActive" flex="100">
+                    <div layout="column" layout-align="center center">
+                        Wydarzenie jest aktywne {{eventBasicInfoCtrl.UserService.user._id}}
+                        <md-button
+                                   ng-click="eventBasicInfoCtrl.joinEvent()"
+                                   class="md-raised no-text-transformation">Dołącz</md-button>
+
+                        <!--<md-button ng-if="!eventBasicInfoCtrl.isJoin()"
+                                   class="md-disabled no-text-transformation">Przepełniony</md-button>-->
+                    </div>
+                </div>
+                <div class="text-padding" ng-if="!eventBasicInfoCtrl.isActive" flex="100">Wydarzenie zakończone</div>
+            </div>
         </div>
         <div layout="column" layout-align="center center" flex="50">
-            <div flex="100">1</div>
-            <div flex="100">1</div>
-            <div flex="100">1</div>
-            <div flex="100">1</div>
+            <md-card flex="100" style="width: 100%;">
+                <md-content layout="row" layout-align="center center" class="no-overflow">
+                    {{eventBasicInfoCtrl.eventInfo.eventInfo.title}}
+                </md-content>
+            </md-card>
         </div>
     </div>
 </div>

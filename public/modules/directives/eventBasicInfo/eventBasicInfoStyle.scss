@@ -1,3 +1,46 @@
+md-tooltip.experience-tooltip {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  .md-background {
+    border-radius: inherit;
+  }
+  .md-content {
+    min-height: 50px;
+    height: auto;
+    max-height: none;
+    font-size: 14px;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    white-space: initial;
+  }
+  .tooltip-container{
+    margin: 10px;
+  }
+}
+
+
+
 #event-basic-info{
   .event-basic-intro{text-align: center;}
+
+  .icon{
+    width: 16px;
+    height: 16px;
+  }
+
+  .icon-black{
+    width: 14px;
+    height: 14px;
+    padding-right: 2px;
+  }
+
+  .text-padding{
+    padding-top: 10px;
+  }
+  .event-join{
+    margin-top: 50px;
+  }
+  .no-overflow{
+    overflow: hidden;
+  }
 }

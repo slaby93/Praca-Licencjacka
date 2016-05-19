@@ -145,13 +145,22 @@ class EventService {
                 }, {skipAuthorization: false}).then(
                     // SUCCESS
                     function (data) {
-                        console.log("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
-                        promise.resolve(data);
+                        if(data.data == "nochange"){
+                            console.log("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
+                                " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione");
+                            promise.resolve(data);
+                            return promise.promise;
+                        }else {
+                            console.log("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
+                            promise.resolve(data);
+                        }
                         // ERROR
                     }, function (err) {
                         console.log("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
                         promise.reject(err);
                     });
+                console.log("promise: ");
+                console.log(promise);
                 return promise.promise;
             } else  console.log("Wystapil blad podczas dodawania uzytkownika! (Prawdopodobnie event jest nieaktywny lub nastapil blad podczas laczenia sie z baza danych)");
         });

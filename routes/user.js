@@ -23,7 +23,7 @@ var uploadHandler = require("./uploadHandler");
  */
 router.post('/', function (req, res, next) {
     //niewypelnione pola
-    if (!req.body.login || !req.body.password) {
+    if (!req.body.passedUser.login || !req.body.passedUser.password) {
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'}).end(function () {
             db.close();
         });
@@ -31,7 +31,7 @@ router.post('/', function (req, res, next) {
     //polaczenie do bazy
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie o uzytkownika
-        db.user.findOne({"login": req.body.login},
+        db.user.findOne({"login": req.body.passedUser.login},
                         {"login" : 1, "password" : 1, "groups" : 1, "localization" : 1}, function (err, foundedUser) {
             //niepoprawny login
             if (foundedUser === undefined || foundedUser === null) {
@@ -40,7 +40,7 @@ router.post('/', function (req, res, next) {
                 });
             }
             //poprawne haslo po weryfikacji biblioteki bcrypt
-            if (bcrypt.compareSync(req.body.password, foundedUser.password)) {
+            if (bcrypt.compareSync(req.body.passedUser.password, foundedUser.password)) {
                 // generowanie tokena
                 tokenHandler.generateJWT(foundedUser._id, foundedUser.groups, function (token) {
                     //usuwanie newralgicznych dla bezpieczenstwa informacji
@@ -66,17 +66,17 @@ router.post('/', function (req, res, next) {
 router.post('/register', function (req, res, next) {
 
     //niewypelnione pola
-    if (!req.body.login || !req.body.password || !req.body.retypedPassword) {
+    if (!req.body.passedUser.login || !req.body.passedUser.password || !req.body.passedUser.retypedPassword) {
         console.error("REGISTER ERROR : Nie wszystkie pola zostały wypełnione");
         return res.status(400).json({message: 'Proszę wypełnić wszystkie pola!'});
     }
     //niepasujace hasla
-    if (req.body.password !== req.body.retypedPassword) {
+    if (req.body.passedUser.password !== req.body.passedUser.retypedPassword) {
         console.error("REGISTER ERROR : Hasła się nie zgadzają");
         return res.status(400).json({message: 'Proszę wpisać pasujące hasła!'});
     }
-    var user = req.body;
-    var password = bcrypt.hashSync(req.body.password, 10);
+    var user = req.body.passedUser;
+    var password = bcrypt.hashSync(req.body.passedUser.password, 10);
     user = removeSensitiveUserData(user);
     user.password = password;
     user.groups = ['user'];

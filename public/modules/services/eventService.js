@@ -28,7 +28,11 @@ class EventService {
                 console.log("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
                 promise.resolve(-1);
             }else{
-                self.$http.post('/event/addEvent', {"event": passedEvent}, {skipAuthorization: false}).then(
+                self.$http({
+                    method: 'POST',
+                    url: '/event/addEvent',
+                    data: {event: passedEvent}
+                }).then(
                     // SUCCESS
                     function (data) {
                         console.log("Dodawanie nowego eventu powiodło się! Oto jego id: " + data.data.id);
@@ -48,7 +52,11 @@ class EventService {
     deactivateById(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/deactivateById', {"id": id}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/deactivateById',
+                data: {id: id}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Event o id: " + id + " został zdeaktywowany (o ile istniał)!");
@@ -71,7 +79,11 @@ class EventService {
     checkForEventsToDeactivate() {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/checkForEventsToDeactivate', {}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/checkForEventsToDeactivate',
+                data: {}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Kontrola świeżości eventów zakończona pozytywnie! ");
@@ -92,7 +104,11 @@ class EventService {
     cleanOld() {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/cleanOld', {}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/cleanOld',
+                data: {}
+            }).then(
                 // SUCCESS
                 function (data) {
                     if (data.data.docs.length == 0) {
@@ -116,7 +132,11 @@ class EventService {
     isActive(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/isActive', {"id": id}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/isActive',
+                data: {id: id}
+            }).then(
                 // SUCCESS
                 function (data) {
                     if (data.data.isActive[0] == null) {
@@ -143,10 +163,11 @@ class EventService {
         return new Promise((resolve,reject)=>{
             self.isActive(id).then(function (value) {
                 if (value == true) {
-                    self.$http.post('/event/joinEvent', {
-                        "id": id,
-                        "userID": userID
-                    }, {skipAuthorization: false}).then(
+                    self.$http({
+                        method: 'POST',
+                        url: '/event/joinEvent',
+                        data: {id: id, userID: userID}
+                    }).then(
                         // SUCCESS
                         function (data) {
                             if(data.data == "nochange"){
@@ -173,7 +194,11 @@ class EventService {
         return new Promise((resolve,reject)=> {
             self.isActive(id).then(function (value) {
                 if (value == true) {
-                    self.$http.post('/event/kickUser', {"id": id, "userID": userID}, {skipAuthorization: false}).then(
+                    self.$http({
+                        method: 'POST',
+                        url: '/event/kickUser',
+                        data: {id: id, userID: userID}
+                    }).then(
                         // SUCCESS
                         function (data) {
                             console.log("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
@@ -193,7 +218,11 @@ class EventService {
     remove(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/remove', {"id": id}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/remove',
+                data: {id: id}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Event o id: " + id + " został usuniety (o ile istnieje!)!");
@@ -213,7 +242,11 @@ class EventService {
     findByUser(name) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/findByUser', {"name": name}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/findByUser',
+                data: {name: name}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Znaleziono eventy uzytkownika: " + name);
@@ -232,7 +265,11 @@ class EventService {
     findById(id) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/findById', {"id": id}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/findById',
+                data: {id: id}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Znaleziono event o id: " + id);
@@ -258,7 +295,11 @@ class EventService {
                 var active = self.isActive(passedEvent._id);
                 active.then(function (value) {
                     if (value == true) {
-                        self.$http.post('/event/update', {"passedEvent": passedEvent}, {skipAuthorization: false}).then(
+                        self.$http({
+                            method: 'POST',
+                            url: '/event/update',
+                            data: {passedEvent: passedEvent}
+                        }).then(
                             // SUCCESS
                             function (data) {
                                 console.log("Pomyślnie zedytowano event o id: " + passedEvent._id);
@@ -280,11 +321,11 @@ class EventService {
     find(latitude, longitude, radius) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/event/find', {
-                "latitude": latitude,
-                "longitude": longitude,
-                "radius": radius
-            }, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/event/find',
+                data: {latitude: latitude, longitude: longitude, radius: radius}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Pomyślnie znaleziono eventy w zasiegu: " + radius);

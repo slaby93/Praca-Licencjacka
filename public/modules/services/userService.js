@@ -36,7 +36,12 @@ class UserService {
     login(passedUser) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post("/user", passedUser, {skipAuthorization: true}).then((received) => {
+            self.$http({
+                method: 'POST',
+                url: '/user',
+                data: {passedUser: passedUser},
+                headers: {skipAuthorization : true}
+            }).then((received) => {
                 resolve(received);
                 self.setUser(new User(
                     received.data.user._id,
@@ -121,7 +126,12 @@ class UserService {
         let self = this;
         return new Promise((resolve,reject)=> {
             self.$rootScope.$evalAsync(() => {
-                self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/register',
+                    data: {passedUser: passedUser},
+                    headers: {skipAuthorization: true}
+                }).then((received) => {
                     resolve(received);
                     self.setUser(new User(received.data.user._id, received.data.user.login, received.data.user.groups));
                     self.token = received.data.token;
@@ -142,7 +152,12 @@ class UserService {
     loginByToken() {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/user/token', {"token": self.token}, {skipAuthorization: true}).then(
+            self.$http({
+                method: 'POST',
+                url: '/user/token',
+                data: {token: self.token},
+                headers: {skipAuthorization: true}
+            }).then(
                 // SUCCESS
                 function (data) {
                     self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
@@ -209,7 +224,12 @@ class UserService {
     findBasicUserInfoById(idArray) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http.post('/user/findBasicUserInfoById', {"idArray": idArray}, {skipAuthorization: false}).then(
+            self.$http({
+                method: 'POST',
+                url: '/user/findBasicUserInfoById',
+                data: {idArray: idArray},
+                headers: {skipAuthorization: false}
+            }).then(
                 // SUCCESS
                 function (data) {
                     console.log("Oto wyszukane podstawowe dane szukanych uzytkownikow: ");

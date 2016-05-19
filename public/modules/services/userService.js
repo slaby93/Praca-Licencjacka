@@ -35,20 +35,20 @@ class UserService {
      */
     login(passedUser) {
         let self = this;
-        let promise = self.$q.defer();
-        self.$http.post("/user", passedUser, {skipAuthorization: true}).then((received) => {
-            promise.resolve(received);
-            self.setUser(new User(
-                received.data.user._id,
-                received.data.user.login,
-                received.data.user.groups,
-                received.data.user.localization));
-            self.token = received.data.token;
-        }, (err) => {
-            promise.reject(err);
+        return new Promise((resolve,reject)=> {
+            self.$http.post("/user", passedUser, {skipAuthorization: true}).then((received) => {
+                resolve(received);
+                self.setUser(new User(
+                    received.data.user._id,
+                    received.data.user.login,
+                    received.data.user.groups,
+                    received.data.user.localization));
+                self.token = received.data.token;
+            }, (err) => {
+                reject(err);
+            });
+            if (self.$state.current.name == "introduction")  self.$state.go("app.home");
         });
-        if (self.$state.current.name == "introduction")  self.$state.go("app.home");
-        return promise.promise;
     };
 
     /**
@@ -119,17 +119,17 @@ class UserService {
      */
     register(passedUser) {
         let self = this;
-        var promise = self.$q.defer();
-        self.$rootScope.$evalAsync(() => {
-            self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
-                promise.resolve(received);
-                self.setUser(new User(received.data.user._id, received.data.user.login, received.data.user.groups));
-                self.token = received.data.token;
-            }, (err) => {
-                promise.reject(err);
+        return new Promise((resolve,reject)=> {
+            self.$rootScope.$evalAsync(() => {
+                self.$http.post("/user/register", passedUser, {skipAuthorization: true}).then((received) => {
+                    resolve(received);
+                    self.setUser(new User(received.data.user._id, received.data.user.login, received.data.user.groups));
+                    self.token = received.data.token;
+                }, (err) => {
+                    reject(err);
+                });
             });
         });
-        return promise.promise;
     };
 
     logout() {
@@ -141,18 +141,19 @@ class UserService {
 
     loginByToken() {
         let self = this;
-        var promise = self.$q.defer();
-        self.$http.post('/user/token', {"token": self.token}, {skipAuthorization: true}).then(
-            // SUCCESS
-            function (data) {
-                self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
-                promise.resolve(data);
-                // ERROR
-            }, function (err) {
-                self.token = undefined;
-                promise.resolve(err);
-            });
-        return promise.promise;
+        return new Promise((resolve,reject)=> {
+            self.$http.post('/user/token', {"token": self.token}, {skipAuthorization: true}).then(
+                // SUCCESS
+                function (data) {
+                    self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
+                    resolve(data);
+                    // ERROR
+                }, function (err) {
+                    self.token = undefined;
+                    resolve(err);
+                }
+            );
+        });
 
     }
 
@@ -207,19 +208,20 @@ class UserService {
 
     findBasicUserInfoById(idArray) {
         let self = this;
-        var promise = self.$q.defer();
-        self.$http.post('/user/findBasicUserInfoById', {"idArray": idArray}, {skipAuthorization: false}).then(
-            // SUCCESS
-            function (data) {
-                console.log("Oto wyszukane podstawowe dane szukanych uzytkownikow: ");
-                console.log(data.data.docs);
-                promise.resolve(data);
-                // ERROR
-            }, function (err) {
-                console.log("Porazka podczas wyszukiwania podstawowych danych szukanych uzytkownikow");
-                promise.reject(err);
-            });
-        return promise.promise;
+        return new Promise((resolve,reject)=> {
+            self.$http.post('/user/findBasicUserInfoById', {"idArray": idArray}, {skipAuthorization: false}).then(
+                // SUCCESS
+                function (data) {
+                    console.log("Oto wyszukane podstawowe dane szukanych uzytkownikow: ");
+                    console.log(data.data.docs);
+                    resolve(data);
+                    // ERROR
+                }, function (err) {
+                    console.log("Porazka podczas wyszukiwania podstawowych danych szukanych uzytkownikow");
+                    reject(err);
+                }
+            );
+        });
     }
 
 

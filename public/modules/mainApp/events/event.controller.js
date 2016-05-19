@@ -50,7 +50,7 @@ class EventController {
         });
         self.$scope.$on('event:joined', function(event,data) {
             console.log(event);
-            console.log(self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id)).then((resp) => {
+            self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
                 console.log(resp);
 
             });

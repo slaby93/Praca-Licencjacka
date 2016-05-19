@@ -54,7 +54,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
                     "category": passedEvent.eventInfo.category,
                     "payment": passedEvent.eventInfo.payment,
                     "ownEquipment": passedEvent.eventInfo.ownEquipment,
-                    "experienced": passedEvent.eventInfo.experienced,
+                    "experience": passedEvent.eventInfo.experience,
                     "usersLimit": passedEvent.eventInfo.usersLimit,
                     "title": passedEvent.eventInfo.title
                 },
@@ -105,7 +105,7 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                             "category": passedEvent.eventInfo.category,
                             "payment": passedEvent.eventInfo.payment,
                             "ownEquipment": passedEvent.eventInfo.ownEquipment,
-                            "experienced": passedEvent.eventInfo.experienced,
+                            "experience": passedEvent.eventInfo.experience,
                             "usersLimit": passedEvent.eventInfo.usersLimit,
                             "title": passedEvent.eventInfo.title
                         },

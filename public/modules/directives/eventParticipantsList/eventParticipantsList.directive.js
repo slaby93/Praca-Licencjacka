@@ -36,7 +36,7 @@ class EventParticipantsListController {
     
     setDefaultValues(){
         let self = this;
-        self.number = 3;
+        self.number = 3
 
 
         self.participants = [];

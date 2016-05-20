@@ -50,7 +50,13 @@ class EventController {
         });
         self.$scope.$on('event:joined', function(event,data) {
             self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
-                console.log(resp);
+                if(resp == "ok"){
+                    self.eventInfo.participants.unshift({"_id" : self.UserService.user.id});
+                    self.$scope.$broadcast('event:userJoined',{"status" : "ok"});
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                }else{
+                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "error"});
+                }
 
             });
         });

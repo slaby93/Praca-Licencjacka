@@ -10,7 +10,7 @@
                     md-colspan-gt-sm="1"
                     md-rowspan-gt-sm="1">
                 <md-content class="transparent-background tile-content">
-                    <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background tile-button" ng-click="eventParticipantsListCtrl.showToolTip(participant)">
+                    <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background tile-button" ng-click="eventParticipantsListCtrl.showToolTip(participant);">
                         <div layout="row">
                             <img ng-src="resources/pushpin.png" class="pushpin-icon" flex="33">
                             <img alt="User Image" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg" class="avatar"/>
@@ -24,8 +24,11 @@
                     <div class="close-ribbon">
                         <a ng-click="eventParticipantsListCtrl.test()">&times;</a>
                     </div>
-                    <md-tooltip class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
-                        <div ng-style="{'background-image':'url(gallery/' + participant._id + '/userImage.jpg)'}" class="imageHolder user-image"/>
+                    <md-tooltip id="user-tooltip" click-outside="eventParticipantsListCtrl.closeToolTip(participant)" outside-if-not="user-tooltip" class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
+                        <div ng-style="{'background-image':'url(gallery/' + participant._id + '/userImage.jpg)'}" class="imageHolder user-image">
+                            <md-button class="close-button" ng-click="eventParticipantsListCtrl.closeToolTip(participant)">&times;</md-button>
+                        </div>
+
                         <div layout="row" layout-align="end" class="profileImgHolder">
                             <img class="profileImg" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
                         </div>

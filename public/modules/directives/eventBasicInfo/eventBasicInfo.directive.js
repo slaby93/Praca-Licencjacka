@@ -13,13 +13,14 @@ function eventBasicInfo() {
 }
 
 class EventBasicInfoController {
-    constructor(UserService, EventService, $scope, $state, $rootScope) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log) {
         let self = this;
         self.UserService = UserService;
         self.EventService = EventService;
         self.$scope = $scope;
         self.$state = $state;
         self.$rootScope = $rootScope;
+        self.$l = $log;
         self.watchEventInfo();
         self.setDefaultValues();
 	}
@@ -29,15 +30,29 @@ class EventBasicInfoController {
         let self = this;
         self.eventInfo = {"eventInfo" : {}, "participants" :[]};
         self.isActive = false;
+        self.isUserAlreadyRegistered = false;
         self.eventDate = '';
         self.eventCreatedDate = '';
 
         self.$scope.$on('event:filled', function(event,data) {
             self.eventInfo = data;
+            self.checkAndChangeUserAlreadyRegistered(self.UserService.user.id);
             if( (new Date(self.eventInfo.date)) > (new Date()) )  self.isActive = true;
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
+
         });
+        self.$scope.$on('event:userJoinedResult', function(event,data) {
+            if(data.status == "ok"){
+                
+                
+                
+            }else{
+                
+                
+            }
+        });
+
     }
 
     watchEventInfo(){
@@ -45,8 +60,20 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
-
+            self.eventInfo = newValue;
         }, true);
+        self.$scope.$watch(()=> {
+            return self.isUserAlreadyRegistered;
+        }, (newValue)=> {
+            self.isUserAlreadyRegistered = newValue;
+        }, true);
+    }
+
+
+    checkAndChangeUserAlreadyRegistered(userID){
+        let self = this;
+        self.isUserAlreadyRegistered = (_.find(self.eventInfo.participants, {'_id' : userID}) != undefined);
+        self.$l.debug("Already registered? ",self.isUserAlreadyRegistered);
     }
 
     joinEvent(){

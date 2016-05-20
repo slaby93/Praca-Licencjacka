@@ -85,13 +85,18 @@
             <div layout="row" layout-align="center center" class="event-join">
                 <div class="text-padding" ng-if="eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
-                        Wydarzenie jest aktywne {{eventBasicInfoCtrl.UserService.user._id}}
-                        <md-button
-                                   ng-click="eventBasicInfoCtrl.joinEvent()"
-                                   class="md-raised no-text-transformation">Dołącz</md-button>
-
-                        <!--<md-button ng-if="!eventBasicInfoCtrl.isJoin()"
-                                   class="md-disabled no-text-transformation">Przepełniony</md-button>-->
+                        Wydarzenie jest aktywne
+                        <div ng-if="eventBasicInfoCtrl.UserService.hasRight(['user', 'admin'])">
+                            <md-button  ng-if="eventBasicInfoCtrl.isJoin() && !eventBasicInfoCtrl.isUserAlreadyRegistered"
+                                        ng-click="eventBasicInfoCtrl.joinEvent()"
+                                        class="md-raised no-text-transformation">Dołącz</md-button>
+                            <md-button  ng-if="eventBasicInfoCtrl.isUserAlreadyRegistered"
+                                        ng-click="eventBasicInfoCtrl.joinEvent()"
+                                        ng-disabled="true"
+                                        class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem</md-button>
+                            <md-button  ng-if="!eventBasicInfoCtrl.isJoin() && !eventBasicInfoCtrl.isUserAlreadyRegistered"
+                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony</md-button>
+                        </div>
                     </div>
                 </div>
                 <div class="text-padding" ng-if="!eventBasicInfoCtrl.isActive" flex="100">Wydarzenie zakończone</div>

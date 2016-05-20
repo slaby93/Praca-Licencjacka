@@ -24,14 +24,14 @@ class EventParticipantsListController {
         self.$l = $log;
         self.watchParticipants();
         self.setDefaultValues();
-	}   
+    }
 
     watchParticipants(){
         let self = this;
-        self.$rootScope.$watch(()=> {
+        self.$scope.$watch(()=> {
             return self.participants;
         }, (newValue)=> {
-
+            self.participants = newValue;
         }, true);
     }
     
@@ -49,10 +49,9 @@ class EventParticipantsListController {
             });
             self.UserService.findBasicUserInfoById(self.participants).then((resp)=> {
                 _.merge(self.participants, resp.data.docs);
-                self.$l.debug(self.participants);
+                self.$scope.$evalAsync();
+                self.$l.debug("After merge: ",self.participants);
             });
-
-
         });
         
     }
@@ -62,8 +61,11 @@ class EventParticipantsListController {
         _.forEach(self.participants, (value, key) => {
             self.participants[key].wasClicked = false;
         });
-
         participant.wasClicked = true;
+    }
+
+    closeToolTip(participant){
+        participant.wasClicked = false;
     }
 
     test(){

@@ -243,9 +243,10 @@ class EventService {
      *      An user cannot be added to inactive event (it is checked inside mongodb)
      *      An user cannot be added to full event (it is checked inside mongodb)
      * In case of a success, it logs to console and resolves to data "ok"
-     * In case the query does not modify anything (event does not exist/is inactive/is full) it logs to console and resolves to "nochange"
+     * In case the query does not modify anything (event does not exist/is inactive/is full/user is registered) it logs to console and resolves to "nochange"
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     * @todo: CHECK IF THE USER IS NOT ON THE BLACKLIST OF THE AUTHOR
      */
     joinEvent(id, author, userID) {
         let self = this;
@@ -260,7 +261,7 @@ class EventService {
                     function (data) {
                         if (data.data == "nochange") {
                             self.$l.debug("Uzytkownik o id: " + userID + " nie zostal dodany do wydarzenia o id: " + id +
-                                " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione");
+                                " ||wydarzenie nie istnieje/jest zakonczone/jest przepelnione/uzytkownik jest juz zapisany");
                             resolve("nochange");
                         } else {
                             self.$l.debug("Pomyślnie dołączono użytkownika: " + userID + " do wydarzenia o id: " + id);
@@ -492,7 +493,7 @@ class EventService {
      *          (double) longitude - current longitude of the user,
      *          (double) radius - in km, the radius in which the search will take place
      * @functionality searches for event in a specific radius from the (latitude, longitude) point on a map
-     * In case of a success, it logs to console and resolves array of full events data
+     * In case of a success, it logs to console and resolves array of full events data + distance added to each event
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      */

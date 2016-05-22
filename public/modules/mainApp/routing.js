@@ -50,6 +50,12 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "introductionController",
             controllerAs: "introCtrl"
         })
+        .state('login', {
+            url: "/login",
+            templateUrl: "modules/mainApp/login/login.html",
+            // controller: "TestController",
+            // controllerAs: "homeCtrl"
+        })
         .state('test', {
             url: "/test",
             templateUrl: "modules/mainApp/test/test.html",

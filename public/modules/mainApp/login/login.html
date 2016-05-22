@@ -1,0 +1,33 @@
+<div id="login">
+    <div>
+        <div layout="column" class="login-holder">
+            <div class="black-layer">
+            </div>
+            <div class="login-header">
+                <md-icon md-svg-src="resources/icons/basket.svg">
+            </div>
+            <div class="login-inputs">
+                <div class="ui form">
+                    <div class="field">
+                        <input ng-model="loginCtrl.login" placeholder="Login" type="text" autocomplete="off">
+                    </div>
+                    <div class="field">
+                        <input ng-model="loginCtrl.password" placeholder="Hasło" type="password" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="login-buttons" layout="row" layout-align="center">
+                <div class="ui loginButton orange submit button">Zaloguj</div>
+            </div>
+            <div class=login-functional>
+                <span>Zapamietaj mnie</span>
+                <span>Zapomniałem Hasła</span>
+            </div>
+            <div class="login-register" layout="row" layout-align="end">
+                <span>Nie masz konta?</span>
+                <button class="ui button primary">Załóż konto</button>
+            </div>
+        </div>
+    </div>
+
+</div>

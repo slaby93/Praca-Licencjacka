@@ -32,7 +32,7 @@ module.exports = function (grunt) {
             npm_install: 'npm install',
             bower_install: 'jspm install',
             build: 'jspm bundle-sfx modules/mainApp/modulesInitialization.js public/build.js',
-            forever_start:'forever start server.js'
+            forever_start: 'forever start server.js'
         },
         uglify: {
             options: {
@@ -51,8 +51,6 @@ module.exports = function (grunt) {
                         "public/modules/cms/controllers/*.js",
                         "public/modules/cms/services/*.js",
                         "public/modules/directives/**/*.js"
-
-
                     ]
                 }
             },
@@ -76,7 +74,8 @@ module.exports = function (grunt) {
                         "node_modules/socket.io/node_modules/socket.io-client/socket.io.js",
                         "node_modules/sweetalert/dist/sweetalert-dev.js",
                         "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
-                        "node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js"
+                        "node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
+                        "semantic/dist/semantic.min.js"
                     ]
                 }
             }
@@ -140,6 +139,10 @@ module.exports = function (grunt) {
                 src: 'public/modules/**/*.scss',
                 dest: 'public/dist/output.scss'
             },
+            semantic: {
+                src: ['public/dist/output.css', 'semantic/dist/semantic.min.css'],
+                dest: 'public/dist/output.css'
+            }
         },
         preprocess: {
             html: {
@@ -168,12 +171,11 @@ module.exports = function (grunt) {
     // task for git
     grunt.registerTask('prepare', ['compile']);
     // remove recent file, concatenates all scss files into 1, then compile this concatenated file into css.
-    grunt.registerTask('compile_scss', ['clean:clear_scss', 'concat:scss', 'sass:dist']);
+    grunt.registerTask('compile_scss', ['clean:clear_scss', 'concat:scss', 'sass:dist', 'concat:semantic']);
 
     grunt.registerTask('default', ['clean:clearDist', 'env:development', 'doMagic']);
     grunt.registerTask('daniel', ['clean:clearDist', 'env:daniel', 'doMagic']);
-    grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build','exec:forever_start']);
-
+    grunt.registerTask('production', ['clean:clearDist', 'env:production', 'preprocess', 'compile_scss', 'exec:build', 'exec:forever_start']);
 
 
     //those tasks have been created by Dammic for Dammic and his slow computer:

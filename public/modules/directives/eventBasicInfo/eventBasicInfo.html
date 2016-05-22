@@ -5,14 +5,14 @@
         </md-button>
         Podstawowe informacje o wydarzeniu:
     </inline>
-    <div layout="row" layout-md="column" flex-md="100">
+    <div layout="column" layout-gt-sm="row" flex="100">
         <div layout="column" flex="50">
-            <div layout="row" flex="100">
+            <div layout="column" layout-gt-xs="row" layout-align-sm="center center" layout-align-xs="center center" flex="100">
                 <div layout="column" flex="50">
                     <div>
                         <inline flex="100">
-                            <inline class="bigger-font"> Autor:</inline>
-                            <md-button class="no-text-transformation">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
+                            <inline class="bigger-font">Autor:</inline>
+                            <md-button class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
                         </inline>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Data utworzenia:</inline>
@@ -134,10 +134,11 @@
             </div>
         </div>
         <div layout="column" layout-align="center center" flex="50">
+            <div class="small-border"/>
             <div flex="100" class="max-width">
                 <div class="event-title" layout="row" flex="100">
-                    <inline class="bigger-font" flex="20">Tytuł wydarzenia:</inline>
-                    <inline flex="70">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
+                    <inline class="bigger-font small-margin-top" flex="20">Tytuł wydarzenia:</inline>
+                    <inline flex="70" class="small-margin-top">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
                     <inline flex="10">
                         <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"/>
                     </inline>

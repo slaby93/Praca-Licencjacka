@@ -136,6 +136,11 @@ class EventBasicInfoController {
         return [];
     }
 
+    goToUserProfile(){
+        let self = this;
+        self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
+    }
+
 }
 		
 export default eventBasicInfo;

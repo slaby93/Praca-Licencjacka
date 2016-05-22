@@ -105,14 +105,36 @@ md-tooltip.experience-tooltip {
     margin-left: 5px;
     margin-top: 10px;
   }
+  .small-margin-top{
+    margin-top: 15px;
+  }
 
   .event-active-container{
     bottom: 0;
   }
-  @media screen and (min-width: 480px) {
+
+
+  @media screen and (min-width: 960px) {
     .event-active-container{
       position: relative;
       bottom: 70px;
+    }
+  }
+
+  .small-border{
+    border-top: 2px groove rgb(166, 166, 166);
+    width: 40%;
+    height: 10px;
+    margin-top: 10px;
+    display: inherit;
+  }
+  @media screen and (min-width: 960px) {
+    .small-border{
+      border-top: 2px groove rgb(166, 166, 166);
+      width: 40%;
+      height: 10px;
+      margin-top: 10px;
+      display: none;
     }
   }
 

@@ -135,7 +135,7 @@
                         <div class="is-active-text">Wydarzenie zakończone</div>
                     </div>
                 </div>
-                <div layout="row" layout-align="center center" flex="100">
+                <div layout="row" layout-align="center center" flex="100" ng-if="eventBasicInfoCtrl.isActive">
                     <md-button  ng-if="eventBasicInfoCtrl.isOwnPage() && !eventBasicInfoCtrl.editMode"
                                 ng-click="eventBasicInfoCtrl.enterEditMode()"
                                 class="md-raised no-text-transformation">Edytuj

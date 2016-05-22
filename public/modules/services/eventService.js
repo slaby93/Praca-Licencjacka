@@ -314,7 +314,7 @@ class EventService {
                             resolve("nochange");
                         } else {
                             self.$l.debug("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
-                            self.$l.debug("ok");
+                            resolve("ok");
                         }
                         // ERROR
                     }, function (err) {

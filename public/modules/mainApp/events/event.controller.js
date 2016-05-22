@@ -32,26 +32,23 @@ class EventController {
         let self = this;
         self.$scope.$on('event:joined', function(event,data) {
             self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
-                if(resp == "ok"){
-                    self.eventInfo.participants.unshift({'_id' : self.UserService.user.id});
-                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "ok"});
-                    self.$scope.$broadcast('event:filled',self.eventInfo);
-                }else{
-                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "error"});
-                }
-
+                if(resp == "ok") {
+                    self.eventInfo.participants.unshift({'_id': self.UserService.user.id});
+                    self.$scope.$broadcast('event:filled', self.eventInfo);
+                    self.notie.alert(1, 'Pomyślnie dołączono do eventu!');
+                }else  self.notie.alert(1, 'Nie można dołączyć do eventu!');
             });
         });
         self.$scope.$on('event:left', function(event,data){
             self.EventService.kickUser(self.eventInfo._id, self.UserService.user.id).then((resp) => {
                 if(resp == "ok"){
-                    self.eventInfo.participants.splice({'_id' : self.UserService.user.id});
-                    self.$scope.$broadcast('event:userLeftResult',{"status" : "ok"});
+                    _.remove(self.eventInfo.participants, (value) => {
+                        return value._id == self.UserService.user.id;
+                    });
                     self.$scope.$broadcast('event:filled',self.eventInfo);
-                    self.$l.debug("array: ",self.eventInfo.participants);
-                }else{
-                    self.$scope.$broadcast('event:userLeftResult',{"status" : "error"});
-                }
+                    self.notie.alert(1, 'Pomyślnie opuszczono wydarzenie!');
+                }else  self.notie.alert(1, 'Nie można opuścić wydarzenia!');
+
             });
 
 

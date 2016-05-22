@@ -97,7 +97,7 @@
                                         ng-disabled="true"
                                         class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem</md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'leave'"
-                                        ng-click=""
+                                        ng-click="eventBasicInfoCtrl.leaveEvent()"
                                         class="md-raised no-text-transformation leave-button">Opuść wydarzenie</md-button>
                         </div>
                     </div>

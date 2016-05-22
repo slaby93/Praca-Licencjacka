@@ -58,7 +58,6 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
-            self.$scope.$evalAsync();
         }, true);
     }
 
@@ -94,6 +93,10 @@ class EventBasicInfoController {
     joinEvent(){
         let self = this;
         self.$scope.$emit("event:joined",{});
+    }
+    leaveEvent(){
+        let self = this;
+        self.$scope.$emit("event:left",{});
     }
 
     buildDateString(date){

@@ -15,7 +15,7 @@
 
 class EventController {
 
-    constructor($scope, $log, $state, UserService, EventService, $stateParams) {
+    constructor($scope, $log, $state, UserService, EventService, $stateParams, $window) {
         let self = this;
         self.$scope = $scope;
         self.$l = $log;
@@ -23,7 +23,45 @@ class EventController {
         self.UserService = UserService;
         self.EventService = EventService;
         self.$stateParams = $stateParams;
+        self.notie = $window.notie;
         self.defaultValues();
+        self.setScopeListeners();
+    }
+
+    setScopeListeners(){
+        let self = this;
+        self.$scope.$on('event:joined', function(event,data) {
+            self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
+                if(resp == "ok"){
+                    self.eventInfo.participants.unshift({'_id' : self.UserService.user.id});
+                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "ok"});
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                }else{
+                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "error"});
+                }
+
+            });
+        });
+        self.$scope.$on('event:left', function(event,data){
+            self.EventService.kickUser(self.eventInfo._id, self.UserService.user.id).then((resp) => {
+                if(resp == "ok"){
+                    self.eventInfo.participants.splice({'_id' : self.UserService.user.id});
+                    self.$scope.$broadcast('event:userLeftResult',{"status" : "ok"});
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                    self.$l.debug("array: ",self.eventInfo.participants);
+                }else{
+                    self.$scope.$broadcast('event:userLeftResult',{"status" : "error"});
+                }
+            });
+
+
+
+
+
+
+        });
+
+
     }
 
     defaultValues() {
@@ -47,18 +85,6 @@ class EventController {
             if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
             self.eventInfo = resp.data.docs[0];
             self.$scope.$broadcast('event:filled',resp.data.docs[0]);
-        });
-        self.$scope.$on('event:joined', function(event,data) {
-            self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
-                if(resp == "ok"){
-                    self.eventInfo.participants.unshift({"_id" : self.UserService.user.id});
-                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "ok"});
-                    self.$scope.$broadcast('event:filled',self.eventInfo);
-                }else{
-                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "error"});
-                }
-
-            });
         });
     }
 }

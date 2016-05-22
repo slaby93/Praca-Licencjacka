@@ -58,7 +58,6 @@ import WojewodztwaMapDirective from '../directives/wojewodztwaMap/wojewodztwaMap
 import ResultPanelDirective from '../directives/resultPanel/resultPanel.directive';
 import EventMapDirective from '../directives/eventMap/eventMap.directive';
 import EventBasicInfoDirective from '../directives/eventBasicInfo/eventBasicInfo.directive';
-import EventExtendedInfoDirective from '../directives/eventExtendedInfo/eventExtendedInfo.directive';
 import EventParticipantsListDirective from '../directives/eventParticipantsList/eventParticipantsList.directive';
 import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
 import InfoBoxDirective from '../directives/infoBox/infoBox.directive';
@@ -102,7 +101,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("resultPanel", ResultPanelDirective)
     .directive("eventMap", EventMapDirective)
     .directive("eventBasicInfo", EventBasicInfoDirective)
-    .directive("eventExtendedInfo", EventExtendedInfoDirective)
     .directive("eventParticipantsList", EventParticipantsListDirective)
     .directive("sportIcons", SportIconsDirective)
     .directive("infoBox", InfoBoxDirective)

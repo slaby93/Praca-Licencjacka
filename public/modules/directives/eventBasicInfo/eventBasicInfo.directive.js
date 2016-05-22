@@ -30,13 +30,11 @@ class EventBasicInfoController {
         let self = this;
         self.eventInfo = {"eventInfo" : {}, "participants" :[]};
         self.isActive = false;
-        self.isUserAlreadyRegistered = false;
         self.eventDate = '';
         self.eventCreatedDate = '';
 
         self.$scope.$on('event:filled', function(event,data) {
             self.eventInfo = data;
-            self.checkAndChangeUserAlreadyRegistered(self.UserService.user.id);
             if( (new Date(self.eventInfo.date)) > (new Date()) )  self.isActive = true;
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
@@ -60,20 +58,37 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
-            self.eventInfo = newValue;
-        }, true);
-        self.$scope.$watch(()=> {
-            return self.isUserAlreadyRegistered;
-        }, (newValue)=> {
-            self.isUserAlreadyRegistered = newValue;
+            self.$scope.$evalAsync();
         }, true);
     }
 
 
-    checkAndChangeUserAlreadyRegistered(userID){
+    checkUserAlreadyRegistered(userID){
         let self = this;
-        self.isUserAlreadyRegistered = (_.find(self.eventInfo.participants, {'_id' : userID}) != undefined);
-        self.$l.debug("Already registered? ",self.isUserAlreadyRegistered);
+        return (_.find(self.eventInfo.participants, {'_id' : userID}) != undefined);
+    }
+    checkRights(){
+        let self = this;
+        return self.UserService.hasRight(['user', 'admin']);
+    }
+
+    getProperButton(){
+        let self = this;
+        let out = '';
+        //if the user is not an author of this event
+        if(!(self.eventInfo.author == self.UserService.user.login)) {
+            //if the user is not on the participants list
+            if (!self.checkUserAlreadyRegistered(self.UserService.user.id)) {
+                //if there are still slots - we should display the 'join' button
+                if (self.isJoin())  out = 'join';
+                //if there are no free slots - we should display the 'is already full' button
+                else  out = 'disabled';
+            //if the user is on the participants list - we should display the 'leave' button
+            }else  out = 'leave';
+        //if the user is an author of this event - we should display the 'already registered' button
+        }else  out = 'already';
+
+        return out;
     }
 
     joinEvent(){

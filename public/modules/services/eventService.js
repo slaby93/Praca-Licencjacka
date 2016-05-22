@@ -6,12 +6,13 @@ import Moment from 'moment';
 
 class EventService {
 
-    constructor($log, $http, $state, $q) {
+    constructor($log, $http, $state, $q, UserService) {
         let self = this;
         self.$l = $log;
         self.$http = $http;
         self.$state = $state;
         self.$q = $q;
+        self.UserService = UserService;
 
         self.defaultValues();
     }
@@ -242,6 +243,7 @@ class EventService {
      *      It checks if the passed ids are correct
      *      An user cannot be added to inactive event (it is checked inside mongodb)
      *      An user cannot be added to full event (it is checked inside mongodb)
+     *      An user cannot be added if it's the author of the event (it is checked inside function)
      * In case of a success, it logs to console and resolves to data "ok"
      * In case the query does not modify anything (event does not exist/is inactive/is full/user is registered) it logs to console and resolves to "nochange"
      * In case of a failure, it logs to console and resolves to err
@@ -251,7 +253,7 @@ class EventService {
     joinEvent(id, author, userID) {
         let self = this;
         return new Promise((resolve,reject)=>{
-            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/) && author != self.UserService.user.login) {
                 self.$http({
                     method: 'POST',
                     url: '/event/joinEvent',
@@ -274,7 +276,7 @@ class EventService {
                     }
                 );
             }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID), bądź dodawany użytkownik jest autorem wydarzenia!");
                 resolve(-1);
             }
         });

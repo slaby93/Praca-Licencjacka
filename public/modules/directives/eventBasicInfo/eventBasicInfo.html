@@ -86,16 +86,19 @@
                 <div class="text-padding" ng-if="eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
                         Wydarzenie jest aktywne
-                        <div ng-if="eventBasicInfoCtrl.UserService.hasRight(['user', 'admin'])">
-                            <md-button  ng-if="eventBasicInfoCtrl.isJoin() && !eventBasicInfoCtrl.isUserAlreadyRegistered"
+                        <div ng-if="eventBasicInfoCtrl.checkRights()">
+                            <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'join'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
                                         class="md-raised no-text-transformation">Dołącz</md-button>
-                            <md-button  ng-if="eventBasicInfoCtrl.isUserAlreadyRegistered"
+                            <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'disabled'"
+                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony</md-button>
+                            <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'already'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
                                         ng-disabled="true"
                                         class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem</md-button>
-                            <md-button  ng-if="!eventBasicInfoCtrl.isJoin() && !eventBasicInfoCtrl.isUserAlreadyRegistered"
-                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony</md-button>
+                            <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'leave'"
+                                        ng-click=""
+                                        class="md-raised no-text-transformation leave-button">Opuść wydarzenie</md-button>
                         </div>
                     </div>
                 </div>

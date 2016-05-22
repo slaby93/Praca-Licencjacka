@@ -43,7 +43,7 @@ class EventController {
             }
             //in case we don't find an event in the database
             //(the _id is not present), we should redirect the user to to the error site or wherever else
-            //placeholder:  redirect to introduction
+
             if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
             self.eventInfo = resp.data.docs[0];
             self.$scope.$broadcast('event:filled',resp.data.docs[0]);
@@ -52,7 +52,7 @@ class EventController {
             self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
                 if(resp == "ok"){
                     self.eventInfo.participants.unshift({"_id" : self.UserService.user.id});
-                    self.$scope.$broadcast('event:userJoined',{"status" : "ok"});
+                    self.$scope.$broadcast('event:userJoinedResult',{"status" : "ok"});
                     self.$scope.$broadcast('event:filled',self.eventInfo);
                 }else{
                     self.$scope.$broadcast('event:userJoinedResult',{"status" : "error"});

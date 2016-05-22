@@ -13,7 +13,7 @@ function eventBasicInfo() {
 }
 
 class EventBasicInfoController {
-    constructor(UserService, EventService, $scope, $state, $rootScope, $log) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log, loader) {
         let self = this;
         self.UserService = UserService;
         self.EventService = EventService;
@@ -21,6 +21,7 @@ class EventBasicInfoController {
         self.$state = $state;
         self.$rootScope = $rootScope;
         self.$l = $log;
+        self.loader = loader;
         self.watchEventInfo();
         self.setDefaultValues();
 	}
@@ -29,26 +30,17 @@ class EventBasicInfoController {
     setDefaultValues(){
         let self = this;
         self.eventInfo = {"eventInfo" : {}, "participants" :[]};
-        self.isActive = false;
+        self.isActive = '';
         self.eventDate = '';
         self.eventCreatedDate = '';
 
         self.$scope.$on('event:filled', function(event,data) {
             self.eventInfo = data;
             if( (new Date(self.eventInfo.date)) > (new Date()) )  self.isActive = true;
+             else  self.isActive = false;
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
 
-        });
-        self.$scope.$on('event:userJoinedResult', function(event,data) {
-            if(data.status == "ok"){
-                
-                
-                
-            }else{
-                
-                
-            }
         });
 
     }
@@ -58,6 +50,7 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
+
         }, true);
     }
 
@@ -88,6 +81,11 @@ class EventBasicInfoController {
         }else  out = 'already';
 
         return out;
+    }
+
+    refresh(){
+        let self = this;
+        self.$scope.$emit("event:refresh",{});
     }
 
     joinEvent(){

@@ -21,11 +21,33 @@ md-tooltip.experience-tooltip {
 
 
 #event-basic-info{
-  .event-basic-intro{text-align: center;}
+
+  .event-basic-intro{
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    font-size: 26px;
+    font-weight: bold;
+  }
+  .text-padding  {padding-top: 10px;}
+  .no-overflow  {overflow: hidden;}
+  .max-width  {width: 100%;}
 
   .icon{
     width: 16px;
     height: 16px;
+  }
+
+  .refresh-icon{
+    width: 26px;
+    height: 26px;
+  }
+  .refresh-button{
+    height: 30px;
+    width: auto;
+    min-width: 30px;
+    padding: 0;
+    margin: 0;
   }
 
   .icon-black{
@@ -34,21 +56,65 @@ md-tooltip.experience-tooltip {
     padding-right: 2px;
   }
 
-  .text-padding{
-    padding-top: 10px;
+  .event-icon{
+    width:  32px;
+    height: 32px;
+    margin-bottom: 5px;
   }
-  .event-join{
-    margin-top: 50px;
+
+  .description-container{
+    background-color: #e6ffff;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
   }
-  .no-overflow{
-    overflow: hidden;
+
+  .bigger-font{
+    font-weight: bold;
+    font-size: 16px;
   }
+  .is-active-text{
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .green-text{
+    color: rgb(68, 204, 0);
+  }
+
   .hope-button{
     background-color: greenyellow;
     color: black !important;
   }
-  .leave-button{
+  .leave-button  {
     background-color: #953b39;
     color: white !important;
   }
+  .event-description{
+    padding-top: 10px;
+    min-height: 200px;
+  }
+  .event-title{
+    text-align: center;
+    border-bottom: groove rgba(230, 230, 230, 0.5);
+  }
+  md-input-container{
+    .md-errors-spacer{
+      display: none;
+    }
+  }
+  .small-padding-left{
+    margin-left: 5px;
+    margin-top: 10px;
+  }
+
+  .event-active-container{
+    bottom: 0;
+  }
+  @media screen and (min-width: 480px) {
+    .event-active-container{
+      position: relative;
+      bottom: 70px;
+    }
+  }
+
+
 }

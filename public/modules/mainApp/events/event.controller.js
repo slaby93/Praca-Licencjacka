@@ -68,8 +68,25 @@ class EventController {
                 self.loader.hide();
             });
         });
+        self.$scope.$on('event:kick', function(event,data){
+            self.loader.show();
+            self.EventService.kickUser(self.eventInfo._id, data.userID).then((resp) => {
+                if(resp == "ok"){
+                    _.remove(self.eventInfo.participants, (value) => {
+                        return value._id == data.userID;
+                    });
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                    self.notie.alert(1, 'Pomyślnie wyrzucono użytkownika z wydarzenia!');
+                }else  self.notie.alert(1, 'Nie można wyrzucić użytkownika z wydarzenia!');
+                self.loader.hide();
+            });
+        });
         self.$scope.$on('event:refresh', function(event,data){
             self.getDataFromServer();
+        });
+        self.$scope.$on('event:edited', function(event,data){
+            self.loader.show();
+            self.loader.hide();
         });
 
     }

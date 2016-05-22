@@ -57,7 +57,7 @@ md-tooltip.user-tooltip {
 		white-space: initial;
 	}
 	.deeper-content{
-		padding: 8px;
+		padding: 25px 8px 8px;
 		top: $top - 30px;
 		position: relative;
 	}
@@ -86,13 +86,14 @@ md-tooltip.user-tooltip {
 	top: 5px;
 	right: 0;
 	z-index: 30;
-	color: #eee;
 	font-size: 2em;
 	cursor: pointer;
 	width: 32px;
 	line-height: 0.5em;
 	-webkit-transition: line-height 0.5s;
 	transition: line-height 0.5s;
+
+	a  {color: #666666 !important;}
 
 	:after {
 		content: "";
@@ -136,10 +137,27 @@ md-tooltip.user-tooltip {
 
 
 #event-participants-list{
+	margin: 10px 10px 30px;
 	.transparent-background  {background-color: transparent;  }
 
-
-	.user-list-intro  {text-align: center;}
+	.user-list-intro{
+		text-align: center;
+		margin-bottom: 15px;
+		margin-top: 5px;
+		font-size: 26px;
+		font-weight: bold;
+		.refresh-button{
+			height: 30px;
+			width: auto;
+			min-width: 30px;
+			padding: 0;
+			margin: 0;
+			.refresh-icon{
+				width: 26px;
+				height: 26px;
+			}
+		}
+	}
 
 	.pushpin-icon{
 		height:48px;

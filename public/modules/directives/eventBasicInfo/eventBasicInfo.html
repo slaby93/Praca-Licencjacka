@@ -3,7 +3,7 @@
         <md-button class="refresh-button" ng-click="eventBasicInfoCtrl.refresh()">
             <md-icon md-svg-src="resources/refresh.svg" class="svg-submissive refresh-icon"/>
         </md-button>
-        Podstawowe informacje o wydarzeniu:
+        Informacje o wydarzeniu:
     </inline>
     <div layout="column" layout-gt-sm="row" flex="100">
         <div layout="column" flex="50">
@@ -106,29 +106,49 @@
                     <span flex/>
                 </div>
             </div>
-            <div layout="row" layout-align="center center" class="event-active-container">
+            <div layout="column" layout-align="center" class="event-active-container">
                 <div class="text-padding" ng-if="eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
                         <div class="is-active-text green-text">Wydarzenie jest aktywne</div>
                         <div ng-if="eventBasicInfoCtrl.checkRights()">
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'join'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
-                                        class="md-raised no-text-transformation">Dołącz</md-button>
+                                        class="md-raised no-text-transformation">Dołącz
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'disabled'"
-                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony</md-button>
+                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'already'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
                                         ng-disabled="true"
-                                        class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem</md-button>
+                                        class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'leave'"
                                         ng-click="eventBasicInfoCtrl.leaveEvent()"
-                                        class="md-raised no-text-transformation leave-button">Opuść wydarzenie</md-button>
+                                        class="md-raised no-text-transformation leave-button">Opuść wydarzenie
+                            </md-button>
                         </div>
                     </div>
                 </div>
                 <div class="text-padding event-active-container" ng-if="!eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
                         <div class="is-active-text">Wydarzenie zakończone</div>
+                    </div>
+                </div>
+                <div layout="row" layout-align="center center" flex="100">
+                    <md-button  ng-if="eventBasicInfoCtrl.isOwnPage() && !eventBasicInfoCtrl.editMode"
+                                ng-click="eventBasicInfoCtrl.enterEditMode()"
+                                class="md-raised no-text-transformation">Edytuj
+                    </md-button>
+                    <div layout="row" layout-align="center center">
+                        <md-button flex="50" ng-if="eventBasicInfoCtrl.isOwnPage() && eventBasicInfoCtrl.editMode"
+                                    ng-click="eventBasicInfoCtrl.closeEditMode(true)"
+                                    class="md-raised no-text-transformation">Zapisz
+                        </md-button>
+                        <md-button flex="50" ng-if="eventBasicInfoCtrl.isOwnPage() && eventBasicInfoCtrl.editMode"
+                                    ng-click="eventBasicInfoCtrl.closeEditMode(false)"
+                                    class="md-raised no-text-transformation">Anuluj
+                        </md-button>
                     </div>
                 </div>
             </div>

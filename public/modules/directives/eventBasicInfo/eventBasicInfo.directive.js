@@ -27,22 +27,25 @@ class EventBasicInfoController {
 	}
 
 
-    setDefaultValues(){
+    setDefaultValues() {
         let self = this;
-        self.eventInfo = {"eventInfo" : {}, "participants" :[]};
+        self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
         self.eventCreatedDate = '';
+        self.editMode = false;
+        self.setScopeListeners();
+    }
 
+
+    setScopeListeners(){
+        let self = this;
         self.$scope.$on('event:filled', function(event,data) {
             self.eventInfo = data;
-            if( (new Date(self.eventInfo.date)) > (new Date()) )  self.isActive = true;
-             else  self.isActive = false;
+            self.isActive = (new Date(self.eventInfo.date)) > (new Date());
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
-
         });
-
     }
 
     watchEventInfo(){
@@ -87,14 +90,37 @@ class EventBasicInfoController {
         let self = this;
         self.$scope.$emit("event:refresh",{});
     }
+    
+    isOwnPage() {
+        let self = this;
+        return self.EventService.isOwnPage(self.eventInfo.author);
+    }
+
+    enterEditMode(){
+        let self = this;
+        if(self.isOwnPage()){
+            self.editMode = true;
+        }
+    }
+
+    closeEditMode(saved){
+        let self = this;
+        if(self.isOwnPage()){
+            if(saved) {
+                self.$scope.$emit("event:edited", {});
+            }
+
+            self.editMode = false;
+        }
+    }
 
     joinEvent(){
         let self = this;
         self.$scope.$emit("event:joined",{});
     }
-    leaveEvent(){
+    leaveEvent(id){
         let self = this;
-        self.$scope.$emit("event:left",{});
+        self.$scope.$emit("event:left",{"userID" : id});
     }
 
     buildDateString(date){

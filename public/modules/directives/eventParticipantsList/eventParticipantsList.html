@@ -19,8 +19,8 @@
 
                         <div class="no-text-transformation user-info">{{participant.login}}</div>
                     </md-button>
-                    <div class="close-ribbon">
-                        <a ng-click="eventParticipantsListCtrl.test()">&times;</a>
+                    <div class="close-ribbon" ng-if="eventParticipantsListCtrl.isOwnPage()">
+                        <a ng-click="eventParticipantsListCtrl.deleteUser(participant._id)">&times;</a>
                     </div>
                     <md-tooltip id="user-tooltip" click-outside="eventParticipantsListCtrl.closeToolTip(participant)" outside-if-not="user-tooltip" class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
                         <div ng-style="{'background-image':'url(gallery/' + participant._id + '/userImage.jpg)'}" class="imageHolder user-image">

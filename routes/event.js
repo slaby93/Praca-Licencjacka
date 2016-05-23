@@ -86,7 +86,7 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
             return;
         }
         var passedEvent = req.body.passedEvent;
-        var id = new ObjectId(req.body.passedEvent._id);
+        var id = new ObjectId(req.body.id);
         mongo.connect("serwer", ["event"], function (db) {
             db.event.update(
                 {$and :[
@@ -116,6 +116,10 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                 }, function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else if (data.nModified == 0) {
+                        res.status(200).send("nochange").end(function () {
                             db.close();
                         });
                     } else {

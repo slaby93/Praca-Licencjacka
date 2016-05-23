@@ -2,7 +2,7 @@
  * Created by piec on 4/8/2016.
  */
 
-
+import SportEvent from 'Classes/SportEvent';
 
 /**
  * When we enter this controller, it checks if:
@@ -38,7 +38,7 @@ class EventController {
                     self.eventInfo.participants.unshift({'_id': self.UserService.user.id});
                     self.$scope.$broadcast('event:filled', self.eventInfo);
                     self.notie.alert(1, 'Pomyślnie dołączono do eventu!');
-                }else  self.notie.alert(1, 'Nie można dołączyć do eventu!');
+                }else  self.notie.alert(2, 'Nie można dołączyć do eventu!');
                 self.loader.hide();
             });
         });
@@ -51,7 +51,7 @@ class EventController {
                     });
                     self.$scope.$broadcast('event:filled',self.eventInfo);
                     self.notie.alert(1, 'Pomyślnie opuszczono wydarzenie!');
-                }else  self.notie.alert(1, 'Nie można opuścić wydarzenia!');
+                }else  self.notie.alert(2, 'Nie można opuścić wydarzenia!');
                 self.loader.hide();
             });
         });
@@ -64,7 +64,7 @@ class EventController {
                     });
                     self.$scope.$broadcast('event:filled',self.eventInfo);
                     self.notie.alert(1, 'Pomyślnie opuszczono wydarzenie!');
-                }else  self.notie.alert(1, 'Nie można opuścić wydarzenia!');
+                }else  self.notie.alert(2, 'Nie można opuścić wydarzenia!');
                 self.loader.hide();
             });
         });
@@ -77,7 +77,7 @@ class EventController {
                     });
                     self.$scope.$broadcast('event:filled',self.eventInfo);
                     self.notie.alert(1, 'Pomyślnie wyrzucono użytkownika z wydarzenia!');
-                }else  self.notie.alert(1, 'Nie można wyrzucić użytkownika z wydarzenia!');
+                }else  self.notie.alert(2, 'Nie można wyrzucić użytkownika z wydarzenia!');
                 self.loader.hide();
             });
         });
@@ -86,7 +86,31 @@ class EventController {
         });
         self.$scope.$on('event:edited', function(event,data){
             self.loader.show();
-            self.loader.hide();
+            self.EventService.update(new SportEvent(self.eventInfo.author, self.eventInfo.createdDate, self.eventInfo.date,
+                                                    data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.category,
+                                                    data.data.eventInfo.payment, data.data.eventInfo.ownEquipment, data.data.eventInfo.experience,
+                                                    data.data.eventInfo.usersLimit, data.data.eventInfo.title, self.eventInfo.isActive,
+                                                    self.eventInfo.localization.latitude, self.eventInfo.localization.longitude,
+                                                    self.eventInfo.participants), data.data._id)
+            .then((resp) => {
+                if(resp == "ok"){
+
+                    self.eventInfo.eventIcon = data.data.eventIcon;
+                    self.eventInfo.eventInfo.description = data.data.eventInfo.description;
+                    self.eventInfo.eventInfo.payment = data.data.eventInfo.payment;
+                    self.eventInfo.eventInfo.ownEquipment = data.data.eventInfo.ownEquipment;
+                    self.eventInfo.eventInfo.experience = data.data.eventInfo.experience;
+                    self.eventInfo.eventInfo.usersLimit = data.data.eventInfo.usersLimit;
+                    self.eventInfo.eventInfo.title = data.data.eventInfo.title;
+
+
+                    self.$scope.$broadcast('event:updateSuccess');
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                    self.notie.alert(1, 'Pomyślnie zaaktualizowano wydarzenie!');
+                }else if(resp =="nochange")  self.notie.alert(2, 'Błąd podczas aktualizacji wydarzenia - jest ono prawdopodobnie nieaktywne bądź nie było zmian');
+                 else  self.notie.alert(2, 'Błąd podczas aktualizacji wydarzenia!');
+                self.loader.hide();
+            });
         });
 
     }

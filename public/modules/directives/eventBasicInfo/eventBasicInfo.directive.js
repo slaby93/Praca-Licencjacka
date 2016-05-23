@@ -22,18 +22,19 @@ class EventBasicInfoController {
         self.$rootScope = $rootScope;
         self.$l = $log;
         self.loader = loader;
-        self.$window = $window
+        self.$window = $window;
+        self.notie = $window.notie;
         self.watchEventInfo();
         self.setDefaultValues();
     }
 
     setDefaultValues() {
         let self = this;
+        self.editMode = false;
         self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
         self.eventCreatedDate = '';
-        self.editMode = false;
         self.wasIconButtonClicked = false;
         self.EventService.getDefaultIcons().then((resp) => {
             self.iconList = resp.data;
@@ -49,6 +50,11 @@ class EventBasicInfoController {
             self.isActive = (new Date(self.eventInfo.date)) > (new Date());
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
+        });
+        self.$scope.$on('event:updateSuccess', function (event, data) {
+           self.eventInfoEdit = undefined;
+           self.editMode = false;
+            $('#experienceRating').rating('disable').rating({initialRating: self.eventInfo.eventInfo.experience});
         });
     }
 
@@ -66,8 +72,6 @@ class EventBasicInfoController {
                 }).rating('disable');
         }, true);
     }
-    
-
 
     toggleWasIconButtonClicked(value) {
         let self = this;
@@ -117,6 +121,7 @@ class EventBasicInfoController {
         let self = this;
         if (self.isOwnPage()) {
             self.eventInfoEdit = {
+                "_id": self.eventInfo._id,
                 "eventIcon": self.eventInfo.eventIcon,
                 "eventInfo": {
                     "description": self.eventInfo.eventInfo.description,
@@ -136,10 +141,14 @@ class EventBasicInfoController {
         let self = this;
         if (self.isOwnPage()) {
             if (saved) {
-                self.$scope.$emit("event:edited", {"eventInfo": self.eventInfoEdit});
+                if(self.eventInfoEdit.eventInfo.title.length < 10 || self.eventInfoEdit.eventInfo.title.length > 30)  self.notie.alert(2, 'Tytuł musi posiadać conajmniej 10 i conajwyżej 30 znaków!');
+                else if(self.eventInfoEdit.eventInfo.payment < 0)  self.notie.alert(2, 'Nieprawidłowa wartość składki!');
+                else if(self.eventInfoEdit.eventInfo.usersLimit < self.eventInfo.eventInfo.usersLimit)  self.notie.alert(2, 'Limitu użytkowników nie można zmniejszać!');
+                else  self.$scope.$emit("event:edited", {"data": self.eventInfoEdit});
+            }else{
+                self.eventInfoEdit = undefined;
+                self.editMode = false;
             }
-            $('#experienceRating').rating('disable').rating({initialRating: self.eventInfo.eventInfo.experience});;
-            self.editMode = false;
         }
     }
 
@@ -174,7 +183,8 @@ class EventBasicInfoController {
 
     getExperience() {
         let self = this;
-        return self.eventInfo.eventInfo.experience;
+            if(self.eventInfoEdit == undefined)  return self.eventInfo.eventInfo.experience;
+            return  self.eventInfoEdit.eventInfo.experience
     }
 
     isJoin() {

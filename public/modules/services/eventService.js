@@ -462,21 +462,27 @@ class EventService {
         return new Promise((resolve,reject)=> {
             if ((new Date(passedEvent.date)) <= (new Date())) {
                 self.$l.debug("Blad podczas update'owania eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
-                promise.resolve(-1);
+                resolve("error");
             }else if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/update',
-                    data: {passedEvent: passedEvent}
+                    data: {passedEvent: passedEvent, id : id}
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Pomyślnie zedytowano event o id: " + id);
-                        resolve(data);
+                        if (data.data == "nochange") {
+                            self.$l.debug("Nie można zaaktualizować wydarzenia - jest ono prawdopodobnie nieaktywne!");
+                            resolve("nochange");
+                        } else {
+                            self.$l.debug("Pomyślnie zedytowano event o id: " + id);
+                            resolve("ok");
+                        }
+                        resolve("ok");
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas edytowania eventu o id: " + id);
-                        resolve(err);
+                        resolve("error");
                     }
                 );
             }else{

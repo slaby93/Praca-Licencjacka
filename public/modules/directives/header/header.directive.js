@@ -125,22 +125,6 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-joinEvent (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.joinEvent("572f0f8f8a490757a3e346ef", "slaby", "573b58ace69d5d3016370dca");
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-kickUser (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.kickUser("572f0f8f8a490757a3e346ef", "573b58ace69d5d3016370dca");
-                },
-                visibility: ["user"]
-            },
-            {
                 placeholder: "TEST-remove (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
@@ -161,15 +145,6 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.find(21.38, 18.04, 6152);
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-update (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    let sportEvent = new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2033, 3, 19, 0, 0), false, false, "hacked!", "koszykówka", 666, true, 0, 666,"title", false, 11.0543231, 11.0543231, []);
-                    self.EventService.update(sportEvent, "572f0c19c40ef768253e98fd");
                 },
                 visibility: ["user"]
             },

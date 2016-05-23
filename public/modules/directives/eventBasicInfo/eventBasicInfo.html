@@ -14,7 +14,7 @@
                     <div>
                         <inline flex="100">
                             <inline class="bigger-font">Autor:</inline>
-                            <md-button class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()"
+                            <md-button aria-label="gotoProfile-button" class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()"
                                        ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.author}}
                             </md-button>
                         </inline>
@@ -53,7 +53,7 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getOwnEquipment()}}</inline>
-                            <md-checkbox ng-if="eventBasicInfoCtrl.editMode" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.ownEquipment"></md-checkbox>
+                            <md-checkbox aria-label="equipment-checkbox" ng-if="eventBasicInfoCtrl.editMode" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.ownEquipment"></md-checkbox>
                         </div>
                         <div class="text-padding">
                             <inline flex="100">
@@ -180,39 +180,31 @@
                     <inline flex="70" class="small-margin-top" ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
                     <inline flex="70" class="smaller-margin-top ui input" ng-if="eventBasicInfoCtrl.editMode">
                         <input ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.title" type="text">
-                    <inline flex="70" class="small-margin-top" ng-if="!eventBasicInfoCtrl.editMode">
-                        {{eventBasicInfoCtrl.eventInfo.eventInfo.title}}
                     </inline>
-                    <inline flex="10">
-                        <md-icon ng-if="!eventBasicInfoCtrl.editMode"
-                                 md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}"
-                                 class="svg-submissive event-icon"></md-icon>
-                        <md-button aria-label="change-icon-button" class="change-icon-button"
-                                   ng-if="eventBasicInfoCtrl.editMode"
-                                   ng-click="eventBasicInfoCtrl.toggleWasIconButtonClicked(true)">
-                            <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfoEdit.eventIcon}}"
-                                     class="svg-submissive event-icon-edit"></md-icon>
-                        </md-button>
-                        <md-tooltip click-outside="eventBasicInfoCtrl.toggleWasIconButtonClicked(false)"
-                                    outside-if-not="icons-tooltip" class="icons-tooltip"
-                                    ng-if="eventBasicInfoCtrl.editMode && eventBasicInfoCtrl.wasIconButtonClicked"
-                                    md-visible="eventBasicInfoCtrl.wasIconButtonClicked" md-direction="bottom">
-                            <div class="tooltip-container">
-                                <md-grid-list md-cols="3" md-row-height="32px" md-gutter="10px">
-                                    <md-grid-tile ng-repeat="icon in eventBasicInfoCtrl.iconList.iconList"
-                                                  md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
-                                        <md-content class="transparent-background tile-content">
-                                            <md-button aria-label="icon-button" class="iconList-button"
-                                                       ng-click="eventBasicInfoCtrl.setIcon(icon.url)">
-                                                <md-icon md-svg-src="{{icon.url}}"
-                                                         class="svg-submissive event-icon"></md-icon>
-                                            </md-button>
-                                        </md-content>
-                                    </md-grid-tile>
-                                </md-grid-list>
-                            </div>
-                        </md-tooltip>
-                    </inline>
+                    <md-icon flex="10" ng-if="!eventBasicInfoCtrl.editMode" md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"></md-icon>
+                    <md-button flex="10" aria-label="change-icon-button" class="change-icon-button" ng-if="eventBasicInfoCtrl.editMode"
+                               ng-click="eventBasicInfoCtrl.toggleWasIconButtonClicked(true)">
+                        <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfoEdit.eventIcon}}" class="svg-submissive event-icon-edit"></md-icon>
+                    </md-button>
+                    <md-tooltip click-outside="eventBasicInfoCtrl.toggleWasIconButtonClicked(false)"
+                                outside-if-not="icons-tooltip" class="icons-tooltip"
+                                ng-if="eventBasicInfoCtrl.editMode && eventBasicInfoCtrl.wasIconButtonClicked"
+                                md-visible="eventBasicInfoCtrl.wasIconButtonClicked" md-direction="bottom">
+                        <div class="tooltip-container">
+                            <md-grid-list md-cols="3" md-row-height="32px" md-gutter="10px">
+                                <md-grid-tile ng-repeat="icon in eventBasicInfoCtrl.iconList.iconList"
+                                              md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
+                                    <md-content class="transparent-background tile-content">
+                                        <md-button aria-label="icon-button" class="iconList-button"
+                                                   ng-click="eventBasicInfoCtrl.setIcon(icon.url)">
+                                            <md-icon md-svg-src="{{icon.url}}"
+                                                     class="svg-submissive event-icon"></md-icon>
+                                        </md-button>
+                                    </md-content>
+                                </md-grid-tile>
+                            </md-grid-list>
+                        </div>
+                    </md-tooltip>
                 </div>
                 <div class="bigger-font small-padding-left">Opis wydarzenia:</div>
 

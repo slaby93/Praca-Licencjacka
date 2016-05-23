@@ -88,7 +88,7 @@ class HeaderController {
                 placeholder: "TEST-addEvent (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), true, true, "To wydarzenie bedzie wspaniale!", "siatkówka", 30, false, 0, 30, "A", true, 50.283197, 18.674011, []));
+                    self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), "resources/icons/bell.svg", "To wydarzenie bedzie wspaniale!", "siatkówka", 30, false, 0, 30, "A", true, 50.283197, 18.674011, []));
                 },
                 visibility: ["user"]
             },

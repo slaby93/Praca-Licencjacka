@@ -88,11 +88,11 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         var passedEvent = req.body.passedEvent;
         var id = new ObjectId(req.body.passedEvent._id);
         mongo.connect("serwer", ["event"], function (db) {
-
             db.event.update(
                 {$and :[
                     {"isActive": true},
-                    {"_id": id}
+                    {"_id": id},
+                    {$where : "(new Date()) < this.date"}
                 ]},
                 {
                     $set: {
@@ -138,12 +138,11 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
         var id = new ObjectId(req.body.id);
         var userID = new ObjectId(req.body.userID);
         mongo.connect("serwer", ["event"], function (db) {
-
             db.event.update(
                 {$and :[
                     {"isActive": true},
                     {"_id": id},
-                    {$where : "this.participants.length < this.eventInfo.usersLimit"}
+                    {$where : "this.participants.length < this.eventInfo.usersLimit && (new Date()) < this.date"}
                 ]},
                 {$addToSet: {"participants": {"_id" : userID}}},
                 function (err, data) {
@@ -176,11 +175,11 @@ router.post('/kickUser', auth, guard.check('user'), function (req, res, next) {
         var id = new ObjectId(req.body.id);
         var userID = new ObjectId(req.body.userID);
         mongo.connect("serwer", ["event"], function (db) {
-
             db.event.update(
                 {$and :[
                     {"isActive": true},
-                    {"_id": id}
+                    {"_id": id},
+                    {$where : "(new Date()) < this.date"}
                 ]},
                 {$pull: {"participants": {"_id" : userID}}},
                 function (err, data) {
@@ -375,9 +374,11 @@ router.post('/find', function (req, res, next) {
         var userLongitude = req.body.longitude;
         var radius = req.body.radius;
         mongo.connect("serwer", ["event"], function (db) {
-            db.event.aggregate([
-                {$match: {"isActive": true}}
-            ], function (err, data) {
+            db.event.find(
+                {$and :[
+                    {"isActive": true},
+                    {$where : "(new Date()) < this.date"}
+                ]}, function (err, data) {
                 if (err) {
                     res.status(404).send().end(function () {
                         db.close();

@@ -314,7 +314,7 @@ class EventService {
                             resolve("nochange");
                         } else {
                             self.$l.debug("Pomyślnie wyrzucono użytkownika: " + userID + " z wydarzenia o id: " + id);
-                            self.$l.debug("ok");
+                            resolve("ok");
                         }
                         // ERROR
                     }, function (err) {
@@ -518,6 +518,18 @@ class EventService {
                 }
             );
         });
+    }
+
+
+    /**
+     * @params  (string) author - login of an author of an event
+     * @functionality
+     *      resolves to true if the currently logged user is an author of an event, otherwise resolves to false
+     * @returns {Promise}
+     */
+    isOwnPage(author) {
+        let self = this;
+        return (author == self.UserService.user.login || self.UserService.hasRight(['admin']) ? true : false);
     }
 }
 export default EventService;

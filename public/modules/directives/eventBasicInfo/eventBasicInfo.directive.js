@@ -13,7 +13,7 @@ function eventBasicInfo() {
 }
 
 class EventBasicInfoController {
-    constructor(UserService, EventService, $scope, $state, $rootScope, $log) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log, loader) {
         let self = this;
         self.UserService = UserService;
         self.EventService = EventService;
@@ -21,36 +21,31 @@ class EventBasicInfoController {
         self.$state = $state;
         self.$rootScope = $rootScope;
         self.$l = $log;
+        self.loader = loader;
         self.watchEventInfo();
         self.setDefaultValues();
 	}
 
 
-    setDefaultValues(){
+    setDefaultValues() {
         let self = this;
-        self.eventInfo = {"eventInfo" : {}, "participants" :[]};
-        self.isActive = false;
+        self.eventInfo = {"eventInfo": {}, "participants": []};
+        self.isActive = '';
         self.eventDate = '';
         self.eventCreatedDate = '';
+        self.editMode = false;
+        self.setScopeListeners();
+    }
 
+
+    setScopeListeners(){
+        let self = this;
         self.$scope.$on('event:filled', function(event,data) {
             self.eventInfo = data;
-            if( (new Date(self.eventInfo.date)) > (new Date()) )  self.isActive = true;
+            self.isActive = (new Date(self.eventInfo.date)) > (new Date());
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
             self.eventCreatedDate = self.buildDateString(new Date(self.eventInfo.createdDate));
-
         });
-        self.$scope.$on('event:userJoinedResult', function(event,data) {
-            if(data.status == "ok"){
-                
-                
-                
-            }else{
-                
-                
-            }
-        });
-
     }
 
     watchEventInfo(){
@@ -58,7 +53,7 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
-            self.$scope.$evalAsync();
+
         }, true);
     }
 
@@ -91,9 +86,41 @@ class EventBasicInfoController {
         return out;
     }
 
+    refresh(){
+        let self = this;
+        self.$scope.$emit("event:refresh",{});
+    }
+    
+    isOwnPage() {
+        let self = this;
+        return self.EventService.isOwnPage(self.eventInfo.author);
+    }
+
+    enterEditMode(){
+        let self = this;
+        if(self.isOwnPage()){
+            self.editMode = true;
+        }
+    }
+
+    closeEditMode(saved){
+        let self = this;
+        if(self.isOwnPage()){
+            if(saved) {
+                self.$scope.$emit("event:edited", {});
+            }
+
+            self.editMode = false;
+        }
+    }
+
     joinEvent(){
         let self = this;
         self.$scope.$emit("event:joined",{});
+    }
+    leaveEvent(id){
+        let self = this;
+        self.$scope.$emit("event:left",{"userID" : id});
     }
 
     buildDateString(date){
@@ -133,6 +160,11 @@ class EventBasicInfoController {
         if(num == 4) return [1,2,3,4];
         if(num == 5) return [1,2,3,4,5];
         return [];
+    }
+
+    goToUserProfile(){
+        let self = this;
+        self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
     }
 
 }

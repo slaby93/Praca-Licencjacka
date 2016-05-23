@@ -13,7 +13,7 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $state, $rootScope, $log) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log, $stateParams) {
         let self = this;
         
         self.UserService = UserService;
@@ -37,12 +37,16 @@ class EventParticipantsListController {
     
     setDefaultValues(){
         let self = this;
-        self.number = 3
-
-
+        self.number = 3;
         self.participants = [];
         self.$scope.$watch();
+        self.setScopeListeners();
+    }
+
+    setScopeListeners(){
+        let self = this;
         self.$scope.$on('event:filled', function(event,data) {
+            self.author = data.author;
             self.participants = data.participants;
             _.forEach(self.participants, (value, key) => {
                 self.participants[key].wasClicked = false;
@@ -53,7 +57,8 @@ class EventParticipantsListController {
                 self.$l.debug("After merge: ",self.participants);
             });
         });
-        
+
+
     }
 
     showToolTip(participant){
@@ -68,10 +73,16 @@ class EventParticipantsListController {
         participant.wasClicked = false;
     }
 
-    test(){
-        console.log("lol");
-
+    isOwnPage() {
+        let self = this;
+        return self.EventService.isOwnPage(self.author);
     }
+
+    deleteUser(id){
+        let self = this;
+        if(self.isOwnPage())  self.$scope.$emit("event:kick",{"userID" : id});
+    }
+
 
     getNumber(num) {
         if(num == 1) return [1];

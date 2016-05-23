@@ -18,11 +18,9 @@
                         </div>
 
                         <div class="no-text-transformation user-info">{{participant.login}}</div>
-
-
                     </md-button>
-                    <div class="close-ribbon">
-                        <a ng-click="eventParticipantsListCtrl.test()">&times;</a>
+                    <div class="close-ribbon" ng-if="eventParticipantsListCtrl.isOwnPage()">
+                        <a ng-click="eventParticipantsListCtrl.deleteUser(participant._id)">&times;</a>
                     </div>
                     <md-tooltip id="user-tooltip" click-outside="eventParticipantsListCtrl.closeToolTip(participant)" outside-if-not="user-tooltip" class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
                         <div ng-style="{'background-image':'url(gallery/' + participant._id + '/userImage.jpg)'}" class="imageHolder user-image">
@@ -36,7 +34,7 @@
                         <div class="deeper-content">
                             <div flex/>
                             <div layout="row" layout-align="bottom right">
-                                <md-button class="no-text-transformation" ng-click="eventParticipantsListCtrl.goToUserPage(participant)" flex="60">Przejdź do profilu</md-button>
+                                <md-button class="no-text-transformation go-to-profile-button" ng-click="eventParticipantsListCtrl.goToUserPage(participant)" flex="60">Przejdź do profilu</md-button>
                                 <inline flex="40">
                                     <md-icon ng-repeat="i in eventParticipantsListCtrl.getNumber(eventParticipantsListCtrl.number)" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
                                     <md-icon ng-repeat="i in eventParticipantsListCtrl.getNumber(5 - eventParticipantsListCtrl.number)" md-svg-src="resources/white-star.svg" class="svg-submissive icon"></md-icon>

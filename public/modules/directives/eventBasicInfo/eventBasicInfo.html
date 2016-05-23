@@ -1,26 +1,50 @@
 <div id="event-basic-info">
-    <div class="event-basic-intro">Podstawowe informacje o wydarzeniu:</div>
-    <div layout="row">
+    <inline layout="row" layout-align="center center" class="event-basic-intro" flex="100">
+        <md-button class="refresh-button" ng-click="eventBasicInfoCtrl.refresh()">
+            <md-icon md-svg-src="resources/refresh.svg" class="svg-submissive refresh-icon"/>
+        </md-button>
+        Informacje o wydarzeniu:
+    </inline>
+    <div layout="column" layout-gt-sm="row" flex="100">
         <div layout="column" flex="50">
-            <div layout="row" flex="100">
+            <div layout="column" layout-gt-xs="row" layout-align-sm="center center" layout-align-xs="center center" flex="100">
                 <div layout="column" flex="50">
                     <div>
                         <inline flex="100">
-                            Autor:
-                            <md-button class="no-text-transformation">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
+                            <inline class="bigger-font">Autor:</inline>
+                            <md-button class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
                         </inline>
-                        <div class="text-padding" flex="100">Data utworzenia: {{eventBasicInfoCtrl.eventCreatedDate}}</div>
-                        <div class="text-padding" flex="100">Data wydarzenia: {{eventBasicInfoCtrl.eventDate}}</div>
-                        <div class="text-padding" flex="100">Zapełnienie: {{eventBasicInfoCtrl.getParticipantsCount()}}</div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Data utworzenia:</inline>
+                            {{eventBasicInfoCtrl.eventCreatedDate}}
+                        </div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Data wydarzenia:</inline>
+                            {{eventBasicInfoCtrl.eventDate}}
+                        </div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Zapełnienie:</inline>
+                            {{eventBasicInfoCtrl.getParticipantsCount()}}
+                        </div>
                     </div>
                 </div>
                 <div layout="column" flex="50">
                     <div>
-                        <div class="text-padding" flex="100">Kategoria: {{eventBasicInfoCtrl.getCategory()}}</div>
-                        <div class="text-padding" flex="100">Składka: {{eventBasicInfoCtrl.getPayment()}}</div>
-                        <div class="text-padding" flex="100">Wymóg własnego sprzętu: {{eventBasicInfoCtrl.getOwnEquipment()}}</div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Kategoria:</inline>
+                            {{eventBasicInfoCtrl.getCategory()}}
+                        </div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Składka:</inline>
+                            {{eventBasicInfoCtrl.getPayment()}}
+                        </div>
+                        <div class="text-padding" flex="100">
+                            <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
+                            {{eventBasicInfoCtrl.getOwnEquipment()}}
+                        </div>
                         <div class="text-padding">
-                            <inline flex="100">Stopień zaawansowania:
+                            <inline flex="100">
+                                <inline class="bigger-font">Stopień zaawansowania:</inline>
                                 <inline class="text-padding">
                                     <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
                                     <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.getExperience())" md-svg-src="resources/black-star.svg" class="svg-submissive icon-black"></md-icon>
@@ -82,35 +106,71 @@
                     <span flex/>
                 </div>
             </div>
-            <div layout="row" layout-align="center center" class="event-join">
+            <div layout="column" layout-align="center" class="event-active-container">
                 <div class="text-padding" ng-if="eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
-                        Wydarzenie jest aktywne
+                        <div class="is-active-text green-text">Wydarzenie jest aktywne</div>
                         <div ng-if="eventBasicInfoCtrl.checkRights()">
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'join'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
-                                        class="md-raised no-text-transformation">Dołącz</md-button>
+                                        class="md-raised no-text-transformation">Dołącz
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'disabled'"
-                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony</md-button>
+                                        ng-disabled="true" class="md-raised no-text-transformation">Przepełniony
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'already'"
                                         ng-click="eventBasicInfoCtrl.joinEvent()"
                                         ng-disabled="true"
-                                        class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem</md-button>
+                                        class="md-raised no-text-transformation hope-button">Jesteś już uczestnikiem
+                            </md-button>
                             <md-button  ng-if="eventBasicInfoCtrl.getProperButton() == 'leave'"
-                                        ng-click=""
-                                        class="md-raised no-text-transformation leave-button">Opuść wydarzenie</md-button>
+                                        ng-click="eventBasicInfoCtrl.leaveEvent()"
+                                        class="md-raised no-text-transformation leave-button">Opuść wydarzenie
+                            </md-button>
                         </div>
                     </div>
                 </div>
-                <div class="text-padding" ng-if="!eventBasicInfoCtrl.isActive" flex="100">Wydarzenie zakończone</div>
+                <div class="text-padding event-active-container" ng-if="!eventBasicInfoCtrl.isActive" flex="100">
+                    <div layout="column" layout-align="center center">
+                        <div class="is-active-text">Wydarzenie zakończone</div>
+                    </div>
+                </div>
+                <div layout="row" layout-align="center center" flex="100" ng-if="eventBasicInfoCtrl.isActive">
+                    <md-button  ng-if="eventBasicInfoCtrl.isOwnPage() && !eventBasicInfoCtrl.editMode"
+                                ng-click="eventBasicInfoCtrl.enterEditMode()"
+                                class="md-raised no-text-transformation">Edytuj
+                    </md-button>
+                    <div layout="row" layout-align="center center">
+                        <md-button flex="50" ng-if="eventBasicInfoCtrl.isOwnPage() && eventBasicInfoCtrl.editMode"
+                                    ng-click="eventBasicInfoCtrl.closeEditMode(true)"
+                                    class="md-raised no-text-transformation">Zapisz
+                        </md-button>
+                        <md-button flex="50" ng-if="eventBasicInfoCtrl.isOwnPage() && eventBasicInfoCtrl.editMode"
+                                    ng-click="eventBasicInfoCtrl.closeEditMode(false)"
+                                    class="md-raised no-text-transformation">Anuluj
+                        </md-button>
+                    </div>
+                </div>
             </div>
         </div>
         <div layout="column" layout-align="center center" flex="50">
-            <md-card flex="100" style="width: 100%;">
-                <md-content layout="row" layout-align="center center" class="no-overflow">
-                    {{eventBasicInfoCtrl.eventInfo.eventInfo.title}}
-                </md-content>
-            </md-card>
+            <div class="small-border"/>
+            <div flex="100" class="max-width">
+                <div class="event-title" layout="row" flex="100">
+                    <inline class="bigger-font small-margin-top" flex="20">Tytuł wydarzenia:</inline>
+                    <inline flex="70" class="small-margin-top">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
+                    <inline flex="10">
+                        <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"/>
+                    </inline>
+                </div>
+                <div class="bigger-font small-padding-left">Opis wydarzenia:</div>
+
+
+                <md-input-container class="description-container" layout="row" layout-align="center center">
+                    <textarea class="event-description" ng-readonly="true" ng-model="eventBasicInfoCtrl.eventInfo.eventInfo.description" md-maxlength="1000" rows="10" md-select-on-focus/>
+                </md-input-container>
+
+            </div>
         </div>
     </div>
 </div>

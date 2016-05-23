@@ -1,0 +1,32 @@
+{
+  "iconList" : [
+      {
+        "url": "resources/icons/bell.svg"
+
+      },
+      {
+        "url": "resources/icons/basket.svg"
+
+      },
+      {
+        "url": "resources/icons/cross.svg"
+
+      },
+      {
+        "url": "resources/icons/cup.svg"
+
+      },
+      {
+        "url": "resources/icons/down.svg"
+
+      },
+      {
+        "url": "resources/icons/earth.svg"
+
+      },
+      {
+        "url": "resources/icons/football.svg"
+
+      }
+  ]
+}

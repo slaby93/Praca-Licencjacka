@@ -34,6 +34,10 @@ class EventBasicInfoController {
         self.eventDate = '';
         self.eventCreatedDate = '';
         self.editMode = false;
+        self.wasIconButtonClicked = false;
+        self.EventService.getDefaultIcons().then((resp) => {
+            self.iconList = resp.data;
+        });
         self.setScopeListeners();
     }
 
@@ -57,6 +61,10 @@ class EventBasicInfoController {
         }, true);
     }
 
+    toggleWasIconButtonClicked(value){
+        let self = this;
+        if(self.isOwnPage() && self.editMode)  self.wasIconButtonClicked = value;
+    }
 
     checkUserAlreadyRegistered(userID){
         let self = this;
@@ -88,7 +96,7 @@ class EventBasicInfoController {
 
     refresh(){
         let self = this;
-        self.$scope.$emit("event:refresh",{});
+        if(!self.editMode)  self.$scope.$emit("event:refresh",{});
     }
     
     isOwnPage() {
@@ -99,6 +107,17 @@ class EventBasicInfoController {
     enterEditMode(){
         let self = this;
         if(self.isOwnPage()){
+            self.eventInfoEdit = {
+                "eventIcon" : self.eventInfo.eventIcon,
+                "eventInfo": {
+                    "description" : self.eventInfo.eventInfo.description,
+                    "payment" : self.eventInfo.eventInfo.payment,
+                    "ownEquipment" : self.eventInfo.eventInfo.ownEquipment,
+                    "experience" : self.eventInfo.eventInfo.experience,
+                    "usersLimit" : self.eventInfo.eventInfo.usersLimit,
+                    "title" : self.eventInfo.eventInfo.title
+                }
+            };
             self.editMode = true;
         }
     }
@@ -107,7 +126,7 @@ class EventBasicInfoController {
         let self = this;
         if(self.isOwnPage()){
             if(saved) {
-                self.$scope.$emit("event:edited", {});
+                self.$scope.$emit("event:edited", {"eventInfo" : self.eventInfoEdit});
             }
 
             self.editMode = false;

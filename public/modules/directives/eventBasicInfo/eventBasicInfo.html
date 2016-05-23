@@ -1,7 +1,7 @@
 <div id="event-basic-info">
     <inline layout="row" layout-align="center center" class="event-basic-intro" flex="100">
-        <md-button class="refresh-button" ng-click="eventBasicInfoCtrl.refresh()">
-            <md-icon md-svg-src="resources/refresh.svg" class="svg-submissive refresh-icon"/>
+        <md-button aria-label="refresh-button" class="refresh-button" ng-click="eventBasicInfoCtrl.refresh()" ng-if="!eventBasicInfoCtrl.editMode">
+            <md-icon md-svg-src="resources/refresh.svg" class="svg-submissive refresh-icon"></md-icon>
         </md-button>
         Informacje o wydarzeniu:
     </inline>
@@ -12,7 +12,7 @@
                     <div>
                         <inline flex="100">
                             <inline class="bigger-font">Autor:</inline>
-                            <md-button class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
+                            <md-button class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()" ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.author}}</md-button>
                         </inline>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Data utworzenia:</inline>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Zapełnienie:</inline>
-                            {{eventBasicInfoCtrl.getParticipantsCount()}}
+                            <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getParticipantsCount()}}</inline>
                         </div>
                     </div>
                 </div>
@@ -36,19 +36,23 @@
                         </div>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Składka:</inline>
-                            {{eventBasicInfoCtrl.getPayment()}}
+                            <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getPayment()}}</inline>
                         </div>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
-                            {{eventBasicInfoCtrl.getOwnEquipment()}}
+                            <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getOwnEquipment()}}</inline>
                         </div>
                         <div class="text-padding">
                             <inline flex="100">
                                 <inline class="bigger-font">Stopień zaawansowania:</inline>
-                                <inline class="text-padding">
-                                    <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
+                                <inline class="text-padding" ng-if="!eventBasicInfoCtrl.editMode">
+                                    <div class="ui rating" data-rating="3" data-max-rating="5"></div>
+
+                                    <!--<md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
                                     <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.getExperience())" md-svg-src="resources/black-star.svg" class="svg-submissive icon-black"></md-icon>
+                                -->
                                 </inline>
+
                                 <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 0" md-direction="top">
                                     <div class="tooltip-container">
                                         Nie wymagane jest żadne doświadczenie<br>
@@ -103,7 +107,7 @@
                             </inline>
                         </div>
                     </div>
-                    <span flex/>
+                    <span flex></span>
                 </div>
             </div>
             <div layout="column" layout-align="center" class="event-active-container">
@@ -154,21 +158,44 @@
             </div>
         </div>
         <div layout="column" layout-align="center center" flex="50">
-            <div class="small-border"/>
+            <div class="small-border"></div>
             <div flex="100" class="max-width">
                 <div class="event-title" layout="row" flex="100">
                     <inline class="bigger-font small-margin-top" flex="20">Tytuł wydarzenia:</inline>
-                    <inline flex="70" class="small-margin-top">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
+                    <inline flex="70" class="small-margin-top" ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
                     <inline flex="10">
-                        <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"/>
+                        <md-icon ng-if="!eventBasicInfoCtrl.editMode" md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"></md-icon>
+                        <md-button aria-label="change-icon-button" class="change-icon-button" ng-if="eventBasicInfoCtrl.editMode" ng-click="eventBasicInfoCtrl.toggleWasIconButtonClicked(true)">
+                            <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon-edit"></md-icon>
+                        </md-button>
+                        <md-tooltip click-outside="eventBasicInfoCtrl.toggleWasIconButtonClicked(false)" outside-if-not="icons-tooltip"  class="icons-tooltip"
+                                    ng-if="eventBasicInfoCtrl.editMode && eventBasicInfoCtrl.wasIconButtonClicked"
+                                    md-visible="eventBasicInfoCtrl.wasIconButtonClicked"  md-direction="bottom">
+                            <div class="tooltip-container">
+                                <md-grid-list md-cols="3" md-row-height="32px" md-gutter="10px">
+                                    <md-grid-tile ng-repeat="icon in eventBasicInfoCtrl.iconList.iconList" md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
+                                        <md-content class="transparent-background tile-content">
+                                            <md-button aria-label="icon-button" class="iconList-button" ng-click="">
+                                                <md-icon md-svg-src="{{icon.url}}" class="svg-submissive event-icon"></md-icon>
+                                            </md-button>
+                                        </md-content>
+                                    </md-grid-tile>
+                                </md-grid-list>
+                            </div>
+                        </md-tooltip>
                     </inline>
                 </div>
                 <div class="bigger-font small-padding-left">Opis wydarzenia:</div>
 
 
-                <md-input-container class="description-container" layout="row" layout-align="center center">
-                    <textarea class="event-description" ng-readonly="true" ng-model="eventBasicInfoCtrl.eventInfo.eventInfo.description" md-maxlength="1000" rows="10" md-select-on-focus/>
+                <md-input-container ng-if="!eventBasicInfoCtrl.editMode" class="description-container" layout="row" layout-align="center center">
+                    <textarea aria-label="event-description" class="event-description" ng-readonly="true" ng-model="eventBasicInfoCtrl.eventInfo.eventInfo.description" md-maxlength="1000" rows="10" md-select-on-focus title=""></textarea>
                 </md-input-container>
+                <md-input-container ng-if="eventBasicInfoCtrl.editMode" class="darker-description-container" layout="row" layout-align="center center">
+                    <textarea aria-label="event-description" class="event-description" ng-readonly="false" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.description" md-maxlength="1000" rows="10" md-select-on-focus title=""></textarea>
+                    <div class="edit-info-text" ng-if="eventBasicInfoCtrl.editMode">Tryb edycji</div>
+                </md-input-container>
+
 
             </div>
         </div>

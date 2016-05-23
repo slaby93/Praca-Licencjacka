@@ -531,5 +531,30 @@ class EventService {
         let self = this;
         return (author == self.UserService.user.login || self.UserService.hasRight(['admin']) ? true : false);
     }
+
+    /**
+     * @functionality
+     *      resolves to to list of icons urls stored inside resources/iconList.json file
+     * @returns {Promise}
+     */
+    getDefaultIcons(){
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            self.$http({
+                method: 'GET',
+                url: 'resources/iconList.json'
+            }).then(
+                // SUCCESS
+                function (data) {
+                    self.$l.debug("Pomyślnie wczytano liste ikon, oto ona: ", data.data);
+                    resolve(data);
+                    // ERROR
+                }, function (err) {
+                    self.$l.debug("Nie udalo sie wczytac listy ikon!");
+                    reject(err);
+                }
+            );
+        });
+    }
 }
 export default EventService;

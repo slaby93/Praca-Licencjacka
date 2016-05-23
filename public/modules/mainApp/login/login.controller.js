@@ -3,13 +3,15 @@
  */
 
 class LoginController {
-    constructor($log, $mdDialog, loader, $state, UserService, $window) {
+    constructor($log, $mdDialog, $timeout, loader, $state, UserService, $window) {
         let self = this;
         self.$l = $log;
         self.$mdDialog = $mdDialog;
         self.loader = loader;
         self.$state = $state;
         self.$window = $window;
+        self.$timeout = $timeout;
+        self.notie = self.$window.notie;
         self.UserService = UserService;
         self.defaultValues();
     }
@@ -18,15 +20,13 @@ class LoginController {
      * Remove and initialize models for forms.
      */
     defaultValues() {
+        let self = this;
         self.userLogin = {
             login: "",
             password: ""
-        };
-        self.userRegister = {
-            login: "",
-            password: "",
-            retypedPassword: ""
-        };
+        }
+
+
     }
 
     goToRegister() {
@@ -40,16 +40,40 @@ class LoginController {
     login() {
         let self = this;
         self.loader.show();
-        self.UserService.login(self.userLogin).then(
+        /**
+         * I copy this data to have ability to clear form before request come back
+         * @type {*|{login: string, password: string}}
+         */
+        let copied = angular.copy(self.userLogin);
+        self.defaultValues();
+        self.UserService.login(copied).then(
             // Success
             (data)=> {
                 self.loader.hide();
                 self.$state.go('app.home');
+                self.notie.alert(1, 'Success!');
             },
             // Errors
             (err)=> {
                 self.loader.hide();
-                self.$l.debug(self.$window);
+                let msg;
+                switch (err.status) {
+                    case 500:
+                        msg = 'Błąd serwera ;('
+                        break;
+                    case 404:
+                        msg = 'Nie znaleziono zasobu'
+                        break;
+                    case 400:
+                        msg = 'Podane dane są nieprawidłowe'
+                        break;
+                    default:
+                        msg = `Niepoprawne dane`;
+                        break;
+                }
+                notie.alert(3, msg, 3);
+                $('#loginField').focus();
+
             });
     }
 }

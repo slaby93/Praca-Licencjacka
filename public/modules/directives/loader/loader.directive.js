@@ -16,7 +16,6 @@ class LoaderController {
     constructor($log) {
         let self = this;
         self.$l = $log;
-        self.$l.debug("Dyrektywa show");
     }
 }
 

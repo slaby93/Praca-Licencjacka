@@ -32,6 +32,7 @@ System.config({
     "clean-css": "npm:clean-css@3.4.10",
     "core-js": "npm:core-js@1.2.6",
     "crypto-js": "npm:crypto-js@3.1.6",
+    "jaredreich/notie": "github:jaredreich/notie@3.2.0",
     "jquery": "npm:jquery@2.2.2",
     "lodash": "npm:lodash@4.11.1",
     "md-data-table": "npm:md-data-table@1.4.2",

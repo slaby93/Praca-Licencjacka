@@ -27,18 +27,8 @@ class EventBasicInfoController {
         self.setDefaultValues();
     }
 
-    test() {
-        let self = this;
-        self.$l.log("TEST");
-        $('#experienceRating').rating();
-    }
-
-
     setDefaultValues() {
         let self = this;
-        $('.ui.checkbox')
-            .checkbox()
-        ;
         self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
@@ -69,13 +59,15 @@ class EventBasicInfoController {
         }, (newValue)=> {
             $('#experienceRating')
                 .rating({
-                initialRating: self.eventInfo.eventInfo.experience,
-                maxRating: 5
-                }).rating('setting', 'onRate', function(value) {
+                    initialRating: self.eventInfo.eventInfo.experience,
+                    maxRating: 5
+                }).rating('setting', 'onRate', (value) => {
                     self.eventInfoEdit.eventInfo.experience = value;
                 }).rating('disable');
         }, true);
     }
+    
+
 
     toggleWasIconButtonClicked(value) {
         let self = this;

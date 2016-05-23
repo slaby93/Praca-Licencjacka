@@ -53,9 +53,7 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getOwnEquipment()}}</inline>
-                            <inline ng-if="eventBasicInfoCtrl.editMode" class="ui checkbox">
-                                <input type="checkbox" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.ownEquipment">
-                            </inline>
+                            <md-checkbox ng-if="eventBasicInfoCtrl.editMode" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.ownEquipment"></md-checkbox>
                         </div>
                         <div class="text-padding">
                             <inline flex="100">

@@ -16,6 +16,7 @@ import * as amMap from 'amcharts/ammap3';
 import * as lodash from 'lodash';
 import * as ng_file_upload from 'ng-file-upload';
 import * as ng_img_crop from 'alexk111/ngImgCrop';
+import * as semantic from './../../../semantic/dist/semantic.min'
 
 // -----------------------------------------------------   Config imports        ------------------------------------------------------------------------------------------
 import routing from './routing';

@@ -11,8 +11,6 @@
             <div layout="column" layout-gt-xs="row" layout-align-sm="center center" layout-align-xs="center center"
                  flex="100">
                 <div layout="column" flex="50">
-                    <!--REMOVE ME-->
-                    <button class="ui button primary" ng-click="eventBasicInfoCtrl.test()">TEST</button>
                     <div>
                         <inline flex="100">
                             <inline class="bigger-font">Autor:</inline>
@@ -55,30 +53,15 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getOwnEquipment()}}</inline>
-                            <inline ng-if="eventBasicInfoCtrl.editMode" class="ui form">
-                                <div class="field">
-                                    <select class="ui search dropdown">
-                                        <option value="true">Tak</option>
-                                        <option value="false">Nie</option>
-                                    </select>
-                                </div>
+                            <inline ng-if="eventBasicInfoCtrl.editMode" class="ui checkbox">
+                                <input type="checkbox" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.ownEquipment">
                             </inline>
                         </div>
                         <div class="text-padding">
                             <inline flex="100">
                                 <inline class="bigger-font">Stopień zaawansowania:</inline>
-                                <inline class="text-padding" ng-if="!eventBasicInfoCtrl.editMode">
-
-                                    <div id="superTest" class="ui heart rating" data-rating="2"></div>
-
-                                    <md-icon
-                                            ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())"
-                                            md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
-                                    <md-icon
-                                            ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.getExperience())"
-                                            md-svg-src="resources/black-star.svg"
-                                            class="svg-submissive icon-black"></md-icon>
-
+                                <inline class="text-padding">
+                                    <div id="experienceRating" class="ui star rating" ></div>
                                 </inline>
 
                                 <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 0"

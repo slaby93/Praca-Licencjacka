@@ -30,13 +30,15 @@ class EventBasicInfoController {
     test() {
         let self = this;
         self.$l.log("TEST");
-        $('#superTest').rating();
+        $('#experienceRating').rating();
     }
 
 
     setDefaultValues() {
         let self = this;
-
+        $('.ui.checkbox')
+            .checkbox()
+        ;
         self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
@@ -65,7 +67,13 @@ class EventBasicInfoController {
         self.$scope.$watch(()=> {
             return self.eventInfo;
         }, (newValue)=> {
-
+            $('#experienceRating')
+                .rating({
+                initialRating: self.eventInfo.eventInfo.experience,
+                maxRating: 5
+                }).rating('setting', 'onRate', function(value) {
+                    self.eventInfoEdit.eventInfo.experience = value;
+                }).rating('disable');
         }, true);
     }
 
@@ -127,6 +135,7 @@ class EventBasicInfoController {
                     "title": self.eventInfo.eventInfo.title
                 }
             };
+            $('#experienceRating').rating('enable');
             self.editMode = true;
         }
     }
@@ -137,7 +146,7 @@ class EventBasicInfoController {
             if (saved) {
                 self.$scope.$emit("event:edited", {"eventInfo": self.eventInfoEdit});
             }
-
+            $('#experienceRating').rating('disable').rating({initialRating: self.eventInfo.eventInfo.experience});;
             self.editMode = false;
         }
     }
@@ -192,15 +201,6 @@ class EventBasicInfoController {
         self.toggleWasIconButtonClicked(false);
     }
 
-
-    getNumber(num) {
-        if (num == 1) return [1];
-        if (num == 2) return [1, 2];
-        if (num == 3) return [1, 2, 3];
-        if (num == 4) return [1, 2, 3, 4];
-        if (num == 5) return [1, 2, 3, 4, 5];
-        return [];
-    }
 
     goToUserProfile() {
         let self = this;

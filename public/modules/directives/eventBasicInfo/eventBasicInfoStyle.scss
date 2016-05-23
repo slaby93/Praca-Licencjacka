@@ -87,6 +87,7 @@ md-tooltip.icons-tooltip {
   .no-overflow  {overflow: hidden;}
   .max-width  {width: 100%;}
   .small-margin-top  {margin-top: 15px;}
+  .smaller-margin-top  {margin-top: 8px;}
   .event-active-container  {bottom: 0;}
   .green-text  {color: rgb(68, 204, 0);}
 
@@ -103,13 +104,13 @@ md-tooltip.icons-tooltip {
   }
 
   .event-icon{
-      width:  32px;
-      height: 32px;
+      width:  48px;
+      height: 48px;
       margin-bottom: 5px;
   }
   .event-icon-edit{
-    width:  32px;
-    height: 32px;
+    width:  48px;
+    height: 48px;
     margin-bottom: 5px;
     background-color: rgba(0, 0, 0, 0.05);
   }
@@ -133,9 +134,9 @@ md-tooltip.icons-tooltip {
   }
 
   .change-icon-button{
-    height: 30px;
+    height: 48px;
     width: auto;
-    min-width: 30px;
+    min-width: 48px;
     padding: 0;
     margin: 0;
   }
@@ -197,5 +198,14 @@ md-tooltip.icons-tooltip {
       position: absolute;
       font-size: 18px;
   }
+
+  .payment-input{
+    width: 70px;
+  }
+  .limit-input{
+    width: 70px;
+    padding: 0;
+  }
+
 
 }

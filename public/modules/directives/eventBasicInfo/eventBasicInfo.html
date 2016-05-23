@@ -25,7 +25,11 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Zapełnienie:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getParticipantsCount()}}</inline>
-                            <inline ng-if="eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getParticipantsCount()}}</inline>
+                            <inline class="ui input" ng-if="eventBasicInfoCtrl.editMode">
+                                {{eventBasicInfoCtrl.eventInfo.participants.length}}/
+                                <input class="limit-input" ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.usersLimit" type="number">
+
+                            </inline>
                         </div>
                     </div>
                 </div>
@@ -38,10 +42,22 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Składka:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getPayment()}}</inline>
+                            <inline class="ui right labeled input" ng-if="eventBasicInfoCtrl.editMode">
+                                <input ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.payment" type="number" class="payment-input">
+                                <div class="ui basic label">zł</div>
+                            </inline>
                         </div>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Wymóg własnego sprzętu:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getOwnEquipment()}}</inline>
+                            <inline ng-if="eventBasicInfoCtrl.editMode" class="ui form">
+                                <div class="field">
+                                    <select class="ui search dropdown">
+                                        <option value="true">Tak</option>
+                                        <option value="false">Nie</option>
+                                    </select>
+                                </div>
+                            </inline>
                         </div>
                         <div class="text-padding">
                             <inline flex="100">
@@ -164,6 +180,9 @@
                 <div class="event-title" layout="row" flex="100">
                     <inline class="bigger-font small-margin-top" flex="20">Tytuł wydarzenia:</inline>
                     <inline flex="70" class="small-margin-top" ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.eventInfo.title}}</inline>
+                    <inline flex="70" class="smaller-margin-top ui input" ng-if="eventBasicInfoCtrl.editMode">
+                        <input ng-model="eventBasicInfoCtrl.eventInfoEdit.eventInfo.title" type="text">
+                    </inline>
                     <inline flex="10">
                         <md-icon ng-if="!eventBasicInfoCtrl.editMode" md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"></md-icon>
                         <md-button aria-label="change-icon-button" class="change-icon-button" ng-if="eventBasicInfoCtrl.editMode" ng-click="eventBasicInfoCtrl.toggleWasIconButtonClicked(true)">

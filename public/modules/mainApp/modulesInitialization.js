@@ -32,6 +32,7 @@ import CenterController from './center/center.controller';
 import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
 import LoginController from './login/login.controller';
+import RegisterController from './register/register.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -79,6 +80,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("TestController", TestController)
     .controller("UploadModalController", UploadModalController)
     .controller("LoginController", LoginController)
+    .controller("RegisterController", RegisterController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)

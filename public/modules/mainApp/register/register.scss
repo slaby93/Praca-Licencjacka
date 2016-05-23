@@ -1,0 +1,82 @@
+/**
+ * Created by danielslaby on 22/05/16.
+ */
+#login {
+  //background-color: #22354C;
+  //background-color: white;
+  background-image: url("../resources/miscellaneous/test1.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  .login-holder {
+    color: white;
+    position: relative;
+    width: 330px;
+    margin-top: 30%;
+    @media(min-width: $sm) {
+      margin-top: 80%;
+    }
+    .black-layer {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      position: absolute;
+      opacity: 0.7;
+    }
+    .login-inputs {
+      z-index: 1;
+      margin: 23px 23px 50px 23px;
+      input {
+        background-color: white;
+      }
+    }
+    .login-buttons {
+      z-index: 1;
+      .loginButton {
+        margin-left: 70px;
+        margin-right: 70px;
+        width: 100%;
+        background-color: #EFAF38;
+        color: white;
+      }
+    }
+    .login-functional {
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      .forgotPassword {
+        cursor: pointer;
+      }
+    }
+    .login-register {
+      z-index: 1;
+      margin: 20px 20px 25px 20px;
+      display: flex;
+      align-items: center;
+      .noAccountMsg {
+        min-width: 130px;
+        span {
+          font-size: 18px;
+        }
+      }
+      .registerButton {
+        min-width: 115px;
+      }
+    }
+    .login-header {
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
+      .logo {
+        max-width: 300px;
+        max-height: 100px;
+      }
+    }
+  }
+}

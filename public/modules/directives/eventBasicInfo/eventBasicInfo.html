@@ -25,6 +25,7 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Zapełnienie:</inline>
                             <inline ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getParticipantsCount()}}</inline>
+                            <inline ng-if="eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.getParticipantsCount()}}</inline>
                         </div>
                     </div>
                 </div>
@@ -46,11 +47,11 @@
                             <inline flex="100">
                                 <inline class="bigger-font">Stopień zaawansowania:</inline>
                                 <inline class="text-padding" ng-if="!eventBasicInfoCtrl.editMode">
-                                    <div class="ui rating" data-rating="3" data-max-rating="5"></div>
+                                    <!--<div class="ui star rating" data-rating="3" data-max-rating="5"></div>-->
 
-                                    <!--<md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
+                                    <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(eventBasicInfoCtrl.getExperience())" md-svg-src="resources/gold-star.svg" class="svg-submissive icon"></md-icon>
                                     <md-icon ng-repeat="i in eventBasicInfoCtrl.getNumber(5 - eventBasicInfoCtrl.getExperience())" md-svg-src="resources/black-star.svg" class="svg-submissive icon-black"></md-icon>
-                                -->
+
                                 </inline>
 
                                 <md-tooltip class="experience-tooltip" ng-if="eventBasicInfoCtrl.getExperience() == 0" md-direction="top">
@@ -166,7 +167,7 @@
                     <inline flex="10">
                         <md-icon ng-if="!eventBasicInfoCtrl.editMode" md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon"></md-icon>
                         <md-button aria-label="change-icon-button" class="change-icon-button" ng-if="eventBasicInfoCtrl.editMode" ng-click="eventBasicInfoCtrl.toggleWasIconButtonClicked(true)">
-                            <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfo.eventIcon}}" class="svg-submissive event-icon-edit"></md-icon>
+                            <md-icon md-svg-src="{{eventBasicInfoCtrl.eventInfoEdit.eventIcon}}" class="svg-submissive event-icon-edit"></md-icon>
                         </md-button>
                         <md-tooltip click-outside="eventBasicInfoCtrl.toggleWasIconButtonClicked(false)" outside-if-not="icons-tooltip"  class="icons-tooltip"
                                     ng-if="eventBasicInfoCtrl.editMode && eventBasicInfoCtrl.wasIconButtonClicked"
@@ -175,7 +176,7 @@
                                 <md-grid-list md-cols="3" md-row-height="32px" md-gutter="10px">
                                     <md-grid-tile ng-repeat="icon in eventBasicInfoCtrl.iconList.iconList" md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
                                         <md-content class="transparent-background tile-content">
-                                            <md-button aria-label="icon-button" class="iconList-button" ng-click="">
+                                            <md-button aria-label="icon-button" class="iconList-button" ng-click="eventBasicInfoCtrl.setIcon(icon.url)">
                                                 <md-icon md-svg-src="{{icon.url}}" class="svg-submissive event-icon"></md-icon>
                                             </md-button>
                                         </md-content>

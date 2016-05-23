@@ -13,7 +13,7 @@ function eventBasicInfo() {
 }
 
 class EventBasicInfoController {
-    constructor(UserService, EventService, $scope, $state, $rootScope, $log, loader) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log, loader, $window) {
         let self = this;
         self.UserService = UserService;
         self.EventService = EventService;
@@ -22,6 +22,7 @@ class EventBasicInfoController {
         self.$rootScope = $rootScope;
         self.$l = $log;
         self.loader = loader;
+        self.$window = $window
         self.watchEventInfo();
         self.setDefaultValues();
 	}
@@ -29,6 +30,8 @@ class EventBasicInfoController {
 
     setDefaultValues() {
         let self = this;
+        /*$('.ui.rating')
+            .rating();*/
         self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
@@ -171,6 +174,13 @@ class EventBasicInfoController {
         let self = this;
         return self.eventInfo.participants.length + "/" + self.eventInfo.eventInfo.usersLimit;
     }
+
+    setIcon(url){
+        let self = this;
+        self.eventInfoEdit.eventIcon = url;
+        self.toggleWasIconButtonClicked(false);
+    }
+
 
     getNumber(num) {
         if(num == 1) return [1];

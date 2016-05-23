@@ -35,12 +35,12 @@ class UserService {
      */
     login(passedUser) {
         let self = this;
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',
                 url: '/user',
                 data: {passedUser: passedUser},
-                headers: {skipAuthorization : true}
+                headers: {skipAuthorization: true}
             }).then((received) => {
                 resolve(received);
                 self.setUser(new User(
@@ -123,7 +123,7 @@ class UserService {
      */
     register(passedUser) {
         let self = this;
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject)=> {
             self.$rootScope.$evalAsync(() => {
                 self.$http({
                     method: 'POST',
@@ -145,12 +145,12 @@ class UserService {
         let self = this;
         self.setUser(new User());
         self.token = undefined;
-        self.$state.go("introduction");
+        self.$state.go("login");
     };
 
     loginByToken() {
         let self = this;
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',
                 url: '/user/token',
@@ -219,10 +219,9 @@ class UserService {
     }
 
 
-
     findBasicUserInfoById(idArray) {
         let self = this;
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',
                 url: '/user/findBasicUserInfoById',
@@ -241,7 +240,6 @@ class UserService {
             );
         });
     }
-
 
 
 }

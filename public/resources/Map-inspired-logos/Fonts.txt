@@ -1,0 +1,157 @@
+Fonts used in this design;
+
+Font: Amatic, 
+Author:	Vernon Adams,
+Url: http://www.fontsquirrel.com/fonts/amatic;
+
+
+Font: Langdon,
+Author: xlntelecom,
+Url: http://www.fontsquirrel.com/fonts/langdon;
+
+
+Font: Lobster,
+Author: Impallari Type,
+Url: http://www.fontsquirrel.com/fonts/Lobster;
+
+Font: Pacifico,
+Author:	Vernon Adams,
+Url: http://www.fontsquirrel.com/fonts/pacifico;
+
+
+Font: Roboto,
+Author:	Christian Robertson,
+Url: http://www.fontsquirrel.com/fonts/roboto;
+
+
+
+Font: Chunkfive,
+Author:	The League of Moveable Type,
+Url: http://www.fontsquirrel.com/fonts/ChunkFive;
+
+
+
+Font: Trokika ,
+Author:	Joel Carrouche,
+Url:http://www.fontsquirrel.com/fonts/troika;
+
+
+Font: Ultra,
+Author:	Joel Carrouche,
+Url:http://www.fontsquirrel.com/fonts/Ultra;
+
+
+Font: Henny penny,
+Author:	Brownfox,
+Url: http://www.fontsquirrel.com/fonts/henny-penny;
+
+
+Font: Bowlby one,
+Author:	Vernon Adams,
+Url: http://www.fontsquirrel.com/fonts/bowlby-one;
+
+Font: Boogaloo,
+Author:	John Vargas Beltránv,
+Url: http://www.fontsquirrel.com/fonts/boogaloo;
+
+Font: Lato,
+Author:	tyPoland Lukasz Dziedzic,
+Url: http://www.fontsquirrel.com/fonts/lato;
+
+Font: Burnstown Dam,
+Author:	Larabie Fonts,
+Url: http://www.fontsquirrel.com/fonts/Burnstown-Dam;
+
+Font: Nexa rust,
+Author:	Fontfabric,
+Url:http://www.fontsquirrel.com/fonts/nexa-rust;
+
+Font: JungleFever,
+Author:	Nick's Fonts,
+Url: http://www.fontsquirrel.com/fonts/JungleFever;
+
+
+Font: Wagnasty,
+Author:	Jeremy Wagner,
+Url:http://www.fontsquirrel.com/fonts/Wagnasty;
+
+
+Font: GoodDog,
+Author:	Fonthead Design,
+Url:http: http://www.fontsquirrel.com/fonts/GoodDog;
+
+Font: JUNEBUG,
+Author:	pizzadude.dk,
+Url:http:http://www.fontsquirrel.com/fonts/JuneBug;
+
+Font: FRENTE H1,
+Author:	Frente,
+Url:http:http://www.fontsquirrel.com/fonts/frente-h1;
+
+Font: bebas,
+Author:	Flat-it,
+Url:http:http://www.fontsquirrel.com/fonts/Bebas;
+
+Font: sonsie one,
+Author:	Sorkin Type Co,
+Url:http:http://www.fontsquirrel.com/fonts/sonsie-one;
+
+Font: Titillium,
+Author:	Accademia di Belle Arti Urbino,
+Url:http:http://www.fontsquirrel.com/fonts/Titillium;
+
+Font: DINER,
+Author:	David Rakowski,
+Url:http:http://www.fontsquirrel.com/fonts/Diner-Skinny;
+
+Font: FEARLESS,
+Author:	izzadude.dk,
+Url:http:http://www.fontsquirrel.com/fonts/Fearless;
+
+Font: HARTING,
+Author:	David Rakowski,
+Url:http:http://www.fontsquirrel.com/fonts/Harting;
+
+Font: Headhunter,
+Author:	David Rakowski,
+Url:http:http://www.fontsquirrel.com/fonts/Headhunter;
+
+Font: Liquidism,
+Author:	pizzadude.dK,
+Url:http:http://www.fontsquirrel.com/fonts/Liquidism;
+
+Font: NO CONSEQUENCE,
+Author:	pizzadude.dk,
+Url:http:http://www.fontsquirrel.com/fonts/No-consequence;
+
+Font: POETSEN,
+Author:	Impallari Type,
+Url:http:http://www.fontsquirrel.com/fonts/poetsen;
+
+Font: SLAPSTICK COMIC,
+Author:	ShyFonts,
+Url:http:http://www.fontsquirrel.com/fonts/SF-Slapstick-Comic;
+
+Font: SMOKUM,
+Author:	Astigmatic,
+Url:http:http://www.fontsquirrel.com/fonts/smokum;
+
+
+Font: SPILT INK,
+Author:	Walter Velez,
+Url:http:http://www.fontsquirrel.com/fonts/Spilt-Ink;
+
+Font: 
+Author:	
+Url:http:
+
+
+Font: 
+Author:	
+Url:http:
+
+
+Font: 
+Author:	
+Url:http:
+

@@ -9,10 +9,14 @@
             <div class="login-inputs ">
                 <div class="ui form">
                     <div class="field">
-                        <input id="loginField" ng-model="loginCtrl.userLogin.login" placeholder="Login" type="text" autocomplete="off">
+                        <input ng-model="loginCtrl.userLogin.login" placeholder="Login" type="text" autocomplete="off">
                     </div>
                     <div class="field">
                         <input ng-model="loginCtrl.userLogin.password" placeholder="Hasło" type="password"
+                               autocomplete="off">
+                    </div>
+                    <div class="field">
+                        <input ng-model="loginCtrl.userLogin.password" placeholder="Powtórz Hasło" type="password"
                                autocomplete="off">
                     </div>
                 </div>
@@ -26,7 +30,8 @@
             <div class="login-register">
                 <div class="noAccountMsg"><span>Nie masz konta?</span></div>
                 <div flex="grow"></div>
-                <button ng-click="loginCtrl.goToRegister()" class="ui primary button registerButton">Załóż konto
+                <button ng-click="registerCtrl.goToLogin()"
+                        class="ui primary button registerButton">Załóż konto
                 </button>
             </div>
         </form>

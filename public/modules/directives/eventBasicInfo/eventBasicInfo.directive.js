@@ -2,7 +2,7 @@
  * Created by Dammic on 14.03.16.
  */
 
- 
+
 function eventBasicInfo() {
     return {
         restrict: 'E',
@@ -25,13 +25,18 @@ class EventBasicInfoController {
         self.$window = $window
         self.watchEventInfo();
         self.setDefaultValues();
-	}
+    }
+
+    test() {
+        let self = this;
+        self.$l.log("TEST");
+        $('#superTest').rating();
+    }
 
 
     setDefaultValues() {
         let self = this;
-        /*$('.ui.rating')
-            .rating();*/
+
         self.eventInfo = {"eventInfo": {}, "participants": []};
         self.isActive = '';
         self.eventDate = '';
@@ -45,9 +50,9 @@ class EventBasicInfoController {
     }
 
 
-    setScopeListeners(){
+    setScopeListeners() {
         let self = this;
-        self.$scope.$on('event:filled', function(event,data) {
+        self.$scope.$on('event:filled', function (event, data) {
             self.eventInfo = data;
             self.isActive = (new Date(self.eventInfo.date)) > (new Date());
             self.eventDate = self.buildDateString(new Date(self.eventInfo.date));
@@ -55,7 +60,7 @@ class EventBasicInfoController {
         });
     }
 
-    watchEventInfo(){
+    watchEventInfo() {
         let self = this;
         self.$scope.$watch(()=> {
             return self.eventInfo;
@@ -64,118 +69,124 @@ class EventBasicInfoController {
         }, true);
     }
 
-    toggleWasIconButtonClicked(value){
+    toggleWasIconButtonClicked(value) {
         let self = this;
-        if(self.isOwnPage() && self.editMode)  self.wasIconButtonClicked = value;
+        if (self.isOwnPage() && self.editMode)  self.wasIconButtonClicked = value;
     }
 
-    checkUserAlreadyRegistered(userID){
+    checkUserAlreadyRegistered(userID) {
         let self = this;
-        return (_.find(self.eventInfo.participants, {'_id' : userID}) != undefined);
+        return (_.find(self.eventInfo.participants, {'_id': userID}) != undefined);
     }
-    checkRights(){
+
+    checkRights() {
         let self = this;
         return self.UserService.hasRight(['user', 'admin']);
     }
 
-    getProperButton(){
+    getProperButton() {
         let self = this;
         let out = '';
         //if the user is not an author of this event
-        if(!(self.eventInfo.author == self.UserService.user.login)) {
+        if (!(self.eventInfo.author == self.UserService.user.login)) {
             //if the user is not on the participants list
             if (!self.checkUserAlreadyRegistered(self.UserService.user.id)) {
                 //if there are still slots - we should display the 'join' button
                 if (self.isJoin())  out = 'join';
                 //if there are no free slots - we should display the 'is already full' button
                 else  out = 'disabled';
-            //if the user is on the participants list - we should display the 'leave' button
-            }else  out = 'leave';
-        //if the user is an author of this event - we should display the 'already registered' button
-        }else  out = 'already';
+                //if the user is on the participants list - we should display the 'leave' button
+            } else  out = 'leave';
+            //if the user is an author of this event - we should display the 'already registered' button
+        } else  out = 'already';
 
         return out;
     }
 
-    refresh(){
+    refresh() {
         let self = this;
-        if(!self.editMode)  self.$scope.$emit("event:refresh",{});
+        if (!self.editMode)  self.$scope.$emit("event:refresh", {});
     }
-    
+
     isOwnPage() {
         let self = this;
         return self.EventService.isOwnPage(self.eventInfo.author);
     }
 
-    enterEditMode(){
+    enterEditMode() {
         let self = this;
-        if(self.isOwnPage()){
+        if (self.isOwnPage()) {
             self.eventInfoEdit = {
-                "eventIcon" : self.eventInfo.eventIcon,
+                "eventIcon": self.eventInfo.eventIcon,
                 "eventInfo": {
-                    "description" : self.eventInfo.eventInfo.description,
-                    "payment" : self.eventInfo.eventInfo.payment,
-                    "ownEquipment" : self.eventInfo.eventInfo.ownEquipment,
-                    "experience" : self.eventInfo.eventInfo.experience,
-                    "usersLimit" : self.eventInfo.eventInfo.usersLimit,
-                    "title" : self.eventInfo.eventInfo.title
+                    "description": self.eventInfo.eventInfo.description,
+                    "payment": self.eventInfo.eventInfo.payment,
+                    "ownEquipment": self.eventInfo.eventInfo.ownEquipment,
+                    "experience": self.eventInfo.eventInfo.experience,
+                    "usersLimit": self.eventInfo.eventInfo.usersLimit,
+                    "title": self.eventInfo.eventInfo.title
                 }
             };
             self.editMode = true;
         }
     }
 
-    closeEditMode(saved){
+    closeEditMode(saved) {
         let self = this;
-        if(self.isOwnPage()){
-            if(saved) {
-                self.$scope.$emit("event:edited", {"eventInfo" : self.eventInfoEdit});
+        if (self.isOwnPage()) {
+            if (saved) {
+                self.$scope.$emit("event:edited", {"eventInfo": self.eventInfoEdit});
             }
 
             self.editMode = false;
         }
     }
 
-    joinEvent(){
+    joinEvent() {
         let self = this;
-        self.$scope.$emit("event:joined",{});
-    }
-    leaveEvent(id){
-        let self = this;
-        self.$scope.$emit("event:left",{"userID" : id});
+        self.$scope.$emit("event:joined", {});
     }
 
-    buildDateString(date){
-        return (( "0" + date.getHours()).slice(-2)) + ':'+(( "0" + date.getMinutes()).slice(-2))+' '+(( "0" + date.getDate()).slice(-2))+'.'+(( "0" + (date.getMonth()+1)).slice(-2))+'.'+date.getFullYear();
+    leaveEvent(id) {
+        let self = this;
+        self.$scope.$emit("event:left", {"userID": id});
     }
 
-    getCategory(){
+    buildDateString(date) {
+        return (( "0" + date.getHours()).slice(-2)) + ':' + (( "0" + date.getMinutes()).slice(-2)) + ' ' + (( "0" + date.getDate()).slice(-2)) + '.' + (( "0" + (date.getMonth() + 1)).slice(-2)) + '.' + date.getFullYear();
+    }
+
+    getCategory() {
         let self = this;
         return self.eventInfo.eventInfo.category;
     }
 
-    getPayment(){
+    getPayment() {
         let self = this;
         return (self.eventInfo.eventInfo.payment == 0 ? "Bezpłatny" : self.eventInfo.eventInfo.payment);
     }
-    getOwnEquipment(){
+
+    getOwnEquipment() {
         let self = this;
         return (self.eventInfo.eventInfo.ownEquipment ? "Tak" : "Nie");
     }
-    getExperience(){
+
+    getExperience() {
         let self = this;
         return self.eventInfo.eventInfo.experience;
     }
-    isJoin(){
+
+    isJoin() {
         let self = this;
         return (self.eventInfo.participants.length < self.eventInfo.eventInfo.usersLimit);
     }
-    getParticipantsCount(){
+
+    getParticipantsCount() {
         let self = this;
         return self.eventInfo.participants.length + "/" + self.eventInfo.eventInfo.usersLimit;
     }
 
-    setIcon(url){
+    setIcon(url) {
         let self = this;
         self.eventInfoEdit.eventIcon = url;
         self.toggleWasIconButtonClicked(false);
@@ -183,19 +194,19 @@ class EventBasicInfoController {
 
 
     getNumber(num) {
-        if(num == 1) return [1];
-        if(num == 2) return [1,2];
-        if(num == 3) return [1,2,3];
-        if(num == 4) return [1,2,3,4];
-        if(num == 5) return [1,2,3,4,5];
+        if (num == 1) return [1];
+        if (num == 2) return [1, 2];
+        if (num == 3) return [1, 2, 3];
+        if (num == 4) return [1, 2, 3, 4];
+        if (num == 5) return [1, 2, 3, 4, 5];
         return [];
     }
 
-    goToUserProfile(){
+    goToUserProfile() {
         let self = this;
         self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
     }
 
 }
-		
+
 export default eventBasicInfo;

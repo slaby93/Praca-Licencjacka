@@ -105,11 +105,9 @@ class CenterController {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         self.map = new google.maps.Map($('#center_element .map')[0], config);
-        self.$l.debug("self.UserService.user.id w center: ", self.UserService.user.id);
         self.UserService.getRadius().then((resp) => {
             if(resp == "error")  self.radius = 10;  //default value
             else  self.radius = resp;
-            console.log(self.radius);
             self.requestForEvents(lat, lng);
             self.map.setTilt(45);
         });

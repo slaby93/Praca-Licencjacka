@@ -116,7 +116,7 @@ class EventController {
             self.loader.show();
             let date = new Date();
             self.EventService.deactivateById(self.eventInfo._id, date).then((resp) => {
-                if(resp.docs.length > 0){
+                if(resp == "ok"){
                     self.eventInfo.date = date;
                     self.$scope.$broadcast('event:filled',self.eventInfo);
                     self.notie.alert(1, 'Pomyślnie zakończono wydarzenie!');

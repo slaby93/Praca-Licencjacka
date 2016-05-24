@@ -279,7 +279,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
         }
         var id = new ObjectId(req.body.id);
         var docs = [];
-        var date = req.body.date;
+        var date = new Date(req.body.date);
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.find(

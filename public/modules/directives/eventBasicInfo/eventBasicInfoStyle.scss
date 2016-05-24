@@ -18,6 +18,17 @@ md-tooltip.experience-tooltip {
     }
 }
 
+div#notie-confirm-inner{
+  background-color: #404040;
+}
+div#notie-confirm-yes{
+  background-color: #595959;
+}
+div#notie-confirm-no{
+  background-color: #333333;
+}
+
+
 md-tooltip.icons-tooltip {
   .transparent-background  {background-color: transparent;  }
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -95,6 +106,15 @@ md-tooltip.icons-tooltip {
   .icon{
       width: 16px;
       height: 16px;
+  }
+
+  .end-button{
+    height: 24px;
+    width: auto;
+    min-width: 50px;
+    padding: 0 5px;
+    margin: 0 0 0 5px;
+    font-size: 10px;
   }
 
   .icon-black{

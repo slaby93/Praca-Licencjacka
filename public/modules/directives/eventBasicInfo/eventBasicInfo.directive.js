@@ -157,6 +157,15 @@ class EventBasicInfoController {
         self.$scope.$emit("event:joined", {});
     }
 
+    showEndConfirm(){
+        let self = this;
+        if(self.isOwnPage()) {
+            self.notie.confirm('Czy na pewno chcesz zakończyć wydarzenie?\nTa operacja jest nieodwracalna!', 'Tak', 'Anuluj', () => {
+                notie.alert(1, 'Good choice!');
+            });
+        }
+    }
+
     leaveEvent(id) {
         let self = this;
         self.$scope.$emit("event:left", {"userID": id});

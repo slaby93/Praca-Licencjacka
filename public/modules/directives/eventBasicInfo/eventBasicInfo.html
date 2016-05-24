@@ -14,8 +14,8 @@
                     <div>
                         <inline flex="100">
                             <inline class="bigger-font">Autor:</inline>
-                            <md-button aria-label="gotoProfile-button" class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()"
-                                       ng-if="!eventBasicInfoCtrl.editMode">{{eventBasicInfoCtrl.eventInfo.author}}
+                            <md-button aria-label="gotoProfile-button" class="no-text-transformation" ng-click="eventBasicInfoCtrl.goToUserProfile()">
+                                {{eventBasicInfoCtrl.eventInfo.author}}
                             </md-button>
                         </inline>
                         <div class="text-padding" flex="100">
@@ -25,6 +25,9 @@
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Data wydarzenia:</inline>
                             {{eventBasicInfoCtrl.eventDate}}
+                            <inline>
+                                <md-button class="md-raised no-text-transformation end-button" ng-if="eventBasicInfoCtrl.editMode" aria-label="deactivate-button" ng-click="eventBasicInfoCtrl.showEndConfirm()">Zakończ</md-button>
+                            </inline>
                         </div>
                         <div class="text-padding" flex="100">
                             <inline class="bigger-font">Zapełnienie:</inline>

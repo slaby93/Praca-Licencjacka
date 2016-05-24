@@ -87,7 +87,7 @@ class EventController {
         self.$scope.$on('event:edited', function(event,data){
             self.loader.show();
             self.EventService.update(new SportEvent(self.eventInfo.author, self.eventInfo.createdDate, self.eventInfo.date,
-                                                    data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.category,
+                                                    data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.eventInfo.category,
                                                     data.data.eventInfo.payment, data.data.eventInfo.ownEquipment, data.data.eventInfo.experience,
                                                     data.data.eventInfo.usersLimit, data.data.eventInfo.title, self.eventInfo.isActive,
                                                     self.eventInfo.localization.latitude, self.eventInfo.localization.longitude,

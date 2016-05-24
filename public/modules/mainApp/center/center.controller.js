@@ -43,12 +43,17 @@ class CenterController {
         self.editStatus = false;
         self.resultStatus = false;
         self.eventsPool = [];
-        self.radius = 200;
         self.markers = [];
         self.eventEditCtrl = {};
         self.infoBox = {
             isCompiled: false
         };
+        console.log(self.UserService.user.id);
+        self.UserService.getRadiusById(self.UserService.user.id).then((resp) => {
+           if(resp == "error")  self.radius = 10; 
+           else  self.radius = resp;
+            self.$l.debug("omg ", resp);
+        });
 
     }
 

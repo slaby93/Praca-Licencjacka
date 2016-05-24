@@ -160,8 +160,9 @@ class EventBasicInfoController {
     showEndConfirm(){
         let self = this;
         if(self.isOwnPage()) {
-            self.notie.confirm('Czy na pewno chcesz zakończyć wydarzenie?\nTa operacja jest nieodwracalna!', 'Tak', 'Anuluj', () => {
-                notie.alert(1, 'Good choice!');
+            self.notie.confirm('Czy na pewno chcesz zakończyć wydarzenie?<br><br>Ta operacja jest nieodwracalna!', 'Tak', 'Anuluj', () => {
+                self.$scope.$emit("event:closed",{});
+                self.editMode = false;
             });
         }
     }

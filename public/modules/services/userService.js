@@ -159,7 +159,7 @@ class UserService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
+                    self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.localization));
                     resolve(data);
                     // ERROR
                 }, function (err) {
@@ -241,6 +241,41 @@ class UserService {
         });
     }
 
+
+    getRadiusById(id){
+        let self = this;
+        return new Promise((resolve,reject)=> {
+           if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/getRadiusById',
+                    data: {id : id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data.docs.length == 0){
+                            self.$l.debug("Nie można pobrać radiusu - podany użytkownik nie istnieje!");
+                            resolve("error");
+                        } else {
+                            self.$l.debug("Pobrano radius wynoszący ",data.data.docs[0].settings.radius);
+                            resolve(data.data.docs[0].settings.radius);
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas pobierania radiusu");
+                        resolve("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+
+
+
+
+    }
 
 }
 export default UserService;

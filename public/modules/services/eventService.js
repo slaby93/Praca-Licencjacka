@@ -70,6 +70,7 @@ class EventService {
      *
      * @param id - in form of a String, it represents the id of an event to deactivate
      **     The string has to be convertable to ObjectId!
+     *        date - in form of a Date object, it represents the current date
      * @functionality checks if the id is convertable to ObjectID
      *      and sends a http request to server in order to deactivate an event (make it not active) and also
      *      sets it's event date to currentDate to avoid situations when an user sets an event to 2099 and then disables it
@@ -80,29 +81,34 @@ class EventService {
      * @returns {Promise}
      * @userWhen  We want to forcefully deactivate an event (when closing an event by the creator or the admin).
      */
-    deactivateById(id) {
+    deactivateById(id, date) {
         let self = this;
         return new Promise((resolve,reject)=> {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/deactivateById',
-                    data: {id: id}
+                    data: {id: id, date: date}
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Event o id: " + id + " został zdeaktywowany (o ile istniał)! Oto jego uczestnicy: ", data.data.docs);
-                        self.$l.debug("Powinienes ich powiadomic o zamknieciu eventu!");
-                        resolve(data);
+                        if(data.data.docs.length > 0) {
+                            self.$l.debug("Event o id: " + id + " został zdeaktywowany! Oto jego uczestnicy: ", data.data.docs);
+                            self.$l.debug("Powinienes ich powiadomic o zamknieciu eventu!");
+                            resolve("ok");
+                        }else{
+                            self.$l.debug("Event o id: " + id + " nie istnieje!");
+                            resolve("nochange");
+                        }
                         // ERROR
                     }, function (err) {
                         self.$1.debug("Porazka podczas deaktywacji eventu!");
-                        reject(err);
+                        reject("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     };
@@ -133,13 +139,18 @@ class EventService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Oto uczestnicy eventow: ", data.data.docs);
-                    self.$l.debug("Powinienes ich powiadomic o zamknieciu eventow!");
-                    resolve(data);
+                    if(data.data.docs.length > 0) {
+                        self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Oto uczestnicy eventow: ", data.data.docs);
+                        self.$l.debug("Powinienes ich powiadomic o zamknieciu eventow!");
+                        resolve("ok");
+                    }else{
+                        self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Nie znaleziono żadnych eventów do deaktywacji!");
+                        resolve("nochange");
+                    }
                     // ERROR
                 }, function (err) {
                     self.$l.debug("Porazka podczas kontroli świeżości eventów");
-                    reject(err);
+                    reject("error");
                 }
             );
         });
@@ -226,7 +237,7 @@ class EventService {
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     };
@@ -272,12 +283,12 @@ class EventService {
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas dodawania uzytkownika: " + userID + " do wydarzenia o id: " + id);
-                        reject(err);
+                        reject("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID), bądź dodawany użytkownik jest autorem wydarzenia!");
-                resolve(-1);
+                reject("error");
             }
         });
     }
@@ -319,12 +330,12 @@ class EventService {
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas usuwania uzytkownika: " + userID + " z wydarzenia o id: " + id);
-                        reject(err);
+                        reject("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     }
@@ -357,18 +368,23 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Event o id: " + id + " został usuniety (o ile istnieje!)! Oto uczestnicy eventu: ", data.data.docs);
-                        self.$l.debug("Powinienes ich powiadomic o usunieciu eventu!");
-                        resolve(data);
+                        if(data.data.docs.length > 0) {
+                            self.$l.debug("Event o id: " + id + " został usuniety. Oto uczestnicy eventu: ", data.data.docs);
+                            self.$l.debug("Powinienes ich powiadomic o usunieciu eventu!");
+                            resolve("ok");
+                        }else{
+                            self.$l.debug("Event o id: " + id + " nie istnieje!");
+                            resolve("nochange");
+                        }
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas deaktywacji eventu!");
-                        reject(err);
+                        reject("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     }
@@ -438,7 +454,7 @@ class EventService {
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     }
@@ -487,7 +503,7 @@ class EventService {
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                resolve(-1);
+                reject("error");
             }
         });
     }

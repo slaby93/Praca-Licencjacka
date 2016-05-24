@@ -93,14 +93,6 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-deactivateById (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.deactivateById("5728714b6aad6e0a7c000000");
-                },
-                visibility: ["user"]
-            },
-            {
                 placeholder: "TEST-checkForEventsToDeactivate (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
@@ -113,14 +105,6 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.cleanOld();
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-isActive (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.isActive("57278a1c61b11eca7471141e");
                 },
                 visibility: ["user"]
             },
@@ -139,22 +123,6 @@ class HeaderController {
                     self.EventService.findByUser("slaby");
                 },
                 visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-find (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.find(21.38, 18.04, 6152);
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-findById (fixed)",
-                    click: () => {
-                        //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                        self.EventService.findById("572f0c19c40ef7op253e98fd");//572f0c19c40ef768253e98fd
-                    },
-                    visibility: ["guest","user"]
             },
             {
                 placeholder: "Wyloguj",

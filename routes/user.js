@@ -357,6 +357,27 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
     });
 });
 
+router.post('/getRadiusById', function (req, res, next) {
+    var id = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["user"], function (db) {
+        db.user.find(
+            {"_id" : id},
+            {"_id" : 0, "settings.radius" : 1}, function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs" : data}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
+
 
 function closeDB(db) {
     db.close();

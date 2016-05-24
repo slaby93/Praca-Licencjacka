@@ -58,8 +58,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
                     "usersLimit": passedEvent.eventInfo.usersLimit,
                     "title": passedEvent.eventInfo.title
                 },
-                "defaultEventImage": passedEvent.defaultEventImage,
-                "defaultEventIcon": passedEvent.defaultEventIcon,
+                "eventIcon": passedEvent.eventIcon,
                 "participants": passedEvent.participants
             };
 
@@ -110,8 +109,7 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                             "usersLimit": passedEvent.eventInfo.usersLimit,
                             "title": passedEvent.eventInfo.title
                         },
-                        "defaultEventImage": passedEvent.defaultEventImage,
-                        "defaultEventIcon": passedEvent.defaultEventIcon
+                        "eventIcon": passedEvent.eventIcon
                     }
                 }, function (err, data) {
                     if (err) {
@@ -281,7 +279,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
         }
         var id = new ObjectId(req.body.id);
         var docs = [];
-        var date = new Date();
+        var date = req.body.date;
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.find(

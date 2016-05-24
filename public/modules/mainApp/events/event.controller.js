@@ -87,11 +87,11 @@ class EventController {
         self.$scope.$on('event:edited', function(event,data){
             self.loader.show();
             self.EventService.update(new SportEvent(self.eventInfo.author, self.eventInfo.createdDate, self.eventInfo.date,
-                                                    data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.eventInfo.category,
-                                                    data.data.eventInfo.payment, data.data.eventInfo.ownEquipment, data.data.eventInfo.experience,
-                                                    data.data.eventInfo.usersLimit, data.data.eventInfo.title, self.eventInfo.isActive,
-                                                    self.eventInfo.localization.latitude, self.eventInfo.localization.longitude,
-                                                    self.eventInfo.participants), data.data._id)
+                data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.eventInfo.category,
+                data.data.eventInfo.payment, data.data.eventInfo.ownEquipment, data.data.eventInfo.experience,
+                data.data.eventInfo.usersLimit, data.data.eventInfo.title, self.eventInfo.isActive,
+                self.eventInfo.localization.latitude, self.eventInfo.localization.longitude,
+                self.eventInfo.participants), data.data._id)
             .then((resp) => {
                 if(resp == "ok"){
 
@@ -109,6 +109,18 @@ class EventController {
                     self.notie.alert(1, 'Pomyślnie zaaktualizowano wydarzenie!');
                 }else if(resp =="nochange")  self.notie.alert(2, 'Błąd podczas aktualizacji wydarzenia - jest ono prawdopodobnie nieaktywne bądź nie było zmian');
                  else  self.notie.alert(2, 'Błąd podczas aktualizacji wydarzenia!');
+                self.loader.hide();
+            });
+        });
+        self.$scope.$on('event:closed', function(event,data){
+            self.loader.show();
+            let date = new Date();
+            self.EventService.deactivateById(self.eventInfo._id, date).then((resp) => {
+                if(resp.docs.length > 0){
+                    self.eventInfo.date = date;
+                    self.$scope.$broadcast('event:filled',self.eventInfo);
+                    self.notie.alert(1, 'Pomyślnie zakończono wydarzenie!');
+                }else  self.notie.alert(2, 'Nie można zakończyć wydarzenia!');
                 self.loader.hide();
             });
         });

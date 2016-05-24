@@ -242,34 +242,29 @@ class UserService {
     }
 
 
-    getRadiusById(id){
+    getRadius(){
         let self = this;
         return new Promise((resolve,reject)=> {
-           if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                self.$http({
-                    method: 'POST',
-                    url: '/user/getRadiusById',
-                    data: {id : id}
-                }).then(
-                    // SUCCESS
-                    function (data) {
-                        if (data.data.docs.length == 0){
-                            self.$l.debug("Nie można pobrać radiusu - podany użytkownik nie istnieje!");
-                            resolve("error");
-                        } else {
-                            self.$l.debug("Pobrano radius wynoszący ",data.data.docs[0].settings.radius);
-                            resolve(data.data.docs[0].settings.radius);
-                        }
-                        // ERROR
-                    }, function (err) {
-                        self.$l.debug("Porazka podczas pobierania radiusu");
+            self.$http({
+                method: 'POST',
+                url: '/user/getRadiusById',
+                data: {id : self.user.id}
+            }).then(
+                // SUCCESS
+                function (data) {
+                    if (data.data.docs.length == 0){
+                        self.$l.debug("Nie można pobrać radiusu - podany użytkownik nie istnieje!");
                         resolve("error");
+                    } else {
+                        self.$l.debug("Pobrano radius wynoszący ",data.data.docs[0].settings.radius);
+                        resolve(data.data.docs[0].settings.radius);
                     }
-                );
-            }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                reject("error");
-            }
+                    // ERROR
+                }, function (err) {
+                    self.$l.debug("Porazka podczas pobierania radiusu");
+                    resolve("error");
+                }
+            );
         });
 
 

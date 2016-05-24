@@ -378,6 +378,68 @@ router.post('/getRadiusById', function (req, res, next) {
 });
 
 
+router.post('/sendMessage', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var message = req.body.message;
+        var recipientList = req.body.recipientList;
+        var recipientArray = [];
+        for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+        message.authorID = new ObjectId(message.authorID);
+
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id": {$in : recipientArray }},
+                {$addToSet:
+                    {"mailBox":
+                        {
+                            "_id": new ObjectId(),
+                            "authorID": message.authorID,
+                            "dateSent": new Date(message.dateSent),
+                            "content": message.content,
+                            "topic": message.topic,
+                            "isRead": false,
+                            "isInReceivedBox": true
+                        }
+                    }
+                }, {multi: true}
+            );
+
+            db.user.update(
+                {"_id": message.authorID},
+                {$addToSet:
+                    {"mailBox":
+                        {
+                            "_id": new ObjectId(),
+                            "author": message.authorID,
+                            "recipients": recipientArray,
+                            "dateSent": new Date(message.dateSent),
+                            "content": message.content,
+                            "topic": message.topic,
+                            "isRead": true,
+                            "isInReceivedBox": false
+                        }
+                    }
+                }, function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
 
 function closeDB(db) {
     db.close();

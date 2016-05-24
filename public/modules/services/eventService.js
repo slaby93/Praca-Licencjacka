@@ -34,13 +34,14 @@ class EventService {
      **    It also redirects the user to the newly added event's page like:  /#/app/event/[id]/
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      resolves to "ok" if it succeeded, "error" if not
      */
     addEvent(passedEvent) {
         let self = this;
         return new Promise((resolve,reject)=> {
             if ((new Date(passedEvent.date)) <= (new Date())) {
                 self.$l.debug("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
-                resolve(-1);
+                reject("error");
             }else{
                 self.$http({
                     method: 'POST',
@@ -51,11 +52,11 @@ class EventService {
                     function (data) {
                         self.$l.debug("Dodawanie nowego eventu powiodło się! Oto jego id: " + data.data.id);
                         self.$state.go(`app.event`, {eventID: data.data.id});
-                        resolve(data);
+                        resolve("ok");
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas dodawania nowego eventu!"+ $(err));
-                        reject(err);
+                        reject("error");
                     }
                 );
             }
@@ -79,6 +80,7 @@ class EventService {
      * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to -1
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if the event does not exist or it has been already deactivated, "error" in case of an error
      * @userWhen  We want to forcefully deactivate an event (when closing an event by the creator or the admin).
      */
     deactivateById(id, date) {
@@ -126,6 +128,7 @@ class EventService {
      **      where _id is an id of an user
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if there were no events to deactivate, "error" in case of an error
      * @todo: SHOULD NOTIFY ALL PARTICIPANTS ABOUT THE DEACTIVATION OF AN EVENT
      * @usedWhen it should fire every minute to ensure that the events in the database are as precise as possible
      */
@@ -169,6 +172,7 @@ class EventService {
      * In case there were no deleted documents, it logs to console and resolves []
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if there were no events to remove, "error" in case of an error
      * @todo: SHOULD NOTIFY ALL PARTICIPANTS ABOUT THE DELETION OF AN EVENT
      * @usedWhen it should fire everyday to ensure that the archive events do not take too much space
      */
@@ -184,61 +188,17 @@ class EventService {
                 function (data) {
                     if (data.data.docs.length == 0) {
                         self.$l.debug("Nie znaleziono eventów do usunięcia!");
-                        resolve([]);
+                        resolve("nochange");
                     } else {
                         self.$l.debug("Usunięto stare, zakończone eventy. Ich dokumenty to: ", data.data.docs);
-                        resolve(data);
+                        resolve("ok");
                     }
                     // ERROR
                 }, function (err) {
                     self.$l.debug("Porazka podczas usuwania starych, zakończonych eventów!");
-                    reject(err);
+                    reject("error");
                 }
             );
-        });
-    };
-
-
-
-
-
-    /**
-     * @params  id - id in form of String, represents an id of an event
-     * @functionality checks if the isActive parameter of an event is true (if the event is active)
-     * In case of a success, it logs to console and resolves to data (in the form of: {"isActive" : isActive}
-     * In case of a failure, it logs to console and resolves to err
-     * In case the event does not exist in database, it logs to console and resolves to -1
-     * In case the id is not convertable to ObjectId, it logs to console and resolves to -1
-     * @returns {Promise}
-     */
-    isActive(id) {
-        let self = this;
-        return new Promise((resolve,reject)=> {
-            if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                self.$http({
-                    method: 'POST',
-                    url: '/event/isActive',
-                    data: {id: id}
-                }).then(
-                    // SUCCESS
-                    function (data) {
-                        if (data.data.isActive[0] == null) {
-                            self.$l.debug("Event o podanym id nie istnieje!");
-                            resolve(-1);
-                        } else {
-                            self.$l.debug("Pomyślnie sprawdzono świeżość eventu, ma on status: "+ data.data.isActive[0].isActive );
-                            resolve(data.data.isActive[0].isActive);
-                        }
-                        // ERROR
-                    }, function (err) {
-                        self.$l.debug("Porazka podczas sprawdzania świeżości eventu");
-                        reject(err);
-                    }
-                );
-            }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                reject("error");
-            }
         });
     };
 
@@ -259,6 +219,8 @@ class EventService {
      * In case the query does not modify anything (event does not exist/is inactive/is full/user is registered) it logs to console and resolves to "nochange"
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if the event does not exist, is not active, is full, the user is already registerd,
+     *      "error" in case of an error
      * @todo: CHECK IF THE USER IS NOT ON THE BLACKLIST OF THE AUTHOR
      */
     joinEvent(id, author, userID) {
@@ -307,6 +269,7 @@ class EventService {
      * In case the query does not modify anything (event does not exist/is inactive) it logs to console and resolves to "nochange"
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if the event does not exist or is not active, "error" in case of an error
      */
     kickUser(id, userID) {
         let self = this;
@@ -354,6 +317,7 @@ class EventService {
      * In case of a success, it logs to console and resolves to data
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if there were no events to remove, "error" in case of an error
      * @todo: notify all users of the deleted event about that fact
      * @usedWhen:  only for admin, should be used in special circumstances (e.g. when the event offends the law or people)
      */
@@ -399,6 +363,7 @@ class EventService {
      * In case of a success, it logs to console and resolves to array of events, sorted by date in an ascending order
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      full event Info array of event organized by an user if it succeeded, err in case of an error
      */
     findByUser(name) {
         let self = this;
@@ -432,6 +397,7 @@ class EventService {
      * In case of a success, it logs to console and resolves to full data about event
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      full event Info of the event we want to find if it succeeded, err or "error" in case of an error
      * */
     findById(id) {
         let self = this;
@@ -449,7 +415,7 @@ class EventService {
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas wyszukiwania eventu o id: " + id);
-                        reject(err);
+                        reject("error");
                     }
                 );
             }else{
@@ -472,6 +438,7 @@ class EventService {
      * In case of a success, it logs to console and resolves to full event data
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      "ok" if it succeeded, "nochange" if the event is inactive, "error" in case of an error
      */
     update(passedEvent, id) {
         let self = this;
@@ -520,6 +487,7 @@ class EventService {
      * In case of a success, it logs to console and resolves array of full events data + distance added to each event
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
+     *      full event Info array of events found in a radius +distance to each in case it succeeds, err in case of an error
      */
     find(latitude, longitude, radius) {
         let self = this;
@@ -558,6 +526,7 @@ class EventService {
      * @functionality
      *      resolves to to list of icons urls stored inside resources/iconList.json file
      * @returns {Promise}
+     *      list of icons {"url":} if it succeeded, err in case of an error
      */
     getDefaultIcons(){
         let self = this;

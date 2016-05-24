@@ -125,6 +125,14 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
+                placeholder: "TEST-sendMessage (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.UserService.sendMessage("571ca790e033b8ab254a680e", "taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"]);
+                },
+                visibility: ["user"]
+            },
+            {
                 placeholder: "Wyloguj",
                 click: () => {
                     let self = this;

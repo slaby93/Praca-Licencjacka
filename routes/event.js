@@ -311,28 +311,6 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
 });
 
 
-router.post('/isActive', function (req, res, next) {
-    var id = new ObjectId(req.body.id);
-    mongo.connect("serwer", ["event"], function (db) {
-
-        db.event.find(
-            {"_id": id},
-            {_id: 0, isActive: 1},
-            function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                } else {
-                    res.status(200).send({"isActive": data}).end(function () {
-                        db.close();
-                    });
-                }
-            }
-        );
-    });
-});
-
 
 router.post('/cleanOld', function (req, res, next) {
     var currentDate = new Date();

@@ -333,5 +333,42 @@ class UserService {
         });
     }
 
+
+
+
+
+    removeMessage(messageID) {
+        let self = this;
+        return new Promise((resolve,reject)=>{
+
+            if(messageID.match(/^[0-9a-fA-F]{24}$/)){
+                self.$http({
+                    method: 'POST',
+                    url: '/user/removeMessage',
+                    data: {messageID: messageID, userID : self.user.id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if(data.data == "nochange"){
+                            self.$l.debug("Nie udało się (wiadomość nie istnieje) usunąć wiadomości o id ", messageID);
+                            resolve("nochange");
+                        }else {
+                            self.$l.debug("Pomyślnie usunięto wiadomość o id ", messageID);
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Błąd podczas usuwania wiadomości o id ", messageID);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
+        });
+    }
+
+
 }
 export default UserService;

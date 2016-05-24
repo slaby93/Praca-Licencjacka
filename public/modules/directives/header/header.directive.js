@@ -133,6 +133,14 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
+                placeholder: "TEST-removeMessage (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.UserService.removeMessage("5744a2d01ad8bad41a7ea17d");
+                },
+                visibility: ["user"]
+            },
+            {
                 placeholder: "Wyloguj",
                 click: () => {
                     let self = this;

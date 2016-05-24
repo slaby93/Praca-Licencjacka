@@ -441,6 +441,40 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
 
 
 
+router.post('/removeMessage', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var messageID = new ObjectId(req.body.messageID);
+        var userID = new ObjectId(req.body.userID);
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id" : userID},
+                {$pull: {"mailBox": {"_id" : messageID}}},
+                function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    }else if (data.nModified == 0){
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
+
 function closeDB(db) {
     db.close();
 }

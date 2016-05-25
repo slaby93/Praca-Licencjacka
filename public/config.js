@@ -17,13 +17,13 @@ System.config({
     "Classes": "modules/class",
     "alexk111/ngImgCrop": "github:alexk111/ngImgCrop@0.3.2",
     "amcharts/ammap3": "github:amcharts/ammap3@3.20.3",
-    "angular": "github:angular/bower-angular@1.5.2",
+    "angular": "github:angular/bower-angular@1.5.5",
     "angular-img-cropper": "npm:angular-img-cropper@0.0.2",
     "angular-jwt": "npm:angular-jwt@0.0.9",
     "angular-local-storage": "npm:angular-local-storage@0.2.6",
     "angular-material": "github:angular/bower-material@1.0.6",
     "angular-material-data-table": "npm:angular-material-data-table@0.9.14",
-    "angular-messages": "github:angular/bower-angular-messages@1.5.2",
+    "angular-messages": "github:angular/bower-angular-messages@1.5.5",
     "angular-moment": "npm:angular-moment@1.0.0-beta.5",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "babel": "npm:babel-core@5.8.35",
@@ -42,22 +42,22 @@ System.config({
     "sweetalert": "npm:sweetalert@1.1.3",
     "ui-router": "npm:ui-router@1.0.0-alpha0",
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.2"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-angular-animate@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.2"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-angular-aria@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.2"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-angular-messages@1.5.0": {
-      "angular": "github:angular/bower-angular@1.5.2"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
-    "github:angular/bower-angular-messages@1.5.2": {
-      "angular": "github:angular/bower-angular@1.5.2"
+    "github:angular/bower-angular-messages@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-material@1.0.6": {
-      "angular": "github:angular/bower-angular@1.5.2",
+      "angular": "github:angular/bower-angular@1.5.5",
       "angular-animate": "github:angular/bower-angular-animate@1.5.0",
       "angular-aria": "github:angular/bower-angular-aria@1.5.0",
       "css": "github:systemjs/plugin-css@0.1.20"
@@ -112,7 +112,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular-material@1.0.6": {
-      "angular": "github:angular/bower-angular@1.5.2",
+      "angular": "github:angular/bower-angular@1.5.5",
       "angular-animate": "github:angular/bower-angular-animate@1.5.0",
       "angular-aria": "github:angular/bower-angular-aria@1.5.0",
       "angular-messages": "github:angular/bower-angular-messages@1.5.0",

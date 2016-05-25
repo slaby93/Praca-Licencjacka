@@ -1,6 +1,6 @@
 <div id="login">
     <div>
-        <form layout="column" class="login-holder">
+        <form name="registerCtrl.registerForm" layout="column" class="login-holder">
             <div class="black-layer">
             </div>
             <div class="login-header">
@@ -9,29 +9,74 @@
             <div class="login-inputs ">
                 <div class="ui form">
                     <div class="field">
-                        <input ng-model="loginCtrl.userLogin.login" placeholder="Login" type="text" autocomplete="off">
+                        <input ng-model="registerCtrl.userRegister.login" required ng-minlength="3"
+                               placeholder="Login"
+                               type="text"
+                               name="login"
+                               autocomplete="off">
+                        <div ng-messages="registerCtrl.registerForm.login.$error"
+                             ng-if="registerCtrl.registerForm.login.$invalid && registerCtrl.registerForm.login.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                            <div ng-message="minlength">
+                                Login jest za krótki! Wymagane conajmniej 3 znaki!
+                            </div>
+                        </div>
                     </div>
                     <div class="field">
-                        <input ng-model="loginCtrl.userLogin.password" placeholder="Hasło" type="password"
+                        <input ng-model="registerCtrl.userRegister.password"
+                               ng-change="registerCtrl.checkPasswordValidity()"
+                               required
+                               ng-minlength="6"
+                               placeholder="Hasło"
+                               type="password"
+                               name="password"
                                autocomplete="off">
+                        <div ng-messages="registerCtrl.registerForm.password.$error"
+                             ng-if="registerCtrl.registerForm.password.$invalid && registerCtrl.registerForm.password.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                            <div ng-message="minlength">
+                                Hasło jest za krótkie! Wymagane jest conajmniej 6 znaków!
+                            </div>
+                        </div>
                     </div>
                     <div class="field">
-                        <input ng-model="loginCtrl.userLogin.password" placeholder="Powtórz Hasło" type="password"
+                        <input ng-model="registerCtrl.userRegister.retypedPassword"
+                               ng-change="registerCtrl.checkPasswordValidity()"
+                               required
+                               ng-minlength="6"
+                               placeholder="Powtórz Hasło"
+                               type="password"
+                               name="retypedPassword"
                                autocomplete="off">
+                        <div ng-messages="registerCtrl.registerForm.retypedPassword.$error"
+                             ng-if="registerCtrl.registerForm.retypedPassword.$invalid && registerCtrl.registerForm.retypedPassword.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                            <div ng-message="minlength">
+                                Hasło jest za krótkie! Wymagane jest conajmniej 6 znaków!
+                            </div>
+                            <div ng-message="notMatchingPassword">
+                                Podane hasła nie są zgodne!
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="login-buttons" layout="row" layout-align="center">
-                <button ng-click="loginCtrl.login()" type="submit" class="ui loginButton submit button">Zaloguj</button>
+            <div class="login-buttons" layout="row"
+                 layout-align="center">
+                <button ng-click="registerCtrl.register()"
+                        ng-class="{disabled :registerCtrl.registerForm.$invalid}"
+                        type="submit" class="ui loginButton submit button">Zarejestruj
+                </button>
             </div>
-            <div class=login-functional>
-                <a class="forgotPassword">Zapomniałem Hasła</a>
-            </div>
-            <div class="login-register">
-                <div class="noAccountMsg"><span>Nie masz konta?</span></div>
-                <div flex="grow"></div>
+            <div class="login-register" layout-align="center">
                 <button ng-click="registerCtrl.goToLogin()"
-                        class="ui primary button registerButton">Załóż konto
+                        class="ui primary button registerButton">Powrót do logowania
                 </button>
             </div>
         </form>

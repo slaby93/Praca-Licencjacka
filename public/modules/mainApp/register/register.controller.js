@@ -1,11 +1,13 @@
 /**
  * Created by danielslaby on 23/05/16.
  */
+import * as ngMessages  from 'angular-messages';
 
 class RegisterController {
-    constructor($log, $mdDialog, loader, $state, UserService) {
+    constructor($log, $timeout, $mdDialog, loader, $state, UserService) {
         let self = this;
         self.$l = $log;
+        self.$timeout = $timeout;
         self.$mdDialog = $mdDialog;
         self.loader = loader;
         self.$state = $state;
@@ -22,36 +24,20 @@ class RegisterController {
      * Remove and initialize models for forms.
      */
     defaultValues() {
-        self.userLogin = {
-            login: "",
-            password: ""
-        };
+        let self = this;
         self.userRegister = {
             login: "",
             password: "",
             retypedPassword: ""
         };
+        if (self.registerForm) {
+            self.$timeout(()=> {
+                self.registerForm.$setUntouched();
+            });
+
+        }
     }
 
-    /**
-     * Login user by credentials.
-     */
-    login() {
-        let self = this;
-        self.loader.show();
-        self.$l.debug("Login");
-        self.UserService.login(self.userLogin).then(
-            // Success
-            (data)=> {
-                self.loader.hide();
-                self.$l.debug("Data", data);
-                self.$state.go('app.home');
-            },
-            // Errors
-            (err)=> {
-                self.loader.hide();
-            });
-    }
 
     /**
      * Register new user to system
@@ -60,21 +46,44 @@ class RegisterController {
     register() {
         let self = this;
         self.loader.show();
-        self.UserService.register(self.userRegister).then(
+        let copy = angular.copy(self.userRegister);
+        self.defaultValues();
+        self.UserService.register(copy).then(
             // Success
             ()=> {
                 self.loader.hide();
-                self.closeModal();
-            },
+                self.$state.go('app.home');
+            }).catch(
             // Errors
             (err)=> {
                 self.loader.hide();
+                self.$l.debug("Err", err);
+                let msg;
+                switch (err.status) {
+                    case 400:
+                        msg = err.data.message;
+                        break;
+                    case 500:
+                        msg = 'Błąd serwera';
+                        break;
+                    default:
+                        msg = 'Nieznany błąd serwera';
+                        break;
+                }
+                notie.alert(3, msg, 3);
             });
     }
 
-    handleRegisterBtn() {
+    /**
+     * Checks if data in inputs (password and retypedPassword) are valid and identical.
+     */
+    checkPasswordValidity() {
         let self = this;
-        self.$l.debug("Register Btn");
+        if (self.userRegister.password === self.userRegister.retypedPassword) {
+            self.registerForm.retypedPassword.$setValidity('notMatchingPassword', true);
+            return;
+        }
+        self.registerForm.retypedPassword.$setValidity('notMatchingPassword', false);
     }
 }
 

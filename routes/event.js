@@ -58,8 +58,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
                     "usersLimit": passedEvent.eventInfo.usersLimit,
                     "title": passedEvent.eventInfo.title
                 },
-                "defaultEventImage": passedEvent.defaultEventImage,
-                "defaultEventIcon": passedEvent.defaultEventIcon,
+                "eventIcon": passedEvent.eventIcon,
                 "participants": passedEvent.participants
             };
 
@@ -86,7 +85,7 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
             return;
         }
         var passedEvent = req.body.passedEvent;
-        var id = new ObjectId(req.body.passedEvent._id);
+        var id = new ObjectId(req.body.id);
         mongo.connect("serwer", ["event"], function (db) {
             db.event.update(
                 {$and :[
@@ -110,12 +109,15 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
                             "usersLimit": passedEvent.eventInfo.usersLimit,
                             "title": passedEvent.eventInfo.title
                         },
-                        "defaultEventImage": passedEvent.defaultEventImage,
-                        "defaultEventIcon": passedEvent.defaultEventIcon
+                        "eventIcon": passedEvent.eventIcon
                     }
                 }, function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else if (data.nModified == 0) {
+                        res.status(200).send("nochange").end(function () {
                             db.close();
                         });
                     } else {
@@ -277,7 +279,7 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
         }
         var id = new ObjectId(req.body.id);
         var docs = [];
-        var date = new Date();
+        var date = new Date(req.body.date);
         mongo.connect("serwer", ["event"], function (db) {
 
             db.event.find(
@@ -308,28 +310,6 @@ router.post('/deactivateById', auth, guard.check('user'), function (req, res, ne
     });
 });
 
-
-router.post('/isActive', function (req, res, next) {
-    var id = new ObjectId(req.body.id);
-    mongo.connect("serwer", ["event"], function (db) {
-
-        db.event.find(
-            {"_id": id},
-            {_id: 0, isActive: 1},
-            function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                } else {
-                    res.status(200).send({"isActive": data}).end(function () {
-                        db.close();
-                    });
-                }
-            }
-        );
-    });
-});
 
 
 router.post('/cleanOld', function (req, res, next) {

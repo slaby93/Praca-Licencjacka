@@ -18,6 +18,17 @@ md-tooltip.experience-tooltip {
     }
 }
 
+div#notie-confirm-inner{
+  background-color: #404040;
+}
+div#notie-confirm-yes{
+  background-color: #595959;
+}
+div#notie-confirm-no{
+  background-color: #333333;
+}
+
+
 md-tooltip.icons-tooltip {
   .transparent-background  {background-color: transparent;  }
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -97,6 +108,15 @@ md-tooltip.icons-tooltip {
       height: 16px;
   }
 
+  .end-button{
+    height: 24px;
+    width: auto;
+    min-width: 50px;
+    padding: 0 5px;
+    margin: 0 0 0 5px;
+    font-size: 10px;
+  }
+
   .icon-black{
       width: 14px;
       height: 14px;
@@ -117,7 +137,7 @@ md-tooltip.icons-tooltip {
 
 
   .description-container{
-      background-color: #ccffff;
+      background-color: rgba(0, 0, 0, 0.05);
       border-top-right-radius: 20px;
       border-top-left-radius: 20px;
   }
@@ -203,7 +223,7 @@ md-tooltip.icons-tooltip {
     width: 70px;
   }
   .limit-input{
-    width: 70px;
+    width: 50px;
     padding: 0;
   }
 

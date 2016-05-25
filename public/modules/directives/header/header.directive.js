@@ -93,14 +93,6 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-deactivateById (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.deactivateById("5728714b6aad6e0a7c000000");
-                },
-                visibility: ["user"]
-            },
-            {
                 placeholder: "TEST-checkForEventsToDeactivate (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
@@ -113,30 +105,6 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.cleanOld();
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-isActive (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.isActive("57278a1c61b11eca7471141e");
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-joinEvent (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.joinEvent("572f0f8f8a490757a3e346ef", "slaby", "573b58ace69d5d3016370dca");
-                },
-                visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-kickUser (fixed)",
-                click: () => {
-                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.kickUser("572f0f8f8a490757a3e346ef", "573b58ace69d5d3016370dca");
                 },
                 visibility: ["user"]
             },
@@ -157,29 +125,20 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-find (fixed)",
+                placeholder: "TEST-sendMessage (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.find(21.38, 18.04, 6152);
+                    self.UserService.sendMessage("571ca790e033b8ab254a680e", "taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"]);
                 },
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-update (fixed)",
+                placeholder: "TEST-removeMessage (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    let sportEvent = new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2033, 3, 19, 0, 0), false, false, "hacked!", "koszykówka", 666, true, 0, 666,"title", false, 11.0543231, 11.0543231, []);
-                    self.EventService.update(sportEvent, "572f0c19c40ef768253e98fd");
+                    self.UserService.removeMessage("5744a2d01ad8bad41a7ea17d");
                 },
                 visibility: ["user"]
-            },
-            {
-                placeholder: "TEST-findById (fixed)",
-                    click: () => {
-                        //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                        self.EventService.findById("572f0c19c40ef7op253e98fd");//572f0c19c40ef768253e98fd
-                    },
-                    visibility: ["guest","user"]
             },
             {
                 placeholder: "Wyloguj",

@@ -159,7 +159,7 @@ class UserService {
             }).then(
                 // SUCCESS
                 function (data) {
-                    self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.email, data.data.firstName, data.data.lastName, data.data.localization, data.data.phone));
+                    self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.localization));
                     resolve(data);
                     // ERROR
                 }, function (err) {
@@ -218,7 +218,13 @@ class UserService {
 
     }
 
-
+    /**
+     *
+     * @param idArray - array of users' id we want to get basic Info about
+     * @functionality:  it returns users' basic info
+     * @returns {Promise<T>|Promise}
+     *      the resolved data is an array of {_id, login, name, surname} of the found users.
+     */
     findBasicUserInfoById(idArray) {
         let self = this;
         return new Promise((resolve, reject)=> {
@@ -238,6 +244,128 @@ class UserService {
                     reject(err);
                 }
             );
+        });
+    }
+
+    /**
+     *
+     * @functionality:  it returns the radius setting of the UserService user
+     * @returns {Promise<T>|Promise}
+     *      the resolved data is the (int) radius that user set in the settings
+     */
+    getRadius(){
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            self.$http({
+                method: 'POST',
+                url: '/user/getRadiusById',
+                data: {id : self.user.id}
+            }).then(
+                // SUCCESS
+                function (data) {
+                    if (data.data.docs.length == 0){
+                        self.$l.debug("Nie można pobrać radiusu - podany użytkownik nie istnieje!");
+                        resolve("error");
+                    } else {
+                        self.$l.debug("Pobrano radius wynoszący ",data.data.docs[0].settings.radius);
+                        resolve(data.data.docs[0].settings.radius);
+                    }
+                    // ERROR
+                }, function (err) {
+                    self.$l.debug("Porazka podczas pobierania radiusu");
+                    resolve("error");
+                }
+            );
+        });
+    }
+
+    /**
+     *
+     * @param authorID - the id of an author, String
+     * @param content - the content of a message, String
+     * @param dateSent - the date the message has been sent, Date
+     * @param topic - the topic of the message, String
+     * @param recipientList - the array of the recipients (each object must contain at least labeled _id parameter, the rest is optional)
+     * @functionality:  it adds two messages to the mailBox - first one to all of the recipients (it does not contain recipientsList),
+     *                  has "isReceivedBox" set to true (it will be in a received box)
+     *                  the second to the author only and it contains recipientsList as well as "isReceivedBox" set to false (will be in a sent box)
+     *                  It checks if the author id can be converted to ObjectId, as well if all the recipientList elements are valid
+     * @returns {Promise<T>|Promise}
+     *      resolves to"ok" if it succedded, "error" if not
+     */
+    sendMessage(authorID, content, dateSent, topic, recipientList) {
+        let self = this;
+        let message = {
+            "authorID" : authorID,
+            "content" : content,
+            "dateSent" : dateSent,
+            "topic" : topic
+        };
+        return new Promise((resolve,reject)=>{
+            let matchPassed = true;
+            _.forEach(recipientList, (value, key) => {
+                if(!recipientList[key].match(/^[0-9a-fA-F]{24}$/)){
+                    matchPassed = false;
+                }
+            });
+            if (matchPassed && !message.authorID.match(/^[0-9a-fA-F]{24}$/))  matchPassed = false;
+
+            if(matchPassed){
+                self.$http({
+                    method: 'POST',
+                    url: '/user/sendMessage',
+                    data: {message: message, recipientList: recipientList}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
+        });
+    }
+
+
+
+
+
+    removeMessage(messageID) {
+        let self = this;
+        return new Promise((resolve,reject)=>{
+
+            if(messageID.match(/^[0-9a-fA-F]{24}$/)){
+                self.$http({
+                    method: 'POST',
+                    url: '/user/removeMessage',
+                    data: {messageID: messageID, userID : self.user.id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if(data.data == "nochange"){
+                            self.$l.debug("Nie udało się (wiadomość nie istnieje) usunąć wiadomości o id ", messageID);
+                            resolve("nochange");
+                        }else {
+                            self.$l.debug("Pomyślnie usunięto wiadomość o id ", messageID);
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Błąd podczas usuwania wiadomości o id ", messageID);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
         });
     }
 

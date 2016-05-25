@@ -357,6 +357,123 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
     });
 });
 
+router.post('/getRadiusById', function (req, res, next) {
+    var id = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["user"], function (db) {
+        db.user.find(
+            {"_id" : id},
+            {"_id" : 0, "settings.radius" : 1}, function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs" : data}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
+
+router.post('/sendMessage', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var message = req.body.message;
+        var recipientList = req.body.recipientList;
+        var recipientArray = [];
+        for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+        message.authorID = new ObjectId(message.authorID);
+
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id": {$in : recipientArray }},
+                {$addToSet:
+                    {"mailBox":
+                        {
+                            "_id": new ObjectId(),
+                            "authorID": message.authorID,
+                            "dateSent": new Date(message.dateSent),
+                            "content": message.content,
+                            "topic": message.topic,
+                            "isRead": false,
+                            "isInReceivedBox": true
+                        }
+                    }
+                }, {multi: true}
+            );
+
+            db.user.update(
+                {"_id": message.authorID},
+                {$addToSet:
+                    {"mailBox":
+                        {
+                            "_id": new ObjectId(),
+                            "author": message.authorID,
+                            "recipients": recipientArray,
+                            "dateSent": new Date(message.dateSent),
+                            "content": message.content,
+                            "topic": message.topic,
+                            "isRead": true,
+                            "isInReceivedBox": false
+                        }
+                    }
+                }, function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
+
+router.post('/removeMessage', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var messageID = new ObjectId(req.body.messageID);
+        var userID = new ObjectId(req.body.userID);
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id" : userID},
+                {$pull: {"mailBox": {"_id" : messageID}}},
+                function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    }else if (data.nModified == 0){
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
 
 function closeDB(db) {
     db.close();

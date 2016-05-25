@@ -42,14 +42,13 @@ class CenterController {
         let self = this;
         self.editStatus = false;
         self.resultStatus = false;
+        self.radius = '';
         self.eventsPool = [];
-        self.radius = 200;
         self.markers = [];
         self.eventEditCtrl = {};
         self.infoBox = {
             isCompiled: false
         };
-
     }
 
     test() {
@@ -106,8 +105,12 @@ class CenterController {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         self.map = new google.maps.Map($('#center_element .map')[0], config);
-        self.requestForEvents(lat, lng, self.radius);
-        self.map.setTilt(45);
+        self.UserService.getRadius().then((resp) => {
+            if(resp == "error")  self.radius = 10;  //default value
+            else  self.radius = resp;
+            self.requestForEvents(lat, lng);
+            self.map.setTilt(45);
+        });
     }
 
     test_mocked_marker() {
@@ -122,10 +125,10 @@ class CenterController {
         self.addClickListenerToMarker(self.addMarker(mark), self.handleMarkerClick);
     }
 
-    requestForEvents(lat, lng, radius) {
+    requestForEvents(lat, lng) {
         let self = this;
-        self.$l.debug("requestForEvents", lat, lng, radius);
-        self.eventService.find(lat, lng, radius).then((resp)=> {
+        self.$l.debug("requestForEvents", lat, lng, self.radius);
+        self.eventService.find(lat, lng, self.radius).then((resp)=> {
             self.eventsPool = resp.data.docs;
             self.showReceivedEvents(self.eventsPool);
         }, (err)=> {

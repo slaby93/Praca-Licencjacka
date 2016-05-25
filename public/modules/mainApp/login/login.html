@@ -1,6 +1,6 @@
 <div id="login">
     <div>
-        <form layout="column" class="login-holder">
+        <form name="loginCtrl.loginForm" layout="column" class="login-holder">
             <div class="black-layer">
             </div>
             <div class="login-header">
@@ -9,11 +9,34 @@
             <div class="login-inputs ">
                 <div class="ui form">
                     <div class="field">
-                        <input id="loginField" ng-model="loginCtrl.userLogin.login" placeholder="Login" type="text" autocomplete="off">
+                        <input name="login"
+                               id="loginField"
+                               ng-model="loginCtrl.userLogin.login"
+                               placeholder="Login"
+                               required
+                               type="text" autocomplete="off">
+                        <div ng-messages="loginCtrl.loginForm.login.$error"
+                             ng-if="loginCtrl.loginForm.login.$invalid && loginCtrl.loginForm.login.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                        </div>
                     </div>
                     <div class="field">
-                        <input ng-model="loginCtrl.userLogin.password" placeholder="Hasło" type="password"
+                        <input name="password" ng-model="loginCtrl.userLogin.password" placeholder="Hasło"
+                               required
+                               ng-minlength="6"
+                               type="password"
                                autocomplete="off">
+                        <div ng-messages="loginCtrl.loginForm.password.$error"
+                             ng-if="loginCtrl.loginForm.password.$invalid && loginCtrl.loginForm.password.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                            <div ng-message="minlength">
+                                Hasło jest za krótke! Wymagane jest conajmniej 6 znaków!
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

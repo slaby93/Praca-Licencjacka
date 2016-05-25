@@ -25,17 +25,17 @@ class RegisterController {
      */
     defaultValues() {
         let self = this;
-        self.userRegister = {
-            login: "",
-            password: "",
-            retypedPassword: ""
-        };
-        if (self.registerForm) {
-            self.$timeout(()=> {
-                self.registerForm.$setUntouched();
-            });
 
+        if (self.registerForm) {
+            self.registerForm.$setUntouched();
         }
+        self.$timeout(()=> {
+            self.userRegister = {
+                login: "",
+                password: "",
+                retypedPassword: ""
+            };
+        });
     }
 
 

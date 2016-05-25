@@ -21,10 +21,15 @@ class LoginController {
      */
     defaultValues() {
         let self = this;
-        self.userLogin = {
-            login: "",
-            password: ""
+        if (self.loginForm) {
+            self.loginForm.$setUntouched();
         }
+        self.$timeout(()=> {
+            self.userLogin = {
+                login: "",
+                password: ""
+            }
+        });
 
 
     }

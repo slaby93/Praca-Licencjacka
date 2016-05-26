@@ -310,11 +310,13 @@ class UserService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        if(toAll)  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do wszystkich uzytkownikow!");
+                        else  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
                         resolve("ok");
                         // ERROR
                     }, function (err) {
-                        self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        if(toAll)  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do wszystkich użytkowników!");
+                        else  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
                         reject("error");
                     }
                 );
@@ -408,7 +410,6 @@ class UserService {
     sendMessageFromSystem(content, dateSent, topic, recipientList, toAll){
         let self = this;
         return new Promise((resolve,reject)=>{
-            self.$l.debug("uprawnienia:", self.user.groups);
             if(self.hasRight(["admin"])){
                 self._sendSystemMessage(content, dateSent, topic, recipientList, toAll).then((resp) => {
                     resolve(resp);

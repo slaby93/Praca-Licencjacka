@@ -85,7 +85,7 @@ router.post('/register', function (req, res, next) {
     user.blacklist = [];
     user.settings = {
         "isPrivate": false,
-        "radius": 10,
+        "radius": 50,
         "description" : "",
         "name": "",
         "surname": ""
@@ -390,12 +390,11 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
         var searchQuery = '';
         var recipientArray = [];
 
-        if(toAll == undefined)  searchQuery = {};
+        if(toAll == true)  searchQuery = {};
          else {
             for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
             searchQuery = {"_id": {$in: recipientArray}};
          }
-
         message.authorID = new ObjectId(message.authorID);
 
         mongo.connect("serwer", ["user"], function (db) {

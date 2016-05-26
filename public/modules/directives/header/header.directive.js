@@ -163,8 +163,8 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     //IT SHOULD NOT WORK FROM HERE AS THE METHOD IS PRIVATE!!!!
-                    let toAll = false;
-                    self.UserService.sendSystemMessage("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
+                    let toAll = true;
+                    self.UserService._sendSystemMessage("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
                 },
                 visibility: ["user"]
             },

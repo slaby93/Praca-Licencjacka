@@ -6,6 +6,7 @@
  */
 import User from 'Classes/User';
 class UserService {
+
     constructor($log, $http, $state, localStorageService, $q, $rootScope, $mdDialog) {
         let self = this;
         self.$l = $log;
@@ -18,6 +19,7 @@ class UserService {
         self.user = new User();
         self.watchUserObject();
     }
+
 
     watchUserObject() {
         let self = this;
@@ -285,6 +287,7 @@ class UserService {
 
 
     //pseudo-private
+    //@todo: MAKE THIS FUNCTION PRIVATE!!!!!!!!!!!!!!!!!
     _sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
         let self = this;
         let message = {

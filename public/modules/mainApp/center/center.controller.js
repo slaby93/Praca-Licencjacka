@@ -70,7 +70,7 @@ class CenterController {
                 description: 'Odśwież',
                 enabled: false,
                 onClick: (item)=> {
-                    
+
                 }
             },
             {
@@ -90,7 +90,7 @@ class CenterController {
                 onClick: (item)=> {
                     self.UserService.logout();
                 }
-            }
+            },
         ];
         self.menuVisible = false;
         $('#menuDropdown').dropdown();

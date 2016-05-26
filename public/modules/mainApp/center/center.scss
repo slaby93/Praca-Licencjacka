@@ -131,10 +131,13 @@
       background-color: white;
     }
   }
-
+  #infoBoxMainHolder {
+    overflow: hidden;
+  }
   #infoBox {
     display: flex;
     flex-direction: column;
+    height: 100%;
     .mainContent {
       margin-top: 10px;
       display: flex;

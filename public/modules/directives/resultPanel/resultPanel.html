@@ -37,11 +37,11 @@
     </div>
     <!--GRID-->
     <div class="gridResultsHolder" layout-wrap ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
-        <div flex-sm="50" flex-xs="50" flex-md="33" flex-gt-md="25"
+        <div flex-sm="50" flex-xs="50" flex-md="33" flex-md="20" flex-lg="15" flex-xl="10"
              ng-repeat="result in resultCtrl.centerController.eventsPool">
             <md-card class="result gridResult" ng-click="resultCtrl.handleResultClick(result)">
                 <md-card-content layout="column">
-                    <div layout="row" layout-align="start">
+                    <div class="ui segment" layout="row" layout-align="start">
                         <span> {{result.eventInfo.title}}</span>
                         <div flex="grow"></div>
                         <sport-icons sport="result.eventInfo.category"></sport-icons>

@@ -346,7 +346,6 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
                     res.status(404).send().end(function () {
                         db.close();
                     });
-                    return;
                 } else {
                     res.status(200).send({"docs": data}).end(function () {
                         db.close();

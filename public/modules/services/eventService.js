@@ -348,8 +348,8 @@ class EventService {
                         }
                         // ERROR
                     }, function (err) {
-                        self.$l.debug("Porazka podczas deaktywacji eventu!");
-                        reject("error");
+                        self.$l.debug("Porazka podczas usuwania eventu!");
+                        reject(err);
                     }
                 );
             }else{

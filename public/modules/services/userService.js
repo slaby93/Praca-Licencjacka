@@ -15,6 +15,49 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
+
+        //private function?
+        var sendSystemMessage = function(content, dateSent, topic, recipientList, toAll) {
+            let self = this;
+            let message = {
+                "authorID" :  "000000000000000000000000",
+                "content" : content,
+                "dateSent" : dateSent,
+                "topic" : topic
+            };
+            return new Promise((resolve,reject)=>{
+                let matchPassed = true;
+                if(!toAll) {
+                    _.forEach(recipientList, (value, key) => {
+                        if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
+                            matchPassed = false;
+                        }
+                    });
+                }
+                if(matchPassed){
+                    self.$http({
+                        method: 'POST',
+                        url: '/user/sendMessage',
+                        data: {message: message, recipientList: recipientList, toAll: toAll}
+                    }).then(
+                        // SUCCESS
+                        function (data) {
+                            self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                            resolve("ok");
+                            // ERROR
+                        }, function (err) {
+                            self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                            reject("error");
+                        }
+                    );
+                }else{
+                    self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                    reject("error");
+                }
+            });
+        }
+
+
         self.user = new User();
         self.watchUserObject();
     }
@@ -353,45 +396,7 @@ class UserService {
      * @returns {Promise<T>|Promise}
      *      resolves to"ok" if it succedded, "error" if not
      */
-    private sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
-        let self = this;
-        let message = {
-            "authorID" :  "000000000000000000000000",
-            "content" : content,
-            "dateSent" : dateSent,
-            "topic" : topic
-        };
-        return new Promise((resolve,reject)=>{
-            let matchPassed = true;
-            if(!toAll) {
-                _.forEach(recipientList, (value, key) => {
-                    if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
-                        matchPassed = false;
-                    }
-                });
-            }
-            if(matchPassed){
-                self.$http({
-                    method: 'POST',
-                    url: '/user/sendMessage',
-                    data: {message: message, recipientList: recipientList, toAll: toAll}
-                }).then(
-                    // SUCCESS
-                    function (data) {
-                        self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                        resolve("ok");
-                        // ERROR
-                    }, function (err) {
-                        self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                        reject("error");
-                    }
-                );
-            }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
-                reject("error");
-            }
-        });
-    }
+
 
     sendMessageFromSystem(content, dateSent, topic, recipientList, toAll){
         let self = this;

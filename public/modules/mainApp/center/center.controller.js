@@ -23,11 +23,21 @@ class CenterController {
         self.GoogleService = GoogleService;
         self.eventService = EventService;
         self.setDefaultValues();
+        self.debounceFunctions();
         self.observeObjects();
+    }
+
+    debounceFunctions() {
+        let self = this;
+        self.calculatePosition = _.debounce(self.calculatePosition, 100);
     }
 
     observeObjects() {
         let self = this;
+        $(window).resize(()=> {
+            self.calculatePosition()
+        });
+
         let tmp = self.$scope.$watch(()=> {
             return self.GoogleService.ready;
         }, (value)=> {
@@ -49,106 +59,54 @@ class CenterController {
         self.infoBox = {
             isCompiled: false
         };
+        self.$timeout(() => {
+            self.calculatePosition()
+        });
 
         self.menuOptions = [
             {
                 id: 0,
-                icon: '',
-                description: '',
+                icon: 'refresh-left-arrow.svg',
+                description: 'Odśwież',
                 enabled: false,
                 onClick: (item)=> {
-                    console.log("TEST")
-                    item.enabled = !item.enabled
+
                 }
             },
             {
                 id: 1,
-                icon: '',
-                description: '',
-                enabled: false
+                icon: 'settings.svg',
+                description: 'Opcje',
+                enabled: false,
+                onClick: (item)=> {
+
+                }
             },
             {
                 id: 2,
-                icon: '',
-                description: '',
-                enabled: false
+                icon: 'door-exit.svg',
+                description: 'Wyloguj',
+                enabled: false,
+                onClick: (item)=> {
+                    self.UserService.logout();
+                }
             },
-            {
-                id: 3,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 4,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 5,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 6,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 7,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 8,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 9,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 10,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 11,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 12,
-                icon: '',
-                description: '',
-                enabled: false
-            },
-            {
-                id: 13,
-                icon: '',
-                description: '',
-                enabled: false
-            }
         ];
         self.menuVisible = false;
         $('#menuDropdown').dropdown();
     }
 
+    calculatePosition() {
+        let self = this;
+        self.$timeout(()=> {
+            let elem = $('.slidingMenuDropdown');
+            elem.css('left', -elem.width() + 50);
+        });
+    }
+
     test() {
         let self = this;
-        self.eventService.find(50, 20, 9999).then((resp)=> {
-            self.$l.debug("RESP", resp.data.docs);
-        });
+        self.calculatePosition();
 
     }
 

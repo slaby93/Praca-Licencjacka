@@ -55,8 +55,8 @@ class LoginController {
             // Success
             (data)=> {
                 self.loader.hide();
-                self.$state.go('app.home');
-                self.notie.alert(1, 'Success!');
+                self.$state.go('center');
+                self.notie.alert(1, 'Success!', 1);
             },
             // Errors
             (err)=> {

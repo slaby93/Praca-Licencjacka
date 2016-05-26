@@ -4,11 +4,11 @@
 import Moment from 'moment';
 
 class SportEvent {
-    constructor(author, createdDate, date, eventIcon, description = 'Missing Description', category, payment, ownEquipment, experience, usersLimit = 0, title = "Missing title", isActive = false, latitude = 50, longitude = 20, participants = []) {
+    constructor(authorID, createdDate, date, eventIcon, description = 'Missing Description', category, payment, ownEquipment, experience, usersLimit = 0, title = "Missing title", isActive = false, latitude = 50, longitude = 20, participants = []) {
 
         if(experience < 0 || experience > 5 )  experience = 0;
 
-        this.author = author;
+        this.authorID = authorID;
         this.createdDate = createdDate;
         this.date = date;
         this.eventIcon = eventIcon;

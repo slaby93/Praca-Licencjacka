@@ -386,13 +386,22 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
         }
         var message = req.body.message;
         var recipientList = req.body.recipientList;
+        var toAll = req.body.toAll;
+
+        var searchQuery = '';
         var recipientArray = [];
-        for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+
+        if(toAll == undefined)  searchQuery = {};
+         else {
+            for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+            searchQuery = {"_id": {$in: recipientArray}};
+         }
+
         message.authorID = new ObjectId(message.authorID);
 
         mongo.connect("serwer", ["user"], function (db) {
             db.user.update(
-                {"_id": {$in : recipientArray }},
+                searchQuery,
                 {$addToSet:
                     {"mailBox":
                         {

@@ -290,6 +290,7 @@ class UserService {
      *                  has "isReceivedBox" set to true (it will be in a received box)
      *                  the second to the author only and it contains recipientsList as well as "isReceivedBox" set to false (will be in a sent box)
      *                  It checks if the author id can be converted to ObjectId, as well if all the recipientList elements are valid
+     * @warning: messages from the system will be sent from a special ObjectId("000000000000000000000000")
      * @returns {Promise<T>|Promise}
      *      resolves to"ok" if it succedded, "error" if not
      */
@@ -308,7 +309,7 @@ class UserService {
                     matchPassed = false;
                 }
             });
-            if (matchPassed && !message.authorID.match(/^[0-9a-fA-F]{24}$/))  matchPassed = false;
+            if (matchPassed && message.authorID != "system" && !message.authorID.match(/^[0-9a-fA-F]{24}$/))  matchPassed = false;
 
             if(matchPassed){
                 self.$http({
@@ -334,6 +335,77 @@ class UserService {
     }
 
 
+
+
+    /**
+     *
+     * @param content - the content of a message, String
+     * @param dateSent - the date the message has been sent, Date
+     * @param topic - the topic of the message, String
+     * @param recipientList - the array of the recipients (each object must contain at least labeled _id parameter, the rest is optional)
+     * @functionality:  it adds two messages to the mailBox - first one to all of the recipients (it does not contain recipientsList),
+     *                  has "isReceivedBox" set to true (it will be in a received box)
+     *                  the second to the author only and it contains recipientsList as well as "isReceivedBox" set to false (will be in a sent box)
+     *                  It checks if all the recipientList elements are valid
+     *                  It does not take authorID, as the message will be sent from a special ID of an user "system"
+     *                  It is made private as we don't want normal users abusing that
+     *                  If an admin wants to sent a message, consider using the function "sendMessageFromSystem"
+     * @returns {Promise<T>|Promise}
+     *      resolves to"ok" if it succedded, "error" if not
+     */
+    private sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
+        let self = this;
+        let message = {
+            "authorID" :  "000000000000000000000000",
+            "content" : content,
+            "dateSent" : dateSent,
+            "topic" : topic
+        };
+        return new Promise((resolve,reject)=>{
+            let matchPassed = true;
+            if(!toAll) {
+                _.forEach(recipientList, (value, key) => {
+                    if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
+                        matchPassed = false;
+                    }
+                });
+            }
+            if(matchPassed){
+                self.$http({
+                    method: 'POST',
+                    url: '/user/sendMessage',
+                    data: {message: message, recipientList: recipientList, toAll: toAll}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
+        });
+    }
+
+    sendMessageFromSystem(content, dateSent, topic, recipientList, toAll){
+        let self = this;
+        return new Promise((resolve,reject)=>{
+            if(self.hasRight(["admin"])){
+                self.sendSystemMessage(content, dateSent, topic, recipientList, toAll).then((resp) => {
+                    resolve(resp);
+                });
+            }else  {
+                self.$l.debug("Brak uprawnień do wysyłania wiadomości!");
+                reject("error");
+            }
+        });
+    }
 
 
 

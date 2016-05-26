@@ -121,118 +121,134 @@
     margin-right: 15px;
   }
 
-}
+  .queryResultsHolder {
 
-.queryResultsHolder {
-
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden !important;
-  text-overflow: ellipsis;
-  md-menu-item {
-    background-color: white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    md-menu-item {
+      background-color: white;
+    }
   }
-}
 
-#infoBox {
-  display: flex;
-  flex-direction: column;
-  .mainContent {
-    margin-top: 10px;
+  #infoBox {
     display: flex;
-    flex-direction: row;
-    .representationSection {
-      .date {
-        margin-right: 30px;
-      }
-      .savedUsers {
-        margin-top: 5px;
-      }
-      sport-icons {
-        position: relative;
-        top: -2px;
-      }
-      .title {
-        font-size: 20px;
-        padding-bottom: 8px;
-      }
+    flex-direction: column;
+    .mainContent {
+      margin-top: 10px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      .representationSection {
+        .date {
+          margin-right: 30px;
+        }
+        .savedUsers {
+          margin-top: 5px;
+        }
+        sport-icons {
+          position: relative;
+          top: -2px;
+        }
+        .title {
+          font-size: 20px;
+          padding-bottom: 8px;
+        }
+        display: flex;
+        flex-direction: column;
+      }
+      .imageHolder {
+        img {
+          margin-left: 15px;
+          width: 75px;
+          height: 75px;
+          border-radius: 50%;
+        }
+      }
     }
-    .imageHolder {
-      img {
-        margin-left: 15px;
-        width: 75px;
-        height: 75px;
-        border-radius: 50%;
+    .goButtonHolder {
+      display: flex;
+      margin-top: 3px;
+      margin-bottom: -3px;
+      justify-content: center;
+      align-items: center;
+      .goButton {
+        background-color: #4C88F9;
       }
     }
   }
-  .goButtonHolder {
+
+  .centerMenu {
+    width: 30px;
+    height: 30px;
+    position: absolute !important;
+    right: 50px !important;
+    top: 30px !important;
+    pointer-events: all;
+    cursor: pointer;
+
+    @media(max-width: $md) {
+      left: 30px !important;
+      top: 130px !important;
+
+    }
+  }
+
+  .optionsHolder {
+
+  }
+
+  .menuItem {
+    padding: 10px;
+    height: 80px;
+    @media(max-width: $md) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
     display: flex;
-    margin-top: 3px;
-    margin-bottom: -3px;
     justify-content: center;
     align-items: center;
-    .goButton {
-      background-color: #4C88F9;
+    cursor: pointer;
+    border: 1px solid transparent;
+    &.enabledMenuItem {
+      background-color: #00D4FF;
+    }
+    &:hover {
+      border-color: #e5e5e5;
+    }
+    &:active {
+      transform: scale(0.9);
+    }
+
+  }
+
+  .dontDisplay {
+    display: none !important;
+  }
+
+  .slidingMenuDropdown {
+    left: -390px;
+    max-height: 350px;
+    width: 300px;
+    overflow: auto;
+    @media(max-width: $md) {
+      left: 0px !important;
     }
   }
-}
 
-.centerMenu {
-  width: 30px;
-  height: 30px;
-  position: absolute !important;
-  right: 50px !important;
-  top: 30px !important;
-  pointer-events: all;
-  cursor: pointer;
+  .menuIcon {
+    width: 100%;
+    height: 100%;
+    &:hover {
+      transform: scale(1.2);
+    }
+    &:active {
+      transform: scale(1);
+    }
+  }
 
-  @media(max-width: $md) {
-    left: 30px !important;
-    top: 130px !important;
+  .centerMenuBody {
+    position: absolute;
 
   }
-}
-
-.optionsHolder {
-
-}
-
-.menuItem {
-  padding: 10px;
-  height: 80px;
-  @media(max-width: $md) {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &.enabledMenuItem {
-    background-color: grey;
-  }
-  &:active {
-    border: 1px solid #e5e5e5;;
-  }
-}
-
-.dontDisplay {
-  display: none !important;
-}
-
-.slidingMenuDropdown {
-  left: -370px !important;
-  max-height: 350px;
-  max-width: 300px;
-  overflow: auto;
-  @media(max-width: $md) {
-    left: 0px !important;
-  }
-}
-
-.centerMenuBody {
-  position: absolute;
 }

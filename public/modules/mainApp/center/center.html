@@ -5,21 +5,24 @@
         <div flex="grow" layout="column" layout-align="start start">
             <!--MENU-->
             <div id="menuDropdown" class="ui pointing dropdown centerMenu">
-                <md-icon class="ui dropdown" md-svg-src="resources/icons/wrench.svg"></md-icon>
-                <div class="default text">Gender</div>
+                <md-icon class="ui dropdown menuIcon"
+                         md-svg-src="resources/icons/menu-button-of-three-lines.svg"></md-icon>
                 <div class="menu slidingMenuDropdown">
                     <div class="header optionsHolder">
                         <div layout="row" layout-wrap>
                             <div
-                                    flex-xl="25"
+                                    flex-xl="33"
                                     flex-lg="33"
                                     flex-md="33"
                                     flex-sm="50"
                                     flex-xs="100"
+                                    layout="column"
+                                    layout-align="center center"
                                     ng-class="{enabledMenuItem : option.enabled}"
                                     ng-click="(option.onClick) ? option.onClick(option) : false"
                                     ng-repeat="option in centerCtrl.menuOptions" class="menuItem">
-                                {{option.id}}
+                                <md-icon ng-if="option.icon" md-svg-src="resources/icons/{{option.icon}}"></md-icon>
+                                <span ng-if="option.description">{{option.description}}</span>
                             </div>
                         </div>
                     </div>

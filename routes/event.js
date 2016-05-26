@@ -41,7 +41,7 @@ router.post('/addEvent', auth, guard.check('user'), function (req, res, next) {
 
             //creation of document to insert
             var doc = {
-                "author": passedEvent.author,
+                "authorID": new ObjectId(passedEvent.authorID),
                 "createdDate": new Date(passedEvent.createdDate),
                 "date": new Date(passedEvent.date),
                 "isActive": true,
@@ -245,7 +245,7 @@ router.post('/checkForEventsToDeactivate', function (req, res, next) {
     mongo.connect("serwer", ["event"], function (db) {
         db.event.find(
             {$and: [{"date": {$lte: currentDate}}, {"isActive": true}]},
-            {participants: 1},
+            {participants: 1, authorID : 1},
             function (err, data) {
                 docs = data;
             }
@@ -393,11 +393,11 @@ router.post('/find', function (req, res, next) {
 
 
 router.post('/findByUser', function (req, res, next) {
-    var name = req.body.name;
+    var userID = new ObjectId(req.body.userID);
     mongo.connect("serwer", ["event"], function (db) {
         db.event.aggregate(
             [
-                {$match: {"author": name}},
+                {$match: {"_id": userID}},
                 {$sort: {date: -1}}
             ], function (err, data) {
                 if (err) {

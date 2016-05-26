@@ -28,7 +28,8 @@ class EventService {
      *
      * @param passedEvent - in form of a filled SportEvent class object
      * @functionality sends a http request to server in order to add an user to the database
-     * In case of an 'eventDate' < 'currentDate', it logs to console and resolves to '-1'
+     * In case of an 'eventDate' < 'currentDate', it logs to console and resolves to 'error'
+     * It checks if the authorID is convertable to ObjectID, and in case it is not, it resolves to "error"
      * In case of a success, it logs to console and resolves to data (which has a form: {"id": id}}
      **    where id is the string representation of the added document's id
      **    It also redirects the user to the newly added event's page like:  /#/app/event/[id]/
@@ -41,6 +42,9 @@ class EventService {
         return new Promise((resolve,reject)=> {
             if ((new Date(passedEvent.date)) <= (new Date())) {
                 self.$l.debug("Blad podczas dodawania nowego eventu - nie mozna ustawic daty mniejszej niz dzisiejsza!");
+                reject("error");
+            }else if (!passedEvent.authorID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$l.debug("Blad podczas dodawania nowego eventu - nie mozna skonwertowac ID autora do ObjectID!");
                 reject("error");
             }else{
                 self.$http({
@@ -83,10 +87,10 @@ class EventService {
      *      "ok" if it succeeded, "nochange" if the event does not exist or it has been already deactivated, "error" in case of an error
      * @userWhen  We want to forcefully deactivate an event (when closing an event by the creator or the admin).
      */
-    deactivateById(id, date) {
+    deactivateById(id, authorID, date) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && authorID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/deactivateById',
@@ -109,7 +113,7 @@ class EventService {
                     }
                 );
             }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
                 reject("error");
             }
         });
@@ -143,8 +147,9 @@ class EventService {
                 // SUCCESS
                 function (data) {
                     if(data.data.docs.length > 0) {
-                        self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Oto uczestnicy eventow: ", data.data.docs);
+                        self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Oto uczestnicy eventow: ", data.data.docs.participants);
                         self.$l.debug("Powinienes ich powiadomic o zamknieciu eventow!");
+                        self.$l.debug("Tak samo powiadom autora!: ",data.data.docs.authorID);
                         resolve("ok");
                     }else{
                         self.$l.debug("Kontrola świeżości eventów zakończona pozytywnie! Nie znaleziono żadnych eventów do deaktywacji!");
@@ -173,7 +178,7 @@ class EventService {
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      "ok" if it succeeded, "nochange" if there were no events to remove, "error" in case of an error
-     * @todo: SHOULD NOTIFY ALL PARTICIPANTS ABOUT THE DELETION OF AN EVENT
+     * @todo: SHOULD NOTIFY THE AUTHOR ABOUT DELETION OF AN EVENT
      * @usedWhen it should fire everyday to ensure that the archive events do not take too much space
      */
     cleanOld() {
@@ -223,10 +228,10 @@ class EventService {
      *      "error" in case of an error
      * @todo: CHECK IF THE USER IS NOT ON THE BLACKLIST OF THE AUTHOR
      */
-    joinEvent(id, author, userID) {
+    joinEvent(id, authorID, userID) {
         let self = this;
         return new Promise((resolve,reject)=>{
-            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/) && author != self.UserService.user.login) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/) && authorID != self.UserService.user.id && authorID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/joinEvent',
@@ -271,10 +276,10 @@ class EventService {
      * @returns {Promise}
      *      "ok" if it succeeded, "nochange" if the event does not exist or is not active, "error" in case of an error
      */
-    kickUser(id, userID) {
+    kickUser(id, authorID, userID) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/) && authorID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/kickUser',
@@ -318,13 +323,13 @@ class EventService {
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      "ok" if it succeeded, "nochange" if there were no events to remove, "error" in case of an error
-     * @todo: notify all users of the deleted event about that fact
+     * @todo: notify all users of the deleted event about that fact, as well as the author
      * @usedWhen:  only for admin, should be used in special circumstances (e.g. when the event offends the law or people)
      */
-    remove(id) {
+    remove(id, authorID) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            if (id.match(/^[0-9a-fA-F]{24}$/) && authorID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/remove',
@@ -335,6 +340,7 @@ class EventService {
                         if(data.data.docs.length > 0) {
                             self.$l.debug("Event o id: " + id + " został usuniety. Oto uczestnicy eventu: ", data.data.docs);
                             self.$l.debug("Powinienes ich powiadomic o usunieciu eventu!");
+                            self.$l.debug("Tak samo autora!");
                             resolve("ok");
                         }else{
                             self.$l.debug("Event o id: " + id + " nie istnieje!");
@@ -342,8 +348,8 @@ class EventService {
                         }
                         // ERROR
                     }, function (err) {
-                        self.$l.debug("Porazka podczas deaktywacji eventu!");
-                        reject("error");
+                        self.$l.debug("Porazka podczas usuwania eventu!");
+                        reject(err);
                     }
                 );
             }else{
@@ -358,31 +364,36 @@ class EventService {
 
 
     /**
-     * @params  (String) name - login of an user
+     * @params  (String) userID - id of an user
      * @functionality finds all events organized by the passed user name
      * In case of a success, it logs to console and resolves to array of events, sorted by date in an ascending order
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      full event Info array of event organized by an user if it succeeded, err in case of an error
      */
-    findByUser(name) {
+    findByUser(userID) {
         let self = this;
         return new Promise((resolve,reject)=> {
-            self.$http({
-                method: 'POST',
-                url: '/event/findByUser',
-                data: {name: name}
-            }).then(
-                // SUCCESS
-                function (data) {
-                    self.$l.debug("Znaleziono eventy uzytkownika: " + name + " Oto one: ", data.data.docs);
-                    resolve(data);
-                    // ERROR
-                }, function (err) {
-                    self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
-                    reject(err);
-                }
-            );
+            if (userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/findByUser',
+                    data: {userID: userID}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Znaleziono eventy uzytkownika: " + name + " Oto one: ", data.data.docs);
+                        resolve(data);
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
         });
     }
 

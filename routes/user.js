@@ -85,7 +85,7 @@ router.post('/register', function (req, res, next) {
     user.blacklist = [];
     user.settings = {
         "isPrivate": false,
-        "radius": 10,
+        "radius": 50,
         "description" : "",
         "name": "",
         "surname": ""
@@ -346,7 +346,6 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
                     res.status(404).send().end(function () {
                         db.close();
                     });
-                    return;
                 } else {
                     res.status(200).send({"docs": data}).end(function () {
                         db.close();
@@ -386,13 +385,21 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
         }
         var message = req.body.message;
         var recipientList = req.body.recipientList;
+        var toAll = req.body.toAll;
+
+        var searchQuery = '';
         var recipientArray = [];
-        for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+
+        if(toAll == true)  searchQuery = {};
+         else {
+            for (var i = 0; i < recipientList.length; i++)  recipientArray.push(new ObjectId(recipientList[i]));
+            searchQuery = {"_id": {$in: recipientArray}};
+         }
         message.authorID = new ObjectId(message.authorID);
 
         mongo.connect("serwer", ["user"], function (db) {
             db.user.update(
-                {"_id": {$in : recipientArray }},
+                searchQuery,
                 {$addToSet:
                     {"mailBox":
                         {
@@ -414,7 +421,7 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
                     {"mailBox":
                         {
                             "_id": new ObjectId(),
-                            "author": message.authorID,
+                            "authorID": message.authorID,
                             "recipients": recipientArray,
                             "dateSent": new Date(message.dateSent),
                             "content": message.content,

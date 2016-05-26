@@ -88,7 +88,7 @@ class HeaderController {
                 placeholder: "TEST-addEvent (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.addEvent(new SportEvent("slaby", new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), "resources/icons/bell.svg", "To wydarzenie bedzie wspaniale!", "siatkówka", 30, false, 0, 30, "A", true, 50.283197, 18.674011, []));
+                    self.EventService.addEvent(new SportEvent(self.UserService.user.id, new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), "resources/icons/bell.svg", "To wydarzenie bedzie wspaniale!", "siatkówka", 30, false, 0, 30, "A", true, 50.283197, 18.674011, []));
                 },
                 visibility: ["user"]
             },
@@ -112,7 +112,7 @@ class HeaderController {
                 placeholder: "TEST-remove (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.remove("5727b52e61b11eca74711435");
+                    self.EventService.remove("573e3e244ab2eb88102552a6", "571ca790e033b8ab254a680e");
                 },
                 visibility: ["user"]
             },
@@ -120,7 +120,7 @@ class HeaderController {
                 placeholder: "TEST-findByUser (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.findByUser("slaby");
+                    self.EventService.findByUser("571ca790e033b8ab254a680e");
                 },
                 visibility: ["user"]
             },
@@ -137,6 +137,34 @@ class HeaderController {
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.removeMessage("5744a2d01ad8bad41a7ea17d");
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-sendMessageFromSystem (fixed - toAll)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let toAll = true;
+                    self.UserService.sendMessageFromSystem("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-sendMessageFromSystem (fixed - !toAll)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let toAll = false;
+                    self.UserService.sendMessageFromSystem("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-sendSystemMessage (fixed - toAll)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    //IT SHOULD NOT WORK FROM HERE AS THE METHOD IS PRIVATE!!!!
+                    let toAll = true;
+                    self.UserService._sendSystemMessage("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
                 },
                 visibility: ["user"]
             },

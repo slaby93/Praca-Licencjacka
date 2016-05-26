@@ -33,7 +33,7 @@ class EventController {
         let self = this;
         self.$scope.$on('event:joined', function(event,data) {
             self.loader.show();
-            self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.author, self.UserService.user.id).then((resp) => {
+            self.EventService.joinEvent(self.eventInfo._id, self.eventInfo.authorID, self.UserService.user.id).then((resp) => {
                 if(resp == "ok") {
                     self.eventInfo.participants.unshift({'_id': self.UserService.user.id});
                     self.$scope.$broadcast('event:filled', self.eventInfo);
@@ -44,20 +44,7 @@ class EventController {
         });
         self.$scope.$on('event:left', function(event,data){
             self.loader.show();
-            self.EventService.kickUser(self.eventInfo._id, self.UserService.user.id).then((resp) => {
-                if(resp == "ok"){
-                    _.remove(self.eventInfo.participants, (value) => {
-                        return value._id == self.UserService.user.id;
-                    });
-                    self.$scope.$broadcast('event:filled',self.eventInfo);
-                    self.notie.alert(1, 'Pomyślnie opuszczono wydarzenie!');
-                }else  self.notie.alert(2, 'Nie można opuścić wydarzenia!');
-                self.loader.hide();
-            });
-        });
-        self.$scope.$on('event:left', function(event,data){
-            self.loader.show();
-            self.EventService.kickUser(self.eventInfo._id, self.UserService.user.id).then((resp) => {
+            self.EventService.kickUser(self.eventInfo._id, self.eventInfo.authorID, self.UserService.user.id).then((resp) => {
                 if(resp == "ok"){
                     _.remove(self.eventInfo.participants, (value) => {
                         return value._id == self.UserService.user.id;
@@ -70,7 +57,7 @@ class EventController {
         });
         self.$scope.$on('event:kick', function(event,data){
             self.loader.show();
-            self.EventService.kickUser(self.eventInfo._id, data.userID).then((resp) => {
+            self.EventService.kickUser(self.eventInfo._id, self.eventInfo.authorID, data.userID).then((resp) => {
                 if(resp == "ok"){
                     _.remove(self.eventInfo.participants, (value) => {
                         return value._id == data.userID;
@@ -86,7 +73,7 @@ class EventController {
         });
         self.$scope.$on('event:edited', function(event,data){
             self.loader.show();
-            self.EventService.update(new SportEvent(self.eventInfo.author, self.eventInfo.createdDate, self.eventInfo.date,
+            self.EventService.update(new SportEvent(self.eventInfo.authorID, self.eventInfo.createdDate, self.eventInfo.date,
                 data.data.eventIcon, data.data.eventInfo.description, self.eventInfo.eventInfo.category,
                 data.data.eventInfo.payment, data.data.eventInfo.ownEquipment, data.data.eventInfo.experience,
                 data.data.eventInfo.usersLimit, data.data.eventInfo.title, self.eventInfo.isActive,
@@ -115,7 +102,7 @@ class EventController {
         self.$scope.$on('event:closed', function(event,data){
             self.loader.show();
             let date = new Date();
-            self.EventService.deactivateById(self.eventInfo._id, date).then((resp) => {
+            self.EventService.deactivateById(self.eventInfo._id, self.eventInfo.authorID, date).then((resp) => {
                 if(resp == "ok"){
                     self.eventInfo.date = date;
                     self.$scope.$broadcast('event:filled',self.eventInfo);
@@ -137,11 +124,13 @@ class EventController {
             }
             //in case we don't find an event in the database
             //(the _id is not present), we should redirect the user to to the error site or wherever else
-
             if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
             self.eventInfo = resp.data.docs[0];
-            self.$scope.$broadcast('event:filled',resp.data.docs[0]);
-            self.loader.hide();
+            self.UserService.findBasicUserInfoById([{"_id" : self.eventInfo.authorID}]).then((resp)=> {
+                self.eventInfo.author = resp.data.docs[0].login;
+                self.$scope.$broadcast('event:filled',self.eventInfo);
+                self.loader.hide();
+            });
         });
     }
 

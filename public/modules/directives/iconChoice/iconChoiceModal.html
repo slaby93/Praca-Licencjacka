@@ -1,0 +1,28 @@
+
+<!--<div class="tooltip-container">
+
+</div>  -->
+
+
+<div class="ui xsmall modal" id="icon-choice">
+    <div class="header" style="text-align: center;">
+        Wybierz ikonkę wydarzenia
+    </div>
+    <div class="modal-container">
+        <md-grid-list md-cols="5" md-row-height="36px" md-gutter="10px">
+            <md-grid-tile ng-repeat="icon in iconChoiceModalCtrl.iconList.iconList"
+                          md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
+                <md-content class="transparent-background tile-content">
+                    <md-button aria-label="icon-button" class="iconList-button" ng-click="iconChoiceModalCtrl.setUrl(icon)"
+                        ng-style="{'background-color' : icon.color, 'border-style': icon.border}">
+                        <md-icon md-svg-src="{{icon.url}}" class="svg-submissive event-icon"></md-icon>
+                    </md-button>
+                </md-content>
+            </md-grid-tile>
+        </md-grid-list>
+    </div>
+    <div class="actions">
+        <div class="ui approve button">Wybierz</div>
+        <div class="ui cancel button">Anuluj</div>
+    </div>
+</div>

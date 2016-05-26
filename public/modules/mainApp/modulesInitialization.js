@@ -34,7 +34,6 @@ import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
 import LoginController from './login/login.controller';
 import RegisterController from './register/register.controller';
-import IconChoiceModalController from './iconChoice/iconChoiceModal.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -67,6 +66,7 @@ import SportIconsDirective from '../directives/sportIcons/sportIcons.directive';
 import InfoBoxDirective from '../directives/infoBox/infoBox.directive';
 import ErrSrcDirective from '../directives/errSrc/errSrc.directive';
 import ClickOutsideDirective from '../directives/angularClickOutside/angularClickOutside.directive';
+import IconChoiceModalDirective from '../directives/iconChoice/iconChoiceModal.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,7 +82,6 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("UploadModalController", UploadModalController)
     .controller("LoginController", LoginController)
     .controller("RegisterController", RegisterController)
-    .controller("IconChoiceModalController", IconChoiceModalController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)
@@ -113,6 +112,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("infoBox", InfoBoxDirective)
     .directive("errSrc", ErrSrcDirective)
     .directive("clickOutside", ClickOutsideDirective)
+    .directive("iconChoiceModal", IconChoiceModalDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

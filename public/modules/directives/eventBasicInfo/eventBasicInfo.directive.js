@@ -35,15 +35,12 @@ class EventBasicInfoController {
         self.isActive = '';
         self.eventDate = '';
         self.eventCreatedDate = '';
-        self.wasIconButtonClicked = false;
-        self.EventService.getDefaultIcons().then((resp) => {
-            self.iconList = resp.data;
-        });
-        self.setScopeListeners();
+        self.setTopScopeListeners();
+        self.setBottomScopeListeners();
     }
 
 
-    setScopeListeners() {
+    setTopScopeListeners() {
         let self = this;
         self.$scope.$on('event:filled', function (event, data) {
             self.eventInfo = data;
@@ -55,6 +52,14 @@ class EventBasicInfoController {
            self.eventInfoEdit = undefined;
            self.editMode = false;
             $('#experienceRating').rating('disable').rating({initialRating: self.eventInfo.eventInfo.experience});
+        });
+    }
+
+    setBottomScopeListeners() {
+        let self = this;
+        self.$scope.$on('iconModal:hide', function (event, data) {
+            self.eventInfoEdit.eventIcon = data.iconUrl;
+            self.$scope.$evalAsync();
         });
     }
 
@@ -71,11 +76,16 @@ class EventBasicInfoController {
                     self.eventInfoEdit.eventInfo.experience = value;
                 }).rating('disable');
         }, true);
+        self.$scope.$watch(()=> {
+            return self.eventInfoEdit;
+        }, (newValue)=> {
+
+        }, true);
     }
 
-    toggleWasIconButtonClicked(value) {
+    showIconChoiceModal(){
         let self = this;
-        if (self.isOwnPage() && self.editMode)  self.wasIconButtonClicked = value;
+        self.$scope.$broadcast('iconModal:show', self.eventInfoEdit.eventIcon);
     }
 
     checkUserAlreadyRegistered(userID) {
@@ -205,12 +215,6 @@ class EventBasicInfoController {
     getParticipantsCount() {
         let self = this;
         return self.eventInfo.participants.length + "/" + self.eventInfo.eventInfo.usersLimit;
-    }
-
-    setIcon(url) {
-        let self = this;
-        self.eventInfoEdit.eventIcon = url;
-        self.toggleWasIconButtonClicked(false);
     }
 
 

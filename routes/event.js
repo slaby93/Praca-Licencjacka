@@ -419,6 +419,7 @@ router.post('/findById', function (req, res, next) {
     mongo.connect("serwer", ["event"], function (db) {
         db.event.find(
             {"_id": id}, function (err, data) {
+                console.log(data);
                 if (err) {
                     res.status(404).send().end(function () {
                         db.close();

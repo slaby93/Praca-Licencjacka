@@ -422,7 +422,7 @@ router.post('/sendMessage', auth, guard.check('user'), function (req, res, next)
                     {"mailBox":
                         {
                             "_id": new ObjectId(),
-                            "author": message.authorID,
+                            "authorID": message.authorID,
                             "recipients": recipientArray,
                             "dateSent": new Date(message.dateSent),
                             "content": message.content,

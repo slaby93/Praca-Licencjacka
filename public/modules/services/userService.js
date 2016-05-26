@@ -15,49 +15,6 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
-
-        //private function?
-        var sendSystemMessage = function(content, dateSent, topic, recipientList, toAll) {
-            let self = this;
-            let message = {
-                "authorID" :  "000000000000000000000000",
-                "content" : content,
-                "dateSent" : dateSent,
-                "topic" : topic
-            };
-            return new Promise((resolve,reject)=>{
-                let matchPassed = true;
-                if(!toAll) {
-                    _.forEach(recipientList, (value, key) => {
-                        if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
-                            matchPassed = false;
-                        }
-                    });
-                }
-                if(matchPassed){
-                    self.$http({
-                        method: 'POST',
-                        url: '/user/sendMessage',
-                        data: {message: message, recipientList: recipientList, toAll: toAll}
-                    }).then(
-                        // SUCCESS
-                        function (data) {
-                            self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                            resolve("ok");
-                            // ERROR
-                        }, function (err) {
-                            self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                            reject("error");
-                        }
-                    );
-                }else{
-                    self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
-                    reject("error");
-                }
-            });
-        }
-
-
         self.user = new User();
         self.watchUserObject();
     }
@@ -261,6 +218,10 @@ class UserService {
 
     }
 
+
+
+
+
     /**
      *
      * @param idArray - array of users' id we want to get basic Info about
@@ -322,6 +283,52 @@ class UserService {
         });
     }
 
+
+    //pseudo-private
+    _sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
+        let self = this;
+        let message = {
+            "authorID" :  "000000000000000000000000",
+            "content" : content,
+            "dateSent" : dateSent,
+            "topic" : topic
+        };
+        return new Promise((resolve,reject)=>{
+            let matchPassed = true;
+            if(!toAll) {
+                _.forEach(recipientList, (value, key) => {
+                    if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
+                        matchPassed = false;
+                    }
+                });
+            }else recipientList = [];
+            if(matchPassed){
+                self.$http({
+                    method: 'POST',
+                    url: '/user/sendMessage',
+                    data: {message: message, recipientList: recipientList, toAll: toAll}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Pomyślnie przesłano wiadomość od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
+        });
+    }
+
+
+
+
+
     /**
      *
      * @param authorID - the id of an author, String
@@ -367,7 +374,7 @@ class UserService {
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas przesyłania Wiadomości od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                        reject("error");
+                        reject(err);
                     }
                 );
             }else{
@@ -401,8 +408,9 @@ class UserService {
     sendMessageFromSystem(content, dateSent, topic, recipientList, toAll){
         let self = this;
         return new Promise((resolve,reject)=>{
+            self.$l.debug("uprawnienia:", self.user.groups);
             if(self.hasRight(["admin"])){
-                self.sendSystemMessage(content, dateSent, topic, recipientList, toAll).then((resp) => {
+                self._sendSystemMessage(content, dateSent, topic, recipientList, toAll).then((resp) => {
                     resolve(resp);
                 });
             }else  {
@@ -436,7 +444,7 @@ class UserService {
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Błąd podczas usuwania wiadomości o id ", messageID);
-                        reject("error");
+                        reject(err);
                     }
                 );
             }else{

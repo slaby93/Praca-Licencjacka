@@ -126,7 +126,6 @@ class EventController {
             //(the _id is not present), we should redirect the user to to the error site or wherever else
             if(resp.data.docs[0] === undefined)  {self.$state.go("introduction");  return;}
             self.eventInfo = resp.data.docs[0];
-            self.$l.debug("lol: ", self.eventInfo.authorID);
             self.UserService.findBasicUserInfoById([{"_id" : self.eventInfo.authorID}]).then((resp)=> {
                 self.eventInfo.author = resp.data.docs[0].login;
                 self.$scope.$broadcast('event:filled',self.eventInfo);

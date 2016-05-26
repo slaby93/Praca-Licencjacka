@@ -65,14 +65,15 @@
       position: absolute;
       z-index: 1;
       left: calc(50% - 22px);
-      top: -25px;
+      top: -30px;
       background-color: #FFF;
       border-radius: 50%;
       padding: 7px;
       border-style: double;
       transition: all 0.3s linear;
       cursor: pointer;
-
+      height: 40px;
+      width: 40px;
       &.filpIcon {
         transform: rotate(180deg);
         top: -100px;
@@ -177,4 +178,61 @@
       background-color: #4C88F9;
     }
   }
+}
+
+.centerMenu {
+  width: 30px;
+  height: 30px;
+  position: absolute !important;
+  right: 50px !important;
+  top: 30px !important;
+  pointer-events: all;
+  cursor: pointer;
+
+  @media(max-width: $md) {
+    left: 30px !important;
+    top: 130px !important;
+
+  }
+}
+
+.optionsHolder {
+
+}
+
+.menuItem {
+  padding: 10px;
+  height: 80px;
+  @media(max-width: $md) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &.enabledMenuItem {
+    background-color: grey;
+  }
+  &:active {
+    border: 1px solid #e5e5e5;;
+  }
+}
+
+.dontDisplay {
+  display: none !important;
+}
+
+.slidingMenuDropdown {
+  left: -370px !important;
+  max-height: 350px;
+  max-width: 300px;
+  overflow: auto;
+  @media(max-width: $md) {
+    left: 0px !important;
+  }
+}
+
+.centerMenuBody {
+  position: absolute;
 }

@@ -49,6 +49,99 @@ class CenterController {
         self.infoBox = {
             isCompiled: false
         };
+
+        self.menuOptions = [
+            {
+                id: 0,
+                icon: '',
+                description: '',
+                enabled: false,
+                onClick: (item)=> {
+                    console.log("TEST")
+                    item.enabled = !item.enabled
+                }
+            },
+            {
+                id: 1,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 2,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 3,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 4,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 5,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 6,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 7,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 8,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 9,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 10,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 11,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 12,
+                icon: '',
+                description: '',
+                enabled: false
+            },
+            {
+                id: 13,
+                icon: '',
+                description: '',
+                enabled: false
+            }
+        ];
+        self.menuVisible = false;
+        $('#menuDropdown').dropdown();
     }
 
     test() {
@@ -106,7 +199,7 @@ class CenterController {
         };
         self.map = new google.maps.Map($('#center_element .map')[0], config);
         self.UserService.getRadius().then((resp) => {
-            if(resp == "error")  self.radius = 10;  //default value
+            if (resp == "error")  self.radius = 200;  //default value
             else  self.radius = resp;
             self.requestForEvents(lat, lng);
             self.map.setTilt(45);

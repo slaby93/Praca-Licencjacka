@@ -1,59 +1,56 @@
-<!--MODE SWITCH-->
-<div layout="row" layout-align="center" class="modeSwitchHolder">
-    <div ng-click="resultCtrl.setViewMode('rows')" ng-class="{active:resultCtrl.viewMode === 'rows'}">
-        <md-icon md-svg-src="resources/icons/four-rows-content-layout-design.svg"></md-icon>
+<div layout="row" class="resultPanelContentHolder">
+    <!--LEFT MENU-->
+    <div class="leftMenu">
+        <div class="leftMenuItem" ng-click="resultCtrl.setViewMode('rows')"
+             ng-class="{active:resultCtrl.viewMode === 'rows'}">
+            <md-icon md-svg-src="resources/icons/four-rows-content-layout-design.svg"></md-icon>
+        </div>
+        <div class="leftMenuItem" ng-click="resultCtrl.setViewMode('grid')"
+             ng-class="{active:resultCtrl.viewMode === 'grid'}">
+            <md-icon md-svg-src="resources/icons/nine-squares-of-phone-keyboard-buttons.svg"></md-icon>
+        </div>
     </div>
-    <div ng-click="resultCtrl.setViewMode('grid')" ng-class="{active:resultCtrl.viewMode === 'grid'}">
-        <md-icon md-svg-src="resources/icons/nine-squares-of-phone-keyboard-buttons.svg"></md-icon>
-    </div>
+    <div class="resultPanelBody">
+        <div class="resultContentHolder" ng-if="resultCtrl.isData()">
 
-</div>
-<div class="resultContentHolder" ng-if="resultCtrl.isData()">
-    <!--ROWS-->
-    <div class="rowsResultsHolder" ng-if="resultCtrl.getViewMode() === 'rows'" layout="column">
-        <md-card class="result rowResult" ng-click="resultCtrl.handleResultClick(result)" flex="grow"
-                 ng-repeat="result in resultCtrl.centerController.eventsPool">
-            <md-card-content>
-                <div class="headerResultRow" layout="row" layout-align="center">
-                    <sport-icons sport="result.eventInfo.category"></sport-icons>
-                    <span>{{result.eventInfo.title}}</span>
-                </div>
-                <div>
-                    <span>{{result.date | date}}</span>
-                </div>
-                <div layout="row">
-                    <span>Koszt:
-                        <span ng-if="!resultCtrl.isFree(result)">{{result.eventInfo.payment}} zł</span>
-                        <span ng-if="resultCtrl.isFree(result)">bezpłatny</span>
-                    </span>
-                </div>
-                <div ng-click="resultCtrl.goToEditEvent(result)">
 
-                </div>
-                <!--<pre>{{result | json}}</pre>-->
-            </md-card-content>
-        </md-card>
-
-    </div>
-    <!--GRID-->
-    <div class="gridResultsHolder" layout-wrap ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
-        <div flex-sm="50" flex-xs="50" flex-md="33" flex-md="20" flex-lg="15" flex-xl="10"
-             ng-repeat="result in resultCtrl.centerController.eventsPool">
-            <md-card class="result gridResult" ng-click="resultCtrl.handleResultClick(result)">
-                <md-card-content layout="column">
-                    <div class="ui segment" layout="row" layout-align="start">
-                        <span> {{result.eventInfo.title}}</span>
-                        <div flex="grow"></div>
-                        <sport-icons sport="result.eventInfo.category"></sport-icons>
+            <!--ROWS-->
+            <div class="rowsResultsHolder" ng-if="resultCtrl.getViewMode() === 'rows'">
+                <div class="ui list resultListHolder">
+                    <div ng-click="resultCtrl.handleResultClick(result)"
+                         ng-repeat="result in resultCtrl.centerController.eventsPool" class="item resultListItem">
+                        <img class="ui avatar image eventImage"
+                             ng-src="{{result.eventIcon}}">
+                        <div class="content">
+                            <a class="header">{{result.eventInfo.title}}</a>
+                            <div class="description">{{result.date | date}}
+                            </div>
+                            <span>Odległość: {{result.distance.toFixed(0)}} km</span>
+                            <sport-icons sport="result.eventInfo.category"></sport-icons>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <!--GRID-->
+            <div class="gridResultsHolder" layout-wrap ng-if="resultCtrl.getViewMode() === 'grid'" layout="row">
+                <div flex-sm="50" flex-xs="50" flex-md="33" flex-md="20" flex-lg="15" flex-xl="10"
+                     ng-repeat="result in resultCtrl.centerController.eventsPool">
+                    <md-card class="result gridResult" ng-click="resultCtrl.handleResultClick(result)">
+                        <md-card-content layout="column">
+                            <div class="ui segment" layout="row" layout-align="start">
+                                <span> {{result.eventInfo.title}}</span>
+                                <div flex="grow"></div>
+                                <sport-icons sport="result.eventInfo.category"></sport-icons>
+                            </div>
 
-                </md-card-content>
-            </md-card>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </div>
+        </div>
+        <div class="noResults" layout="column" layout-align="center center" ng-if="!resultCtrl.isData()">
+            <h1 class="noResultsText">Brak Wynikow</h1>
+            <md-icon class="noResultsIcon" md-svg-src="resources/icons/sad-rounded-square-emoticon.svg"></md-icon>
         </div>
     </div>
 </div>
-<div class="noResults" layout="column" layout-align="center center" ng-if="!resultCtrl.isData()">
-    <h1 class="noResultsText">Brak Wynikow</h1>
-    <md-icon class="noResultsIcon" md-svg-src="resources/icons/sad-rounded-square-emoticon.svg"></md-icon>
-</div>
-

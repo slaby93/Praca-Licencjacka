@@ -185,8 +185,9 @@ class CenterController {
         }, (err)=> {
 
             if (err.status === 401) {
-                self.$l.debug("Uzytkownik nie jest zalogowany", err)
-                self.$state.go("introduction");
+                self.$l.debug("Uzytkownik nie jest zalogowany", err);
+                notie.alert(3, 'Zostałeś wylogowany', 3);
+                self.$state.go("login");
             }
         });
     }

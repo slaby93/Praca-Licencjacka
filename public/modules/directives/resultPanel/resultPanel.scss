@@ -1,5 +1,4 @@
 result-panel {
-
   .modeSwitchHolder {
     z-index: 1;
     position: absolute;
@@ -42,7 +41,7 @@ result-panel {
     }
   }
   .resultContentHolder {
-    background-image: url("../resources/background/triangles.jpg");
+    //background-image: url("../resources/background/triangles.jpg");
     background-repeat: repeat-y;
     background-size: cover;
     padding-top: 45px;
@@ -79,6 +78,69 @@ result-panel {
       }
     }
 
+  }
+  .leftMenu {
+    width: 50px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    border: 1px solid #ccc;
+    .active {
+
+    }
+    .leftMenuItem {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      transition: 0.25s background-color linear;
+      cursor: pointer;
+      &.active {
+        background-color: rgba(45, 45, 45, 0.14);
+      }
+
+    }
+  }
+  .resultListHolder {
+    margin-left: 30px !important;
+    margin-right: 30px !important;
+    margin-bottom: 30px !important;
+    .resultListItem {
+      padding: 10px !important;
+      border: 1px solid transparent;
+      height: 100px;
+      transition: 0.2s border linear;
+      &:hover {
+        border-color: #ccc;
+      }
+
+      .eventImage {
+        width: 80px;
+        height: 80px;
+      }
+
+      .content {
+        .header {
+          @media (max-width: 430px) {
+            max-width: 125px !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+
+  .resultPanelContentHolder {
+    height: 100%;
+  }
+  .resultPanelBody {
+    overflow: auto;
+    width: 100%;
   }
 
 }

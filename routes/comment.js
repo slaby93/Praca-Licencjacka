@@ -19,13 +19,16 @@ router.post('/add', auth, guard.check('user'), function (req, res, next) {
             return;
         }
 		var passedComment = req.body.comment;
+		var authorID = new ObjectId(passedComment.authorID);
+		var recipientID = new ObjectId(passedComment.recipientID);
 		var doc = {
-			"author": comment.author,
-			"recipient": comment.recipient,
-			"grade": comment.grade,
-			"authorRole": comment.authorRole,
-			"content": comment.content,
-			"response": comment.response
+			"authorID": authorID,
+			"recipientID": recipientID,
+			"date": new Date(),
+			"grade": passedComment.grade,
+			"authorRole": passedComment.authorRole,
+			"content": passedComment.content,
+			"response": passedComment.response
 		};
 		mongo.connect("serwer", ["comment"], function (db) {
 			db.comment.insert(doc, function (err, data) {
@@ -67,9 +70,9 @@ router.post('/remove', auth, guard.check('admin'), function (req, res, next) {
 });
 
 router.post('/findByRecipient', function (req, res, next) {
-    var recipient = req.body.recipient;
+    var recipientID = new ObjectId(req.body.recipientID);
     mongo.connect("serwer", ["comment"], function (db) {
-        db.comment.find({"recipient": recipient}, {"_id": 0, "recipient": 0}, function (err, data) {
+        db.comment.find({"recipientID": recipientID}, {"_id": 0, "recipientID": 0}).sort({date: -1}, function (err, data) {
 			if (err) {
 				res.status(400).send("Error when fetching from db").end(function () {
 					db.close();
@@ -84,9 +87,9 @@ router.post('/findByRecipient', function (req, res, next) {
 });
 
 router.post('/findByAuthor', function (req, res, next) {
-    var author = req.body.author;
+    var authorID = new ObjectId(req.body.authorID);
     mongo.connect("serwer", ["comment"], function (db) {
-        db.comment.find({"author": author}, {"_id": 0, "author": 0}, function (err, data) {
+        db.comment.find({"authorID": authorID}, {"_id": 0, "authorID": 0}).sort({date: -1}, function (err, data) {
 			if (err) {
 				res.status(400).send("Error when fetching from db").end(function () {
 					db.close();
@@ -101,11 +104,11 @@ router.post('/findByAuthor', function (req, res, next) {
 });
 
 router.post('/count', function (req, res, next) {
-    var recipient = req.body.recipient;
+    var recipientID = new ObjectId(req.body.recipientID);
     mongo.connect("serwer", ["comment"], function (db) {
 		db.comment.aggregate(
 			[
-				{$match: {"recipient": recipient}},
+				{$match: {"recipientID": recipientID}},
 				{$group : {_id: {grade: "$grade"}, count: {$sum: 1}}}
 			], function (err, data) {
 				if (err) {

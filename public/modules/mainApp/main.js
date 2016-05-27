@@ -35,8 +35,10 @@ function main(UserService, loader, $state, $rootScope, localStorageService, $htt
     }
 
     $rootScope.$on('$stateChangeSuccess', (event, toState, fromState, fromParams, options)=> {
-        console.log("STATE", toState.name);
-        localStorageService.set('lastPage', toState.name);
+        if (toState.name !== "login") {
+            console.log("STATE", toState.name);
+            localStorageService.set('lastPage', toState.name);
+        }
     });
 
 

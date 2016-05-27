@@ -39,9 +39,15 @@ class IconChoiceModalController {
                     },
                     onApprove : function() {
                         self.$scope.$emit("iconModal:hide", {"iconUrl": self.choosenIconCopy});
+                        $('.ui.xsmall.modal')
+                            .modal('hide')
+                        ;
                     },
                     onDeny : function() {
                         self.$scope.$emit("iconModal:hide", {"iconUrl": self.choosenIcon});
+                        $('.ui.xsmall.modal')
+                            .modal('hide')
+                        ;
                     }
                 })
                 .modal('setting', 'closable', false)
@@ -70,8 +76,8 @@ class IconChoiceModalController {
 
     setStyle(item){
         let self = this;
-        item.color = "orange";
-        item.border = "groove";
+        item.color = "#ffe4b3";
+        item.border = "ridge";
     }
 
     setUrl(item){

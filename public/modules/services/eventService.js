@@ -81,7 +81,7 @@ class EventService {
      *      sets it's event date to currentDate to avoid situations when an user sets an event to 2099 and then disables it
      *      and then it would not be removed with >1yr old closed events.
      * In case of a success, it logs to console and resolves to data (which has a form: {"id": id}}
-     * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to -1
+     * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to "error"
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      "ok" if it succeeded, "nochange" if the event does not exist or it has been already deactivated, "error" in case of an error
@@ -382,12 +382,17 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Znaleziono eventy uzytkownika: " + name + " Oto one: ", data.data.docs);
-                        resolve(data);
-                        // ERROR
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono żadnych wydarzeń użytkownika: " + userID);
+                            reject("error");
+                        }else {
+                            self.$l.debug("Znaleziono eventy uzytkownika: " + userID + " Oto one: ", data.data.docs);
+                            resolve(data);
+                        }
+                    // ERROR
                     }, function (err) {
-                        self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
-                        reject(err);
+                        self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + userID);
+                        reject("error");
                     }
                 );
             }else{
@@ -421,17 +426,22 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Znaleziono event o id: " + id + " Oto on: ", data.data.docs);
-                        resolve(data);
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono eventu o id: " + id);
+                            resolve("error");
+                        }else{
+                            self.$l.debug("Znaleziono event o id: " + id + " Oto on: ", data.data.docs);
+                            resolve(data);
+                        }
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas wyszukiwania eventu o id: " + id);
-                        reject("error");
+                        resolve("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                reject("error");
+                resolve("error");
             }
         });
     }

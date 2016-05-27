@@ -24,6 +24,7 @@ md-tooltip{
 md-tooltip.user-tooltip {
 	$profileHeight: 100px;
 	$top: -70px;
+	box-shadow: 8px 8px 15px -1px rgba(0, 0, 0, 0.75);
 
 	.imageHolder{
 		height: 100px;

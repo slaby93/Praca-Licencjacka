@@ -188,6 +188,34 @@ class UserService {
     }
 
     /**
+     * Pop up avatar upload modal on screen.
+     */
+	showAvatarUploadModal() {
+        let self = this;
+        let parentElement = angular.element(document.body);
+        self.$mdDialog.show({
+            parent: parentElement,
+            templateUrl: 'modules/mainApp/upload/avatarUploadModal.html',
+            controller: 'UploadModalController',
+            controllerAs: 'uploadModalCtrl'
+        });
+    }
+
+    /**
+     * Pop up photo upload modal on screen.
+     */
+	showPhotoUploadModal() {
+        let self = this;
+        let parentElement = angular.element(document.body);
+        self.$mdDialog.show({
+            parent: parentElement,
+            templateUrl: 'modules/mainApp/upload/photoUploadModal.html',
+            controller: 'UploadModalController',
+            controllerAs: 'uploadModalCtrl'
+        });
+    }
+
+    /**
      *  Checks if user has passed right
      * @param rightsToCheck
      * for arrays declared like:  visibility: ["user", "admin"]  pass visibility[0], for all other just pass the ["user","admin"]

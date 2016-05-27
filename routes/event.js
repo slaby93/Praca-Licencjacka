@@ -86,13 +86,18 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         }
         var passedEvent = req.body.passedEvent;
         var id = new ObjectId(req.body.id);
+		
+		query = {};
+		query['participants.'+passedEvent.eventInfo.usersLimit] = {$exists : false};
+		
         mongo.connect("serwer", ["event"], function (db) {
             db.event.update(
                 {$and :[
-                    {"isActive": true},
-                    {"_id": id},
-                    {$where : "(new Date()) < this.date"}
-                ]},
+					{"isActive": true},
+					{"_id": id},
+					query,
+					{$where : "(new Date()) < this.date"}
+				]},
                 {
                     $set: {
                         "date": new Date(passedEvent.date),

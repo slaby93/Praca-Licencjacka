@@ -446,6 +446,7 @@ class EventService {
      * It checks if the id is valid
      * Inside mongodb, it checks if the event is active
      * You cannot edit an inactive event
+     * You can change usersLimit, but it checks if the new value is not lower than participants.length
      * In case of a success, it logs to console and resolves to full event data
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
@@ -466,7 +467,8 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         if (data.data == "nochange") {
-                            self.$l.debug("Nie można zaaktualizować wydarzenia - jest ono prawdopodobnie nieaktywne!");
+                            self.$l.debug("Nie można zaaktualizować wydarzenia - jest ono prawdopodobnie nieaktywne bądz" +
+                                " próbowano ustawić maksymalną liczbę użytkowników mniejszą niż liczba uczestników wydarzenia!");
                             resolve("nochange");
                         } else {
                             self.$l.debug("Pomyślnie zedytowano event o id: " + id);

@@ -153,7 +153,7 @@ class EventBasicInfoController {
             if (saved) {
                 if(self.eventInfoEdit.eventInfo.title.length < 10 || self.eventInfoEdit.eventInfo.title.length > 30)  self.notie.alert(2, 'Tytuł musi posiadać conajmniej 10 i conajwyżej 30 znaków!');
                 else if(self.eventInfoEdit.eventInfo.payment < 0)  self.notie.alert(2, 'Nieprawidłowa wartość składki!');
-                else if(self.eventInfoEdit.eventInfo.usersLimit < self.eventInfo.eventInfo.usersLimit)  self.notie.alert(2, 'Limitu użytkowników nie można zmniejszać!');
+                else if(self.eventInfoEdit.eventInfo.usersLimit < 1)  self.notie.alert(2, 'Niepoprawna maksymalna ilość użytkowników');
                 else  self.$scope.$emit("event:edited", {"data": self.eventInfoEdit});
             }else{
                 self.eventInfoEdit = undefined;

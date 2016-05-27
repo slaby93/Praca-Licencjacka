@@ -32,7 +32,9 @@
                         <div layout="row" layout-align="end" class="profileImgHolder">
                             <img class="profileImg" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
                         </div>
-                        <div class="name">{{participant.settings.name}} {{participant.settings.surname}} ({{participant.login}})</div>
+                        <div class="name-container">
+                            {{participant.settings.name}} {{participant.settings.surname}} ({{participant.login}})
+                        </div>
                         <div class="deeper-content">
                             <div flex/>
                             <div layout="row" layout-align="bottom right">

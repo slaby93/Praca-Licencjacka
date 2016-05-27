@@ -72,10 +72,14 @@ md-tooltip.user-tooltip {
 		top: $top - 30px;
 		position: relative;
 	}
-	.name{
+	.name-container{
 		position: relative;
 		top: $top - 30px;
 		left: 100px;
+		max-width: 180px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.icon{
 		width: 16px;
@@ -191,13 +195,14 @@ md-tooltip.user-tooltip {
 				.tile-content{
 					height: 100%;
 					width: 100%;
-					overflow-x: auto;
 				}
 				.user-info  {
 					height: 25px;
-					overflow: hidden;
 					margin-left: 9px;
 					margin-right: 9px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 				background: #e6ffee;
 				.avatar{

@@ -118,12 +118,10 @@ class EventController {
         let self = this;
         self.loader.show();
         self.EventService.findById(self.eventID).then((resp)=> {
-            if (!resp) {
-                alert("ERROR");
+            if (resp == "error") {
+                self.$state.go("introduction");
                 return;
             }
-            //in case we don't find an event in the database
-            //(the _id is not present), we should redirect the user to to the error site or wherever else
             if (resp.data.docs[0] === undefined) {
                 self.$state.go("login");
                 return;
@@ -143,12 +141,13 @@ class EventController {
         self.eventInfo = {};
         self.eventID = self.$stateParams.eventID;
 
-        // Checking, if the passed string is an ObjectID and can be passes as _id argument to db.find
-        // in case it does not match, we send user to introduction state
+        //in case we don't find an event in the database
+        //(the _id is not present), we should redirect the user to to the error site or wherever else
         if (!self.eventID.match(/^[0-9a-fA-F]{24}$/)) {
             self.$state.go("introduction");
             return;
         }
+
         self.getDataFromServer();
 
     }

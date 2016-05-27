@@ -29,7 +29,7 @@ function main(UserService, loader, $state, $rootScope, localStorageService, $htt
             // Error
             ()=> {
                 loader.hide;
-                $state.go('introduction');
+                $state.go('login');
             }
         );
     }

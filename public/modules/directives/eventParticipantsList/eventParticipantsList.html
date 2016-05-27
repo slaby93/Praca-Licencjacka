@@ -24,7 +24,9 @@
                     </div>
                     <md-tooltip id="user-tooltip" click-outside="eventParticipantsListCtrl.closeToolTip(participant)" outside-if-not="user-tooltip" class="user-tooltip" md-visible="participant.wasClicked" ng-if="participant.wasClicked" md-direction="top">
                         <div ng-style="{'background-image':'url(gallery/' + participant._id + '/userImage.jpg)'}" class="imageHolder user-image">
-                            <md-button class="close-button" ng-click="eventParticipantsListCtrl.closeToolTip(participant)">&times;</md-button>
+                            <md-button class="close-button" ng-click="eventParticipantsListCtrl.closeToolTip(participant)">
+                                <div class="close-icon">&times;</div>
+                            </md-button>
                         </div>
 
                         <div layout="row" layout-align="end" class="profileImgHolder">

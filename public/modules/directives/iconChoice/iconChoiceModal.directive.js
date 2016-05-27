@@ -45,6 +45,7 @@ class IconChoiceModalController {
                     }
                 })
                 .modal('setting', 'closable', false)
+                .modal('setting', 'allowMultiple', false)
                 .modal('show')
             ;
         });

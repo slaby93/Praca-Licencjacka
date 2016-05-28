@@ -35,12 +35,12 @@ router.post('/', function (req, res, next) {
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie o uzytkownika
         db.user.findOne({"login": req.body.passedUser.login},
-            {"login": 1, "password": 1, "groups": 1, "localization": 1}, function (err, foundedUser) {
+            {"login": 1, "password": 1, "groups": 1, "localization": 1, "email": 1}, function (err, foundedUser) {
                 //niepoprawny login
                 if (foundedUser === undefined || foundedUser === null) {
                     return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
                         db.close();
-                    });
+                    }); 
                 }
                 //poprawne haslo po weryfikacji biblioteki bcrypt
                 if (bcrypt.compareSync(req.body.passedUser.password, foundedUser.password)) {
@@ -152,7 +152,8 @@ router.post('/token', function (req, res, next) {
 
     mongo.connect("serwer", ["user"], function (db) {
         db.user.findOne({"_id": mongo.ObjectId(decodedToken._id)},
-            {"login": 1, "password": 1, "groups": 1, "localization": 1}, function (err, foundedUser) {
+            {"login": 1, "password": 1, "groups": 1, "localization": 1, 'email': 1}, function (err, foundedUser) {
+                console.log("USER", foundedUser)
                 if (err) {
                     res.status(500).send("Token is valid, but error when fetching from db").end(function () {
                         db.close();

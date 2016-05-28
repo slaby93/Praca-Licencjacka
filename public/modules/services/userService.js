@@ -16,6 +16,7 @@ class UserService {
         self.localStorage = localStorageService;
         self.$rootScope = $rootScope;
         self.$mdDialog = $mdDialog;
+        self.$window = $window;
         self.user = new User();
         self.watchUserObject();
     }
@@ -50,16 +51,19 @@ class UserService {
                     received.data.user._id,
                     received.data.user.login,
                     received.data.user.groups,
-                    received.data.user.localization));
+                    received.data.user.localization,
+                    received.data.user.email
+                ));
+                console.log("RECEIVED", received)
                 self.loginToNudget(received.data.user._id,
-                    received.data.user.login,);
+                    received.data.user.login, received.data.user.email);
                 self.token = received.data.token;
             }, (err) => {
                 reject(err);
             });
             if (self.$state.current.name == "introduction")  self.$state.go("center");
         });
-    };
+    }; 
 
     /**
      * Returns token
@@ -149,7 +153,12 @@ class UserService {
         let self = this;
         self.setUser(new User());
         self.token = undefined;
-        self.$state.go("login");
+        self.reload();
+    };
+
+    reload() {
+        let self = this;
+        self.$window.location.reload();
     };
 
     loginByToken() {
@@ -164,8 +173,7 @@ class UserService {
                 // SUCCESS
                 function (data) {
                     self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.localization));
-                    self.loginToNudget(data.data._id, data.data.login);
-
+                    self.loginToNudget(data.data._id, data.data.login, data.data.email);
                     resolve(data);
                     // ERROR
                 }, function (err) {
@@ -177,10 +185,10 @@ class UserService {
 
     }
 
-    loginToNudget(id, login, email = '') {
+    loginToNudget(id, login, email) {
         let self = this;
-        self.$l.debug("LOGIN TO NUDGET", id, login);
-        nudgespot.identify(id, {login: login, email: email}, (msg)=> {
+        self.$l.debug("LOGIN TO NUDGET", id, login, email);
+        nudgespot.identify(email, {login: login, id: id, email: email}, (msg)=> {
             console.log("MSG", msg);
         }); //Just email as an identifier
     }

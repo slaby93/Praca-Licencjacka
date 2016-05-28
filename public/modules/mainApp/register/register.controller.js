@@ -32,6 +32,7 @@ class RegisterController {
         self.$timeout(()=> {
             self.userRegister = {
                 login: "",
+                email: '',
                 password: "",
                 retypedPassword: ""
             };
@@ -45,6 +46,9 @@ class RegisterController {
      */
     register() {
         let self = this;
+        if (self.registerForm.$invalid) {
+            return;
+        }
         self.loader.show();
         let copy = angular.copy(self.userRegister);
         self.defaultValues();
@@ -52,7 +56,7 @@ class RegisterController {
             // Success
             ()=> {
                 self.loader.hide();
-                self.$state.go('app.home');
+                self.$state.go('center');
             }).catch(
             // Errors
             (err)=> {

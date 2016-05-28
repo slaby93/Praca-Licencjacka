@@ -68,7 +68,6 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "TestController",
             controllerAs: "homeCtrl"
         })
-    ;
 }
 
 export default routing;

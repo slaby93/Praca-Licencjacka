@@ -49,6 +49,18 @@ class ResultPanelController {
         return (event.eventInfo.payment > 0) ? false : true;
     }
 
+    formatDate(event) {
+        let self = this;
+        let date = event.date;
+        if (date) {
+            date = self.moment(event.date).format("DD.MM.YYYY HH:mm");
+        } else {
+            date = "Error";
+        }
+
+        return date;
+    }
+
     /**
      * Redirect user to see page with full details of current event
      * @param event

@@ -64,6 +64,7 @@
     "require-dot-file": "^0.4.0",
     "run-sequence": "^1.2.0",
     "semantic-ui": "^2.1.8",
+    "sendgrid": "^2.0.0",
     "serve-favicon": "~2.3.0",
     "yamljs": "^0.2.7"
   },

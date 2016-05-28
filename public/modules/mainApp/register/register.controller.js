@@ -52,7 +52,7 @@ class RegisterController {
             // Success
             ()=> {
                 self.loader.hide();
-                self.$state.go('app.home');
+                self.$state.go('center');
             }).catch(
             // Errors
             (err)=> {

@@ -7,7 +7,7 @@
 import User from 'Classes/User';
 class UserService {
 
-    constructor($log, $http, $state, localStorageService, $q, $rootScope, $mdDialog) {
+    constructor($log, $http, $state, localStorageService, $q, $rootScope, $mdDialog, $window) {
         let self = this;
         self.$l = $log;
         self.$http = $http;
@@ -37,6 +37,7 @@ class UserService {
      */
     login(passedUser) {
         let self = this;
+        self.$l.debug("LOGIN");
         return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',
@@ -50,11 +51,13 @@ class UserService {
                     received.data.user.login,
                     received.data.user.groups,
                     received.data.user.localization));
+                self.loginToNudget(received.data.user._id,
+                    received.data.user.login,);
                 self.token = received.data.token;
             }, (err) => {
                 reject(err);
             });
-            if (self.$state.current.name == "introduction")  self.$state.go("app.home");
+            if (self.$state.current.name == "introduction")  self.$state.go("center");
         });
     };
 
@@ -83,7 +86,6 @@ class UserService {
         } else {
             self.localStorage.remove('token', token);
         }
-
     }
 
 
@@ -162,6 +164,9 @@ class UserService {
                 // SUCCESS
                 function (data) {
                     self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.localization));
+
+                    self.loginToNudget(data.data._id, data.data.login);
+
                     resolve(data);
                     // ERROR
                 }, function (err) {
@@ -171,6 +176,14 @@ class UserService {
             );
         });
 
+    }
+
+    loginToNudget(id, login, email = '') {
+        let self = this;
+        self.$l.debug("LOGIN TO NUDGET", id, login);
+        nudgespot.identify(id, {login: login}, (msg)=> {
+            console.log("MSG", msg);
+        }); //Just email as an identifier
     }
 
     /**
@@ -221,9 +234,6 @@ class UserService {
     }
 
 
-
-
-
     /**
      *
      * @param idArray - array of users' id we want to get basic Info about
@@ -259,21 +269,21 @@ class UserService {
      * @returns {Promise<T>|Promise}
      *      the resolved data is the (int) radius that user set in the settings
      */
-    getRadius(){
+    getRadius() {
         let self = this;
-        return new Promise((resolve,reject)=> {
+        return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',
                 url: '/user/getRadiusById',
-                data: {id : self.user.id}
+                data: {id: self.user.id}
             }).then(
                 // SUCCESS
                 function (data) {
-                    if (data.data.docs.length == 0){
+                    if (data.data.docs.length == 0) {
                         self.$l.debug("Nie można pobrać radiusu - podany użytkownik nie istnieje!");
                         resolve("error");
                     } else {
-                        self.$l.debug("Pobrano radius wynoszący ",data.data.docs[0].settings.radius);
+                        self.$l.debug("Pobrano radius wynoszący ", data.data.docs[0].settings.radius);
                         resolve(data.data.docs[0].settings.radius);
                     }
                     // ERROR
@@ -291,21 +301,21 @@ class UserService {
     _sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
         let self = this;
         let message = {
-            "authorID" :  "000000000000000000000000",
-            "content" : content,
-            "dateSent" : dateSent,
-            "topic" : topic
+            "authorID": "000000000000000000000000",
+            "content": content,
+            "dateSent": dateSent,
+            "topic": topic
         };
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject)=> {
             let matchPassed = true;
-            if(!toAll) {
+            if (!toAll) {
                 _.forEach(recipientList, (value, key) => {
                     if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
                         matchPassed = false;
                     }
                 });
-            }else recipientList = [];
-            if(matchPassed){
+            } else recipientList = [];
+            if (matchPassed) {
                 self.$http({
                     method: 'POST',
                     url: '/user/sendMessage',
@@ -313,25 +323,22 @@ class UserService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        if(toAll)  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do wszystkich uzytkownikow!");
+                        if (toAll)  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do wszystkich uzytkownikow!");
                         else  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
                         resolve("ok");
                         // ERROR
                     }, function (err) {
-                        if(toAll)  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do wszystkich użytkowników!");
+                        if (toAll)  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do wszystkich użytkowników!");
                         else  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
                         reject("error");
                     }
                 );
-            }else{
+            } else {
                 self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
                 reject("error");
             }
         });
     }
-
-
-
 
 
     /**
@@ -352,21 +359,21 @@ class UserService {
     sendMessage(authorID, content, dateSent, topic, recipientList) {
         let self = this;
         let message = {
-            "authorID" : authorID,
-            "content" : content,
-            "dateSent" : dateSent,
-            "topic" : topic
+            "authorID": authorID,
+            "content": content,
+            "dateSent": dateSent,
+            "topic": topic
         };
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject)=> {
             let matchPassed = true;
             _.forEach(recipientList, (value, key) => {
-                if(!recipientList[key].match(/^[0-9a-fA-F]{24}$/)){
+                if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
                     matchPassed = false;
                 }
             });
             if (matchPassed && message.authorID != "system" && !message.authorID.match(/^[0-9a-fA-F]{24}$/))  matchPassed = false;
 
-            if(matchPassed){
+            if (matchPassed) {
                 self.$http({
                     method: 'POST',
                     url: '/user/sendMessage',
@@ -382,14 +389,12 @@ class UserService {
                         reject(err);
                     }
                 );
-            }else{
+            } else {
                 self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
                 reject("error");
             }
         });
     }
-
-
 
 
     /**
@@ -410,14 +415,14 @@ class UserService {
      */
 
 
-    sendMessageFromSystem(content, dateSent, topic, recipientList, toAll){
+    sendMessageFromSystem(content, dateSent, topic, recipientList, toAll) {
         let self = this;
-        return new Promise((resolve,reject)=>{
-            if(self.hasRight(["admin"])){
+        return new Promise((resolve, reject)=> {
+            if (self.hasRight(["admin"])) {
                 self._sendSystemMessage(content, dateSent, topic, recipientList, toAll).then((resp) => {
                     resolve(resp);
                 });
-            }else  {
+            } else {
                 self.$l.debug("Brak uprawnień do wysyłania wiadomości!");
                 reject("error");
             }
@@ -425,23 +430,22 @@ class UserService {
     }
 
 
-
     removeMessage(messageID) {
         let self = this;
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject)=> {
 
-            if(messageID.match(/^[0-9a-fA-F]{24}$/)){
+            if (messageID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/user/removeMessage',
-                    data: {messageID: messageID, userID : self.user.id}
+                    data: {messageID: messageID, userID: self.user.id}
                 }).then(
                     // SUCCESS
                     function (data) {
-                        if(data.data == "nochange"){
+                        if (data.data == "nochange") {
                             self.$l.debug("Nie udało się (wiadomość nie istnieje) usunąć wiadomości o id ", messageID);
                             resolve("nochange");
-                        }else {
+                        } else {
                             self.$l.debug("Pomyślnie usunięto wiadomość o id ", messageID);
                             resolve("ok");
                         }
@@ -451,7 +455,7 @@ class UserService {
                         reject(err);
                     }
                 );
-            }else{
+            } else {
                 self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
                 reject("error");
             }

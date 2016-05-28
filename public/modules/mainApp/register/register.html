@@ -25,6 +25,22 @@
                         </div>
                     </div>
                     <div class="field">
+                        <input ng-model="registerCtrl.userRegister.email" required ng-minlength="5"
+                               placeholder="Email"
+                               type="email"
+                               name="email"
+                               autocomplete="off">
+                        <div ng-messages="registerCtrl.registerForm.email.$error"
+                             ng-if="registerCtrl.registerForm.email.$invalid && registerCtrl.registerForm.email.$touched">
+                            <div ng-message="required">
+                                To pole jest wymagane!
+                            </div>
+                            <div ng-message="minlength">
+                                Login jest za krótki! Wymagane conajmniej 3 znaki!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
                         <input ng-model="registerCtrl.userRegister.password"
                                ng-change="registerCtrl.checkPasswordValidity()"
                                required

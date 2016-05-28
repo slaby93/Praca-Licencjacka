@@ -164,7 +164,6 @@ class UserService {
                 // SUCCESS
                 function (data) {
                     self.setUser(new User(data.data._id, data.data.login, data.data.groups, data.data.localization));
-
                     self.loginToNudget(data.data._id, data.data.login);
 
                     resolve(data);
@@ -181,7 +180,7 @@ class UserService {
     loginToNudget(id, login, email = '') {
         let self = this;
         self.$l.debug("LOGIN TO NUDGET", id, login);
-        nudgespot.identify(id, {login: login}, (msg)=> {
+        nudgespot.identify(id, {login: login, email: email}, (msg)=> {
             console.log("MSG", msg);
         }); //Just email as an identifier
     }

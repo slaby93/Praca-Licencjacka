@@ -119,10 +119,12 @@ class EventController {
         self.loader.show();
         self.EventService.findById(self.eventID).then((resp)=> {
             if (resp == "error") {
+                self.loader.hide();
                 self.$state.go("introduction");
                 return;
             }
             if (resp.data.docs[0] === undefined) {
+                self.loader.hide();
                 self.$state.go("login");
                 return;
             }

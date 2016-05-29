@@ -376,6 +376,34 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
     });
 });
 
+
+router.post('/findUserInfoById', function (req, res, next) {
+    var userID = new ObjectId(req.body.userID);
+    var isFull = req.body.isFull;
+    var query = {};
+    if(isFull)  query = {"login": 1, "email": 1, "groups": 1, "joinDate": 1, "blacklist": 1, "settings": 1, "mailBox": 1};
+     else  query = {"login": 1, "groups": 1, "joinDate": 1, "settings.isPrivate": 1, "settings.description": 1, "settings.name": 1, "settings.surname": 1};
+    mongo.connect("serwer", ["user"], function (db) {
+        db.user.find(
+            {"_id": userID},
+            query,
+            function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"docs": data}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
+
+
 router.post('/getRadiusById', function (req, res, next) {
     var id = new ObjectId(req.body.id);
     mongo.connect("serwer", ["user"], function (db) {

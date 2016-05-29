@@ -173,6 +173,24 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
+                placeholder: "TEST-findUserInfoById (isFull = false)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let toAll = true;
+                    self.UserService.findUserInfoById("5749b90ee008dd0c173d458f", false);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-findUserInfoById (isFull = true) (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let toAll = true;
+                    self.UserService.findUserInfoById("5749b90ee008dd0c173d458f", true);
+                },
+                visibility: ["user"]
+            },
+            {
                 placeholder: "TEST-sendMessageFromSystem (fixed - toAll)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!

@@ -269,6 +269,9 @@ class UserService {
     }
 
 
+
+
+
     /**
      *
      * @param idArray - array of users' id we want to get basic Info about
@@ -297,6 +300,57 @@ class UserService {
             );
         });
     }
+
+
+
+
+
+    /**
+     *
+     * @param isFull (boolean) - if true, we will search for full info, if not - just for the neutral
+     * @param userID (String) - user id we want to get neutral Info about
+     * @functionality:  it returns user's info
+     * @returns {Promise<T>|Promise}
+     *      In case of the neutral info (for all people looking on an user profile)
+     *          the resolved data is an array of {"login", "groups", "joinDate", "settings.isPrivate", "settings.description", "settings.name", "settings.surname"} of the found users.
+     *      In case of the full info for the logged user only looking on his profile:
+     *          the resolved data is an array of {"login", "email", "groups", "joinDate", "blacklist", "settings", "mailBox"} of the found user.
+     */
+    findUserInfoById(userID, isFull) {
+        let self = this;
+        return new Promise((resolve, reject)=> {
+            if (userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/findUserInfoById',
+                    data: {userID: userID, isFull: isFull},
+                    headers: {skipAuthorization: false}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data.docs.length == 0) {
+                            self.$l.debug("Szukany użytkownik nie istnieje!");
+                            reject("error");
+                        } else {
+                            self.$l.debug("Oto wyszukane dane szukanego uzytkownika: ", data.data.docs[0]);
+                            resolve(data);
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas wyszukiwania danych szukanego uzytkownika");
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+    }
+
+
+
+
 
     /**
      *

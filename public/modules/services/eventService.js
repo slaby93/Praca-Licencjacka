@@ -591,8 +591,8 @@ class EventService {
         return new Promise((resolve,reject)=> {
             if (eventID.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
                 let query = {};
-                if(isAuthor)  query = {"hasBeenCommentedOn" : true};
-                 else  query = {"hasCommentedOnEvent" : true};
+                if(isAuthor)  query = {"participants.$.hasBeenCommentedOn": true};
+                 else  query = {"participants.$.hasCommentedOnEvent": true};
                 self.$http({
                     method: 'POST',
                     url: '/event/setCommented',

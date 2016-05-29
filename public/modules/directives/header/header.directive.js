@@ -125,6 +125,22 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
+                placeholder: "TEST-setCommented (false) (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.setCommented("572f0c19c40ef768253e98fd","5749b90ee008dd0c173d458f", false);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-setCommented (true) (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.setCommented("572f0c19c40ef768253e98fd","5749b90ee008dd0c173d458f", true);
+                },
+                visibility: ["user"]
+            },
+            {
                 placeholder: "TEST-isOnBlacklist (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
@@ -176,25 +192,30 @@ class HeaderController {
                 placeholder: "TEST-findUserInfoById (isFull = false)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    let toAll = true;
-                    self.UserService.findUserInfoById("5749b90ee008dd0c173d458f", false);
+                    self.UserService.findUserInfoById("slaby", false);
                 },
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-banUser (isFull = true) (fixed)",
+                placeholder: "TEST-findUserInfoById (isFull = true)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    let toAll = true;
+                    self.UserService.findUserInfoById("slaby", true);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-banUser(fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.banUser("5749b90ee008dd0c173d458f", 7);
                 },
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-unbanUser (isFull = true) (fixed)",
+                placeholder: "TEST-unbanUser(fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    let toAll = true;
                     self.UserService.unbanUser("5749b90ee008dd0c173d458f");
                 },
                 visibility: ["user"]

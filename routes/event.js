@@ -447,5 +447,38 @@ router.post('/findById', function (req, res, next) {
     });
 });
 
+router.post('/setCommented', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var eventID = new ObjectId(req.body.eventID);
+        var userID = new ObjectId(req.body.userID);
+        var query = req.body.query;
+        mongo.connect("serwer", ["event"], function (db) {
+            db.event.update(
+                {$and : [
+                    {"isActive": false},
+                    {"_id": eventID},
+                    {"participants._id" : userID}
+                ]},
+                {$set: query}, function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
 
 module.exports = router;

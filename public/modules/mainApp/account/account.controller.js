@@ -77,6 +77,9 @@ class AccountController {
 			self.eventInfo = resp.data.docs[0];
 			self.$l.debug("Informacje na temat użytkownika: ",self.eventInfo);
 			self.loader.hide();
+		}).catch((err) => {
+			self.loader.hide();
+			self.$state.go("introduction");
 		});
 
 

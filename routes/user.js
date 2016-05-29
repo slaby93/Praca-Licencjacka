@@ -35,12 +35,19 @@ router.post('/', function (req, res, next) {
     mongo.connect("serwer", ["user"], function (db) {
         //zapytanie o uzytkownika
         db.user.findOne({"login": req.body.passedUser.login},
-            {"login": 1, "password": 1, "groups": 1, "localization": 1, "email": 1}, function (err, foundedUser) {
+            {"login": 1, "password": 1, "groups": 1, "localization": 1, "email": 1,"unbanDate" : 1}, function (err, foundedUser) {
                 //niepoprawny login
                 if (foundedUser === undefined || foundedUser === null) {
                     return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
                         db.close();
                     }); 
+                }
+                //user is banned
+                if(foundedUser.unbanDate > new Date()){
+                    var message = "Użytkownik jest zablokowany do "+(( "0" + foundedUser.unbanDate.getDate()).slice(-2)) + '.' + (( "0" + (foundedUser.unbanDate.getMonth() + 1)).slice(-2)) + '.' + foundedUser.unbanDate.getFullYear();
+                    return res.status(403).json({message: message}).end(function () {
+                        db.close();
+                    });
                 }
                 //poprawne haslo po weryfikacji biblioteki bcrypt
                 if (bcrypt.compareSync(req.body.passedUser.password, foundedUser.password)) {
@@ -95,6 +102,7 @@ router.post('/register', function (req, res, next) {
         "surname": ""
     };
     user.mailBox = [];
+    user.unbanDate = new Date();
 
     //laczenie z baza
     mongo.connect("serwer", ["user"], function (db) {

@@ -12,10 +12,19 @@ class AccountController {
         self.$scope = $scope;
         self.$l = $log;
 		self.loader = loader;
+		self.setWatches();
 		self.setDefaultValues();
 
 
     }
+
+	setWatches(){
+		let self = this;
+		self.$scope.$watch(()=> {
+			return self.eventInfo;
+		}, (newValue)=> {
+		}, true);
+	}
 
 
 	setDefaultValues() {
@@ -59,9 +68,6 @@ class AccountController {
 
 	getDataFromServer(){
 		let self = this;
-
-
-
 		self.loader.show();
 		self.UserService.findUserInfoByLogin(self.userName, self.isOwnPage).then((resp)=> {
 			if (resp == "error") {
@@ -74,8 +80,9 @@ class AccountController {
 				self.$state.go("login");
 				return;
 			}
-			self.eventInfo = resp.data.docs[0];
-			self.$l.debug("Informacje na temat użytkownika: ",self.eventInfo);
+			self.userInfo = resp.data.docs[0];
+			self.$l.debug("Informacje na temat użytkownika: ",self.userInfo);
+			self.$scope.$evalAsync();
 			self.loader.hide();
 		}).catch((err) => {
 			self.loader.hide();

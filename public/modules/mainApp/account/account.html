@@ -2,14 +2,14 @@
 
     <div flex="90" id="account" layout="column">
         <!-- TOP HEADER-->
-        <div class="topAccountHeader" ng-style="{'background-image':'url(' + user.userImage + ')'}">
+        <div class="topAccountHeader" ng-style="{'background-image':'url(gallery/' + accountCtrl.userInfo._id + '/userImage.jpg)'}"">
             <!--PROFILE IMG-->
             <div layout="row" layout-align="end" class="profileImgHolder">
 				<div layout="column" class="user-name">
-					{{user.name}} {{user.surname}} ({{user.nickname}})
+					{{accountCtrl.userInfo.settings.name}} {{accountCtrl.userInfo.settings.surname}} ({{accountCtrl.userInfo.login}})
 					<p class="smaller-top-margin">{{user.rank}}</p>
 				</div>
-                <img class="profileImg" ng-src="{{user.avatar}}">
+                <img class="profileImg" ng-src="gallery/{{accountCtrl.userInfo._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
             </div>
         </div>
         <div class="informationHolder">

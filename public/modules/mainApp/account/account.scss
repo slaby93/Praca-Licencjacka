@@ -5,16 +5,18 @@
     
   .topAccountHeader {
     $borderRadius: 24px;
-    background-color: rgba(0, 0, 0, 0.63);
-	background-repeat: no-repeat;
-    background-attachment: fixed;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.63) no-repeat 50% 50%, 0 0;
     background-position: center;
+    background-color: rgba(0, 0, 0, 0.63);
+    background-size:cover;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
+    height: 2* $profileHeight;
     .profileImgHolder {
-      left: calc(#{$profileHeight/2});
+      left: calc(#{$profileHeight/2} - 20px);
       position: relative;
-      top: calc(#{$profileHeight/2});
+      top: calc(#{$profileHeight/2} + 80px) ;
       .profileImg {
         box-shadow: 8px 8px 15px -2px rgba(0,0,0,0.75);
         transform: rotate(5deg);
@@ -25,7 +27,7 @@
         border: 1px solid #B3B3B3;
       }
 	  .user-name{
-		bottom: -35px;
+		top: $profileHeight - 20px;
 		position: absolute;
 		right: 110px;
 		font-weight: 800;
@@ -41,18 +43,18 @@
     $profileHeight: 200px;
 	.topAccountHeader {
       .profileImgHolder {
-		  left: calc(#{$profileHeight/2});
+		  left: calc(#{$profileHeight/2} - 80px);
 		  top: calc(#{$profileHeight/2});
 		  .profileImg  {max-height: $profileHeight;}
 		  .user-name  {
-			right: 220px;
-			bottom: 20px;
+			right: 140px;
+			top: 120px;
 			font-size: 16px;
 		  }
 	  }
 	}
 	.informationHolder {
-		margin-top: calc(#{$profileHeight/2} + 50px);
+		margin-top: 50px;
 	}
   }
 

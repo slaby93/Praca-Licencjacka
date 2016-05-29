@@ -79,6 +79,7 @@ class EventParticipantsListController {
         let self = this;
         let passedObject = {"recipientID" : participant._id, "recipientName": participant.login, "authorRole" : "organizator"};
         self.$scope.$broadcast('commentsModal:show', passedObject);
+        participant.wasClicked = false;
     }
 
     isOwnPage() {

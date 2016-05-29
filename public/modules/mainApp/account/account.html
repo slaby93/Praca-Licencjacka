@@ -18,10 +18,10 @@
 				<md-tab label="Moja strona">
 					<user-page/>
 				</md-tab>
-				<md-tab label="Ustawienia konta"><user-settings/></md-tab>
-				<md-tab label="Obserwowane"><user-observed/></md-tab>
-				<md-tab label="Poczta"><user-mail/></md-tab>
-				<md-tab label="Użytkownicy"><user-search/></md-tab>
+				<md-tab ng-if="accountCtrl.isOwnPage" label="Ustawienia konta"><user-settings/></md-tab>
+				<md-tab ng-if="accountCtrl.isOwnPage" label="Obserwowane"><user-observed/></md-tab>
+				<md-tab ng-if="accountCtrl.isOwnPage" label="Poczta"><user-mail/></md-tab>
+				<md-tab ng-if="accountCtrl.isOwnPage" label="Użytkownicy"><user-search/></md-tab>
 			</md-tabs>
 			
             

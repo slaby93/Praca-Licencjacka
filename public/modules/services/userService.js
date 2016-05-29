@@ -337,6 +337,9 @@ class UserService {
      */
     findUserInfoByLogin(userName, isFull) {
         let self = this;
+        self.$l.debug("lol1",userName);
+
+        self.$l.debug("lol2",isFull);
         return new Promise((resolve, reject)=> {
             self.$http({
                 method: 'POST',

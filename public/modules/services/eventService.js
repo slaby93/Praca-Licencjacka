@@ -535,6 +535,9 @@ class EventService {
     }
 
 
+
+
+
     /**
      * @params  (string) author - login of an author of an event
      * @functionality
@@ -545,6 +548,10 @@ class EventService {
         let self = this;
         return (author == self.UserService.user.login || self.UserService.hasRight(['admin']) ? true : false);
     }
+
+
+
+
 
     /**
      * @functionality
@@ -571,6 +578,9 @@ class EventService {
             );
         });
     }
+
+
+
 
 
     /**
@@ -614,6 +624,43 @@ class EventService {
             }
         });
     }
+
+
+
+
+
+    findByIdWhereUserParticipated(id) {
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/findByIdWhereUserParticipated',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono eventow w ktorych bral udzial uzytkownik o id: " + id);
+                            reject("error");
+                        }else{
+                            self.$l.debug("Znaleziono eventy w ktorych bral udzial uzytkownik o id: " + id + " Oto one: ", data.data.docs);
+                            resolve(data);
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas wyszukiwania eventow w ktorych bral udzial uzytkownik o id: " + id);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+    }
+
+
 
 
 }

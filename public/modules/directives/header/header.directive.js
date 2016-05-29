@@ -132,6 +132,15 @@ class HeaderController {
                 },
                 visibility: ["user"]
             },
+
+            {
+                placeholder: "TEST-findByIdWhereUserParticipated (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.findByIdWhereUserParticipated("5749b90ee008dd0c173d458f");
+                },
+                visibility: ["user"]
+            },
             {
                 placeholder: "TEST-setCommented (true) (fixed)",
                 click: () => {

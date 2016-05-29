@@ -156,7 +156,8 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
                         {
                             "_id" : userID,
                             "hasCommentedOnEvent" : false,
-                            "hasBeenCommentedOn" : false
+                            "hasBeenCommentedOn" : false,
+                            "joinedDate" : new Date()
                         }
                     }
                 }, function (err, data) {
@@ -396,6 +397,29 @@ router.post('/find', function (req, res, next) {
         });
     });
 });
+
+router.post('/findByIdWhereUserParticipated', function (req, res, next) {
+    var userID = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["event"], function (db) {
+        db.event.find(
+            {"participants._id" : userID}
+        ).sort({"participants.joinedDate" : -1}, function (err, data) {
+            if (err) {
+                res.status(404).send().end(function () {
+                    db.close();
+                });
+            } else {
+                res.status(200).send({"docs": data}).end(function () {
+                    db.close();
+                });
+            }
+        });
+    });
+});
+
+
+
+
 
 
 router.post('/findByUser', function (req, res, next) {

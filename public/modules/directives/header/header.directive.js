@@ -182,11 +182,20 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-findUserInfoById (isFull = true) (fixed)",
+                placeholder: "TEST-banUser (isFull = true) (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     let toAll = true;
-                    self.UserService.findUserInfoById("5749b90ee008dd0c173d458f", true);
+                    self.UserService.banUser("5749b90ee008dd0c173d458f", 7);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-unbanUser (isFull = true) (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    let toAll = true;
+                    self.UserService.unbanUser("5749b90ee008dd0c173d458f");
                 },
                 visibility: ["user"]
             },

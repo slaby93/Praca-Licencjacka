@@ -633,6 +633,37 @@ router.post('/addUserToBlacklist', auth, guard.check('user'), function (req, res
     });
 });
 
+router.post('/changeBanStatus', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var userID = new ObjectId(req.body.userID);
+        var date = new Date(req.body.date);
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id": userID},
+                {$set: {"unbanDate": date }},
+                function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else if (data.nModified == 0) {
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
 
 
 module.exports = router;

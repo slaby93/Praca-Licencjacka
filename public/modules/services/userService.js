@@ -666,6 +666,73 @@ class UserService {
     }
 
 
+    //@todo: it should also delete this user token from the storage!
+    banUser(userID, days) {
+        let self = this;
+        return new Promise((resolve,reject)=>{
+
+            let date = new Date();
+            date.setDate(date.getDate() + days);
+
+            if (userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/changeBanStatus',
+                    data: {userID: userID, date: date}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data == "nochange") {
+                            self.$l.debug("Nie znaleziono uzytkownik o id: " + userID);
+                            resolve("nochange");
+                        } else {
+                            self.$l.debug("Uzytkownik o id: " + userID + " został zbanowany!");
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porażka podczas banowania uzytkownika o id: " + userID);
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID), bądź ilość dni jest niepoprawna");
+                reject("error");
+            }
+        });
+    }
+    unbanUser(userID) {
+        let self = this;
+        return new Promise((resolve,reject)=>{
+            let date = new Date();
+
+            if (userID.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/changeBanStatus',
+                    data: {userID: userID, date: date}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data == "nochange") {
+                            self.$l.debug("Nie znaleziono uzytkownik o id: " + userID);
+                            resolve("nochange");
+                        } else {
+                            self.$l.debug("Uzytkownik o id: " + userID + " został odbanowany!");
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porażka podczas odbanowywania uzytkownika o id: " + userID);
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID), bądź ilość dni jest niepoprawna");
+                reject("error");
+            }
+        });
+    }
 
 
 

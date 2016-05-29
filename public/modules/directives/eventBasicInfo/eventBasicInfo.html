@@ -155,6 +155,8 @@
                 <div class="text-padding event-active-container" ng-if="!eventBasicInfoCtrl.isActive" flex="100">
                     <div layout="column" layout-align="center center">
                         <div class="is-active-text">Wydarzenie zakończone</div>
+                        <md-button class="md-raised no-text-transformation" ng-if="eventBasicInfoCtrl.checkIfUserCanComment()" ng-click="eventBasicInfoCtrl.showCommentsModal()">Wystaw komentarz</md-button>
+                        <comments-modal></comments-modal>
                     </div>
                 </div>
                 <div layout="row" layout-align="center center" flex="100" ng-if="eventBasicInfoCtrl.isActive">

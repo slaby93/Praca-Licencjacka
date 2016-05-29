@@ -67,6 +67,7 @@ import InfoBoxDirective from '../directives/infoBox/infoBox.directive';
 import ErrSrcDirective from '../directives/errSrc/errSrc.directive';
 import ClickOutsideDirective from '../directives/angularClickOutside/angularClickOutside.directive';
 import IconChoiceModalDirective from '../directives/iconChoice/iconChoiceModal.directive';
+import CommentsModalDirective from '../directives/commentsModal/commentsModal.directive';
 // -----------------------------------------------------   Other imports         ------------------------------------------------------------------------------------------
 import Main from '../mainApp/main';
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,6 +114,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .directive("errSrc", ErrSrcDirective)
     .directive("clickOutside", ClickOutsideDirective)
     .directive("iconChoiceModal", IconChoiceModalDirective)
+    .directive("commentsModal", CommentsModalDirective)
     .config(routing)
     .config(dateLocaleProvider)
     .config(intercepting)

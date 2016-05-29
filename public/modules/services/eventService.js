@@ -542,11 +542,11 @@ class EventService {
      * @params  (string) author - login of an author of an event
      * @functionality
      *      resolves to true if the currently logged user is an author of an event, otherwise resolves to false
-     * @returns {Promise}
+     * @returns {boolean}
      */
     isOwnPage(author) {
         let self = this;
-        return (author == self.UserService.user.login || self.UserService.hasRight(['admin']) ? true : false);
+        return (author == self.UserService.user.login);
     }
 
 
@@ -626,9 +626,13 @@ class EventService {
     }
 
 
-
-
-
+    /**
+     *
+     * @param id - an id of the user we want to check all events it's participated in
+     * @functionality: finds all events the user has been participating in or is participating
+     *      resolves to the data it received from db (array of events)
+     * @returns {Promise|Promise<T>}
+     */
     findByIdWhereUserParticipated(id) {
         let self = this;
         return new Promise((resolve,reject)=> {

@@ -1,5 +1,6 @@
 <div id="event-participants-list">
     <div class="user-list-intro">Uczestnicy wydarzenia:</div>
+    <comment-modal></comment-modal>
     <md-content layout-padding>
         <md-grid-list
                 md-cols-gt-md="8" md-cols-gt-lg="14" md-cols-gt-xl="20" md-cols-md="6" md-cols-sm="4" md-cols-xs="2"
@@ -12,9 +13,14 @@
                 <md-content class="transparent-background tile-content">
                     <md-button aria-label="tooltipButton" flex="100"  flex-gt-md="auto" class="transparent-background tile-button" ng-click="eventParticipantsListCtrl.showToolTip(participant);">
                         <div layout="row">
-                            <div flex="33"/>
+                            <div flex="33" class="comment-button-container">
+                                <md-button aria-label="comment-button" class="comment-button" ng-click="eventParticipantsListCtrl.showCommentsModal(participant)"
+                                           ng-if="!eventParticipantsListCtrl.eventInfo.isActive && eventParticipantsListCtrl.isOwnPage() && !participant.hasBeenCommentedOn">
+                                    <md-icon md-svg-src="resources/comment.svg" class="svg-submissive comment-icon"></md-icon>
+                                </md-button>
+                            </div>
                             <img alt="User Image" ng-src="gallery/{{participant._id}}/avatar.jpg" err-SRC="gallery/default.jpg" class="avatar"/>
-                            <div flex="33"/>
+                            <div flex="33"></div>
                         </div>
 
                         <div class="no-text-transformation user-info">{{participant.login}}</div>

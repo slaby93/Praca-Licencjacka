@@ -1,0 +1,49 @@
+
+<!--<div class="tooltip-container">
+
+</div>  -->
+
+
+<div class="ui xsmall modal comments-modal" id="comments-modal">
+    <div class="header align-center">
+       <div>Wystaw komentarz użytkownikowi</div>
+       <div class="bolded-text">{{commentsModalCtrl.commentInfo.recipientName}}</div>
+    </div>
+    <div class="modal-container" layout="column">
+        <div layout="row">
+            <inline flex="50">
+                <inline class="bolded-text">Rola:</inline>
+                {{commentsModalCtrl.commentInfo.authorRole}}</inline>
+            <div flex="50">
+                <div class="ui dropdown" id="grade-dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Ocena</div>
+                    <div class="menu">
+                        <div class="item" data-value="pozytywny">Pozytywny</div>
+                        <div class="item" data-value="neutralny">Neutralny</div>
+                        <div class="item" data-value="negatywny">Negatywny</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form text-area">
+            <div class="field">
+                <label>Komentarz</label>
+                <textarea ng-model="commentsModalCtrl.commentInfo.content"></textarea>
+            </div>
+        </div>
+        <div class="ui error message" ng-class="commentsModalCtrl.errorClass">
+            <div class="header">
+                W formularzu pojawiły się błędy!
+            </div>
+            <ul class="list">
+                <li>Upewnij się, że wybrałeś ocenę,</li>
+                <li>Treść komentarza powinna zawierać od 30 do 500 znaków.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui approve button">Wyślij</div>
+        <div class="ui cancel button">Anuluj</div>
+    </div>
+</div>

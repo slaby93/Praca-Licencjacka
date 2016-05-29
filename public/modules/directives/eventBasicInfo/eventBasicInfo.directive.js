@@ -88,10 +88,20 @@ class EventBasicInfoController {
         let self = this;
         self.$scope.$broadcast('iconModal:show', self.eventInfoEdit.eventIcon);
     }
+    showCommentsModal(){
+        let self = this;
+        let passedObject = {"recipientID" : self.eventInfo.authorID, "recipientName": self.eventInfo.author, "authorRole" : "uczestnik"};
+        self.$scope.$broadcast('commentsModal:show', passedObject);
+    }
 
     checkUserAlreadyRegistered(userID) {
         let self = this;
         return (_.find(self.eventInfo.participants, {'_id': userID}) != undefined);
+    }
+
+    checkIfUserCanComment(){
+        let self = this;
+        return (_.find(self.eventInfo.participants, {'_id': self.UserService.user.id, 'hasCommentedOnEvent': false}) != undefined);
     }
 
     checkRights() {

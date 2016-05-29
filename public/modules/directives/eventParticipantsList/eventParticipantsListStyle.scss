@@ -185,6 +185,22 @@ md-tooltip.user-tooltip {
 		md-grid-list{
 			md-grid-tile{
 				box-shadow: 8px 8px 15px -4px rgba(0,0,0,0.75);
+				.comment-button-container{
+					position: relative;
+					bottom: 10px;
+					.comment-button{
+						height: 30px;
+						width: auto;
+						min-width: 30px;
+						padding: 0;
+						margin: 0;
+						.comment-icon{
+							width: 26px;
+							height: 26px;
+						}
+					}
+				}
+
 
 				.tile-button{
 					height: 100%;

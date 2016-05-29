@@ -6,10 +6,10 @@
   .topAccountHeader {
     $borderRadius: 24px;
     width: 100%;
-    background: rgba(0, 0, 0, 0.63) no-repeat 50% 50%, 0 0;
+    background: rgba(0, 0, 0, 0.63) 50% 20% no-repeat fixed;
     background-position: center;
     background-color: rgba(0, 0, 0, 0.63);
-    background-size:cover;
+    background-size: cover;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
     height: 2* $profileHeight;
@@ -36,9 +36,26 @@
     }
   }
   .informationHolder {
-    margin-top: calc(#{$profileHeight/2} + 100px);
+    margin-top: 50px;
   }
-  
+
+  .small-border{
+    border-top: 2px groove rgb(166, 166, 166);
+    width: 40%;
+    height: 10px;
+    margin-top: 10px;
+    left: 30%;
+    top: 50%;
+    position: relative;
+  }
+
+  md-tab-item{
+    text-transform: none;
+  }
+
+
+
+
   @media screen and (min-width: 640px) {
     $profileHeight: 200px;
 	.topAccountHeader {

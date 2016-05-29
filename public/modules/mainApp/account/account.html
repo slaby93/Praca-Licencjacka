@@ -1,19 +1,20 @@
 <div layout="row" layout-align="center">
-
-    <div flex="90" id="account" layout="column">
-        <!-- TOP HEADER-->
-        <div class="topAccountHeader" ng-style="{'background-image':'url(gallery/' + accountCtrl.userInfo._id + '/userImage.jpg)'}"">
-            <!--PROFILE IMG-->
-            <div layout="row" layout-align="end" class="profileImgHolder">
+	<div flex="90" id="account" layout="column" layout-align="center center">
+		<!-- TOP HEADER-->
+		<div class="topAccountHeader" ng-style="{'background-image':'url(gallery/' + accountCtrl.userInfo._id + '/userImage.jpg)'}">
+			<!--PROFILE IMG-->
+			<div layout="row" layout-align="end" class="profileImgHolder">
 				<div layout="column" class="user-name">
 					{{accountCtrl.userInfo.settings.name}} {{accountCtrl.userInfo.settings.surname}} ({{accountCtrl.userInfo.login}})
 					<p class="smaller-top-margin">{{user.rank}}</p>
 				</div>
-                <img class="profileImg" ng-src="gallery/{{accountCtrl.userInfo._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
-            </div>
-        </div>
-        <div class="informationHolder">
-            <!--INFROMATIONS-->
+				<img class="profileImg" ng-src="gallery/{{accountCtrl.userInfo._id}}/avatar.jpg" err-SRC="gallery/default.jpg">
+			</div>
+		</div>
+
+		<div class="informationHolder">
+			<div class="small-border" flex></div>
+			<!--INFROMATIONS-->
 			<md-tabs md-center-tabs md-swipe-content md-dynamic-height  md-selected="selectedIndex">
 				<md-tab label="Moja strona">
 					<user-page/>
@@ -23,9 +24,8 @@
 				<md-tab ng-if="accountCtrl.isOwnPage" label="Poczta"><user-mail/></md-tab>
 				<md-tab ng-if="accountCtrl.isOwnPage" label="Użytkownicy"><user-search/></md-tab>
 			</md-tabs>
-			
-            
-        </div>
-    </div>
 
+
+		</div>
+	</div>
 </div>

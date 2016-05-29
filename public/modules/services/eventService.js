@@ -365,20 +365,21 @@ class EventService {
 
     /**
      * @params  (String) userID - id of an user
-     * @functionality finds all events organized by the passed user name
+     * @params  (boolean) isActive - determines if we want to search for active or inactive events (current or archival)
+     * @functionality finds all events organized by the passed user name, active or inactive
      * In case of a success, it logs to console and resolves to array of events, sorted by date in an ascending order
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      full event Info array of event organized by an user if it succeeded, err in case of an error
      */
-    findByUser(userID) {
+    findByUser(userID, isActive) {
         let self = this;
         return new Promise((resolve,reject)=> {
             if (userID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/findByUser',
-                    data: {userID: userID}
+                    data: {userID: userID, isActive: isActive}
                 }).then(
                     // SUCCESS
                     function (data) {
@@ -392,7 +393,7 @@ class EventService {
                     // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + userID);
-                        reject("error");
+                        reject(err);
                     }
                 );
             }else{

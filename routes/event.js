@@ -350,48 +350,42 @@ router.post('/cleanOld', function (req, res, next) {
 
 
 router.post('/find', function (req, res, next) {
-
     var userLatitude = req.body.latitude;
     var userLongitude = req.body.longitude;
     var radius = req.body.radius;
     mongo.connect("serwer", ["event"], function (db) {
-        var userLatitude = req.body.latitude;
-        var userLongitude = req.body.longitude;
-        var radius = req.body.radius;
-        mongo.connect("serwer", ["event"], function (db) {
-            db.event.find(
-                {$and :[
-                    {"isActive": true},
-                    {$where : "(new Date()) < this.date"}
-                ]}, function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                } else {
-                    var docs = [];
-                    data.forEach(function (event) {   //Haversine formula
-                        var R = 6371; // Radius of the earth in km
-                        var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
-                        var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
-                        var a =
-                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
-                                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-                            ;
-                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                        var d = R * c; // Distance in km
-                        if (d <= radius) {
-                            event.distance = d;
-                            docs.push(event);
-                        }
+        db.event.find(
+            {$and :[
+                {"isActive": true},
+                {$where : "(new Date()) < this.date"}
+            ]}, function (err, data) {
+            if (err) {
+                res.status(404).send().end(function () {
+                    db.close();
+                });
+            } else {
+                var docs = [];
+                data.forEach(function (event) {   //Haversine formula
+                    var R = 6371; // Radius of the earth in km
+                    var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
+                    var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
+                    var a =
+                            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
+                            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                        ;
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    var d = R * c; // Distance in km
+                    if (d <= radius) {
+                        event.distance = d;
+                        docs.push(event);
+                    }
 
-                    });
-                    res.status(200).send({"docs": docs}).end(function () {
-                        db.close();
-                    });
-                }
-            });
+                });
+                res.status(200).send({"docs": docs}).end(function () {
+                    db.close();
+                });
+            }
         });
     });
 });
@@ -399,12 +393,17 @@ router.post('/find', function (req, res, next) {
 
 router.post('/findByUser', function (req, res, next) {
     var userID = new ObjectId(req.body.userID);
+    var isActive = req.body.isActive;
+    var query = {};
+    if(isActive)  query = {$where : "(new Date()) < this.date"};
+    else  query = {$where : "(new Date()) >= this.date"};
     mongo.connect("serwer", ["event"], function (db) {
-        db.event.aggregate(
-            [
-                {$match: {"_id": userID}},
-                {$sort: {date: -1}}
-            ], function (err, data) {
+        db.event.find(
+            {$and : [
+                {"isActive" : isActive},
+                {"authorID": userID},
+                query
+            ]}).sort({date: -1}, function (err, data) {
                 if (err) {
                     res.status(404).send().end(function () {
                         db.close();
@@ -415,7 +414,10 @@ router.post('/findByUser', function (req, res, next) {
                     });
                 }
             }
-        );
+
+
+
+        )
     });
 });
 

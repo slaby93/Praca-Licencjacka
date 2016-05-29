@@ -117,10 +117,18 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
-                placeholder: "TEST-findByUser (fixed)",
+                placeholder: "TEST-findByUser ACTIVE (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
-                    self.EventService.findByUser("571ca790e033b8ab254a680e");
+                    self.EventService.findByUser("57495df69895519519f6d4a3",true);
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-findByUser INACTIVE (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.EventService.findByUser("57495df69895519519f6d4a3", false);
                 },
                 visibility: ["user"]
             },

@@ -221,7 +221,7 @@ class EventBasicInfoController {
 
     goToUserProfile() {
         let self = this;
-        self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
+        if(self.eventInfo.author != "-1")  self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
     }
 
 }

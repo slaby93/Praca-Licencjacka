@@ -331,49 +331,51 @@ class UserService {
     }
 
 
-    //pseudo-private
-    //@todo: MAKE THIS FUNCTION PRIVATE!!!!!!!!!!!!!!!!!
-    _sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
+    /**
+     *
+     * @param  userID (String)- id of the user we want to check if it is on a blacklist of an author of an event
+     * @param  authorID (String) - id of an author of an event we want to check the blacklist of
+     * @functionality:  if checks of an userID is on the blacklist of an authorID
+     *      If the user is on the blacklist of an author, he cannot join his event
+     *      It checks of the passed ids can be converted to ObjectId, if not  - it rejects to "error"
+     *      If the user is on the blacklist, it resolves to true
+     *      If the user is not on the blacklist, it resolves to false
+     *      In case of a database error, it rejects to err
+     * @returns {Promise<T>|Promise}
+     */
+    isOnBlacklist(userID, authorID) {
         let self = this;
-        let message = {
-            "authorID": "000000000000000000000000",
-            "content": content,
-            "dateSent": dateSent,
-            "topic": topic
-        };
-        return new Promise((resolve, reject)=> {
-            let matchPassed = true;
-            if (!toAll) {
-                _.forEach(recipientList, (value, key) => {
-                    if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
-                        matchPassed = false;
-                    }
-                });
-            } else recipientList = [];
-            if (matchPassed) {
+        return new Promise((resolve,reject)=> {
+            if (userID.match(/^[0-9a-fA-F]{24}$/) && authorID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
-                    url: '/user/sendMessage',
-                    data: {message: message, recipientList: recipientList, toAll: toAll}
+                    url: '/user/isOnBlacklist',
+                    data: {userID: userID, authorID: authorID}
                 }).then(
                     // SUCCESS
                     function (data) {
-                        if (toAll)  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do wszystkich uzytkownikow!");
-                        else  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                        resolve("ok");
+                        if(!data.data.isOnBlacklist) {
+                            self.$l.debug("Uzytkownik "+userID + " nie znajduje się na blackliście użytkownika "+authorID);
+                            resolve(false);
+                        }else {
+                            self.$l.debug("Uzytkownik "+userID + " znajduje się na blackliście użytkownika "+authorID);
+                            resolve(true);
+                        }
                         // ERROR
                     }, function (err) {
-                        if (toAll)  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do wszystkich użytkowników!");
-                        else  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
-                        reject("error");
+                        self.$l.debug("Porazka podczas sprawdzania blacklisty użytkownika ",authorID);
+                        reject(err);
                     }
                 );
-            } else {
-                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)!");
                 reject("error");
             }
         });
     }
+
+
+
 
 
     /**
@@ -390,6 +392,7 @@ class UserService {
      * @warning: messages from the system will be sent from a special ObjectId("000000000000000000000000")
      * @returns {Promise<T>|Promise}
      *      resolves to"ok" if it succedded, "error" if not
+     * @todo: CHECK IF THE USER IS NOT ON THE BLACKLIST OF THE AUTHOR
      */
     sendMessage(authorID, content, dateSent, topic, recipientList) {
         let self = this;
@@ -465,6 +468,67 @@ class UserService {
     }
 
 
+
+
+
+    /**
+     * For functionality, check sendMessageFromSystem function above
+     * @returns {Promise|Promise<T>}
+     * @private
+     */
+    //pseudo-private
+    //@todo: MAKE THIS FUNCTION PRIVATE!!!!!!!!!!!!!!!!!
+    _sendSystemMessage(content, dateSent, topic, recipientList, toAll) {
+        let self = this;
+        let message = {
+            "authorID": "000000000000000000000000",
+            "content": content,
+            "dateSent": dateSent,
+            "topic": topic
+        };
+        return new Promise((resolve, reject)=> {
+            let matchPassed = true;
+            if (!toAll) {
+                _.forEach(recipientList, (value, key) => {
+                    if (!recipientList[key].match(/^[0-9a-fA-F]{24}$/)) {
+                        matchPassed = false;
+                    }
+                });
+            } else recipientList = [];
+            if (matchPassed) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/sendMessage',
+                    data: {message: message, recipientList: recipientList, toAll: toAll}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (toAll)  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do wszystkich uzytkownikow!");
+                        else  self.$l.debug("Pomyślnie przesłano wiadomość systemową od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        if (toAll)  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do wszystkich użytkowników!");
+                        else  self.$l.debug("Porazka podczas przesyłania wiadomości systemowej od użytkownika o id: " + message.authorID + " do użytkowników ", recipientList);
+                        reject("error");
+                    }
+                );
+            } else {
+                self.$l.debug("Blad! Nie mozna skonwertowac podanych id do ObjectID (niepoprawne ID)");
+                reject("error");
+            }
+        });
+    }
+
+
+    /**
+     *
+     * @param messageID - an id of the message wa want to delete
+     * @functionality: it removes a message with messageID _id, from the currently logged in user.
+     *      In case the message does not exist, it resolves to "nochange", in case of a success - to "ok" ,
+     *      in case of database failure - to err, in case of id uncovertability - to "error"
+     * @returns {Promise|Promise<T>}
+     */
     removeMessage(messageID) {
         let self = this;
         return new Promise((resolve, reject)=> {
@@ -497,6 +561,52 @@ class UserService {
         });
     }
 
+
+
+
+
+    /**
+     *
+     * @param  userID (String)- id of the user we want to add to blacklist
+     * @functionality:  it adds the userID to the blacklist of the currently logged in user
+     *      If the user is already on the blacklist, he cannot be added again
+     *      It checks of the passed ids can be converted to ObjectId, if not  - it rejects to "error"
+     *      If the user has been successfully added to the blacklist, it resolves to "ok",
+     *      if the blacklisting user does not exist or or the user is already on the blacklist, it resolves to "nochange"
+     *      In case of a database error, it rejects to err
+     * @returns {Promise<T>|Promise}
+     */
+    addUserToBlacklist(userID) {
+        let self = this;
+        return new Promise((resolve,reject)=>{
+            if (userID.match(/^[0-9a-fA-F]{24}$/) && userID != self.user.id) {
+                self.$http({
+                    method: 'POST',
+                    url: '/user/addUserToBlacklist',
+                    data: {userID: userID, authorID: self.user.id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if (data.data == "nochange") {
+                            self.$l.debug("Uzytkownik o id: " + userID + "nie zostal dodany do blacklity uzytkownika o id: " + self.user.id +
+                                " ||użytkownik nie istnieje, autor nie istnieje bądź użytkownik znajduje się już na blackliście");
+                            resolve("nochange");
+                        } else {
+                            self.$l.debug("Pomyślnie dołączono użytkownika: " + userID + " do blacklisty użytkownika o id: " + self.user.id);
+                            resolve("ok");
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas dodawania uzytkownika: " + userID + " do blacklisty użytkownika o id: " + self.user.id);
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID), bądź blacklistowany użytkownik jest blacklistującym!");
+                reject("error");
+            }
+        });
+    }
 
 }
 export default UserService;

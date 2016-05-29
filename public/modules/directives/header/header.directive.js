@@ -125,6 +125,30 @@ class HeaderController {
                 visibility: ["user"]
             },
             {
+                placeholder: "TEST-isOnBlacklist (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.UserService.isOnBlacklist("5749b90ee008dd0c173d458f" ,"57495df69895519519f6d4a3").catch((err) =>{
+                        self.$l.debug(err);
+
+
+                    });
+                },
+                visibility: ["user"]
+            },
+            {
+                placeholder: "TEST-addUserToBlacklist (fixed)",
+                click: () => {
+                    //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
+                    self.UserService.addUserToBlacklist("5749b90ee008dd0c173d458f").catch((err) =>{
+                        self.$l.debug(err);
+
+
+                    });
+                },
+                visibility: ["user"]
+            },
+            {
                 placeholder: "TEST-findByUser INACTIVE (fixed)",
                 click: () => {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!

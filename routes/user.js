@@ -536,4 +536,67 @@ function getUserByLogin(login, attributes, callback) {
 }
 
 
+router.post('/isOnBlacklist', function (req, res, next) {
+    var userID = new ObjectId(req.body.userID);
+    var authorID = new ObjectId(req.body.authorID);
+    console.log(userID);
+    console.log(authorID);
+    mongo.connect("serwer", ["user"], function (db) {
+        db.user.find(
+            {$and : [
+                {"_id": authorID},
+                {"blacklist" : {"userID" : userID}}
+            ]},
+            {"_id" : 1}, function (err, data) {
+                if (err) {
+                    res.status(404).send().end(function () {
+                        db.close();
+                    });
+                } else {
+                    res.status(200).send({"isOnBlacklist": (data.length != 0)}).end(function () {
+                        db.close();
+                    });
+                }
+            }
+        );
+    });
+});
+
+
+
+
+router.post('/addUserToBlacklist', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var authorID = new ObjectId(req.body.authorID);
+        var userID = new ObjectId(req.body.userID);
+        mongo.connect("serwer", ["user"], function (db) {
+            db.user.update(
+                {"_id": authorID},
+                {$addToSet: {"blacklist": {"userID" : userID}}},
+                function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    }else if (data.nModified == 0){
+                        res.status(200).send("nochange").end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
+
+
 module.exports = router;

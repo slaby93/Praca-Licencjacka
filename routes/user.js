@@ -385,15 +385,15 @@ router.post('/findBasicUserInfoById', function (req, res, next) {
 });
 
 
-router.post('/findUserInfoById', function (req, res, next) {
-    var userID = new ObjectId(req.body.userID);
+router.post('/findUserInfoByLogin', function (req, res, next) {
+    var userName = req.body.userName;
     var isFull = req.body.isFull;
     var query = {};
     if(isFull)  query = {"login": 1, "email": 1, "groups": 1, "joinDate": 1, "blacklist": 1, "settings": 1, "mailBox": 1};
      else  query = {"login": 1, "groups": 1, "joinDate": 1, "settings.isPrivate": 1, "settings.description": 1, "settings.name": 1, "settings.surname": 1};
     mongo.connect("serwer", ["user"], function (db) {
         db.user.find(
-            {"_id": userID},
+            {"login": userName},
             query,
             function (err, data) {
                 if (err) {

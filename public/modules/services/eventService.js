@@ -571,5 +571,52 @@ class EventService {
             );
         });
     }
+
+
+    /**
+     *
+     * @param eventID (String) - the id of an event we comment about
+     * @param userID (String) - it's an id of the participant of an event
+     * @param isAuthor (boolean) -
+     *      true for author -> participant oommenting (switch the hasBeenCommentedOn),
+     *      false for participant -> author commenting (switch the hasCommentedOnEvent)
+     *      (who is doing the commenting thing)
+     * @functionality: it switches the proper flag to "true" to indicate the user has been commented on/ has commented on an event
+     *      (to prevent multi commenting on the same thing)
+     * @returns {Promise<T>|Promise}
+     *      resolves to "ok" if it succeeded, rejects to "error" in case of id inconvertability to ObjectId, err in case of db error
+     */
+    setCommented(eventID, userID, isAuthor) {
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            if (eventID.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+                let query = {};
+                if(isAuthor)  query = {"hasBeenCommentedOn" : true};
+                 else  query = {"hasCommentedOnEvent" : true};
+                self.$http({
+                    method: 'POST',
+                    url: '/event/setCommented',
+                    data: {eventID: eventID, userID : userID, query : query}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Pomyslnie przestawiono flage komentarza na true!");
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas przestawiania flagi komentarza na true!");
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+    }
+
+
 }
+
+
 export default EventService;

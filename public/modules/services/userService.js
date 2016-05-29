@@ -269,6 +269,25 @@ class UserService {
     }
 
 
+    /**
+     *
+     * @param userName - the userName passed to  ../account/userName/..
+     * @functionality: checks if the userName passed to the function is an owner of the page (if he is the same as the logged user)
+     * @warning: currently is has timeout to let the data appear in UserService (otherwise it's undefined and the function
+     *           always return false)
+     * @returns {Promise<T>|Promise}
+     * resolves to true if the user is the owner of the page, false if he's not
+     */
+    isOwnPage(userName){
+        let self = this;
+        return new Promise((resolve, reject)=> {
+            self.$window.setTimeout(function(){
+                if(userName == self.user.login)  resolve(true);
+                else resolve(false);
+            }, 2000);
+        });
+    }
+
 
 
 
@@ -308,7 +327,7 @@ class UserService {
     /**
      *
      * @param isFull (boolean) - if true, we will search for full info, if not - just for the neutral
-     * @param userID (String) - user id we want to get neutral Info about
+     * @param userName (String) - user name we want to get neutral Info about
      * @functionality:  it returns user's info
      * @returns {Promise<T>|Promise}
      *      In case of the neutral info (for all people looking on an user profile)
@@ -316,35 +335,30 @@ class UserService {
      *      In case of the full info for the logged user only looking on his profile:
      *          the resolved data is an array of {"login", "email", "groups", "joinDate", "blacklist", "settings", "mailBox"} of the found user.
      */
-    findUserInfoById(userID, isFull) {
+    findUserInfoByLogin(userName, isFull) {
         let self = this;
         return new Promise((resolve, reject)=> {
-            if (userID.match(/^[0-9a-fA-F]{24}$/)) {
-                self.$http({
-                    method: 'POST',
-                    url: '/user/findUserInfoById',
-                    data: {userID: userID, isFull: isFull},
-                    headers: {skipAuthorization: false}
-                }).then(
-                    // SUCCESS
-                    function (data) {
-                        if (data.data.docs.length == 0) {
-                            self.$l.debug("Szukany użytkownik nie istnieje!");
-                            reject("error");
-                        } else {
-                            self.$l.debug("Oto wyszukane dane szukanego uzytkownika: ", data.data.docs[0]);
-                            resolve(data);
-                        }
-                        // ERROR
-                    }, function (err) {
-                        self.$l.debug("Porazka podczas wyszukiwania danych szukanego uzytkownika");
-                        reject(err);
+            self.$http({
+                method: 'POST',
+                url: '/user/findUserInfoByLogin',
+                data: {userName: userName, isFull: isFull},
+                headers: {skipAuthorization: false}
+            }).then(
+                // SUCCESS
+                function (data) {
+                    if (data.data.docs.length == 0) {
+                        self.$l.debug("Szukany użytkownik nie istnieje!");
+                        reject("error");
+                    } else {
+                        self.$l.debug("Oto wyszukane dane szukanego uzytkownika: ", data.data.docs[0]);
+                        resolve(data);
                     }
-                );
-            }else{
-                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                reject("error");
-            }
+                    // ERROR
+                }, function (err) {
+                    self.$l.debug("Porazka podczas wyszukiwania danych szukanego uzytkownika");
+                    reject(err);
+                }
+            );
         });
     }
 
@@ -666,7 +680,20 @@ class UserService {
     }
 
 
-    //@todo: it should also delete this user token from the storage!
+
+
+
+    /**
+     *
+     * @param userID (String) - the id of the banned user
+     * @param days (int)- the time in days of the ban
+     * @functionality: bans the user by switching it's unbanDate to currentDate + days
+     *      If the user has not been found, resolves to "nochange", if the user has been banned - to "ok"
+     *      In case of a database error, it rejects to err
+     *      In case of the inconvertablity of the id, rejects to "error"
+     * @returns {Promise<T>|Promise}
+     */
+    //@todo: it should also delete this user token from the storage! Check if the number is int and not float!
     banUser(userID, days) {
         let self = this;
         return new Promise((resolve,reject)=>{
@@ -683,7 +710,7 @@ class UserService {
                     // SUCCESS
                     function (data) {
                         if (data.data == "nochange") {
-                            self.$l.debug("Nie znaleziono uzytkownik o id: " + userID);
+                            self.$l.debug("Nie znaleziono uzytkownika o id: " + userID);
                             resolve("nochange");
                         } else {
                             self.$l.debug("Uzytkownik o id: " + userID + " został zbanowany!");
@@ -701,6 +728,20 @@ class UserService {
             }
         });
     }
+
+
+
+
+
+    /**
+     *
+     * @param userID (String) - the id of the unbanned user
+     * @functionality: unbans the user by switching it's unbanDate to currentDate
+     *      If the user has not been found, resolves to "nochange", if the user has been banned - to "ok"
+     *      In case of a database error, it rejects to err
+     *      In case of the inconvertablity of the id, rejects to "error"
+     * @returns {Promise<T>|Promise}
+     */
     unbanUser(userID) {
         let self = this;
         return new Promise((resolve,reject)=>{

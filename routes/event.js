@@ -151,8 +151,15 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
                     {"_id": id},
                     {$where : "this.participants.length < this.eventInfo.usersLimit && (new Date()) < this.date"}
                 ]},
-                {$addToSet: {"participants": {"_id" : userID}}},
-                function (err, data) {
+                {$addToSet:
+                    {"participants":
+                        {
+                            "_id" : userID,
+                            "hasCommentedOnEvent" : false,
+                            "hasBeenCommentedOn" : false
+                        }
+                    }
+                }, function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {
                             db.close();

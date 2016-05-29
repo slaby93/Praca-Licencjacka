@@ -4,50 +4,86 @@
 
 class AccountController {
 
-    constructor($scope, $log, $state, $stateParams, UserService) {
+    constructor($scope, $log, $state, $stateParams, UserService, loader) {
         let self = this;
 		self.$state = $state;
+		self.$stateParams = $stateParams;
 		self.UserService = UserService;
         self.$scope = $scope;
         self.$l = $log;
-		if($stateParams.userName == "")  self.$state.go("app.home");
-		$scope.user = self.getUserInfo($stateParams.userName);
-		
-		
-		
-		let index = $stateParams.indexName;
-		switch(index) {
-			case "profile":
-				$scope.selectedIndex = 0;
-				break;
-			case "settings":
-				$scope.selectedIndex = 1;
-				break;
-			case "observed":
-				$scope.selectedIndex = 2;
-				break;
-			case "mail":
-				$scope.selectedIndex = 3;
-				break;
-			case "search":
-				$scope.selectedIndex = 4;
-				break;
-			default:
-				$scope.selectedIndex = 0;
-		}
+		self.loader = loader;
+		self.setDefaultValues();
+
 
     }
-	
-	
-	getUserInfo(){
-		return {
-			avatar: "gallery/default.jpg",
-			userImage: "gallery/defaultImg.jpg",
-			name: "Krzysztof",
-			surname: "Krawczyk",
-			nickname: "Beton",
-			rank: "Weteran",
-		};
+
+
+	setDefaultValues() {
+		let self = this;
+		self.isOwnPage = false;
+		self.userInfo = {};
+		self.userName = self.$stateParams.userName;
+		if(self.userName == "")  {self.$state.go("app.home"); return;}
+
+		//checking if that page is ours or somebody's else
+		self.UserService.isOwnPage(self.userName).then((resp) => {
+			if(resp) {
+				self.isOwnPage = true;
+
+				let index = self.$stateParams.indexName;
+				switch (index) {
+					case "profile":
+						self.$scope.selectedIndex = 0;
+						break;
+					case "settings":
+						self.$scope.selectedIndex = 1;
+						break;
+					case "observed":
+						self.$scope.selectedIndex = 2;
+						break;
+					case "mail":
+						self.$scope.selectedIndex = 3;
+						break;
+					case "search":
+						self.$scope.selectedIndex = 4;
+						break;
+					default:
+						self.$scope.selectedIndex = 0;
+				}
+			}else  self.$scope.selectedIndex = 0;
+			self.$l.debug("self.UserService.user.login: ",self.UserService.user.login);
+			self.getDataFromServer();
+		});
+
+	}
+
+	getDataFromServer(){
+		let self = this;
+
+
+
+		self.loader.show();
+		self.UserService.findUserInfoByLogin(self.userName, self.isOwnPage).then((resp)=> {
+			if (resp == "error") {
+				self.loader.hide();
+				self.$state.go("introduction");
+				return;
+			}
+			if (resp.data.docs[0] === undefined) {
+				self.loader.hide();
+				self.$state.go("login");
+				return;
+			}
+			self.eventInfo = resp.data.docs[0];
+			self.$l.debug("Informacje na temat użytkownika: ",self.eventInfo);
+			self.loader.hide();
+		});
+
+
+
+
+
+
 	}
 	
 	

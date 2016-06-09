@@ -350,9 +350,9 @@
   "npm:assert@1.4.0": {
     "buffer-shims": "npm:buffer-shims@1.0.0",
     "util": "npm:util@0.10.3",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:json-stringify-safe@5.0.1": {},
   "github:jspm/nodelibs-querystring@0.1.0": {
@@ -408,9 +408,9 @@
     "request": "npm:request@^2.60.0",
     "lodash": "npm:lodash@^2.0.0",
     "smtpapi": "npm:smtpapi@^1.2.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "http": "github:jspm/nodelibs-http@^1.7.0",
     "url": "github:jspm/nodelibs-url@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
@@ -552,10 +552,10 @@
     "tough-cookie": "npm:tough-cookie@~2.2.0",
     "tunnel-agent": "npm:tunnel-agent@~0.4.1",
     "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "querystring": "github:jspm/nodelibs-querystring@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "url": "github:jspm/nodelibs-url@^0.1.0",
     "http": "github:jspm/nodelibs-http@^1.7.0",
     "https": "github:jspm/nodelibs-https@^0.1.0",
@@ -622,8 +622,8 @@
     "bn.js": "npm:bn.js@^4.1.0",
     "miller-rabin": "npm:miller-rabin@^4.0.0",
     "randombytes": "npm:randombytes@^2.0.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
   "npm:create-ecdh@4.0.0": {
@@ -755,8 +755,8 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
   "npm:buffer-xor@1.0.3": {
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
   "npm:hash.js@1.0.3": {
     "inherits": "npm:inherits@^2.0.1"
@@ -793,8 +793,8 @@
     "sntp": "npm:sntp@^1.0.0",
     "url": "github:jspm/nodelibs-url@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
   "npm:sshpk@1.8.3": {
     "asn1": "npm:asn1@~0.2.3",

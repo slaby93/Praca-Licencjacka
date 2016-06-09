@@ -34,6 +34,7 @@ import TestController from './test/test.controller';
 import UploadModalController from './upload/uploadModal.controller';
 import LoginController from './login/login.controller';
 import RegisterController from './register/register.controller';
+import CreateController from './create/create.controller';
 // -----------------------------------------------------   Services imports      ------------------------------------------------------------------------------------------
 import UserService from '../services/userService';
 import EventService from '../services/eventService';
@@ -83,6 +84,7 @@ angular.module("mainApp", ['ui.router', 'LocalStorageModule', 'ngMaterial', 'md.
     .controller("UploadModalController", UploadModalController)
     .controller("LoginController", LoginController)
     .controller("RegisterController", RegisterController)
+	.controller("CreateController", CreateController)
     .service("UserService", UserService)
     .service("EventService", EventService)
     .service("GoogleService", GoogleService)

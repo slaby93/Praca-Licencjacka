@@ -5,16 +5,10 @@
 import SportEvent from 'Classes/SportEvent';
 
 class CreateController {
-    constructor($log, $scope, $q, GoogleService, moment, $timeout, $window, UserService, loader, EventService, $state, $compile) {
+    constructor($scope, GoogleService, $window, UserService, loader, EventService) {
         let self = this;
-        self.$l = $log;
         self.$scope = $scope;
         self.$window = $window;
-        self.$q = $q;
-        self.moment = moment;
-        self.$compile = $compile;
-        self.$state = $state;
-        self.$timeout = $timeout;
         self.loader = loader;
         self.UserService = UserService;
         self.GoogleService = GoogleService;
@@ -84,8 +78,6 @@ class CreateController {
             position: new google.maps.LatLng(lat, lng),
             map: self.map,
             draggable: true,
-			lat: lat,
-			lng: lng,
         });
         self.markers.push(marker);
     }
@@ -95,6 +87,7 @@ class CreateController {
         _.forEach(self.markers, (marker)=> {
             self.removeMarker(marker);
         })
+		self.markers = [];
     }
 
     /**
@@ -145,7 +138,6 @@ class CreateController {
 	
 	addEvent() {
 		let self = this;
-		
 		let createDate = new Date();
 		createDate.setHours(createDate.getHours() + 2);
 		let date = new Date(self.event.date);
@@ -154,7 +146,7 @@ class CreateController {
 		let experience = parseInt(self.event.experience, 10);
 		let event = new SportEvent(self.UserService.user.id, createDate, date, "resources/icons/bell.svg",
             self.event.description, self.event.category, self.event.payment, ownEquipment, experience, self.event.usersLimit, 
-			self.event.title, true, self.markers[0].lat, self.markers[0].lng, []);
+			self.event.title, true, self.markers[0].position.lat(), self.markers[0].position.lng(), []);
 		self.eventService.addEvent(event);
 	}
 	

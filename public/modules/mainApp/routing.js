@@ -38,6 +38,12 @@ function routing($stateProvider, $urlRouterProvider) {
             controller: "EventController",
             controllerAs: "eventCtrl"
         })
+		.state('create', {
+            url: "/create",
+            templateUrl: "modules/mainApp/create/create.html",
+            controller: "CreateController",
+            controllerAs: "createCtrl"
+        })
         .state('center', {
             url: "/center",
             templateUrl: "modules/mainApp/center/center.html",

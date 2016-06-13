@@ -129,6 +129,7 @@ class CenterController {
         _.forEach(self.markers, (marker)=> {
             self.removeMarker(marker);
         })
+		self.markers = [];
     }
 
     filterQuery(query) {

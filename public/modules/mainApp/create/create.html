@@ -1,0 +1,117 @@
+<div id="event_add">
+    <div layout="row" class="itemsOverMap">
+        <!--MAIN CONTENT-->
+        <div flex="grow" layout="column" layout-align="start start">
+            <!-- SEARCH BOX-->
+            <div class="rowContainer">
+                <div flex="grow" layout="row">
+                    <div class="leftBouncer" flex-sm="10" flex-xs="10"></div>
+                    <md-card flex-sm="grow" flex-xs="grow" class="searchBox">
+                        <md-card-content layout="column">
+                            <md-input-container md-no-float class="md-block">
+                                <input ng-model-options="{ updateOn: 'default',debounce:500 }"
+                                       ng-model="createCtrl.queryString"
+                                       ng-change="createCtrl.changeOfQueryString()"
+                                       placeholder="Wpisz nazwę miejscowości:"
+                                       type="text"/>
+                            </md-input-container>
+                            <md-list flex>
+                                <md-list-item ng-click="createCtrl.handleResultClick(item)"
+                                              ng-repeat="item in createCtrl.resultList" class="md-3-line"
+                                              ng-click="null">
+                                    <div class="md-list-item-text" layout="column">
+                                        <span>{{ item.description }}</span>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-card-content>
+                    </md-card>
+                    <div flex-gt-sm="grow" flex-sm="10" flex-xs="10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="map"></div>
+</div>
+<div id="details">
+<form layout="column" novalidate name="createCtrl.detailsForm"
+	  ng-submit="createCtrl.addEvent()">
+	 <md-input-container>
+		<input type="text" required ng-model="createCtrl.event.title"
+			   name="title" placeholder="Tytuł wydarzenia">
+		<div ng-messages="createCtrl.detailsForm.title.$error"
+			 ng-if="createCtrl.detailsForm.title.$invalid && createCtrl.detailsForm.title.$touched">
+			<div ng-message="required">Tytuł jest wymagany.</div>
+		</div>
+	</md-input-container>
+	<md-input-container>
+		<input type="date" required ng-model="createCtrl.event.date"
+			   name="date" placeholder="Data wydarzenia">
+		<div ng-messages="createCtrl.detailsForm.date.$error"
+			 ng-if="createCtrl.detailsForm.date.$invalid && createCtrl.detailsForm.date.$touched">
+			<div ng-message="maxSize">Data jest wymagana.</div>
+		</div>
+	</md-input-container>
+	<md-input-container>
+		<input type="text" required ng-model="createCtrl.event.description"
+			   name="description" placeholder="Opis wydarzenia">
+		<div ng-messages="createCtrl.detailsForm.description.$error"
+			 ng-if="createCtrl.detailsForm.description.$invalid && createCtrl.detailsForm.description.$touched">
+			<div ng-message="required">Opis jest wymagany.</div>
+		</div>
+	</md-input-container>
+	<md-input-container>
+		<md-select aria-label="Wybierz dyscyplinę" ng-model="createCtrl.event.category">
+			<md-option value="" disabled selected>Wybierz dyscyplinę</md-option>
+			<md-option value="piłka nożna">Piłka nożna</md-option>
+			<md-option value="tenis">Tenis</md-option>
+			<md-option value="siatkówka">Siatkówka</md-option>
+			<md-option value="koszykówka">Koszykówka</md-option>
+		</md-select>
+	</md-input-container>
+	<md-input-container>
+		<input type="number" required ng-model="createCtrl.event.payment"
+			   name="payment" placeholder="Opłata za wstęp">
+		<div ng-messages="createCtrl.detailsForm.payment.$error"
+			 ng-if="createCtrl.detailsForm.payment.$invalid && createCtrl.detailsForm.payment.$touched">
+			<div ng-message="required">Opłata jest wymagana, wpisz 0 jeśli wstęp wolny.</div>
+		</div>
+	</md-input-container>
+	<md-input-container>
+		<md-select aria-label="Czy wymagany własny sprzęt?" ng-model="createCtrl.event.ownEquipment">
+			<md-option value="" disabled selected>Czy wymagany własny sprzęt?</md-option>
+			<md-option value="false">Nie</md-option>
+			<md-option value="true">Tak</md-option>
+		</md-select>
+	</md-input-container>
+	<md-input-container>
+		<md-select aria-label="Wymagany poziom doświadczenia" ng-model="createCtrl.event.experience">
+			<md-option value="" disabled selected>Wymagany poziom doświadczenia</md-option>
+			<md-option value="0">Brak</md-option>
+			<md-option value="1">Liga podwórkowa</md-option>
+			<md-option value="2">Liga amatorka</md-option>
+			<md-option value="3">Liga półzawodowa</md-option>
+			<md-option value="4">Liga zawodowa</md-option>
+			<md-option value="5">Tylko ekstraklasa</md-option>
+		</md-select>
+	</md-input-container>
+	<md-input-container>
+		<input type="number" required ng-model="createCtrl.event.usersLimit"
+			   name="usersLimit" placeholder="Limit uczestników">
+		<div ng-messages="createCtrl.detailsForm.usersLimit.$error"
+			 ng-if="createCtrl.detailsForm.usersLimit.$invalid && createCtrl.detailsForm.usersLimit.$touched">
+			<div ng-message="required">Limit uczestników jest wymagany.</div>
+		</div>
+	</md-input-container>
+	<div layout-xs="column" layout-sm="column" layout-gt-sm="row"
+		 layout-align-gt-sm="center center"
+		 layout-align-sm="space-around stretch" layout-align-xs="space-around stretch">
+		<md-button type="submit" class="md-raised" flex-xs="50" flex-sm="50"
+				   flex-gt-sm="20" ng-disabled="createCtrl.detailsForm.$invalid">Wyślij
+		</md-button>
+		<md-button ng-click="createCtrl.clearForms()" class="md-raised" flex-xs="50"
+				   flex-sm="50" flex-gt-sm="20">Czyść
+		</md-button>
+	</div>
+</form>
+</div>

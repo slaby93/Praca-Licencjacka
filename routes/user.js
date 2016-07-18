@@ -40,7 +40,7 @@ router.post('/', function (req, res, next) {
                 if (foundedUser === undefined || foundedUser === null) {
                     return res.status(400).json({message: 'Użytkownik nie istnieje, wpisz poprawny login!'}).end(function () {
                         db.close();
-                    }); 
+                    });
                 }
                 //user is banned
                 if(foundedUser.unbanDate > new Date()){

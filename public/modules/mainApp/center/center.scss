@@ -237,6 +237,48 @@
     @media(max-width: $md) {
       left: 0px !important;
     }
+    @media(max-width: 340px) {
+      height: 250px;
+      width: 100%;
+      .userInfoBox {
+        width: 260px;
+        img {
+          width: 75px;
+        }
+      }
+    }
+    .userInfoBox {
+      background-image: url("http://ug.edu.pl/sites/default/files/_nodes/strona/34170/images/shutterstock_142247851mini.jpg");
+      background-size: cover;
+      background-position-x: center;
+      display: flex;
+      text-align: right;
+      border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+      padding: 15px;
+      margin-bottom: 15px;
+      justify-content: space-between;
+      .imageHolder {
+        flex-basis: 35%;
+        img {
+          cursor: pointer;
+          width: 100%;
+          height: auto;
+        }
+      }
+      .infoHolder {
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        .userName {
+          text-transform: capitalize;
+          font-size: 26px;
+          font-weight: initial;
+        }
+        .userMail {
+          text-transform: lowercase;
+        }
+      }
+    }
   }
 
   .menuIcon {

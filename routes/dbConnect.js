@@ -34,7 +34,7 @@ exports.connect = function (dataBase, collectionList, callback) {
         throw new Error("dataBase parameter is not a string or collectionList is not an array!");
     }
     db = mongojs('slaby:daniel22@ds023495.mlab.com:23495/bachelor', collectionList, {authMechanism: 'ScramSHA1'});
-    
+
     db.on('error', function (err) {
         console.log(error(err));
     });

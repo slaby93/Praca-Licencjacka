@@ -5,87 +5,78 @@
 class AccountController {
 
     constructor($scope, $log, $state, $stateParams, UserService, loader) {
-        let self = this;
-		self.$state = $state;
-		self.$stateParams = $stateParams;
-		self.UserService = UserService;
-        self.$scope = $scope;
-        self.$l = $log;
-		self.loader = loader;
-		self.setWatches();
-		self.setDefaultValues();
-		$('.tabular.menu .item').tab();
+		this.$state = $state;
+		this.$stateParams = $stateParams;
+		this.UserService = UserService;
+        this.$scope = $scope;
+        this.$l = $log;
+
+        $('.tabular.menu .item').tab();
+		this.loader = loader;
+		this.setWatches();
+		this.setDefaultValues();
     }
 
 	setWatches(){
-		let self = this;
-		self.$scope.$watch(()=> {
-			return self.eventInfo;
-		}, (newValue)=> {
-		}, true);
+		this.$scope.$watch(() => this.eventInfo, (newValue)=> {}, true);
 	}
 
 
 	setDefaultValues() {
-		let self = this;
-		self.isOwnPage = false;
-		self.userInfo = {};
-		self.userName = self.$stateParams.userName;
-		if(self.userName == "")  {self.$state.go("app.home"); return;}
+		this.isOwnPage = false;
+		this.userInfo = {};
+		this.userName = this.$stateParams.userName;
+		if(this.userName == "")  {this.$state.go("app.home"); return;}
 
 		//checking if that page is ours or somebody's else
-		self.UserService.isOwnPage(self.userName).then((resp) => {
+		this.UserService.isOwnPage(this.userName).then((resp) => {
 			if(resp) {
-				self.isOwnPage = true;
+				this.isOwnPage = true;
 
-				let index = self.$stateParams.indexName;
+				let index = this.$stateParams.indexName;
 				switch (index) {
 					case "profile":
-						self.$scope.selectedIndex = 0;
+						this.$scope.selectedIndex = 0;
 						break;
 					case "settings":
-						self.$scope.selectedIndex = 1;
+						this.$scope.selectedIndex = 1;
 						break;
 					case "observed":
-						self.$scope.selectedIndex = 2;
+						this.$scope.selectedIndex = 2;
 						break;
 					case "mail":
-						self.$scope.selectedIndex = 3;
+						this.$scope.selectedIndex = 3;
 						break;
 					case "search":
-						self.$scope.selectedIndex = 4;
+						this.$scope.selectedIndex = 4;
 						break;
 					default:
-						self.$scope.selectedIndex = 0;
+						this.$scope.selectedIndex = 0;
 				}
-			}else  self.$scope.selectedIndex = 0;
-			self.$l.debug("self.UserService.user.login: ",self.UserService.user.login);
-			self.getDataFromServer();
+			}else  this.$scope.selectedIndex = 0;
+			this.$l.debug("this.UserService.user.login: ",this.UserService.user.login);
+			this.getDataFromServer();
 		});
 
 	}
 
 	getDataFromServer(){
-		let self = this;
-		self.loader.show();
-		self.UserService.findUserInfoByLogin(self.userName, self.isOwnPage).then((resp)=> {
-			if (resp == "error") {
-				self.loader.hide();
-				self.$state.go("introduction");
-				return;
-			}
+		this.loader.show();
+		this.UserService.findUserInfoByLogin(this.userName, this.isOwnPage).then((resp)=> {
 			if (resp.data.docs[0] === undefined) {
-				self.loader.hide();
-				self.$state.go("login");
+				this.loader.hide();
+				this.$state.go("login");
 				return;
 			}
-			self.userInfo = resp.data.docs[0];
-			self.$l.debug("Informacje na temat użytkownika: ",self.userInfo);
-			self.$scope.$evalAsync();
-			self.loader.hide();
+			this.userInfo = resp.data.docs[0];
+			this.$l.debug("Informacje na temat użytkownika: ",this.userInfo);
+			this.$scope.$evalAsync();
+            this.$scope.$broadcast("userInfo:updated", {"data" : this.userInfo});
+			this.loader.hide();
 		}).catch((err) => {
-			self.loader.hide();
-			self.$state.go("introduction");
+            this.$l.debug("Error: ", err);
+			this.loader.hide();
+			this.$state.go("introduction");
 		});
 	}
 }

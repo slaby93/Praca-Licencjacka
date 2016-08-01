@@ -347,16 +347,14 @@ class UserService {
                 // SUCCESS
                 function (data) {
                     if (data.data.docs.length == 0) {
-                        self.$l.debug("Szukany użytkownik nie istnieje!");
-                        reject("error");
+                        reject("Szukany użytkownik nie istnieje!");
                     } else {
                         self.$l.debug("Oto wyszukane dane szukanego uzytkownika: ", data.data.docs[0]);
                         resolve(data);
                     }
                     // ERROR
                 }, function (err) {
-                    self.$l.debug("Porazka podczas wyszukiwania danych szukanego uzytkownika");
-                    reject(err);
+                    reject("Porazka podczas wyszukiwania danych szukanego uzytkownika");
                 }
             );
         });

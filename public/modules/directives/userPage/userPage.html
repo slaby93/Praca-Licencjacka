@@ -1,24 +1,40 @@
-<div layout="column" flex="100">
-	<div layout="row" flex="100">
+<div layout="column">
+	<div layout="row">
 		<div layout="column" flex="55">
 			<div>
-				<md-input-container class="md-block small-margin" layout="column" flex="100">
-				  <p class="large-text small-margin">O użytkowniku:</p>
-				  <textarea ng-readonly="true" ng-model="userPageCtrl.user.description" md-maxlength="1000" rows="10" md-select-on-focus></textarea>
-				</md-input-container>
+				<div class="md-block small-margin" layout="column" flex="100">
+					<div class="ui form description-box">
+						<div class="field">
+							<label>Opis użytkownika:</label>
+							<textarea disabled readonly>{{userPageCtrl.userInfo.settings.description}}</textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<span flex/>
-		<div layout="column" flex="40">
+		<div layout="column" flex="40" class="user-statistics">
 			<div class="small-margin">
 				<div flex="100" class="info-text">
-					<inline class="bold-text">Użytkownik od: </inline>{{userPageCtrl.user.accountCreated}}r</div>
+					<inline class="bold-text">Użytkownik od: </inline>{{userPageCtrl.userInfo.joinDate}}r
+                </div>
 				<div flex="100" class="info-text">
-					<inline class="bold-text">Ostatnio zalogowany: </inline>{{userPageCtrl.user.lastSeen}}r</div>
-				<div flex="100" class="info-text" ng-if="userPageCtrl.user.age !=''">
-					<inline class="bold-text">Wiek: </inline>{{userPageCtrl.user.age}}</div>
-				<div flex="100" class="info-text" ng-if="userPageCtrl.user.city !=''">
-					<inline class="bold-text">Miasto: </inline>{{userPageCtrl.user.city}}</div>
+					<inline class="bold-text">Wiek: </inline>{{userPageCtrl.userInfo.age}}
+                </div>
+				<div flex="100" class="info-text">
+					<inline class="bold-text">Miasto: </inline>{{userPageCtrl.userInfo.settings.city}}
+                </div>
+                <div flex="100" class="info-text">
+                    <div class="bold-text">Tagi: </div>
+                    <div class="ui four column stackable doubling centered grid ">
+                        <div class="column" ng-repeat="tag in userPageCtrl.userInfo.settings.tags">
+                            <div class="grid-item" layout="row">
+                                {{tag}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>

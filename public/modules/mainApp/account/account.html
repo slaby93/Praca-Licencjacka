@@ -14,19 +14,46 @@
 			</div>
 		</div>
 
-		<div class="informationHolder">
+		<div class="informationHolder" layout="column" layout-align="none center">
 			<div class="small-border" flex></div>
 			<!--INFROMATIONS-->
-			<md-tabs md-center-tabs md-swipe-content md-dynamic-height  md-selected="selectedIndex">
-				<md-tab label="Moja strona">
-					<user-page/>
-				</md-tab>
-				<md-tab ng-if="accountCtrl.isOwnPage" label="Ustawienia konta"><user-settings/></md-tab>
-				<md-tab ng-if="accountCtrl.isOwnPage" label="Obserwowane"><user-observed/></md-tab>
-				<md-tab ng-if="accountCtrl.isOwnPage" label="Poczta"><user-mail/></md-tab>
-				<md-tab ng-if="accountCtrl.isOwnPage" label="Użytkownicy"><user-search/></md-tab>
-			</md-tabs>
-
+            <div class="ui secondary pointing center aligned tabular five column doubling grid menu">
+                <div class="active item column tab-item" data-tab="user-page" layout="row" layout-align="center center">
+                    <i class="home icon"></i>
+                    Informacje
+                </div>
+                <div class="item column tab-item" data-tab="user-settings"  layout="row" layout-align="center center">
+                    <i class="settings icon"></i>
+                    Ustawienia
+                </div>
+                <div class="item column tab-item" data-tab="user-observed"  layout="row" layout-align="center center">
+                    <i class="find icon"></i>
+                    Obserwowane
+                </div>
+                <div class="item column tab-item" data-tab="user-mail"  layout="row" layout-align="center center">
+                    <i class="mail icon"></i>
+                    Poczta
+                </div>
+                <div class="item column tab-item" data-tab="user-search"  layout="row" layout-align="center center">
+                    <i class="search icon"></i>
+                    Użytkownicy
+                </div>
+            </div>
+            <div class="ui active transition fade in tab" data-tab="user-page">
+                <user-page></user-page>
+            </div>
+            <div class="ui transition fade in tab" data-tab="user-settings">
+                <user-settings></user-settings>
+            </div>
+            <div class="ui transition fade in tab" data-tab="user-observed">
+                <user-observed></user-observed>
+            </div>
+            <div class="ui transition fade in tab" data-tab="user-mail">
+                <user-mail></user-mail>
+            </div>
+            <div class="ui transition fade in tab" data-tab="user-search">
+                <user-search></user-search>
+            </div>
 
 		</div>
 	</div>

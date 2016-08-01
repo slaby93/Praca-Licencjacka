@@ -14,8 +14,7 @@ class AccountController {
 		self.loader = loader;
 		self.setWatches();
 		self.setDefaultValues();
-
-
+		$('.tabular.menu .item').tab();
     }
 
 	setWatches(){
@@ -88,15 +87,7 @@ class AccountController {
 			self.loader.hide();
 			self.$state.go("introduction");
 		});
-
-
-
-
-
-
 	}
-	
-	
 }
 
 

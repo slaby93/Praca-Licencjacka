@@ -99,7 +99,10 @@ router.post('/register', function (req, res, next) {
         "radius": 200,
         "description": "",
         "name": "",
-        "surname": ""
+        "surname": "",
+        "birthDate": "",
+        "settings.city" : "",
+        "settings.tags": []
     };
     user.mailBox = [];
     user.unbanDate = new Date();
@@ -390,7 +393,8 @@ router.post('/findUserInfoByLogin', function (req, res, next) {
     var isFull = req.body.isFull;
     var query = {};
     if(isFull)  query = {"login": 1, "email": 1, "groups": 1, "joinDate": 1, "blacklist": 1, "settings": 1, "mailBox": 1};
-     else  query = {"login": 1, "groups": 1, "joinDate": 1, "settings.isPrivate": 1, "settings.description": 1, "settings.name": 1, "settings.surname": 1};
+     else  query = {"login": 1, "groups": 1, "joinDate": 1, "settings.isPrivate": 1, "settings.description": 1, "settings.name": 1,
+                    "settings.surname": 1, "settings.birthDate" : 1, "settings.city" : 1, "settings.tags": 1};
     mongo.connect("serwer", ["user"], function (db) {
         db.user.find(
             {"login": userName},

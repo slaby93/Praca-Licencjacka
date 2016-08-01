@@ -1,0 +1,42 @@
+//the styles from here will be visible in the whole domainofapplication
+
+html, body{
+	background-color: #fff6f6 !important;
+}
+
+
+@mixin border-radius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius;
+}
+
+@mixin transform($transforms) {
+	-moz-transform: $transforms;
+	-o-transform: $transforms;
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+	transform: $transforms;
+}
+
+
+@mixin transition($transition, $time){
+	-webkit-transition: $transition $time;
+	-moz-transition: $transition $time;
+	-ms-transition: $transition $time;
+	-o-transition: $transition $time;
+	transition: $transition $time;
+}
+
+@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
+	@if $inset {
+		-webkit-box-shadow:inset $top $left $blur $size $color;
+		-moz-box-shadow:inset $top $left $blur $size $color;
+		box-shadow:inset $top $left $blur $size $color;
+	} @else {
+		-webkit-box-shadow: $top $left $blur $size $color;
+		-moz-box-shadow: $top $left $blur $size $color;
+		box-shadow: $top $left $blur $size $color;
+	}
+}

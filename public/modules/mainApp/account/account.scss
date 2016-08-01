@@ -51,6 +51,20 @@
     }
     .informationHolder {
         margin-top: 50px;
+        .tab-item{
+            cursor: pointer;
+            color: black;
+            @include transition(all, 0.3s);
+
+            .icon{
+                @include transition(transform, 0.3s);
+            }
+
+            &:hover{
+                .icon  {@include transform(scale(1.4));}
+                color: rgba(black, 0.8);
+            }
+        }
     }
 
     .small-border{
@@ -62,20 +76,7 @@
         position: relative;
     }
 
-    .tab-item{
-        cursor: pointer;
-        color: black;
-        @include transition(all, 0.3s);
 
-        .icon{
-            @include transition(transform, 0.3s);
-        }
-
-        &:hover{
-            .icon  {@include transform(scale(1.4));}
-            color: rgba(black, 0.8);
-        }
-    }
 
 
     //responsible for making avatar and profile holder smaller

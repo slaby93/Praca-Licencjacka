@@ -16,43 +16,44 @@
 
 		<div class="informationHolder" layout="column" layout-align="none center">
 			<div class="small-border" flex></div>
-			<!--INFROMATIONS-->
+			<!--TABS-->
             <div class="ui secondary pointing center aligned tabular five column doubling grid menu">
                 <div class="active item column tab-item" data-tab="user-page" layout="row" layout-align="center center">
                     <i class="home icon"></i>
                     Informacje
                 </div>
-                <div class="item column tab-item" data-tab="user-settings"  layout="row" layout-align="center center">
+                <div class="item column tab-item" data-tab="user-settings"  layout="row" layout-align="center center" ng-show="accountCtrl.isOwnPage">
                     <i class="settings icon"></i>
                     Ustawienia
                 </div>
-                <div class="item column tab-item" data-tab="user-observed"  layout="row" layout-align="center center">
+                <div class="item column tab-item" data-tab="user-observed"  layout="row" layout-align="center center" ng-show="accountCtrl.isOwnPage">
                     <i class="find icon"></i>
                     Obserwowane
                 </div>
-                <div class="item column tab-item" data-tab="user-mail"  layout="row" layout-align="center center">
+                <div class="item column tab-item" data-tab="user-mail"  layout="row" layout-align="center center" ng-show="accountCtrl.isOwnPage">
                     <i class="mail icon"></i>
                     Poczta
                 </div>
-                <div class="item column tab-item" data-tab="user-search"  layout="row" layout-align="center center">
+                <div class="item column tab-item" data-tab="user-search"  layout="row" layout-align="center center" ng-show="accountCtrl.isOwnPage">
                     <i class="search icon"></i>
                     Użytkownicy
                 </div>
             </div>
+
             <div class="ui active transition fade in tab" data-tab="user-page">
                 <user-page></user-page>
             </div>
-            <div class="ui transition fade in tab" data-tab="user-settings">
-                <user-settings></user-settings>
+            <div class="ui transition fade in tab" data-tab="user-settings" ng-show="accountCtrl.isOwnPage">
+                <user-settings ng-if="accountCtrl.isOwnPage"></user-settings>
             </div>
-            <div class="ui transition fade in tab" data-tab="user-observed">
-                <user-observed></user-observed>
+            <div class="ui transition fade in tab" data-tab="user-observed" ng-show="accountCtrl.isOwnPage">
+                <user-observed ng-if="accountCtrl.isOwnPage"></user-observed>
             </div>
-            <div class="ui transition fade in tab" data-tab="user-mail">
-                <user-mail></user-mail>
+            <div class="ui transition fade in tab" data-tab="user-mail" ng-show="accountCtrl.isOwnPage">
+                <user-mail ng-if="accountCtrl.isOwnPage"></user-mail>
             </div>
-            <div class="ui transition fade in tab" data-tab="user-search">
-                <user-search></user-search>
+            <div class="ui transition fade in tab" data-tab="user-search" ng-show="accountCtrl.isOwnPage">
+                <user-search ng-if="accountCtrl.isOwnPage"></user-search>
             </div>
 
 		</div>

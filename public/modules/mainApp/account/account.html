@@ -4,8 +4,10 @@
 		<div class="topAccountHeader" ng-style="{'background-image':'url(gallery/' + accountCtrl.userInfo._id + '/userImage.jpg)'}">
 			<!--PROFILE IMG-->
 			<div layout="row" layout-align="end" class="profileImgHolder">
-				<div layout="column" class="user-name">
-					{{accountCtrl.userInfo.settings.name}} {{accountCtrl.userInfo.settings.surname}} ({{accountCtrl.userInfo.login}})
+				<div layout="column" class="user-name-container">
+					<div class="user-name">
+						{{accountCtrl.userInfo.settings.name}} {{accountCtrl.userInfo.settings.surname}} ({{accountCtrl.userInfo.login}})
+					</div>
 					<p class="smaller-top-margin">{{user.rank}}</p>
 				</div>
 				<img class="profileImg" ng-src="gallery/{{accountCtrl.userInfo._id}}/avatar.jpg" err-SRC="gallery/default.jpg">

@@ -1,6 +1,7 @@
 #account {
 
-  $profileHeight: 100px;
+  $profileHeight: 200px;
+  $avatarWidth: 132px;
 
     
   .topAccountHeader {
@@ -12,26 +13,36 @@
     background-size: cover;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
-    height: 2* $profileHeight;
+    height: $profileHeight;
     .profileImgHolder {
-      left: calc(#{$profileHeight/2} - 20px);
       position: relative;
-      top: calc(#{$profileHeight/2} + 80px) ;
+      float: right;
+      margin-right: -15px;
+      top: 70%;
       .profileImg {
+        height: $avatarWidth;
+        width: $avatarWidth;
         box-shadow: 8px 8px 15px -2px rgba(0,0,0,0.75);
-        transform: rotate(5deg);
-        border-radius: 50%;
-        max-height: $profileHeight;
         padding: 5px;
         background-color: white;
         border: 1px solid #B3B3B3;
+
       }
-	  .user-name{
-		top: $profileHeight - 20px;
-		position: absolute;
-		right: 110px;
+	  .user-name-container{
+        position: absolute;
+		top: 60%;
+        float: left;
+		margin-left: -10px;
 		font-weight: 800;
 		.smaller-top-margin  {margin-top: 2px;}
+        .user-name{
+            //settings responsible for scaling of the username to the left instead of right
+            position: absolute;
+            right: 0;
+            width: 50vw;  //this ensures the element will be in one line for as long as possible
+            text-align: right;
+            //
+        }
 	  }
     }
   }
@@ -43,7 +54,7 @@
     border-top: 2px groove rgb(166, 166, 166);
     width: 40%;
     height: 10px;
-    margin-top: 10px;
+    margin-top: 40px;
     left: 30%;
     top: 50%;
     position: relative;
@@ -54,25 +65,29 @@
   }
 
 
+    //responsible for making avatar and profile holder smaller
+    @media screen and (max-width: 500px) {
+        $profileHeight: 100px;
+        $avatarWidth: 100px;
+        .topAccountHeader {
+            height: $profileHeight;
+            .profileImgHolder {
+                .profileImg {
+                    height: $avatarWidth;
+                    width: $avatarWidth;
+                }
+                .user-name-container  {top: 40%;}
+            }
+        }
+    }
 
-
-  @media screen and (min-width: 640px) {
-    $profileHeight: 200px;
-	.topAccountHeader {
-      .profileImgHolder {
-		  left: calc(#{$profileHeight/2} - 80px);
-		  top: calc(#{$profileHeight/2});
-		  .profileImg  {max-height: $profileHeight;}
-		  .user-name  {
-			right: 140px;
-			top: 120px;
-			font-size: 16px;
-		  }
-	  }
-	}
-	.informationHolder {
-		margin-top: 50px;
-	}
-  }
+    //it's just for 340-320, because the scaling overlaps the screen, we need to move some element a bit to the left
+    @media screen and (max-width: 340px) {
+        .topAccountHeader {
+            .profileImgHolder {
+                .profileImg  {margin-right: 20px;}
+            }
+        }
+    }
 
 }

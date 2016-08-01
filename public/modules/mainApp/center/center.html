@@ -8,6 +8,16 @@
                 <md-icon class="ui dropdown menuIcon"
                          md-svg-src="resources/icons/menu-button-of-three-lines.svg"></md-icon>
                 <div class="menu slidingMenuDropdown">
+                    <div class="userInfoBox">
+                        <div class="imageHolder">
+                            <img ui-sref="app.account"
+                                 src="https://johnochwat.files.wordpress.com/2010/07/mini-avatar.gif">
+                        </div>
+                        <div class="infoHolder">
+                            <span class="userName">{{centerCtrl.UserService.user.login}}</span>
+                            <span ng-if="centerCtrl.UserService.user.mail" class="userMail">{{centerCtrl.UserService.user.mail}}</span>
+                        </div>
+                    </div>
                     <div class="header optionsHolder">
                         <div layout="row" layout-wrap>
                             <div

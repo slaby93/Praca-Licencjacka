@@ -33,17 +33,8 @@ exports.connect = function (dataBase, collectionList, callback) {
         // throw new Error("Parametr dataBase nie jest stringiem lub przekazana tablica nie jest tablica!");
         throw new Error("dataBase parameter is not a string or collectionList is not an array!");
     }
-    if (process.env.NODE_ENV === "production") {
-        db = mongojs('lokalny:lokalny@localhost/' + dataBase, collectionList);
-    } else if (process.env.NODE_ENV === 'development') {
+    db = mongojs('slaby:daniel22@ds023495.mlab.com:23495/bachelor', collectionList, {authMechanism: 'ScramSHA1'});
 
-        if (process.env.localDaniel) {
-            db = mongojs('slaby:daniel22@192.168.1.20/' + dataBase, collectionList);
-        } else {
-            db = mongojs('slaby:daniel22@letsplaypi.noip.me/' + dataBase, collectionList);
-        }
-
-    }
     db.on('error', function (err) {
         console.log(error(err));
     });

@@ -101,8 +101,8 @@ router.post('/register', function (req, res, next) {
         "name": "",
         "surname": "",
         "birthDate": "",
-        "settings.city" : "",
-        "settings.tags": []
+        "city" : "",
+        "tags": []
     };
     user.mailBox = [];
     user.unbanDate = new Date();

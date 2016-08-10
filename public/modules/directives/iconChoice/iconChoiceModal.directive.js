@@ -30,7 +30,7 @@ class IconChoiceModalController {
     setTopScopeListeners() {
         let self = this;
         self.$scope.$on('iconModal:show', function (event, data) {
-            $('.ui.xsmall.modal')
+            $('#icon-choice')
                 .modal({
                     onShow    : function(){
                         self.choosenIcon = data;
@@ -39,12 +39,19 @@ class IconChoiceModalController {
                     },
                     onApprove : function() {
                         self.$scope.$emit("iconModal:hide", {"iconUrl": self.choosenIconCopy});
+                        $('#icon-choice')
+                            .modal('hide')
+                        ;
                     },
                     onDeny : function() {
                         self.$scope.$emit("iconModal:hide", {"iconUrl": self.choosenIcon});
+                        $('#icon-choice')
+                            .modal('hide')
+                        ;
                     }
                 })
                 .modal('setting', 'closable', false)
+                .modal('setting', 'allowMultiple', false)
                 .modal('show')
             ;
         });
@@ -69,8 +76,8 @@ class IconChoiceModalController {
 
     setStyle(item){
         let self = this;
-        item.color = "orange";
-        item.border = "groove";
+        item.color = "#ffe4b3";
+        item.border = "ridge";
     }
 
     setUrl(item){

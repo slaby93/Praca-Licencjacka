@@ -4,7 +4,7 @@
             <md-content>
 				<md-content class="md-padding">
 					<form layout="column" novalidate name="uploadModalCtrl.uploadForm"
-						  ng-submit="uploadModalCtrl.upload(croppedDataUrl, uploadModalCtrl.UserService.user.login, 'user/photo')">
+						  ng-submit="uploadModalCtrl.upload(croppedDataUrl, uploadModalCtrl.UserService.user.id, 'user/photo')">
 						<md-input-container>
 							<input type="file" required ngf-select ng-model="picFile"
 								   name="file" accept="image/*" ngf-max-size="2MB">

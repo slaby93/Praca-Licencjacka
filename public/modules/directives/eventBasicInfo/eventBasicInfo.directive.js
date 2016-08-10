@@ -24,6 +24,7 @@ class EventBasicInfoController {
         self.loader = loader;
         self.$window = $window;
         self.notie = $window.notie;
+
         self.watchEventInfo();
         self.setDefaultValues();
     }
@@ -87,10 +88,20 @@ class EventBasicInfoController {
         let self = this;
         self.$scope.$broadcast('iconModal:show', self.eventInfoEdit.eventIcon);
     }
+    showCommentsModal(){
+        let self = this;
+        let passedObject = {"recipientID" : self.eventInfo.authorID, "recipientName": self.eventInfo.author, "authorRole" : "uczestnik"};
+        self.$scope.$broadcast('commentsModal:show', passedObject);
+    }
 
     checkUserAlreadyRegistered(userID) {
         let self = this;
         return (_.find(self.eventInfo.participants, {'_id': userID}) != undefined);
+    }
+
+    checkIfUserCanComment(){
+        let self = this;
+        return (_.find(self.eventInfo.participants, {'_id': self.UserService.user.id, 'hasCommentedOnEvent': false}) != undefined);
     }
 
     checkRights() {
@@ -152,8 +163,8 @@ class EventBasicInfoController {
         if (self.isOwnPage()) {
             if (saved) {
                 if(self.eventInfoEdit.eventInfo.title.length < 10 || self.eventInfoEdit.eventInfo.title.length > 30)  self.notie.alert(2, 'Tytuł musi posiadać conajmniej 10 i conajwyżej 30 znaków!');
-                else if(self.eventInfoEdit.eventInfo.payment < 0)  self.notie.alert(2, 'Nieprawidłowa wartość składki!');
-                else if(self.eventInfoEdit.eventInfo.usersLimit < self.eventInfo.eventInfo.usersLimit)  self.notie.alert(2, 'Limitu użytkowników nie można zmniejszać!');
+                else if(self.eventInfoEdit.eventInfo.payment < 0 ||  !((""+self.eventInfoEdit.eventInfo.payment).match(/^\d+$/i)))  self.notie.alert(2, 'Nieprawidłowa wartość składki!');
+                else if(self.eventInfoEdit.eventInfo.usersLimit < 1 || !((""+self.eventInfoEdit.eventInfo.usersLimit).match(/^\d+$/i)))  self.notie.alert(2, 'Niepoprawna maksymalna ilość użytkowników');
                 else  self.$scope.$emit("event:edited", {"data": self.eventInfoEdit});
             }else{
                 self.eventInfoEdit = undefined;
@@ -220,7 +231,7 @@ class EventBasicInfoController {
 
     goToUserProfile() {
         let self = this;
-        self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
+        if(self.eventInfo.author != "-1")  self.$state.go("app.account", {userName: self.eventInfo.author, indexName: 'profile'});
     }
 
 }

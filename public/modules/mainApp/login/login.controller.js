@@ -72,6 +72,9 @@ class LoginController {
                     case 400:
                         msg = 'Podane dane są nieprawidłowe'
                         break;
+                    case 403:
+                        msg = err.data.message;
+                        break;
                     default:
                         msg = `Niepoprawne dane`;
                         break;

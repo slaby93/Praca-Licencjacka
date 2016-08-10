@@ -81,7 +81,7 @@ class EventService {
      *      sets it's event date to currentDate to avoid situations when an user sets an event to 2099 and then disables it
      *      and then it would not be removed with >1yr old closed events.
      * In case of a success, it logs to console and resolves to data (which has a form: {"id": id}}
-     * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to -1
+     * In case the id is structurally wrong (not convertable to ObjectID), it logs to console and resolves to "error"
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      "ok" if it succeeded, "nochange" if the event does not exist or it has been already deactivated, "error" in case of an error
@@ -365,28 +365,34 @@ class EventService {
 
     /**
      * @params  (String) userID - id of an user
-     * @functionality finds all events organized by the passed user name
+     * @params  (boolean) isActive - determines if we want to search for active or inactive events (current or archival)
+     * @functionality finds all events organized by the passed user name, active or inactive
      * In case of a success, it logs to console and resolves to array of events, sorted by date in an ascending order
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
      *      full event Info array of event organized by an user if it succeeded, err in case of an error
      */
-    findByUser(userID) {
+    findByUser(userID, isActive) {
         let self = this;
         return new Promise((resolve,reject)=> {
             if (userID.match(/^[0-9a-fA-F]{24}$/)) {
                 self.$http({
                     method: 'POST',
                     url: '/event/findByUser',
-                    data: {userID: userID}
+                    data: {userID: userID, isActive: isActive}
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Znaleziono eventy uzytkownika: " + name + " Oto one: ", data.data.docs);
-                        resolve(data);
-                        // ERROR
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono żadnych wydarzeń użytkownika: " + userID);
+                            reject("error");
+                        }else {
+                            self.$l.debug("Znaleziono eventy uzytkownika: " + userID + " Oto one: ", data.data.docs);
+                            resolve(data);
+                        }
+                    // ERROR
                     }, function (err) {
-                        self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + name);
+                        self.$l.debug("Porazka podczas wyszukiwania eventow uzytkownika: " + userID);
                         reject(err);
                     }
                 );
@@ -421,17 +427,22 @@ class EventService {
                 }).then(
                     // SUCCESS
                     function (data) {
-                        self.$l.debug("Znaleziono event o id: " + id + " Oto on: ", data.data.docs);
-                        resolve(data);
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono eventu o id: " + id);
+                            resolve("error");
+                        }else{
+                            self.$l.debug("Znaleziono event o id: " + id + " Oto on: ", data.data.docs);
+                            resolve(data);
+                        }
                         // ERROR
                     }, function (err) {
                         self.$l.debug("Porazka podczas wyszukiwania eventu o id: " + id);
-                        reject("error");
+                        resolve("error");
                     }
                 );
             }else{
                 self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
-                reject("error");
+                resolve("error");
             }
         });
     }
@@ -446,6 +457,7 @@ class EventService {
      * It checks if the id is valid
      * Inside mongodb, it checks if the event is active
      * You cannot edit an inactive event
+     * You can change usersLimit, but it checks if the new value is not lower than participants.length
      * In case of a success, it logs to console and resolves to full event data
      * In case of a failure, it logs to console and resolves to err
      * @returns {Promise}
@@ -466,7 +478,8 @@ class EventService {
                     // SUCCESS
                     function (data) {
                         if (data.data == "nochange") {
-                            self.$l.debug("Nie można zaaktualizować wydarzenia - jest ono prawdopodobnie nieaktywne!");
+                            self.$l.debug("Nie można zaaktualizować wydarzenia - jest ono prawdopodobnie nieaktywne bądz" +
+                                " próbowano ustawić maksymalną liczbę użytkowników mniejszą niż liczba uczestników wydarzenia!");
                             resolve("nochange");
                         } else {
                             self.$l.debug("Pomyślnie zedytowano event o id: " + id);
@@ -522,16 +535,23 @@ class EventService {
     }
 
 
+
+
+
     /**
      * @params  (string) author - login of an author of an event
      * @functionality
      *      resolves to true if the currently logged user is an author of an event, otherwise resolves to false
-     * @returns {Promise}
+     * @returns {boolean}
      */
     isOwnPage(author) {
         let self = this;
-        return (author == self.UserService.user.login || self.UserService.hasRight(['admin']) ? true : false);
+        return (author == self.UserService.user.login);
     }
+
+
+
+
 
     /**
      * @functionality
@@ -558,5 +578,96 @@ class EventService {
             );
         });
     }
+
+
+
+
+
+    /**
+     *
+     * @param eventID (String) - the id of an event we comment about
+     * @param userID (String) - it's an id of the participant of an event
+     * @param isAuthor (boolean) -
+     *      true for author -> participant oommenting (switch the hasBeenCommentedOn),
+     *      false for participant -> author commenting (switch the hasCommentedOnEvent)
+     *      (who is doing the commenting thing)
+     * @functionality: it switches the proper flag to "true" to indicate the user has been commented on/ has commented on an event
+     *      (to prevent multi commenting on the same thing)
+     * @returns {Promise<T>|Promise}
+     *      resolves to "ok" if it succeeded, rejects to "error" in case of id inconvertability to ObjectId, err in case of db error
+     */
+    setCommented(eventID, userID, isAuthor) {
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            if (eventID.match(/^[0-9a-fA-F]{24}$/) && userID.match(/^[0-9a-fA-F]{24}$/)) {
+                let query = {};
+                if(isAuthor)  query = {"participants.$.hasBeenCommentedOn": true};
+                 else  query = {"participants.$.hasCommentedOnEvent": true};
+                self.$http({
+                    method: 'POST',
+                    url: '/event/setCommented',
+                    data: {eventID: eventID, userID : userID, query : query}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        self.$l.debug("Pomyslnie przestawiono flage komentarza na true!");
+                        resolve("ok");
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas przestawiania flagi komentarza na true!");
+                        reject(err);
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+    }
+
+
+    /**
+     *
+     * @param id - an id of the user we want to check all events it's participated in
+     * @functionality: finds all events the user has been participating in or is participating
+     *      resolves to the data it received from db (array of events)
+     * @returns {Promise|Promise<T>}
+     */
+    findByIdWhereUserParticipated(id) {
+        let self = this;
+        return new Promise((resolve,reject)=> {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                self.$http({
+                    method: 'POST',
+                    url: '/event/findByIdWhereUserParticipated',
+                    data: {id: id}
+                }).then(
+                    // SUCCESS
+                    function (data) {
+                        if(data.data.docs.length == 0) {
+                            self.$l.debug("Nie znaleziono eventow w ktorych bral udzial uzytkownik o id: " + id);
+                            reject("error");
+                        }else{
+                            self.$l.debug("Znaleziono eventy w ktorych bral udzial uzytkownik o id: " + id + " Oto one: ", data.data.docs);
+                            resolve(data);
+                        }
+                        // ERROR
+                    }, function (err) {
+                        self.$l.debug("Porazka podczas wyszukiwania eventow w ktorych bral udzial uzytkownik o id: " + id);
+                        reject("error");
+                    }
+                );
+            }else{
+                self.$l.debug("Blad! Nie mozna skonwertowac podanego id do ObjectID (niepoprawne ID)!");
+                reject("error");
+            }
+        });
+    }
+
+
+
+
 }
+
+
 export default EventService;

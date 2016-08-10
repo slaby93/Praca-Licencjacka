@@ -64,6 +64,7 @@
     "require-dot-file": "^0.4.0",
     "run-sequence": "^1.2.0",
     "semantic-ui": "^2.1.8",
+    "sendgrid": "^2.0.0",
     "serve-favicon": "~2.3.0",
     "yamljs": "^0.2.7"
   },
@@ -116,6 +117,7 @@
       "md-data-table": "npm:md-data-table@^1.4.2",
       "moment": "npm:moment@^2.12.0",
       "ng-file-upload": "npm:ng-file-upload@^12.0.4",
+      "sendgrid": "npm:sendgrid@^2.0.0",
       "ui-router": "npm:ui-router@^1.0.0-alpha0"
     },
     "devDependencies": {

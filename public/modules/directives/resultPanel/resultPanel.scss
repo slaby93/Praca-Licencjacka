@@ -109,17 +109,25 @@ result-panel {
     margin-right: 30px !important;
     margin-bottom: 30px !important;
     .resultListItem {
+      cursor: pointer;
       padding: 10px !important;
       border: 1px solid transparent;
       height: 100px;
-      transition: 0.2s border linear;
+      transition: 0.2s border linear, 0.2s box-shadow linear;
       &:hover {
         border-color: #ccc;
+      }
+      &:active {
+        box-shadow: 0px 0px 39px 3px rgba(0, 0, 0, 0.31);
       }
 
       .eventImage {
         width: 80px;
         height: 80px;
+        @media(max-width: 400px) {
+          width: 50px;
+          height: 50px;
+        }
       }
 
       .content {
@@ -141,6 +149,97 @@ result-panel {
   .resultPanelBody {
     overflow: auto;
     width: 100%;
+  }
+
+  .gridResultsHolder {
+    margin: 30px;
+    margin-top: 0px;
+    .gridListItemHolder {
+      border: 5px solid white;
+      height: 120px;
+      .gridListItemBody {
+        height: 100%;
+        width: 100%;
+        transition: 0.2s box-shadow linear, 0.2s transform linear;
+        display: flex;
+        flex-direction: column;
+        padding-top: 0px;
+        &:hover {
+          box-shadow: 1px 6px 39px -5px rgba(0, 0, 0, 0.75);
+          transform: scale(1.03);
+        }
+        &:active {
+          transform: scale(1.05);
+        }
+        cursor: pointer;
+        .gridItemStatusBox {
+
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          height: 60px;
+          width: 100%;
+          margin-bottom: 10px;
+          .gridItemDistance {
+            min-width: 40px;
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+          sport-icons {
+            height: 20px;
+            width: 20px;
+          }
+        }
+        .gridItemRest {
+          display: flex;
+          height: 100% !important;
+
+          .imageHolder {
+            flex-shrink: 100;
+            min-width: 75px;
+            display: block;
+          }
+
+          @media (max-width: 630px) {
+            .imageHolder {
+              min-width: 50px;
+            }
+          }
+          @media (max-width: 570px) {
+            text-align: center;
+            padding-bottom: 14px;
+            .imageHolder {
+              display: none;
+            }
+          }
+
+        }
+        .imageHolder {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+          margin-right: 10px;
+          .eventImage {
+            height: 50px;
+            width: 50px;
+          }
+        }
+        width: 100%;
+        .infoHolder {
+          width: 100%;
+          span {
+            text-overflow: ellipsis;
+            min-width: 65px;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+            display: block;
+          }
+        }
+      }
+    }
   }
 
 }

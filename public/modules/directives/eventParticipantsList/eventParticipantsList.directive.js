@@ -13,7 +13,7 @@ function eventParticipantsList() {
 }
 
 class EventParticipantsListController {
-    constructor(UserService, EventService, $scope, $state, $rootScope, $log, $stateParams) {
+    constructor(UserService, EventService, $scope, $state, $rootScope, $log, $window) {
         let self = this;
         
         self.UserService = UserService;
@@ -22,6 +22,7 @@ class EventParticipantsListController {
         self.$state = $state;
         self.$rootScope = $rootScope;
         self.$l = $log;
+        self.$window = $window;
         self.watchParticipants();
         self.setDefaultValues();
     }
@@ -70,6 +71,14 @@ class EventParticipantsListController {
     }
 
     closeToolTip(participant){
+        participant.wasClicked = false;
+    }
+
+
+    showCommentsModal(participant){
+        let self = this;
+        let passedObject = {"recipientID" : participant._id, "recipientName": participant.login, "authorRole" : "organizator"};
+        self.$scope.$broadcast('commentsModal:show', passedObject);
         participant.wasClicked = false;
     }
 

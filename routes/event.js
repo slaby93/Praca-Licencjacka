@@ -86,13 +86,18 @@ router.post('/update', auth, guard.check('user'), function (req, res, next) {
         }
         var passedEvent = req.body.passedEvent;
         var id = new ObjectId(req.body.id);
+		
+		query = {};
+		query['participants.'+passedEvent.eventInfo.usersLimit] = {$exists : false};
+		
         mongo.connect("serwer", ["event"], function (db) {
             db.event.update(
                 {$and :[
-                    {"isActive": true},
-                    {"_id": id},
-                    {$where : "(new Date()) < this.date"}
-                ]},
+					{"isActive": true},
+					{"_id": id},
+					query,
+					{$where : "(new Date()) < this.date"}
+				]},
                 {
                     $set: {
                         "date": new Date(passedEvent.date),
@@ -146,8 +151,16 @@ router.post('/joinEvent', auth, guard.check('user'), function (req, res, next) {
                     {"_id": id},
                     {$where : "this.participants.length < this.eventInfo.usersLimit && (new Date()) < this.date"}
                 ]},
-                {$addToSet: {"participants": {"_id" : userID}}},
-                function (err, data) {
+                {$addToSet:
+                    {"participants":
+                        {
+                            "_id" : userID,
+                            "hasCommentedOnEvent" : false,
+                            "hasBeenCommentedOn" : false,
+                            "joinedDate" : new Date()
+                        }
+                    }
+                }, function (err, data) {
                     if (err) {
                         res.status(404).send().end(function () {
                             db.close();
@@ -345,61 +358,83 @@ router.post('/cleanOld', function (req, res, next) {
 
 
 router.post('/find', function (req, res, next) {
-
     var userLatitude = req.body.latitude;
     var userLongitude = req.body.longitude;
     var radius = req.body.radius;
     mongo.connect("serwer", ["event"], function (db) {
-        var userLatitude = req.body.latitude;
-        var userLongitude = req.body.longitude;
-        var radius = req.body.radius;
-        mongo.connect("serwer", ["event"], function (db) {
-            db.event.find(
-                {$and :[
-                    {"isActive": true},
-                    {$where : "(new Date()) < this.date"}
-                ]}, function (err, data) {
-                if (err) {
-                    res.status(404).send().end(function () {
-                        db.close();
-                    });
-                } else {
-                    var docs = [];
-                    data.forEach(function (event) {   //Haversine formula
-                        var R = 6371; // Radius of the earth in km
-                        var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
-                        var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
-                        var a =
-                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
-                                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-                            ;
-                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                        var d = R * c; // Distance in km
-                        if (d <= radius) {
-                            event.distance = d;
-                            docs.push(event);
-                        }
+        db.event.find(
+            {$and :[
+                {"isActive": true},
+                {$where : "(new Date()) < this.date"}
+            ]}, function (err, data) {
+            if (err) {
+                res.status(404).send().end(function () {
+                    db.close();
+                });
+            } else {
+                var docs = [];
+                data.forEach(function (event) {   //Haversine formula
+                    var R = 6371; // Radius of the earth in km
+                    var dLat = (userLatitude - event.localization.latitude) * (Math.PI / 180);
+                    var dLon = (userLongitude - event.localization.longitude) * (Math.PI / 180);
+                    var a =
+                            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(event.localization.latitude * (Math.PI / 180)) * Math.cos(userLatitude * (Math.PI / 180)) *
+                            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                        ;
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    var d = R * c; // Distance in km
+                    if (d <= radius) {
+                        event.distance = d;
+                        docs.push(event);
+                    }
 
-                    });
-                    res.status(200).send({"docs": docs}).end(function () {
-                        db.close();
-                    });
-                }
-            });
+                });
+                res.status(200).send({"docs": docs}).end(function () {
+                    db.close();
+                });
+            }
+        });
+    });
+});
+
+router.post('/findByIdWhereUserParticipated', function (req, res, next) {
+    var userID = new ObjectId(req.body.id);
+    mongo.connect("serwer", ["event"], function (db) {
+        db.event.find(
+            {"participants._id" : userID}
+        ).sort({"participants.joinedDate" : -1}, function (err, data) {
+            if (err) {
+                res.status(404).send().end(function () {
+                    db.close();
+                });
+            } else {
+                res.status(200).send({"docs": data}).end(function () {
+                    db.close();
+                });
+            }
         });
     });
 });
 
 
+
+
+
+
 router.post('/findByUser', function (req, res, next) {
     var userID = new ObjectId(req.body.userID);
+    var isActive = req.body.isActive;
+    var query = {};
+    if(isActive)  query = {$where : "(new Date()) < this.date"};
+    else  query = {$where : "(new Date()) >= this.date"};
     mongo.connect("serwer", ["event"], function (db) {
-        db.event.aggregate(
-            [
-                {$match: {"_id": userID}},
-                {$sort: {date: -1}}
-            ], function (err, data) {
+        db.event.find(
+            {$and : [
+                {"isActive" : isActive},
+                {"authorID": userID},
+                query
+            ]}).sort({date: -1}, function (err, data) {
                 if (err) {
                     res.status(404).send().end(function () {
                         db.close();
@@ -410,7 +445,10 @@ router.post('/findByUser', function (req, res, next) {
                     });
                 }
             }
-        );
+
+
+
+        )
     });
 });
 
@@ -432,6 +470,39 @@ router.post('/findById', function (req, res, next) {
         );
     });
 });
+
+router.post('/setCommented', auth, guard.check('user'), function (req, res, next) {
+    tokenHandler.verifyToken(req.payload, function (result) {
+        if (!result) {
+            res.status(401).send("Token is invalid");
+            return;
+        }
+        var eventID = new ObjectId(req.body.eventID);
+        var userID = new ObjectId(req.body.userID);
+        var query = req.body.query;
+        mongo.connect("serwer", ["event"], function (db) {
+            db.event.update(
+                {$and : [
+                    {"isActive": false},
+                    {"_id": eventID},
+                    {"participants._id" : userID}
+                ]},
+                {$set: query}, function (err, data) {
+                    if (err) {
+                        res.status(404).send().end(function () {
+                            db.close();
+                        });
+                    } else {
+                        res.status(200).send("ok").end(function () {
+                            db.close();
+                        });
+                    }
+                }
+            );
+        });
+    });
+});
+
 
 
 module.exports = router;

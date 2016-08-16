@@ -59,7 +59,7 @@ class HeaderController {
             {
                 placeholder: "Dodaj wydarzenie",
                 click: () => {
-                    self.$state.go("app.event.add");
+                    self.$state.go("create");
                 },
                 visibility: ["user"]
             },
@@ -90,7 +90,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.addEvent(new SportEvent(self.UserService.user.id, new Date(2016, 3, 17, 0, 0), new Date(2017, 3, 19, 0, 0), "resources/icons/bell.svg", "To wydarzenie bedzie wspaniale!", "siatkówka", 30, false, 0, 30, "A", true, 50.283197, 18.674011, []));
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-checkForEventsToDeactivate (fixed)",
@@ -98,7 +98,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.checkForEventsToDeactivate();
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-cleanOld (fixed)",
@@ -106,7 +106,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.cleanOld();
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-remove (fixed)",
@@ -114,7 +114,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.remove("573e3e244ab2eb88102552a6", "571ca790e033b8ab254a680e");
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-findByUser ACTIVE (fixed)",
@@ -122,7 +122,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.findByUser("57495df69895519519f6d4a3",true);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-setCommented (false) (fixed)",
@@ -130,7 +130,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.setCommented("572f0c19c40ef768253e98fd","5749b90ee008dd0c173d458f", false);
                 },
-                visibility: ["user"]
+                visibility: []
             },
 
             {
@@ -139,7 +139,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.findByIdWhereUserParticipated("5749b90ee008dd0c173d458f");
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-setCommented (true) (fixed)",
@@ -147,7 +147,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.setCommented("572f0c19c40ef768253e98fd","5749b90ee008dd0c173d458f", true);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-isOnBlacklist (fixed)",
@@ -155,11 +155,9 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.isOnBlacklist("5749b90ee008dd0c173d458f" ,"57495df69895519519f6d4a3").catch((err) =>{
                         self.$l.debug(err);
-
-
                     });
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-addUserToBlacklist (fixed)",
@@ -171,7 +169,7 @@ class HeaderController {
 
                     });
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-findByUser INACTIVE (fixed)",
@@ -179,7 +177,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.EventService.findByUser("57495df69895519519f6d4a3", false);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-sendMessage (fixed)",
@@ -187,7 +185,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.sendMessage("571ca790e033b8ab254a680e", "taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"]);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-removeMessage (fixed)",
@@ -195,7 +193,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.removeMessage("5744a2d01ad8bad41a7ea17d");
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-findUserInfoById (isFull = false)",
@@ -203,7 +201,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.findUserInfoById("slaby", false);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-findUserInfoById (isFull = true)",
@@ -211,7 +209,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.findUserInfoById("slaby", true);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-banUser(fixed)",
@@ -219,7 +217,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.banUser("5749b90ee008dd0c173d458f", 7);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-unbanUser(fixed)",
@@ -227,7 +225,7 @@ class HeaderController {
                     //IF YOU HAVE ANY FUNCTION YOU WANT TO TEST, FEEL FREE TO PUT IT HERE!
                     self.UserService.unbanUser("5749b90ee008dd0c173d458f");
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-sendMessageFromSystem (fixed - toAll)",
@@ -236,7 +234,7 @@ class HeaderController {
                     let toAll = true;
                     self.UserService.sendMessageFromSystem("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-sendMessageFromSystem (fixed - !toAll)",
@@ -245,7 +243,7 @@ class HeaderController {
                     let toAll = false;
                     self.UserService.sendMessageFromSystem("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "TEST-sendSystemMessage (fixed - toAll)",
@@ -255,7 +253,7 @@ class HeaderController {
                     let toAll = true;
                     self.UserService._sendSystemMessage("taka jest tresc tej wiadomosci", new Date(), "taki jest tytul tej wiadomosci", ["5738884dc232ec04156700fa", "5721dbc0e5b6270019f3ecab", "57387a63036adc9406dd49b7"], toAll);
                 },
-                visibility: ["user"]
+                visibility: []
             },
             {
                 placeholder: "Wyloguj",

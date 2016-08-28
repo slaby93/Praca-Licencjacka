@@ -1,4 +1,10 @@
 header {
+	.logo{
+		height: auto;
+		width: 43px;
+		margin-right: 13px;
+		margin-left: 15px;
+	}
 	.avatar-wrapper.hover-effect.ng-scope:focus  {outline: none;}
 	div {
 		span.hover-effect:hover  {cursor: pointer;}

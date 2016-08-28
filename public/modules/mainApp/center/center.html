@@ -32,7 +32,7 @@
                                     ng-click="(option.onClick) ? option.onClick(option) : false"
                                     ng-repeat="option in centerCtrl.menuOptions" class="menuItem">
                                 <md-icon ng-if="option.icon" md-svg-src="resources/icons/{{option.icon}}"></md-icon>
-                                <span ng-if="option.description">{{option.description}}</span>
+                                <p ng-if="option.description">{{option.description}}</p>
                             </div>
                         </div>
                     </div>

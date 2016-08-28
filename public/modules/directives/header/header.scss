@@ -1,78 +1,101 @@
 header {
-	.avatar-wrapper.hover-effect.ng-scope:focus  {outline: none;}
-	div {
-		span.hover-effect:hover  {cursor: pointer;}
-		span.hover-effect:focus  {outline: none;}
-	
-		md-toolbar {
-			.no-padding-right {
-				padding-right: 0px !important;
-			}
-		}
-		
-		.svg-submissive{position: relative;}
-		
-		.overlay-text{
-			position: absolute;
-			left: 3px;
-			bottom: 25%;
-			height: 30px;
-			color: black;
-			z-index: 10;
-		}
-		
-		.avatar-wrapper{
-		
-			 width:48px;
-			 height:48px;
-			 overflow: hidden;
-			 border-radius:50%;
-			 position: relative;
-			 :hover  {cursor: pointer;}
-		}
-		.avatar{
-			top:50%;
-			left:50%;
-			transform: translate(-50%,-50%);
-			width: 48px;
-			height: 48px;
-		}
-		
-		.login-register-button {
-			text-transform: none !important;
-			font-weight: bold !important;
-		}
-		.navigation-menu{
-			height: 100%;
-			width: 10%;
-			background-color: #262626;
-		
-			.md-icon-button{
-				width: 100%;
-				height: 100%;
-				padding-left: 0px;
-				margin-left: 0px;
-			}
-			
-		}
-	}
+  .logoHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 150px;
+    cursor: pointer;
+  }
+  .logo {
+    height: auto;
+    width: 43px;
+    margin-right: 13px;
+    margin-left: 15px;
+  }
+  .avatar-wrapper.hover-effect.ng-scope:focus {
+    outline: none;
+  }
+  div {
+    span.hover-effect:hover {
+      cursor: pointer;
+    }
+    span.hover-effect:focus {
+      outline: none;
+    }
+
+    md-toolbar {
+      .no-padding-right {
+        padding-right: 0px !important;
+      }
+    }
+
+    .svg-submissive {
+      position: relative;
+    }
+
+    .overlay-text {
+      position: absolute;
+      left: 3px;
+      bottom: 25%;
+      height: 30px;
+      color: black;
+      z-index: 10;
+    }
+
+    .avatar-wrapper {
+
+      width: 48px;
+      height: 48px;
+      overflow: hidden;
+      border-radius: 50%;
+      position: relative;
+      :hover {
+        cursor: pointer;
+      }
+    }
+    .avatar {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+    }
+
+    .login-register-button {
+      text-transform: none !important;
+      font-weight: bold !important;
+    }
+    .navigation-menu {
+      height: 100%;
+      width: 10%;
+      background-color: #262626;
+
+      .md-icon-button {
+        width: 100%;
+        height: 100%;
+        padding-left: 0px;
+        margin-left: 0px;
+      }
+
+    }
+  }
 }
 
-.md-open-menu-container{
-	md-menu-content{
-		background-color: #262626 !important;
-		margin-top: 0px !important;
-		margin-bottom: 0px !important;
-		padding-bottom: 0px !important;
-		padding-top:0px !important;
-	}
-	md-menu-item{
-		 border-bottom: 1px groove #0d0d0d;
-		 
-		.menu-list-item{
-			color: #f2f2f2;
-			font-weight: 400;
-		}
-	}
+.md-open-menu-container {
+  md-menu-content {
+    background-color: #262626 !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+  }
+  md-menu-item {
+    border-bottom: 1px groove #0d0d0d;
+
+    .menu-list-item {
+      color: #f2f2f2;
+      font-weight: 400;
+    }
+  }
 }
 

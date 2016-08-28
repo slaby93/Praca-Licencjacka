@@ -1,18 +1,15 @@
 <div layout="column" layout-fill>
     <md-toolbar>
         <div class="md-toolbar-tools no-padding-right">
-            <span class="hover-effect" ng-click="headerCtrl.goToHome()">Smetter</span>
+            <div class="logoHolder hover-effect" ui-sref="center">
+                <img class="logo" ng-src="resources/logo/logo_white.png"><span>Smetter</span>
+            </div>
             <!-- fill up the space between left and right area -->
             <span flex></span>
 			
             <md-button ng-if="headerCtrl.UserService.hasRight(['guest'])" ng-click="headerCtrl.UserService.showLoginModal();" class="login-register-button">
                 Logowanie/Rejestracja
             </md-button>
-			
-			<md-button ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" aria-label="Open demo menu" class="md-icon-button" ng-click="headerCtrl.goToProfile('mail', headerCtrl.UserService.user.login)">
-					<div class="overlay-text"><b>{{headerCtrl.messageCount}}</b></div>
-					<md-icon md-svg-src="resources/mail.svg" class="svg-submissive"></md-icon>
-			</md-button>
 			
 			<div ng-if="headerCtrl.UserService.hasRight(['user', 'admin'])" ng-click="headerCtrl.goToProfile('profile', headerCtrl.UserService.user.login)" class="avatar-wrapper hover-effect">
 				<img alt="User Image" ng-src="gallery/{{headerCtrl.userImage}}/avatar.jpg" err-SRC="gallery/default.jpg" class="avatar"/>

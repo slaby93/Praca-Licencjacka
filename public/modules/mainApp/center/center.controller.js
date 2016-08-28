@@ -66,15 +66,23 @@ class CenterController {
     self.menuOptions = [
       {
         id: 0,
-        icon: 'home.svg',
-        description: 'Home',
+        icon: 'halloween-event-calendar-page.svg',
+        description: 'Stwórz',
         enabled: false,
         onClick: (item)=> {
-          self.$state.go('app.home')
+          self.$state.go('create')
+        }
+      }, {
+        id: 1,
+        icon: 'black-settings-button.svg',
+        description: 'Konto',
+        enabled: false,
+        onClick: (item)=> {
+          self.goToProfile('profile', self.UserService.user.login)
         }
       },
       {
-        id: 1,
+        id: 2,
         icon: 'door-exit.svg',
         description: 'Wyloguj',
         enabled: false,
@@ -85,6 +93,11 @@ class CenterController {
     ];
     self.menuVisible = false;
     $('#menuDropdown').dropdown();
+  }
+
+  goToProfile (index, userName) {
+    let self = this;
+    self.$state.go("app.account", { userName: userName, indexName: index });
   }
 
   calculatePosition () {

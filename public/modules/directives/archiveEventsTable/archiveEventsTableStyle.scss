@@ -6,6 +6,20 @@ archive-events-table{
 		 border-bottom: 1px #97DBDA solid;
 	}
 
+    .small-padding-top{
+        padding-top: 40px;
+    }
+
+    .solid-color-block{
+        height: 40px;
+        background-color: gray;
+    }
+
+	.rounded-top{
+		border-top-left-radius: 6px;
+		border-top-right-radius: 6px;
+	}
+
 	.no-overflow{
 		overflow-y: hidden;
 	}
@@ -15,8 +29,6 @@ archive-events-table{
 		display: none !important;
 	}
 
-
-	.stretch-vertically{height: 100%;}   /*it should be global? maybe?*/
 	
 	.cell-padding  {padding-right: 5px;}
 	@media screen and (min-width: 1200px) {

@@ -1,4 +1,4 @@
-<div flex layout="column" class="stretch-vertically">
+<div flex layout="column">
 	<div layout="row" layout-align="center">
 		<md-card flex="100" class="table-header">
 			<md-content layout="row" layout-align="center center" class="no-overflow header-content">
@@ -23,13 +23,5 @@
 				</md-table-container>
 			</md-content>
 		</div>
-	</div>
-	<div layout="row" layout-align="center end" flex>
-		<md-table-pagination layout="row" layout-align="center center"
-				md-label="{page: 'Strona:', rowsPerPage: '', of: 'z'}"
-				md-limit="activeEventsTableCtrl.limit" md-page="activeEventsTableCtrl.totalPages" md-total="{{activeEventsTableCtrl.totalResults}}"
-				md-on-paginate="activeEventsTableCtrl.paginate" 
-				class="md-table-pagination"
-		>
 	</div>
 </div>
